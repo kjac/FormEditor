@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-    <metadata>
-        <id>FormEditor</id>
-        <version>0.0.0.0</version>
-        <title>Form Editor</title>
-        <authors>Kenn Jacobsen</authors>
-        <owners>Kenn Jacobsen</owners>
-        <projectUrl>http://github.com/kjac/FormEditor</projectUrl>
-        <description><![CDATA[Form Editor for Umbraco 7]]></description>
-        <tags>umbraco, form editor</tags>
-        <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
-        <dependencies>
-            <dependency id="UmbracoCms.Core" version="7.3.0" />
-        </dependencies>
-    </metadata>
+  <metadata>
+    <id>FormEditor</id>
+    <version>0.0.0.0</version>
+    <title>Form Editor</title>
+    <authors>Kenn Jacobsen</authors>
+    <owners>Kenn Jacobsen</owners>
+    <projectUrl>http://github.com/kjac/FormEditor</projectUrl>
+    <description><![CDATA[Form Editor for Umbraco 7]]></description>
+    <tags>umbraco, form editor</tags>
+    <iconUrl>https://raw.githubusercontent.com/kjac/FormEditor/master/Docs/img/logo.png</iconUrl>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <dependencies>
+      <dependency id="UmbracoCms.Core" version="7.3.0" />
+    </dependencies>
+  </metadata>
 </package>
