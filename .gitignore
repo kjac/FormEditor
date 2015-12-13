@@ -1,0 +1,21 @@
+syntax: glob
+*.bak
+*.cmd
+*.dll
+*.lock
+*.orig
+*.pdb
+*.suo
+*.user
+*.xml
+.hgcheck
+_ReSharper*
+bin/
+obj/
+**/node_modules/
+**/Grunt/
+Source/Solution/packages/
+Dist/
+Package/
+Site/
+Samples/**/packages
