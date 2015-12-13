@@ -85,11 +85,17 @@ module.exports = function (grunt) {
           { expand: true, cwd: "<%= umbracoPluginDir %>", src: "package.manifest", dest: "<%= targetPluginDir %>", filter: "isFile" }
         ],
       },
-      nuget: isPackage ? {
+      nugetPkg: isPackage ? {
         files: [
           { expand: true, cwd: "<%= targetDir %>", src: ["**/*", "!bin", "!bin/*"], dest: "temp/NuGet/content" },
           { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGet/lib/net40" },
           { expand: true, src: ["package.nuspec"], dest: "temp/NuGet/" }
+        ]
+      } : {},
+      nugetBin: isPackage ? {
+        files: [
+          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGetBin/lib/net40" },
+          { expand: false, src: ["package.nuspec"], dest: "temp/NuGetBin/" }
         ]
       } : {},
     },
@@ -221,13 +227,40 @@ module.exports = function (grunt) {
         }
       }
     },
-    nugetpack: {
-      dist: {
-        src: "temp/NuGet/package.nuspec",
-        dest: "../Package",
+    template: {
+      pkg: {
         options: {
-          version: "<%= pkg.meta.version %>"
+          data: {
+            id: "FormEditor",
+            version: "<%= pkg.meta.version %>",
+            title: "Form Editor"
+          }
+        },
+        files: {
+          "temp/NuGet/package.nuspec": ["package.nuspec"]
         }
+      },
+      bin: {
+        options: {
+          data: {
+            id: "FormEditor.Binaries",
+            version: "<%= pkg.meta.version %>",
+            title: "Form Editor Binaries"
+          }
+        },
+        files: {
+          "temp/NuGetBin/package.nuspec": ["package.nuspec"]
+        }
+      }
+    },
+    nugetpack: {
+      pkg: {
+        src: "temp/NuGet/package.nuspec",
+        dest: "../Package"
+      },
+      bin: {
+        src: "temp/NuGetBin/package.nuspec",
+        dest: "../Package"
       }
     }
   });
@@ -242,8 +275,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-umbraco-package");
   grunt.loadNpmTasks("grunt-dotnet-assembly-info");
   grunt.loadNpmTasks("grunt-nuget");
+  grunt.loadNpmTasks("grunt-template");
 
   // Tasks
   grunt.registerTask("default", ["less", "copy", "concat"]);
-  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "copy", "concat", "umbracoPackage", "nugetpack"]);
+  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "copy", "concat", "umbracoPackage", "template", "nugetpack"]);
 };

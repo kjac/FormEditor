@@ -13,7 +13,8 @@
         "grunt-msbuild": "^0.3.4",
         "grunt-umbraco-package": "^1.0.0",
         "grunt-dotnet-assembly-info": "^1.0.19",
-        "grunt-nuget": "^0.1.5"
+        "grunt-nuget": "^0.1.5",
+        "grunt-template": "^0.2.3"
     },
     "meta": {
         "version": "0.9.0.2"

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>FormEditor</id>
-    <version>0.0.0.0</version>
-    <title>Form Editor</title>
+    <id><%= id %></id>
+    <version><%= version %></version>
+    <title><%= title %></title>
     <authors>Kenn Jacobsen</authors>
     <owners>Kenn Jacobsen</owners>
     <projectUrl>http://github.com/kjac/FormEditor</projectUrl>
