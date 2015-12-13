@@ -13,7 +13,6 @@ _ReSharper*
 bin/
 obj/
 **/node_modules/
-**/Grunt/
 Source/Solution/packages/
 Dist/
 Package/

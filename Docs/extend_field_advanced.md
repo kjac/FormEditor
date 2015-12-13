@@ -12,7 +12,7 @@ A complete implementation of a custom slider field (`input type="range"`) can be
 ## Project structure and field assets
 The field assets (icon, editor and view) are included in the sample project. The directory structure in which they are placed mirrors the structure of your site (at least if you're using the [sample templates](../Source/Umbraco/Views/)). In other words you can copy the *App_Plugins* and *Views* folders directly to your site, and the assets will be placed correctly:
 * The icon and editor goes into */App_Plugins/FormEditor/editor/fields/*.
-* The partial view(s) goes into the folder where your form template looks for field partials. See the [rendering section](rendering.md) for details.
+* The partial view(s) goes into the folder where your form template looks for field partials. See the [rendering section](render.md) for details.
 
 ## Project output
 The sample project references the [Umbraco Cms Core Binaries](https://www.nuget.org/packages/UmbracoCms.Core/) NuGet package. That's why a bunch of Umbraco DLLs are found in the project output bin folder. Don't copy all of these to your site, or it will most likely explode. Please copy only the project output DLL (`My.Range.dll`).

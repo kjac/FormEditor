@@ -29,7 +29,7 @@ The `name` given here is the field name presented to your editors when they're l
 ## Step 3: Render the field
 The last step is to create the partial view that will render your slider field for the end users. Again, the partial view must be named after the field type name, so in this case it will be `my.range.cshtml`.
 
-Create the partial view in the folder where your form template looks for field partials. See the [rendering section](rendering.md) for details.
+Create the partial view in the folder where your form template looks for field partials. See the [rendering section](render.md) for details.
 
 The following example illustrates of how the partial view could be implemented (of course the actual implementation is entirely up to you):
 ```xml
