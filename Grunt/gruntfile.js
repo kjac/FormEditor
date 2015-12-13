@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
   var isPackage = grunt.cli.tasks.indexOf("package") >= 0;
-  var packageDir = "temp/Package/";
 
   // Project configuration.
   grunt.initConfig({
@@ -12,7 +11,7 @@ module.exports = function (grunt) {
     umbracoPluginDir: "<%= umbracoDir %>Plugin/",
 
     // path to target (site)
-    targetDir: isPackage ? packageDir : grunt.option("target") || "../Dist/",
+    targetDir: isPackage ? "temp/Package/" : grunt.option("target") || "../Dist/",
     targetPluginDir: "<%= targetDir %>App_Plugins/FormEditor/",
 
     // project build configuration
@@ -85,7 +84,14 @@ module.exports = function (grunt) {
         files: [
           { expand: true, cwd: "<%= umbracoPluginDir %>", src: "package.manifest", dest: "<%= targetPluginDir %>", filter: "isFile" }
         ],
-      }
+      },
+      nuget: isPackage ? {
+        files: [
+          { expand: true, cwd: "<%= targetDir %>", src: ["**/*", "!bin", "!bin/*"], dest: "temp/NuGet/content" },
+          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGet/lib/net40" },
+          { expand: true, src: ["package.nuspec"], dest: "temp/NuGet/" }
+        ]
+      } : {},
     },
     // - concatination tasks
     concat: {
@@ -196,13 +202,14 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      pkg: [packageDir]
+      pkg: ["temp"]
     },
     umbracoPackage: {
       pkg: {
-        src: packageDir,
+        src: "temp/Package/",
         dest: "../Package",
-        options: {          // Options for the package.xml manifest 
+        options: {
+          // Options for the package.xml manifest 
           name: "Form Editor",
           version: "<%= pkg.meta.version %>",
           url: "https://github.com/kjac/FormEditor",
@@ -211,6 +218,15 @@ module.exports = function (grunt) {
           author: "Kenn Jacobsen",
           authorUrl: "http://our.umbraco.org/member/25455",
           readme: "See https://github.com/kjac/FormEditor for documentation."
+        }
+      }
+    },
+    nugetpack: {
+      dist: {
+        src: "temp/NuGet/package.nuspec",
+        dest: "../Package",
+        options: {
+          version: "<%= pkg.meta.version %>"
         }
       }
     }
@@ -225,8 +241,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-msbuild");
   grunt.loadNpmTasks("grunt-umbraco-package");
   grunt.loadNpmTasks("grunt-dotnet-assembly-info");
+  grunt.loadNpmTasks("grunt-nuget");
 
   // Tasks
   grunt.registerTask("default", ["less", "copy", "concat"]);
-  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "copy", "concat", "umbracoPackage"]);
+  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "copy", "concat", "umbracoPackage", "nugetpack"]);
 };

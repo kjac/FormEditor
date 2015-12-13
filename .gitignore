@@ -15,6 +15,7 @@ obj/
 **/node_modules/
 Source/Solution/packages/
 Dist/
+Grunt/temp/
 Package/
 Site/
 Samples/**/packages
