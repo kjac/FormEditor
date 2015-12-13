@@ -2,7 +2,7 @@
 Form Editor works just like any other property editor for Umbraco. Or as it happens to be, two property editors. One for the form layout and one for the form submissions. Why two? Because then you can place the form layout and the form submissions on separate tabs. We'll get back to that.
 
 ## Installing the package
-First and foremost grab the [latest Form Editor package](/kjac/FormEditor/releases) and install it in your Umbraco site.
+First and foremost grab the [latest Form Editor package](https://github.com/kjac/FormEditor/releases) and install it in your Umbraco site.
 
 ## Setting up the data types
 Once the package is installed, go ahead and create data types. You'll need one "Form Editor" data type and one "Form Editor data". 
@@ -52,11 +52,11 @@ Form Editor supports [reCAPTCHA](https://www.google.com/recaptcha/) out of the b
 * The reCAPTCHA "site" key goes in the app setting `FormEditor.reCAPTCHA.SiteKey`
 * The reCAPTCHA "secret" key goes in the app setting `FormEditor.reCAPTCHA.SecretKey`
 
-```
+```xml
   <appSettings>
     <!-- ... -->
-	<add key="FormEditor.reCAPTCHA.SiteKey" value="****" />
-	<add key="FormEditor.reCAPTCHA.SecretKey" value="****" />
+    <add key="FormEditor.reCAPTCHA.SiteKey" value="****" />
+    <add key="FormEditor.reCAPTCHA.SecretKey" value="****" />
   </appSettings>
 ```
 

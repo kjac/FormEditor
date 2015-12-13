@@ -5,7 +5,8 @@ A new Lucene index is created per form in a sub directory named after the ID of 
 
 ## Changing the storage index
 If you're hosting your site in a load balanced environment or in the cloud, the Lucene index might not be the best storage solution for you. Therefore the storage index is swappable in Form Editor. You can specify an alternative storage index in the `<Storage/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config): 
-```
+
+```xml
 <FormEditor>
   <!-- ... -->
   <Storage>

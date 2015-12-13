@@ -13,7 +13,7 @@ Form Editor matches everything up by the `type` name of the fields. This needs t
 
 ## Step 2: Register the field
 Open */Config/FormEditor.config* and add your field to the <CustomFields/> section:
-```
+```xml
 <FormEditor>
   <CustomFields>
     <Field type="my.range" name="Slider" />
@@ -32,7 +32,7 @@ The last step is to create the partial view that will render your slider field f
 Create the partial view in the folder where your form template looks for field partials. See the [rendering section](rendering.md) for details.
 
 The following example illustrates of how the partial view could be implemented (of course the actual implementation is entirely up to you):
-```
+```xml
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CustomField>
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>

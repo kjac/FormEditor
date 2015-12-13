@@ -10,7 +10,7 @@ As for field rendering, the sample templates use partial views to render all for
 
 The following code sample shows how this could all be pieced together: 
 
-```
+```xml
 @{
   // get the form model (named "form" on the content type)
   var form = Model.Content.GetPropertyValue<FormModel>("form");
@@ -38,7 +38,8 @@ The following code sample shows how this could all be pieced together:
 
 ## Submitting form data using synchronous postback
 When using synchronous postback for form submission, simply call `CollectSubmittedValues()` on the `FormModel` property and everything (including redirects to the success page, if configured) will be handled for you: 
-```
+
+```cs
 // get the form model (named "form" on the content type)
 var form = Model.Content.GetPropertyValue<FormModel>("form");
 // collect submitted values and redirect (this does nothing unless it's a postback)
@@ -47,7 +48,8 @@ form.CollectSubmittedValues();
 
 ## Submitting form data using asynchronous postback
 When using asynchronous postback for form submission you'll need to create a `FormData` object, populate it with the form data you want to submit and POST it to the Form Editor `SubmitEntry` endpoint at */umbraco/FormEditorApi/Public/SubmitEntry/* - like this: 
-```
+
+```javascript
 // create a form data container
 var data = new FormData();
 // add the form data by using data.append(key, value) 
@@ -55,6 +57,7 @@ data.append("Text_box", "some value");
 // post it to the Form Editor SubmitEntry endpoint
 $http.post("/umbraco/FormEditorApi/Public/SubmitEntry/", data, { headers: { "Content-Type": undefined } }).then(/* handle response here */);
 ```
+
 Please remember the `"Content-Type": undefined` header, otherwise stuff won't work.
 
 ## Next step

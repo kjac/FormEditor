@@ -5,7 +5,7 @@ An email template is just a regular razor view that renders a `FormModel`. You'l
 
 An email template is rendered in the Umbraco context. This means you'll be able to do all sorts of awesome stuff in your email template, because you have full access to your Umbraco data. In case you need the currently requested content item, Form Editor passes it (as `IPublishedContent`) to your view in `ViewData["currentContent"]`:
 
-```
+```xml
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.FormModel>
 @{
   // the current content item is passed to the view as ViewData["currentContent"]
