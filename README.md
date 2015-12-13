@@ -2,7 +2,7 @@
 
 Form Editor is a package for [Umbraco](http://umbraco.com/) 7.3+ that lets the editors create forms and manage form submissions as just another part of the Umbraco content.
 
-![Form Editor UI](img/form layout.png)
+![Form Editor UI](Docs/img/form layout.png)
 
 Some highlights include:
 * Grid based form editing.
@@ -16,12 +16,12 @@ Some highlights include:
 * Fully localizable.
 
 ## Table of contents
-* [Installing and setting up Form Editor](docs/install.md)
-* [Rendering the form](docs/render.md)
-* [Email templates](docs/emails.md)
-* [Creating your own custom field](docs/extend.md)
-* [A note about storage](docs/storage.md)
-* [Building and contributing](docs/build.md)
+* [Installing and setting up Form Editor](Docs/install.md)
+* [Rendering the form](Docs/render.md)
+* [Email templates](Docs/emails.md)
+* [Creating your own custom field](Docs/extend.md)
+* [A note about storage](Docs/storage.md)
+* [Building and contributing](Docs/build.md)
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
