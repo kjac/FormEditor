@@ -1,0 +1,144 @@
+<div class="umb-editor umb-listview form-editor-data" ng-controller="FormEditor.Editor.DataController" ng-switch="dataState">
+  <div class="row-fluid" ng-switch-when="loading">
+    <span class="dimmed" form-editor-localize key="data.loadingData">
+      Loading data...
+    </span>
+  </div>
+  <div class="row-fluid" ng-switch-when="no-data">
+    <span class="dimmed" form-editor-localize key="data.noData">
+      No data found.
+    </span>
+  </div>
+  <div class="row-fluid" ng-switch-when="data">
+
+    <form-editor-expandable-header expandable="expandedState.visibleFields" header-text-key="data.visibleFields.header" header-text-default="Visible form fields"></form-editor-expandable-header>
+
+    <div ng-show="expandedState.visibleFields.expanded" class="form-data-visible-fields">
+      <p form-editor-localize key="data.visibleFields.text">
+        Select the form fields you want displayed in the table below. If you choose to hide one or more form fields, you can click the rows in the table to see all fields for the form entries.
+      </p>
+      <ul>
+        <li ng-repeat="field in model.data.fields">
+          <label>
+            <input type="checkbox" ng-checked="isFieldVisible(field)" ng-click="toggleFieldVisible(field)" />
+            {{field.name}}
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-data">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <td class="select">
+              <input type="checkbox" ng-click="selectAll()" ng-checked="allSelected()">
+            </td>
+            <td class="date">
+              <a href ng-click="sort('_created')" form-editor-localize key="data.sortSubmittedDate">
+                Date
+              </a>
+            </td>
+            <td ng-repeat="field in model.data.fields" ng-show="isFieldVisible(field)">
+              <a href ng-click="sort('{{field.sortName}}')">
+                {{field.name}}
+              </a>
+            </td>
+            <td ng-show="hasHiddenFields()" />
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in model.data.rows track by $index" ng-class="{selected:row.selected}" ng-click="viewEntry($index)">
+            <td>
+              <input type="checkbox" ng-model="row.selected" no-dirty-check ng-click="$event.stopPropagation();">
+            </td>
+            <td title="{{row._createdDateLong}}">
+              {{row._createdDateShort}}
+            </td>
+            <td ng-repeat="value in row.values track by $index" ng-bind-html-unsafe="value" ng-show="isFieldVisible(model.data.fields[$index])"></td>
+            <td class="form-data-view-entry" ng-show="hasHiddenFields()">
+              <i class="icon icon-right-double-arrow dimmed"></i>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="model.data.totalPages > 1">
+          <tr>
+            <th colspan="{{model.data.fields.length + 2}}">
+              <div class="pagination pagination-left">
+                <ul>
+                  <li>
+                    <a href ng-click="goToPage(model.data.currentPage - 1)" form-editor-localize key="data.pagePrevious">Previous</a>
+                  </li>
+
+                  <li ng-repeat="pageNumber in model.data.pages" ng-class="{active:pageNumber==model.data.currentPage}">
+                    <a href ng-click="goToPage(pageNumber)">{{pageNumber}}</a>
+                  </li>
+
+                  <li>
+                    <a href ng-click="goToPage(model.data.currentPage + 1)" form-editor-localize key="data.pageNext">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="form-data-tools" ng-switch="hasSelection()">
+      <div class="btn-group" ng-switch-when="false">
+        <a class="btn btn-success" ng-disabled="actionInProgress" href="/umbraco/backoffice/FormEditorApi/Download/DownloadData/{{getDocumentId()}}" form-editor-localize key="data.exportAllToCsv">
+          Export to CSV
+        </a>
+      </div>
+      <div class="btn-group" ng-switch-when="true">
+        <a class="btn btn-success" ng-disabled="actionInProgress" href="/umbraco/backoffice/FormEditorApi/Download/DownloadData/{{getDocumentId()}}?rowIds={{getSelectedIds().join()}}" form-editor-localize key="data.exportSelectedToCsv">
+          Export selected to CSV
+        </a>
+      </div>
+      <div class="btn-group" ng-switch-when="true">
+        <a class="btn btn-danger" ng-disabled="actionInProgress" ng-click="deleteSelected()" form-editor-localize key="data.deleteSelected">
+          Delete selected
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="data.viewEntry.html">
+    <div class="umb-panel form-editor-data-entry">
+      <div class="umb-panel-body no-header with-footer umb-scrollable">
+        <div class="umb-control-group">
+          <div class="tab-content form umb-el-wrap">
+
+            <h4 form-editor-localize key="data.viewEntry.header" default-value="All fields for form entry" />
+
+            <div class="umb-pane">
+              <div>
+                <span class="entry-field" form-editor-localize key="data.sortSubmittedDate">
+                  Date
+                </span>
+                <span class="entry-value">
+                  {{dialogData.row._createdDateLong}}
+                </span>
+              </div>
+              <div ng-repeat="field in dialogData.fields track by $index">
+                <span class="entry-field">
+                  {{field.name}}
+                </span>
+                <span class="entry-value" ng-bind-html-unsafe="dialogData.row.values[$index]">
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+          <div class="btn-toolbar umb-btn-toolbar pull-right">
+            <button ng-click="close()" class="btn" form-editor-localize key="edit.close">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+</div>

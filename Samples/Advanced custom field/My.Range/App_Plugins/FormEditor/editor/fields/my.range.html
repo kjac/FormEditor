@@ -1,0 +1,66 @@
+<!--
+  this is the editor that will be used to configure our field.
+-->
+<div class="umb-panel form-editor-edit-field" ng-controller="FormEditor.Editor.FieldController">
+  <div class="umb-panel-body no-header with-footer umb-scrollable">
+    <div class="umb-control-group">
+      <div class="tab-content form umb-el-wrap">
+        <!--
+          this directive displays the header for our editor.
+        -->
+        <form-editor-field-header></form-editor-field-header>
+
+        <div class="umb-pane">
+          <!-- 
+            this directive takes care of name, label and help text configuration for our field. 
+          -->
+          <form-editor-field-basics></form-editor-field-basics>
+          
+          <!-- 
+            these are the custom properties for our field configuration. 
+            they are automatically passed to our editor as part of the dialogData.field property:
+            - dialogData.field.minimum
+            - dialogData.field.maximum
+            - dialogData.field.step
+          -->
+          <label class="control-label" for="minimum">
+            <!--
+              for localization of labels etc. use the directive form-editor-localize to look up the localized value
+              for the supplied key. as demonstrated here it can be used both as an element and an attribute. 
+            -->
+            <form-editor-localize key="my.range.minimum">Minimum value</form-editor-localize>
+            <small form-editor-localize key="my.range.minimum.helpText">The minimum value allowed</small>
+          </label>
+          <input type="number" id="minimum" ng-model="dialogData.field.minimum" />
+
+          <label class="control-label" for="maximum">
+            <form-editor-localize key="my.range.maximum">Maximum value</form-editor-localize>
+            <small form-editor-localize key="my.range.maximum.helpText">The maximum value allowed</small>
+          </label>
+          <input type="number" id="maximum" ng-model="dialogData.field.maximum" />
+
+          <label class="control-label" for="step">
+            <form-editor-localize key="my.range.step">Interval</form-editor-localize>
+            <small form-editor-localize key="my.range.step.helpText">The interval to increase the value by when dragging the slider</small>
+          </label>
+          <input type="number" id="step" ng-model="dialogData.field.step" />
+          
+          <!-- 
+            this directive takes care of mandatory validation configuration for our field.
+          -->
+          <form-editor-field-mandatory></form-editor-field-mandatory>
+          
+          <!-- 
+            this directive takes care of the field error message configuration for our field. 
+          -->
+          <form-editor-field-error-message></form-editor-field-error-message>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    this directive displays the footer for our editor.
+  -->
+  <form-editor-field-footer></form-editor-field-footer>
+</div>

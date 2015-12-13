@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.TextAreaField>
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <textarea class="form-control" rows="4" id="@Model.FormSafeName" name="@Model.FormSafeName" maxlength="@(Model.MaxLength > 0 ? @Model.MaxLength.ToString() : null)" @(Model.Mandatory ? "required" : null)>@Model.SubmittedValue</textarea>
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>

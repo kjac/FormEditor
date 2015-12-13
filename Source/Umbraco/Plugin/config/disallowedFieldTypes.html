@@ -1,0 +1,18 @@
+<div class="form-editor-config" ng-controller="FormEditor.Config.DisallowedFieldTypesController">
+  <div>
+    <select ng-model="model.selectedFieldType" ng-change="addFieldType(model.selectedFieldType);model.selectedFieldType=null;" ng-options="fieldType.prettyName for fieldType in availableFieldTypes() | orderBy: 'prettyName'">
+      <option value="">Select...</option>
+    </select>
+  </div>
+  <div ng-if="model.value.length > 0">
+    <br />
+    <ul>
+      <li class="disallowedField" ng-repeat="fieldType in disallowedFieldTypes() | orderBy: 'prettyName'">
+        {{fieldType.prettyName}}
+        <i class="icon icon-delete dimmed" ng-click="removeFieldType(fieldType)">
+          <span class="menu-label">remove</span>
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>

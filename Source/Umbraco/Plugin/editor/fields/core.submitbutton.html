@@ -1,0 +1,18 @@
+<div class="umb-panel form-editor-edit-field" ng-controller="FormEditor.Editor.FieldController">
+  <div class="umb-panel-body no-header with-footer umb-scrollable">
+    <div class="umb-control-group">
+      <div class="tab-content form umb-el-wrap">
+        <form-editor-field-header></form-editor-field-header>
+
+        <div class="umb-pane">
+          <label class="control-label" for="text">
+            <form-editor-localize key="edit.submitButton.label">Button label</form-editor-localize>
+          </label>
+          <input type="text" id="text" autofocus ng-model="dialogData.field.text" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form-editor-field-footer></form-editor-field-footer>
+</div>

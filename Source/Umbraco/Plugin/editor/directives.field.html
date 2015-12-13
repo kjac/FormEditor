@@ -1,0 +1,70 @@
+<script type="text/ng-template" id="formEditor.fieldHeader.html">
+  <h4><form-editor-localize key="edit.edit">Edit</form-editor-localize> <form-editor-localize key="composition.field.{{dialogData.field.type}}" default-value="{{dialogData.field.prettyName}}"></form-editor-localize></h4>
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldBasics.html">
+  <label class="control-label" for="name">
+    <form-editor-localize key="edit.name">Name</form-editor-localize>
+    <small form-editor-localize key="edit.name.helpText">The field name must be unique</small>
+  </label>
+  <input type="text" id="name" autofocus ng-model="dialogData.field.name" ng-class="{invalid: !validateFieldName()}" />
+
+  <label class="control-label" for="label">
+    <form-editor-localize key="edit.label">Label</form-editor-localize>
+    <small form-editor-localize key="edit.label.helpText">The field label shown to the users</small>
+  </label>
+  <input type="text" id="label" ng-model="dialogData.field.label" />
+
+  <label class="control-label" for="helpText">
+    <form-editor-localize key="edit.helpText">Help text</form-editor-localize>
+    <small form-editor-localize key="edit.helpText.helpText">Explanatory text to help the users</small>
+  </label>
+  <input type="text" id="helpText" ng-model="dialogData.field.helpText" />
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldMandatory.html">
+  <label class="control-label" for="mandatory">
+    <input type="checkbox" id="mandatory" ng-model="dialogData.field.mandatory" />
+    <form-editor-localize key="edit.mandatory">Required</form-editor-localize>
+    <small form-editor-localize key="edit.mandatory.helpText">Tick this box if the field should be required</small>
+  </label>
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldErrorMessage.html">
+  <label class="control-label" for="errorMessage">
+    <form-editor-localize key="edit.errorMessage">Error message</form-editor-localize>
+    <small form-editor-localize key="edit.errorMessage.helpText">The message to show the users if the entered data is not valid</small>
+  </label>
+  <input type="text" id="errorMessage" ng-model="dialogData.field.errorMessage" />
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldFooter.html">
+  <div class="umb-panel-footer">
+    <div class="umb-el-wrap umb-panel-buttons">
+      <div class="btn-toolbar umb-btn-toolbar pull-right">
+        <button ng-click="submit(dialogData.field)" class="btn btn-primary" form-editor-localize key="edit.ok">OK</button>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldOptions.html">
+  <label class="control-label" form-editor-localize key="edit.options">Options</label>
+  <div class="fieldValues">
+    <div ui-sortable="sortableOptionsFieldValues" ng-model="dialogData.field.fieldValues">
+      <div class="fieldValue selectable" ng-repeat="fieldValue in dialogData.field.fieldValues">
+        <input type="text" ng-model="fieldValue.value" />
+        <span class="fieldValueTools">
+          <label>
+            <input type="checkbox" ng-model="fieldValue.selected" ng-click="setSelectedFieldValue($index)" />
+            <form-editor-localize key="{{optionSelectedTextKey}}">{{optionSelectedTextDefault}}</form-editor-localize>
+          </label>
+          <i class="icon icon-delete dimmed" ng-click="removeFieldValue($index)"></i>
+        </span>
+      </div>
+    </div>
+    <i class="icon icon-add dimmed" ng-click="addFieldValue()">
+      <span class="menu-label" form-editor-localize key="edit.options.add" default-value="Add an option" />
+    </i>
+  </div>
+</script>

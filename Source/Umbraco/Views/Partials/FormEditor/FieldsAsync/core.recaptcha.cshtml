@@ -1,0 +1,18 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.ReCaptchaField>
+@{
+  // get current web site language so the reCAPTCHA renders in the correct language
+  var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
+}
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  @if (string.IsNullOrEmpty(Model.PublicKey) || string.IsNullOrEmpty(Model.PrivateKey))
+  {
+    <b>Invalid reCAPTCHA configuration - missing either public or private key</b>
+  }
+  else
+  {
+    <script src="https://www.google.com/recaptcha/api.js?hl=@language"></script>
+    <div class="g-recaptcha" data-sitekey="@Model.PublicKey"></div>
+  }
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>

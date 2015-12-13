@@ -1,0 +1,98 @@
+{
+  propertyEditors: [
+    {
+      alias: "FormEditor.Form",
+      name:  "Form Editor",
+      editor: {
+        view: "~/App_Plugins/FormEditor/editor/form.html",
+        hideLabel: true,
+        valueType: "JSON",
+      },
+      prevalues: {
+        fields: [
+            {
+               label: "Hide label",
+               description: "Hide the label and let the form take up the entire page width",
+               key: "hideLabel",
+               view: "boolean"
+            },
+            {
+               label: "Row layouts",
+               description: "Define the row layouts to use in the form grid",
+               key: "rowLayouts",
+               view: "~/App_Plugins/FormEditor/config/rowLayouts.html"
+            },
+            {
+               label: "Disallowed field types",
+               description: "Select all fields types that should not be allowed to use",
+               key: "disallowedFieldTypes",
+               view: "~/App_Plugins/FormEditor/config/disallowedFieldTypes.html"
+            },
+            {
+               label: "Notification email template",
+               description: "Leave empty to disable notification emails",
+               key: "notificationEmailTemplate",
+               view: "~/App_Plugins/FormEditor/config/emailTemplates.html"
+            },
+            {
+               label: "Confirmation email template",
+               description: "Leave empty to disable confirmation emails",
+               key: "confirmationEmailTemplate",
+               view: "~/App_Plugins/FormEditor/config/emailTemplates.html"
+            },
+            {
+               label: "Log IP addresses",
+               description: "Log the IP addresses of all form submissions",
+               key: "logIp",
+               view: "boolean"
+            },
+            {
+               label: "Strip HTML",
+               description: "Automatically strip HTML from all fields in all form submissions",
+               key: "stripHtml",
+               view: "boolean"
+            },
+            {
+               label: "Confirm deletes",
+               description: "Make the user confirm the deletion of fields and rows",
+               key: "confirmDelete",
+               view: "boolean"
+            },
+            {
+               label: "Don't use validation",
+               description: "Disable cross field validation rules",
+               key: "disableValidation",
+               view: "boolean"
+            }
+        ]
+      }
+    },
+    {
+      alias: "FormEditor.Data",
+      name:  "Form Editor data",
+      editor: {
+        view: "~/App_Plugins/FormEditor/editor/data.html",
+        valueType: "JSON",
+      },
+      prevalues: {
+        fields: [
+            {
+               label: "Hide label",
+               description: "Hide the label and let the data view take up the entire page width",
+               key: "hideLabel",
+               view: "boolean"
+            },
+            {
+               label: "Show IP addresses",
+               description: "Show the logged IP addresses of the form submissions (if IP logging is enabled)",
+               key: "showIp",
+               view: "boolean"
+            }
+        ]
+      }
+    }
+  ],
+  javascript: [
+    '~/App_Plugins/FormEditor/js/form.js'
+  ]
+}

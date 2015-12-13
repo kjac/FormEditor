@@ -1,0 +1,16 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.RadioButtonGroupField>
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  <label>@Model.Label</label>
+  @foreach (var fieldValue in Model.FieldValues)
+  {
+    <div class="radio">
+      <label>
+        <input type="radio" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" value="@fieldValue.Value" @(Model.Mandatory ? "required" : null) />
+        @fieldValue.Value
+      </label>
+    </div>
+  }
+
+  @Html.Partial("FormEditor/FieldsAsync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
+</div>

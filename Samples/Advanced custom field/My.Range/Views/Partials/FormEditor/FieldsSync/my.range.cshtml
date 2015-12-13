@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<My.Range.MyRangeField>
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <input type="range" id="@Model.FormSafeName" name="@Model.FormSafeName" value="@Model.SubmittedValue" min="@Model.Minimum" max="@Model.Maximum" step="@Model.Step" @(Model.Mandatory ? "required" : null) />
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>

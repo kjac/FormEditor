@@ -1,0 +1,92 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.FormModel>
+@{
+  // the current content item is passed to the view as ViewData["currentContent"]
+  // - Umbraco.AssignedContentItem doesn't in this context
+  var currentContent = ViewData["currentContent"] as IPublishedContent;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>@currentContent.Name</title>
+  <style>
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #333;
+      background-color: #fff;
+    }
+
+    h1, h2 {
+      font-family: inherit;
+      font-weight: 500;
+      line-height: 1.1;
+      font-size: 26px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      line-height: 1.42857143;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+    }
+
+    thead th {
+      border-top: 0;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .data-container {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sample Form Editor email template</h1>
+  <p>
+    This is a sample email template. You should probably roll your own.
+  </p>
+  <h2>Submitted data</h2>
+  <p>
+    The following data was submitted.
+  </p>
+  <div class="data-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Field name</th>
+          <th>Submitted data</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var field in Model.AllValueFields())
+        {
+          <tr>
+            <th>@field.PrettyName</th>
+            <td>@field.SubmittedValueForEmail()</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    You can do all sorts of cool things here, because you have full access to Umbraco via the @@Umbraco helper - just as you would in a normal Umbraco view page. How about...
+    <ul>
+      <li>Fetching the name and URL of the page that contains the form? It's <a href="@currentContent.UrlWithDomain()">@currentContent.Name</a>.</li>
+      <li>Accessing the dictionary for localized texts? The dictionary item "Test" has this value: @Umbraco.GetDictionaryValue("Test").</li>
+    </ul>
+  </p>
+</body>
+</html>

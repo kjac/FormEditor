@@ -1,0 +1,7 @@
+<script type="text/ng-template" id="formEditor.expandableHeader.html">
+  <h4 class="expandable" ng-click="expandable.expanded = !expandable.expanded">
+    <i class="icon icon-navigation-{{expandable.expanded ? 'down' : 'right'}} dimmed"></i>
+    <form-editor-localize key="{{headerTextKey}}">{{headerTextDefault}}</form-editor-localize>
+    <small ng-show="!expandable.expanded">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
+  </h4>
+</script>

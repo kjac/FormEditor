@@ -1,0 +1,5 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.IFieldWithHelpText>
+@if (string.IsNullOrEmpty(Model.HelpText) == false)
+{
+  <span class="help-block">@Model.HelpText</span>
+}

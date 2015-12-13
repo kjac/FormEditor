@@ -1,0 +1,6 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.SubmitButtonField>
+<div class="form-group">
+  <button ng-click="submit()" class="btn btn-primary" ng-class="{'btn-danger': submitStatus == 'failure', 'btn-success': submitStatus == 'success', 'disabled': submitStatus == 'submitting'}">
+    @Model.Text
+  </button>
+</div>

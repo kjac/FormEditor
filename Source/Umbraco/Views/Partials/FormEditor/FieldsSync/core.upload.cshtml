@@ -1,0 +1,9 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.UploadField>
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <input type="file" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required" : null) accept="@Model.GetValidExtensions()" />
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>
+

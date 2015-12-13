@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Umbraco", "http://localhost:27226", "{98B5BC93-71BB-48D6-9CCC-643E7E2C5C4F}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{868a44e0-c7fc-4297-a4e8-3e2ddf8e53e0}|FormEditor.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_27226"
+		Debug.AspNetCompiler.PhysicalPath = "..\Umbraco\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_27226\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_27226"
+		Release.AspNetCompiler.PhysicalPath = "..\Umbraco\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_27226\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\Umbraco\"
+		StartServerOnDebug = "false"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grunt", "Grunt", "{479E2588-054C-405D-A21E-95733DEAB780}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Grunt\gruntfile.js = ..\..\Grunt\gruntfile.js
+		..\..\Grunt\package.json = ..\..\Grunt\package.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormEditor", "FormEditor\FormEditor.csproj", "{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormEditor.SqlIndex", "FormEditor.SqlIndex\FormEditor.SqlIndex.csproj", "{103FA06A-EB17-4F78-8687-D8A9DC977C55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98B5BC93-71BB-48D6-9CCC-643E7E2C5C4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B5BC93-71BB-48D6-9CCC-643E7E2C5C4F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

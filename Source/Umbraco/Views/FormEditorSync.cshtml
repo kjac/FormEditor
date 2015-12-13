@@ -1,0 +1,96 @@
+﻿@using FormEditor;
+@using FormEditor.Rendering
+@using FormEditor.Validation.Conditions;
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+  Layout = null;
+
+  // get the form model (named "form" on the content type)
+  var form = Model.Content.GetPropertyValue<FormModel>("form");
+  
+  // handle form submission if this is a postback
+  // - this will also take care of redirecting to the success page (if configured)
+  form.CollectSubmittedValues();
+
+  // this is used to keep track of the validation errors container (for cross field validations)
+  var validationErrorsContainerAdded = false;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>@Model.Content.Name</title>
+  <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
+</head>
+<body>
+  <form method="POST" enctype="multipart/form-data" novalidate>
+    <div class="container">
+      @foreach (var row in form.Rows)
+      {
+        <div class="row @row.Alias">
+          @foreach (var cell in row.Cells)
+          {
+            <div class="cell @cell.Alias">
+              @foreach (var field in cell.Fields)
+              {
+                // insert the form validation result container above the submit button if one exists
+                if (field.Type == "core.submitbutton" && validationErrorsContainerAdded == false)
+                {
+                  validationErrorsContainerAdded = true;
+                  @AddValidationErrorsContainer(form);
+                }
+                // render the form field with a partial view 
+                // - the view is expected to be located at /Views/Partials/FormEditor/FieldsSync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsSync/core.checkbox.cshtml
+                @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+              }
+            </div>
+          }
+        </div>
+      }
+      @{
+        // if the form validation result container has not been added while rendering the submit button, add it as a row below the entire form
+        if (validationErrorsContainerAdded == false)
+        {
+          <div class="row">
+            <div class="cell">
+              @AddValidationErrorsContainer(form)
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </form>
+
+  @* include jQuery *@
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+
+  @* include Form Editor script for synchronous postback (using jQuery) *@
+  <script src="/JS/FormEditor/FormEditorSync.js" type="text/javascript"></script>
+
+  @* this script section needs to be a part of the template *@
+  <script type="text/javascript">
+    @*
+      render the form validations as an array of JSON objects
+    *@
+    var _formValidations = @form.Validations.Render();
+  </script>
+</body>
+</html>
+
+@helper AddValidationErrorsContainer(FormModel form)
+{
+  <div class="form-group">
+    <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
+      <h4>
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Form contains errors
+      </h4>
+      <ul id="validationErrorsList">
+        @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
+        {
+          <li>@invalidValidation.ErrorMessage</li>
+        }
+      </ul>
+    </div>
+  </div>
+}

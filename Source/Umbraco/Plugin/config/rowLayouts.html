@@ -1,0 +1,68 @@
+<div class="form-editor-config" ng-controller="FormEditor.Config.RowLayoutsController">
+  <ul class="row-layouts" ui-sortable="sortableOptionsRowLayout" ng-model="model.value">
+    <li ng-repeat="rowLayout in model.value">
+      <div class="row-layout" ng-class="{'ng-invalid': !isValidCellLayout(rowLayout)}">
+        <div class="row-layout-header" ng-click="rowLayout.expanded = !rowLayout.expanded">
+          <span class="row-layout-tools">
+            <i class="icon icon-delete dimmed" ng-click="deleteRowLayout(rowLayout)" ng-show="model.value.length > 1">
+              <span class="menu-label">delete this row layout</span>
+            </i>
+          </span>
+          <i class="icon" ng-class="{'icon-navigation-right dimmed': !rowLayout.expanded, 'icon-navigation-down': rowLayout.expanded}"></i>
+          <p>{{rowLayout.prettyName}}</p>
+        </div>
+        <div class="row-layout-content" ng-show="rowLayout.expanded">
+          <div class="configuration-item">
+            <label for="rowName{{$index}}">Name</label>
+            <input id="rowName{{$index}}" type="text" ng-model="rowLayout.prettyName" ng-required="true" />
+          </div>
+          <div class="configuration-item">
+            <label for="rowAlias{{$index}}">Alias</label>
+            <input id="rowAlias{{$index}}" type="text" ng-model="rowLayout.alias" ng-required="true" />
+          </div>
+          <div class="configuration-item">
+            <label for="rowIcon{{$index}}">Icon</label>
+            <select id="rowIcon{{$index}}" ng-model="rowLayout.icon" ng-options="rowIcon for rowIcon in model.rowIcons">
+            </select>
+            <i class="row-icon" style="background-image: url({{pathToRowFile(rowLayout.icon)}}) "></i>
+            <!--<input id="rowIcon{{$index}}" type="text" ng-model="rowLayout.icon" ng-required="true"/>-->
+          </div>
+          <div class="configuration-item">
+            <label>Cells</label>
+            <div class="cell-configuration">
+              <ol class="cell-layouts" ui-sortable="sortableOptionsCellLayout" ng-model="rowLayout.cellLayouts">
+                <li ng-repeat="cellLayout in rowLayout.cellLayouts">
+                  <div class="cell-layout">
+                    <div class="configuration-item">
+                      <label for="cellAlias{{$parent.$index}}_{{$index}}">Alias</label>
+                      <input id="cellAlias{{$parent.$index}}_{{$index}}" type="text" ng-model="cellLayout.alias" ng-required="true" />
+                    </div>
+                    <div class="configuration-item">
+                      <label for="cellWidth{{$parent.$index}}_{{$index}}">Width (%)</label>
+                      <input id="cellWidth{{$parent.$index}}_{{$index}}" type="number" ng-model="cellLayout.width" ng-required="true" min="1" max="100" />
+                    </div>
+
+                    <i class="icon icon-delete dimmed" ng-click="deleteCellLayout(rowLayout, cellLayout)" ng-show="rowLayout.cellLayouts.length > 1">
+                      <span class="menu-label">delete this cell</span>
+                    </i>
+                  </div>
+                </li>
+              </ol>
+              <i class="icon icon-add dimmed" ng-click="addCellLayout(rowLayout)">
+                <span class="menu-label">add a cell</span>
+              </i>
+            </div>
+          </div>
+          <div class="configuration-item configuration-info">
+            <i class="icon icon-info">
+              <span class="menu-label">The sum of all cell widths must equal 100.</span>
+            </i>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <i class="icon icon-add dimmed" ng-click="addRowLayout()">
+    <span class="menu-label">add a row layout</span>
+  </i>
+</div>

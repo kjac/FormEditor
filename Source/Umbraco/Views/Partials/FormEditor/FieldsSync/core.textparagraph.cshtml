@@ -1,0 +1,4 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.TextParagraphField>
+<p>
+  @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(Model.Text))
+</p>

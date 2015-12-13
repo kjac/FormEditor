@@ -19,3 +19,4 @@ Dist/
 Package/
 Site/
 Samples/**/packages
+*.db

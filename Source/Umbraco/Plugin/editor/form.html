@@ -1,0 +1,262 @@
+<div class="form-editor" ng-controller="FormEditor.Editor.FormController">
+  <div>
+    <form-editor-expandable-header expandable="expandedState.composition" header-text-key="composition.header" header-text-default="Form layout"></form-editor-expandable-header>
+    <div ng-show="expandedState.composition.expanded">
+      <p form-editor-localize key="composition.text">
+        Add rows and fields below to layout your form. If you need to rearrange the form layout later on, you can do so by dragging rows and fields around as you please.
+      </p>
+      <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="model.value.rows">
+        <li class="form-row" ng-class="row.alias" ng-repeat="row in model.value.rows">
+          <div>
+            <table class="form-cells">
+              <tr>
+                <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
+                  <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
+                    <div class="form-field" ng-repeat="field in cell.fields">
+                      <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
+                        <span class="form-field-icon-and-name" ng-click="editField(field)">
+                          <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
+                          <span class="form-field-name">{{getFieldName(field)}}</span>
+                        </span>
+                        <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="form-cell-delete" rowspan="2">
+                  <i class="icon icon-delete dimmed" ng-click="removeRow(row)"></i>
+                </td>
+              </tr>
+              <tr>
+                <td class="form-cell-tools form-cell{{$index}}" ng-repeat="cell in row.cells">
+                  <i class="icon icon-add dimmed" ng-click="pickField(cell)">
+                    <span class="menu-label" form-editor-localize key="composition.field.add">Add a field</span>
+                  </i>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </li>
+      </ul>
+      <div class="form-row-tools">
+        <i class="icon icon-add dimmed" ng-click="pickRow()">
+          <span class="menu-label" form-editor-localize key="composition.row.add">Add a row</span>
+        </i>
+      </div>
+    </div>
+  </div>
+  <div ng-if="model.enableValidation">
+    <hr />
+    <form-editor-expandable-header expandable="expandedState.validation" header-text-key="validation.header" header-text-default="Validation"></form-editor-expandable-header>
+    <div ng-show="expandedState.validation.expanded && allValueFields().length > 0">
+      <p form-editor-localize key="validation.text">
+        Here you can set up validations for the entire form, for example "if field A is empty then field B can't be empty". A validation consists of a set of rules that must be fulfilled, and an error message to display if the rules are not fulfilled.
+      </p>
+      <ul class="form-validations">
+        <li class="form-validation" ng-repeat="validation in model.value.validations">
+          <table>
+            <tr>
+              <td class="form-validation-rules">
+                <table>
+                  <thead>
+                    <tr>
+                      <th form-editor-localize key="validation.rules.fieldHeader">Field</th>
+                      <th form-editor-localize key="validation.rules.conditionHeader">Condition</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-validation-rule" ng-repeat="rule in validation.rules">
+                      <td class="form-validation-rule-field">
+                        <div class="form-field" ng-if="rule.field != null">
+                          <span ng-click="editRule(rule, validation)">
+                            <i class="field-icon" style="background-image: url('{{pathToFieldFile(rule.field.icon)}}')"></i>
+                            <span class="form-field-name">{{getFieldName(rule.field)}}</span>
+                          </span>
+                        </div>
+                      </td>
+                      <td class="form-validation-rule-condition">
+                        <div ng-if="rule.condition != null">
+                          <i class="field-icon" style="background-image: url('{{pathToConditionFile(rule.condition.icon)}}')"></i>
+                          <span class="menu-label" form-editor-localize key="validation.condition.{{rule.condition.type}}">{{rule.condition.prettyName}}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <form-editor-condition type="{{rule.condition.type}}"></form-editor-condition>
+                      </td>
+                      <td>
+                        <i class="icon icon-delete dimmed" ng-click="removeRule(rule, validation)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <i class="icon icon-add dimmed" ng-click="editRule(null, validation)">
+                  <span class="menu-label" form-editor-localize key="validation.rules.add">Add a rule</span>
+                </i>
+                <div class="form-validation-error-message">
+                  <label for="validationError{{$index}}" class="control-label" form-editor-localize key="validation.errorMessage">Error message</label>
+                  <input id="validationError{{$index}}" class="umb-editor" type="text" ng-model="validation.errorMessage" />
+                </div>
+              </td>
+              <td class="form-cell-delete">
+                <i class="icon icon-delete dimmed" ng-click="removeValidation(validation)"></i>
+              </td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+      <i class="icon icon-add dimmed" ng-click="addValidation()">
+        <span class="menu-label" form-editor-localize key="validation.add">Add a validation</span>
+      </i>
+    </div>
+    <div ng-show="expandedState.validation.expanded && allValueFields().length == 0">
+      <p form-editor-localize key="validation.text.noFields">
+        You must add fields to your form before you set up validation.
+      </p>
+    </div>
+  </div>
+  <div ng-show="emailTemplates.notification || emailTemplates.confirmation">
+    <hr />
+    <form-editor-expandable-header expandable="expandedState.emails" header-text-key="emails.header" header-text-default="Emails"></form-editor-expandable-header>
+    <div ng-show="expandedState.emails.expanded && emailTemplates.confirmation">
+      <h5 ng-show="emailTemplates.notification" form-editor-localize key="emailConfirmation.header">Confirmation email</h5>
+      <p form-editor-localize key="emailConfirmation.text">
+        If you want to send a confirmation email to the users when they submit the form, select the form field which will contain the recipient email address(es) and enter the email subject line and the sender email address.
+      </p>
+      <label class="control-label" for="emailConfirmationRecipientsField" form-editor-localize key="emailConfirmation.recipientsField">
+        Recipients field
+      </label>
+      <select id="emailConfirmationRecipientsField" ng-model="model.value.emailConfirmationRecipientsField" ng-options="fieldName for fieldName in allFieldNames()">
+        <option value=""></option>
+      </select>
+      <div class="propertySeparator"></div>
+      <label class="control-label" for="emailConfirmationSubject" form-editor-localize key="emailConfirmation.subject">
+        Email subject
+      </label>
+      <input type="text" class="umb-editor" id="emailConfirmationSubject" ng-model="model.value.emailConfirmationSubject" ng-required="model.value.emailConfirmationRecipientsField" />
+      <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="emailConfirmation.sender">
+        Sender email address
+      </label>
+      <input type="email" class="umb-editor" id="emailConfirmationFromAddress" ng-model="model.value.emailConfirmationFromAddress" ng-required="model.value.emailConfirmationRecipientsField" />
+    </div>
+    <div ng-show="expandedState.emails.expanded && emailTemplates.notification">
+      <h5 ng-show="emailTemplates.confirmation" form-editor-localize key="emailNotification.header">Notification email</h5>
+      <p form-editor-localize key="emailNotification.text">
+        If you want a notification email when the users submit the form, enter the recipient email address(es), the email subject line and the sender email address.
+      </p>
+      <label class="control-label" for="emailNotificationRecipients" form-editor-localize key="emailNotification.recipients">
+        Recipient addresses
+      </label>
+      <input type="email" multiple="true" class="umb-editor" id="emailNotificationRecipients" ng-model="model.value.emailNotificationRecipients" />
+      <div class="propertySeparator"></div>
+      <label class="control-label" for="emailNotificationSubject" form-editor-localize key="emailNotification.subject">
+        Email subject
+      </label>
+      <input type="text" class="umb-editor" id="emailNotificationSubject" ng-model="model.value.emailNotificationSubject" ng-required="model.value.emailNotificationRecipients" />
+      <label class="control-label" for="emailNotificationFromAddress" form-editor-localize key="emailNotification.sender">
+        Sender email address
+      </label>
+      <input type="email" class="umb-editor" id="emailNotificationFromAddress" ng-model="model.value.emailNotificationFromAddress" ng-required="model.value.emailNotificationRecipients" />
+    </div>
+  </div>
+  <div>
+    <hr />
+    <form-editor-expandable-header expandable="expandedState.successPage" header-text-key="successPage.header" header-text-default="Receipt page"></form-editor-expandable-header>
+    <div ng-show="expandedState.successPage.expanded">
+      <p form-editor-localize key="successPage.text">
+        If you want to redirect the users to another page after a successful form submission, select the page below.
+      </p>
+      <ul class="unstyled list-icons success-page">
+        <li ng-show="model.successPage == null">
+          <i class="icon icon-add blue" />
+          <a href ng-click="pickSuccessPage()" form-editor-localize key="successPage.select">Select...</a>
+        </li>
+        <li ng-show="model.successPage != null">
+          <i class="{{model.successPage.cssClass}}" />
+          <a href ng-click="pickSuccessPage()">
+            {{model.successPage.name}}
+          </a>
+          <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="formEditor.compositionPicker.html">
+  <div class="umb-panel form-editor-picker">
+    <div class="umb-panel-body no-header with-footer umb-scrollable">
+      <div class="umb-control-group">
+        <div class="tab-content form umb-el-wrap">
+
+          <h4 form-editor-localize key="composition.pick.{{dialogData.type}}.header" default-value="Add a {{dialogData.type}}" />
+          <p form-editor-localize key="composition.pick.{{dialogData.type}}.text" default-value="Choose which {{dialogData.type}} type to add." />
+
+          <div class="umb-pane">
+            <ul class="umb-actions">
+              <li ng-repeat="option in dialogData.options | orderBy: dialogData.orderBy" ng-click="submit(option.value)">
+                <a>
+                  <i class="field-icon" ng-style="{'background-image': 'url(' + option.iconPath + ')'}"></i>
+                  <span class="menu-label" form-editor-localize key="{{dialogData.type}}.{{option.value}}" default-value="{{option.name}}" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="umb-panel-footer">
+      <div class="umb-el-wrap umb-panel-buttons">
+        <div class="btn-toolbar umb-btn-toolbar pull-right">
+          <button ng-click="close()" class="btn" form-editor-localize key="edit.close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="formEditor.validationPicker.html">
+  <div class="umb-panel form-editor-picker">
+    <div class="umb-panel-body no-header with-footer umb-scrollable">
+      <div class="umb-control-group">
+        <div class="tab-content form umb-el-wrap">
+          <h4 form-editor-localize key="validation.rules.add.header">Add a rule</h4>
+          <div form-editor-localize key="validation.rules.add.text">A rule consists of a field and a condition. If the field value meets the condition, the rule is fulfilled.</div>
+          <div class="umb-pane">
+            <div form-editor-localize key="validation.pick.field">Choose a field:</div>
+            <ul class="umb-actions">
+              <li ng-repeat="field in dialogData.fields | orderBy:'name'" ng-click="dialogData.fieldName = field.name" ng-class="{selected: (dialogData.fieldName == field.name)}">
+                <a>
+                  <i class="field-icon" ng-style="{'background-image': 'url(' + field.iconPath + ')'}"></i>
+                  <span class="menu-label">{{field.name}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="umb-pane">
+            <div form-editor-localize key="validation.pick.condition">Choose a condition:</div>
+            <ul class="umb-actions">
+              <li ng-repeat="condition in dialogData.conditions | orderBy:'name'" ng-click="dialogData.conditionType = condition.type" ng-class="{selected: (dialogData.conditionType == condition.type)}">
+                <a>
+                  <i class="field-icon" ng-style="{'background-image': 'url(' + condition.iconPath + ')'}"></i>
+                  <span class="menu-label">{{condition.name}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="umb-panel-footer">
+      <div class="umb-el-wrap umb-panel-buttons">
+        <div class="btn-toolbar umb-btn-toolbar pull-right">
+          <button ng-click="submit(dialogData)" class="btn btn-primary" ng-disabled="!dialogData.fieldName || !dialogData.conditionType" form-editor-localize key="edit.ok">OK</button>
+          <button ng-click="close()" class="btn" form-editor-localize key="edit.close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

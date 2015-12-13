@@ -1,0 +1,497 @@
+@dangerColor: #b94a48;
+@dimmedColor: #d9d9d9;
+@dimmedColorActive: #343434;
+@cellBorderColor: #dddddd;
+@cellBorderColorActive: #bbbbbb;
+@sortablePlaceholderColor: #d0e7f1;
+@fontFamily: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+/* 
+  this magic width should keep the field from breaking the view on a 768px screen
+  if the form label is disabled
+*/
+@fieldNameWidth: 140;
+
+.form-editor {
+  display: table;
+  width: 100%;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &.form-rows {
+
+      li.form-row {
+        margin-bottom: 5px;
+      }
+    }
+
+    &.form-validations {
+
+      li.form-validation {
+        box-sizing: border-box;
+        vertical-align: top;
+        margin-bottom: 5px;
+
+        table {
+          margin-bottom: 6px;
+
+          th, td {
+            cursor: default;
+            padding: 6px 0px;
+          }
+
+          th {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+        }
+
+        table:hover tr td {
+          border-color: @cellBorderColorActive;
+        }
+
+        td.form-validation-rules {
+          border: 1px dashed @cellBorderColor;
+          padding: 5px 5px 0px 5px;
+
+          tr.form-validation-rule {
+            vertical-align: top;
+            border-top: 1px solid #f8f8f8;
+
+            td {
+              &.form-validation-rule-field {
+                width: 200px;
+                cursor: pointer;
+              }
+
+              &.form-validation-rule-condition {
+                width: 280px;
+              }
+
+              &.form-validation-rule-tools {
+                width: 16px;
+              }
+
+              &:last-child {
+                width: 16px;
+              }
+            }
+          }
+
+          div.form-validation-error-message {
+            margin: 0px 4px 10px 4px;
+
+            input {
+              width: 98%;
+            }
+          }
+        }
+      }
+    }
+
+    &.success-page {
+
+      i {
+        vertical-align: text-top;
+
+        &.icon-delete {
+          margin-left: 4px !important;
+        }
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+
+    &.form-cells:hover tr td {
+      border-color: @cellBorderColorActive;
+    }
+
+    td {
+      &.form-cell {
+        box-sizing: border-box;
+        border: 1px dashed @cellBorderColor;
+        border-bottom: none;
+        vertical-align: top;
+        padding: 5px 5px 2px 5px;
+      }
+
+      &.form-cell-delete {
+        border: 0;
+        width: 2%;
+      }
+
+      &.form-cell-tools {
+        margin-bottom: 2px;
+        padding-left: 5px;
+        border: 1px dashed @cellBorderColor;
+        border-top: none;
+      }
+
+      div.form-fields {
+        min-height: 26px;
+      }
+
+      div.form-field {
+        display: block;
+        white-space: nowrap;
+
+        div.form-field-content {
+          display: inline-block;
+          cursor: pointer;
+
+          &.form-field-invalid {
+            span.form-field-icon-and-name:after {
+              font-family: "icomoon";
+              content: "\e25d";
+              color: @dangerColor;
+              font-size: 18px;
+              vertical-align: top;
+            }
+
+            span.form-field-name {
+              /* take the width of the error icon into account */
+              width: (@fieldNameWidth - 20)*1px;
+              color: @dangerColor;
+            }
+          }
+        }
+
+        i {
+          display: inline-block;
+          vertical-align: top;
+        }
+
+        span.form-field-name {
+          display: inline-block;
+          width: @fieldNameWidth*1px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  div {
+    &.propertySeparator {
+      clear: both;
+    }
+  }
+
+  label {
+
+    &.control-label {
+      float: none;
+      display: block;
+      padding: 0;
+    }
+  }
+}
+
+.form-editor-edit-field {
+
+  div.fieldValues {
+
+    div.fieldValue {
+      &.selectable input[type=text] {
+        width: 60%;
+      }
+
+      span.fieldValueTools {
+        vertical-align: top;
+        display: inline-block;
+        margin: 4px 0 0 4px;
+
+        input[type=checkbox] {
+          vertical-align: text-top;
+        }
+
+        label {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  label.control-label input[type=checkbox] {
+    vertical-align: text-top;
+  }
+
+  input.invalid {
+    border: 1px solid @dangerColor !important;
+  }
+
+  div.imageField {
+    .umb-mediapicker .add-link, .thumbnail {
+      width: 300px;
+    }
+
+    * {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+}
+
+.form-editor-edit-field, .form-editor-picker {
+  input:not([type="checkbox"]), textarea, select {
+    width: 90%;
+  }
+}
+
+.form-editor, .form-editor-edit-field, .form-editor-picker, .form-editor-config, .form-editor-data, .form-editor-data-entry {
+
+  h4 {
+    &.expandable {
+      cursor: pointer;
+
+      i {
+        vertical-align: middle;
+      }
+
+      &:hover i.dimmed {
+        color: @dimmedColorActive;
+      }
+    }
+  }
+
+  i {
+    &.dimmed {
+      color: @dimmedColor;
+    }
+
+    &.dimmed:hover {
+      color: @dimmedColorActive;
+    }
+
+    &.icon-delete.dimmed:hover {
+      color: @dangerColor;
+    }
+
+    &.icon-delete, &.icon-add, &.icon-edit, &.icon-navigation-right, &.icon-navigation-down {
+      cursor: pointer;
+    }
+
+    &.field-icon {
+      background-repeat: no-repeat;
+      background-position: center center;
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    span.menu-label {
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+
+  .ui-sortable-placeholder {
+    visibility: visible !important;
+    background-color: @sortablePlaceholderColor !important;
+  }
+
+  .umb-control-group label small {
+    padding-top: 0;
+  }
+}
+
+.form-editor-data, .form-editor-data-entry {
+  .dimmed {
+    color: @dimmedColor;
+  }
+
+  .form-data-visible-fields {
+    ul {
+      list-style: none;
+      margin: 0px 0px 10px 0px;
+    }
+  }
+
+  div.form-data {
+    overflow-x: auto;
+
+    table {
+      margin: 0px;
+
+      thead tr {
+        white-space: nowrap;
+
+        td {
+          &.select {
+            width: 35px;
+          }
+
+          &.date {
+            width: 100px;
+          }
+        }
+      }
+
+      tbody tr {
+        td {
+          cursor: default;
+
+          &.form-data-view-entry {
+            text-align: -webkit-right;
+            cursor: pointer;
+          }
+
+          i, i:hover {
+            display: inline-block !important;
+          }
+        }
+
+        &:hover {
+          td {
+            &.form-data-view-entry i {
+              color: @dimmedColorActive;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .downloadFile {
+    white-space: nowrap;
+    text-decoration: none;
+
+    i {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      color: @dimmedColor;
+    }
+
+    &:hover i {
+      color: @dimmedColorActive;
+    }
+
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
+
+  div.form-data-tools {
+    padding: 10px 0px;
+  }
+}
+
+.form-editor-config {
+  div.configuration-item {
+    margin-bottom: 4px;
+
+    &.configuration-info {
+      color: @dimmedColor;
+      cursor: default;
+    }
+
+    label {
+      width: 70px;
+      vertical-align: top;
+    }
+
+    div.cell-configuration {
+      margin-left: 50px;
+      margin-bottom: 10px;
+
+      input {
+        width: 130px;
+      }
+    }
+  }
+
+  ul {
+
+    &.row-layouts {
+      list-style: none;
+      margin: 0;
+
+      div.row-layout {
+        border: 1px solid @cellBorderColor;
+        padding: 10px;
+
+        div.row-layout-header {
+          cursor: pointer;
+
+          i {
+            margin-left: 0;
+            display: inline-block;
+          }
+
+          p {
+            margin: 0;
+            font-weight: bold;
+            display: inline-block;
+          }
+
+          span.row-layout-tools {
+            float: right;
+          }
+        }
+
+        div.row-layout-content {
+          margin-top: 10px;
+        }
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+    }
+
+    li {
+      &.disallowedField {
+        i.icon-delete {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  i {
+    margin-left: 10px;
+
+    &.row-icon {
+      background-repeat: no-repeat;
+      background-position: left;
+      margin-left: 4px;
+      width: 20px;
+      height: 30px;
+      display: inline-block;
+    }
+  }
+
+  .ng-invalid {
+    border: 1px solid @dangerColor;
+
+    div.configuration-info {
+      color: @dangerColor;
+    }
+  }
+}
+
+.form-editor-data-entry {
+  .entry-field {
+    font-weight: bold;
+    display: block;
+  }
+
+  .entry-value {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
