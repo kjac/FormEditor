@@ -4,7 +4,7 @@ By default, Form Editor stores form submissions (including uploaded files) in a 
 A new Lucene index is created per form in a sub directory named after the ID of the content item that contains the form. This means your editors can copy their forms in the Umbraco content tree and "start over" with a blank index.
 
 ## Changing the storage index
-If you're hosting your site in a load balanced environment or in the cloud, the Lucene index might not be the best storage solution for you. Therefore the storage index is swappable in Form Editor. You can specify an alternative storage index in the `<Storage/>` section of [*/Config/FormEditor.config*](../source/umbraco/config/FormEditor.config): 
+If you're hosting your site in a load balanced environment or in the cloud, the Lucene index might not be the best storage solution for you. Therefore the storage index is swappable in Form Editor. You can specify an alternative storage index in the `<Storage/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config): 
 ```
 <FormEditor>
   <!-- ... -->

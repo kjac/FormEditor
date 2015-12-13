@@ -7,7 +7,7 @@ An advanced custom field is created by completing these steps:
 
 Unlike when creating a [simple custom field](extend_field_simple.md) there's no need to register your advanced custom field anywhere. Simply copy your DLL and the rest of your field assets to your site, and Form Editor will automatically detect your field when the site restarts.
 
-A complete implementation of a custom slider field (`input type="range"`) can be found under [Samples](../samples/). The sample is meant to serve as documentation on its own, so the details of the implementation will not be discussed here. A few things are worth digging into, though.
+A complete implementation of a custom slider field (`input type="range"`) can be found under [Samples](../Samples/). The sample is meant to serve as documentation on its own, so the details of the implementation will not be discussed here. A few things are worth digging into, though.
 
 ## Project structure and field assets
 The field assets (icon, editor and view) are included in the sample project. The directory structure in which they are placed mirrors the structure of your site (at least if you're using the [sample templates](../Source/Umbraco/Views/)). In other words you can copy the *App_Plugins* and *Views* folders directly to your site, and the assets will be placed correctly:
