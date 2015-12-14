@@ -17,5 +17,5 @@ If you're hosting your site in a load balanced environment or in the cloud, the 
 
 **Note**: You may have to restart the site to make Form Editor pick up the new configuration.
 
-The storage index in the config sample above refers to the [sample implementation](../Source/Solution/FormEditor.SqlIndex) of an alternative storage index that stores form submissions in the database. You can create your own by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs).
+The storage index in the config sample above refers to the [sample implementation](../Samples/SQL storage index/) of an alternative storage index that stores form submissions in the database. You can create your own by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs).
 

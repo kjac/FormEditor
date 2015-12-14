@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Range", "My.Range\My.Range.csproj", "{91BE6026-21D3-4024-807D-4622C3140CC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Range", "Advanced custom field\My.Range.csproj", "{91BE6026-21D3-4024-807D-4622C3140CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormEditor.SqlIndex", "SQL storage index\FormEditor.SqlIndex.csproj", "{103FA06A-EB17-4F78-8687-D8A9DC977C55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{91BE6026-21D3-4024-807D-4622C3140CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BE6026-21D3-4024-807D-4622C3140CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91BE6026-21D3-4024-807D-4622C3140CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{103FA06A-EB17-4F78-8687-D8A9DC977C55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

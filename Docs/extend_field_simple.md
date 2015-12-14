@@ -4,7 +4,7 @@ A simple custom field is created by completing these steps:
 2. Register your field in the `<CustomFields/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config).
 3. Create the partial view to render your field.
 
-The following exercise runs through the steps above to create a custom slider field (`input type="range"`). The complete solution can be found under [Samples](../Samples/).
+The following exercise runs through the steps above to create a custom slider field (`input type="range"`). The complete solution can be found under [Samples](../Samples/Simple custom field/).
 
 ## Step 1: Create the field icon
 Go ahead and pick one of the *slider* icons from the Fugue Icons set over at http://p.yusukekamiyamane.com/. 
