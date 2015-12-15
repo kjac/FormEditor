@@ -278,6 +278,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-template");
 
   // Tasks
-  grunt.registerTask("default", ["less", "copy", "concat"]);
-  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "copy", "concat", "umbracoPackage", "template", "nugetpack"]);
+  grunt.registerTask("default", ["less", "concat", "copy"]);
+  grunt.registerTask("package", ["clean", "assemblyinfo", "msbuild", "less", "concat", "copy", "umbracoPackage", "template", "nugetpack"]);
 };
