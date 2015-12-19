@@ -62,6 +62,7 @@ namespace FormEditor.Storage
 			var writer = GetIndexWriter();
 			foreach (var rowId in rowIds)
 			{
+				RemoveFiles(rowId);
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
 			}
 			writer.Close();
@@ -152,10 +153,10 @@ namespace FormEditor.Storage
 			return new Result(scoreDocs.Count(), rows, sortField, sortDescending);
 		}
 
-		public bool SaveFile(HttpPostedFile file, string filename)
+		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
 		{
 			// save uploaded file to disk
-			var filesPath = PathToFiles();
+			var filesPath = PathToFiles(rowId);
 			if (filesPath.Exists == false)
 			{
 				filesPath.Create();
@@ -164,9 +165,9 @@ namespace FormEditor.Storage
 			return true;
 		}
 
-		public Stream GetFile(string filename)
+		public Stream GetFile(string filename, Guid rowId)
 		{
-			var filesPath = PathToFiles();
+			var filesPath = PathToFiles(rowId);
 			if (filesPath.Exists == false)
 			{
 				return null;
@@ -177,6 +178,19 @@ namespace FormEditor.Storage
 				return null;
 			}
 			return new FileStream(filePath, FileMode.Open);
+		}
+
+		public void Delete()
+		{
+			var directory = PathToFormStorage();
+			try
+			{
+				directory.Delete(true);
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete index directory: {0}", directory.FullName);				
+			}
 		}
 
 		private LuceneDirectory IndexDirectory
@@ -234,9 +248,25 @@ namespace FormEditor.Storage
 			return new DirectoryInfo(Path.Combine(PathToFormStorage().FullName, "Index"));
 		}
 
-		private DirectoryInfo PathToFiles()
+		private DirectoryInfo PathToFiles(Guid rowId)
 		{
-			return new DirectoryInfo(Path.Combine(PathToFormStorage().FullName, "Files"));
+			return new DirectoryInfo(Path.Combine(PathToFormStorage().FullName, "Files", rowId.ToString("N")));
+		}
+
+		private void RemoveFiles(Guid rowId)
+		{
+			var filesPath = PathToFiles(rowId);
+			try
+			{
+				if(filesPath.Exists)
+				{
+					filesPath.Delete(true);
+				}
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete file upload directory: {0}", filesPath);
+			}
 		}
 	}
 }

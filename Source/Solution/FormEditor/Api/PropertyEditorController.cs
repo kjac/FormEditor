@@ -150,7 +150,7 @@ namespace FormEditor.Api
 			var allFields = GetAllFieldsForDisplay(model, document);
 
 			var index = IndexHelper.GetIndex(id);
-			var result = index.Get(sortField, sortDescending, PerPage, (page - 1) * PerPage);
+			var result = index.Get(sortField, sortDescending, PerPage, (page - 1) * PerPage) ?? Result.Empty(sortField, sortDescending);
 			var totalPages = (int)Math.Ceiling((double)result.TotalRows / PerPage);
 
 			// out of bounds request - e.g. right after removing some rows?

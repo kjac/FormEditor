@@ -308,6 +308,7 @@
     <Compile Include="Storage\Index.cs" />
     <Compile Include="Storage\Row.cs" />
     <Compile Include="Storage\Result.cs" />
+    <Compile Include="Umbraco\ApplicationEvents.cs" />
     <Compile Include="Umbraco\ContentHelper.cs" />
     <Compile Include="Validation\Conditions\Condition.cs">
       <SubType>Code</SubType>

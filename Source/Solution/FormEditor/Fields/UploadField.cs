@@ -101,7 +101,7 @@ namespace FormEditor.Fields
 			return file;
 		}
 
-		protected internal override string FormatSubmittedValueForIndex(IPublishedContent content)
+		protected internal override string FormatSubmittedValueForIndex(IPublishedContent content, Guid rowId)
 		{
 			var file = GetUploadedFile();
 			if (file == null)
@@ -117,7 +117,7 @@ namespace FormEditor.Fields
 
 			// save the file to the index
 			var index = IndexHelper.GetIndex(content.Id);
-			if (index.SaveFile(file, indexValue.PersistedFilename) == false)
+			if (index.SaveFile(file, indexValue.PersistedFilename, rowId) == false)
 			{
 				return null;
 			}
