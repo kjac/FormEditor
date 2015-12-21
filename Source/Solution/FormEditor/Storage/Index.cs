@@ -29,12 +29,11 @@ namespace FormEditor.Storage
 			_contentId = contentId;
 		}
 
-		public Guid Add(Dictionary<string, string> fields)
+		public Guid Add(Dictionary<string, string> fields, Guid rowId)
 		{
 			var doc = new Document();
 
-			var id = Guid.NewGuid();
-			doc.Add(new LuceneField(IdField, id.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(CreatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
@@ -54,7 +53,7 @@ namespace FormEditor.Storage
 			writer.Optimize(10);
 			writer.Close();
 
-			return id;
+			return rowId;
 		}
 
 		public void Remove(IEnumerable<Guid> rowIds)

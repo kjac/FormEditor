@@ -205,7 +205,7 @@ namespace FormEditor
 
 			// store fields in index
 			var index = IndexHelper.GetIndex(content.Id);
-			index.Add(indexFields);
+			index.Add(indexFields, rowId);
 		}
 
 		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content, Guid rowId)

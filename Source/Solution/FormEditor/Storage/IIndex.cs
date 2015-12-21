@@ -14,8 +14,9 @@ namespace FormEditor.Storage
 		/// Adds an entry to the index
 		/// </summary>
 		/// <param name="fields">The field names and values to add</param>
+		/// <param name="rowId">The ID of the entry to add</param>
 		/// <returns>The ID of the form entry</returns>
-		Guid Add(Dictionary<string, string> fields);
+		Guid Add(Dictionary<string, string> fields, Guid rowId);
 
 		/// <summary>
 		/// Removes entries from the index

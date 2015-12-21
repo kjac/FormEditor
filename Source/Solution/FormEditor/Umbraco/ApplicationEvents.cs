@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using FormEditor.Storage;
 using Umbraco.Core;
 using Umbraco.Core.Events;
@@ -18,27 +19,49 @@ namespace FormEditor.Umbraco
 				return;
 			}
 			ContentService.Deleted += ContentServiceOnDeleted;
+			// it would be ideal if ContentService.Deleted were executed per item when emptying the bin, but it's not...
+			// we need to handle this before the bin is actually emptied (because the deleted entitites can't be accessed
+ 			// after it's been emptied), so we'll clean up before it's emptied and hope the empty event is not cancelled.
+			ContentService.EmptyingRecycleBin += ContentServiceOnEmptyingRecycleBin;
+		}
+
+		private void ContentServiceOnEmptyingRecycleBin(IContentService sender, RecycleBinEventArgs recycleBinEventArgs)
+		{
+			if(recycleBinEventArgs.IsContentRecycleBin == false)
+			{
+				return;
+			}
+			var deletedEntities = sender.GetByIds(recycleBinEventArgs.Ids).ToList();
+			foreach(var deletedEntity in deletedEntities)
+			{
+				DeleteEntityIndex(deletedEntity);
+			}
 		}
 
 		private void ContentServiceOnDeleted(IContentService sender, DeleteEventArgs<IContent> deleteEventArgs)
 		{
 			foreach(var deletedEntity in deleteEventArgs.DeletedEntities)
 			{
-				try
-				{
-					var formModelProperty = ContentHelper.GetFormModelProperty(deletedEntity.ContentType);
-					if(formModelProperty == null)
-					{
-						continue;
-					}
-					var index = IndexHelper.GetIndex(deletedEntity.Id);
-					index.Delete();
-				}
-				catch(Exception ex)
-				{
-					Log.Error(ex, "Could not delete the index for deleted content with ID: {0}", deletedEntity.Id);
-				}
+				DeleteEntityIndex(deletedEntity);
 			}	
+		}
+
+		private static void DeleteEntityIndex(IContent deletedEntity)
+		{
+			try
+			{
+				var formModelProperty = ContentHelper.GetFormModelProperty(deletedEntity.ContentType);
+				if(formModelProperty == null)
+				{
+					return;
+				}
+				var index = IndexHelper.GetIndex(deletedEntity.Id);
+				index.Delete();
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete the index for deleted content with ID: {0}", deletedEntity.Id);
+			}
 		}
 	}
 }
