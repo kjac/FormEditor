@@ -182,6 +182,10 @@ namespace FormEditor.Storage
 		public void Delete()
 		{
 			var directory = PathToFormStorage();
+			if(directory.Exists == false)
+			{
+				return;
+			}
 			try
 			{
 				directory.Delete(true);

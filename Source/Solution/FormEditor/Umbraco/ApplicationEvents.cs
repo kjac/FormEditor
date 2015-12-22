@@ -20,8 +20,9 @@ namespace FormEditor.Umbraco
 			}
 			ContentService.Deleted += ContentServiceOnDeleted;
 			// it would be ideal if ContentService.Deleted were executed per item when emptying the bin, but it's not...
-			// we need to handle this before the bin is actually emptied (because the deleted entitites can't be accessed
- 			// after it's been emptied), so we'll clean up before it's emptied and hope the empty event is not cancelled.
+			// we also need to handle this before the bin is actually emptied, because the deleted entitites can't be 
+			// accessed after the bin has been emptied. so we'll clean up before it's emptied and hope the empty event 
+			// is not cancelled by someone else.
 			ContentService.EmptyingRecycleBin += ContentServiceOnEmptyingRecycleBin;
 		}
 
