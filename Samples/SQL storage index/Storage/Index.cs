@@ -23,7 +23,7 @@ namespace FormEditor.SqlIndex.Storage
 			_contentId = contentId;
 		}
 
-		public Guid Add(Dictionary<string, string> fields)
+		public Guid Add(Dictionary<string, string> fields, Guid rowId)
 		{
 			// for simplicity this index serializes the field values into one column. 
 			// unfortunately this means we can't sort by field value when getting the
@@ -33,7 +33,7 @@ namespace FormEditor.SqlIndex.Storage
 				ContentId = _contentId,
 				CreatedDate = DateTime.Now,
 				FieldValues = JsonConvert.SerializeObject(fields),
-				EntryId = Guid.NewGuid()
+				EntryId = rowId
 			};
 			Database.Insert(row);
 			return row.EntryId;
@@ -43,6 +43,7 @@ namespace FormEditor.SqlIndex.Storage
 		{
 			foreach (var rowId in rowIds)
 			{
+				Database.Delete<File>("WHERE EntryId=@0", rowId);
 				Database.Delete<Entry>("WHERE EntryId=@0", rowId);
 			}
 		}
@@ -88,13 +89,13 @@ namespace FormEditor.SqlIndex.Storage
 			return new Result((int)page.TotalItems, rows, "Id", true);
 		}
 
-		public Stream GetFile(string filename)
+		public Stream GetFile(string filename, Guid rowId)
 		{
 			var file = Database.SingleOrDefault<File>("WHERE Filename=@0", filename);
 			return file == null ? null : new MemoryStream(file.Bytes);
 		}
 
-		public bool SaveFile(HttpPostedFile file, string filename)
+		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
 		{
 			try
 			{
@@ -107,6 +108,8 @@ namespace FormEditor.SqlIndex.Storage
 				Database.Insert(
 					new File
 					{
+						ContentId = _contentId,
+						EntryId = rowId,
 						Filename = filename,
 						Bytes = bytes
 					}
@@ -119,6 +122,12 @@ namespace FormEditor.SqlIndex.Storage
 				Log.Warning(@"Could not save posted file ""{0}"" - an error occurred: {1}", filename, ex.Message);
 				return false;
 			}
+		}
+
+		public void Delete()
+		{
+			Database.Delete<File>("WHERE ContentId=@0", _contentId);
+			Database.Delete<Entry>("WHERE ContentId=@0", _contentId);
 		}
 
 		private Database Database
