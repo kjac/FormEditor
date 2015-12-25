@@ -17,5 +17,23 @@ If you're hosting your site in a load balanced environment or in the cloud, the 
 
 **Note**: You may have to restart the site to make Form Editor pick up the new configuration.
 
-The storage index in the config sample above refers to the [sample implementation](../Samples/SQL storage index/) of an alternative storage index that stores form submissions in the database. You can create your own by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs).
+You can create your own storage index by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs). There are two sample implementations of storage indexes in the samples section:
+
+### SQL storage index
+The [SQL storage index](../Samples/SQL storage index/) stores form submissions in the Umbraco database (with limited sorting options). 
+
+The necessary tables for this index are automatically created if they do not exist when the site starts up.
+
+### Elastic storage index
+The [Elastic storage index](../Samples/Elastic storage index/) stores form submissions in an Elastic index. 
+
+You must supply the Elastic connection string as `FormEditor.ElasticIndex` in the `<connectionStrings>` section of your `web.config` file - like this:
+
+```xml
+<connectionStrings>
+  <!-- ... -->
+  <add name="FormEditor.ElasticIndex" connectionString="[your Elastic connection string]" />
+</connectionStrings>
+```
+
 
