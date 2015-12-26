@@ -1,27 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using FormEditor.Fields;
 using FormEditor.Validation.Conditions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace FormEditor.Rendering
 {
 	public static class RenderingExtensions
 	{
-		public static List<ValidationData> ForClientSide(this IEnumerable<Validation.Validation> validations)
+		public static List<ValidationData> ForFrontEnd(this IEnumerable<Validation.Validation> validations)
 		{
 			return validations.Select(v => new ValidationData
 			{
 				Rules = v.Rules.Select(r => new RuleData
 				{
 					Field = ToFieldData(r.Field),
-					Condition = new ConditionData
-					{
-						Type = r.Condition.Type,
-						ExpectedFieldValue = (r.Condition is IExpectedFieldValueCondition ? ((IExpectedFieldValueCondition)r.Condition).ExpectedFieldValue : null),
-						OtherFieldName = (r.Condition is IFieldComparisonCondition ? ((IFieldComparisonCondition)r.Condition).GetOtherFieldFormSafeName() : null)
-					}
+					Condition = r.Condition.ForFrontEnd()
 				}).ToList(),
 				Invalid = v.Invalid,
 				ErrorMessage = v.ErrorMessage
@@ -31,11 +28,11 @@ namespace FormEditor.Rendering
 		public static IHtmlString Render(this IEnumerable<Validation.Validation> validations)
 		{
 			return new HtmlString(
-				JsonConvert.SerializeObject(validations.ForClientSide(), SerializationHelper.SerializerSettings)
+				JsonConvert.SerializeObject(validations.ForFrontEnd(), SerializerSettings)
 			);
 		}
 
-		public static List<FieldData> ForClientSide(this IEnumerable<FieldWithValue> fields)
+		public static List<FieldData> ForFrontEnd(this IEnumerable<FieldWithValue> fields)
 		{
 			return fields.Select(ToFieldData).ToList();
 		}
@@ -43,7 +40,7 @@ namespace FormEditor.Rendering
 		public static IHtmlString Render(this IEnumerable<FieldWithValue> fields)
 		{
 			return new HtmlString(
-				JsonConvert.SerializeObject(fields.ForClientSide(), SerializationHelper.SerializerSettings)
+				JsonConvert.SerializeObject(fields.ForFrontEnd(), SerializerSettings)
 			);
 		}
 
@@ -81,6 +78,18 @@ namespace FormEditor.Rendering
 				SubmittedValue = f.SubmittedValue,
 				Invalid = f.Invalid
 			};
+		}
+
+		public static JsonSerializerSettings SerializerSettings
+		{
+			get
+			{
+				return new JsonSerializerSettings
+				{
+					TypeNameHandling = TypeNameHandling.None,
+					ContractResolver = SerializationHelper.ContractResolver
+				};
+			}
 		}
 	}
 }

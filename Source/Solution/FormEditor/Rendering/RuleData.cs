@@ -1,3 +1,5 @@
+using FormEditor.Validation.Conditions;
+
 namespace FormEditor.Rendering
 {
 	public class RuleData

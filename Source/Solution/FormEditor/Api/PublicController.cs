@@ -69,8 +69,8 @@ namespace FormEditor.Api
 			{
 				var errorData = new ValidationErrorData
 				{
-					InvalidFields = formModel.AllValueFields().Where(f => f.Invalid).ForClientSide(),
-					FailedValidations = formModel.Validations.Where(v => v.Invalid).ForClientSide()
+					InvalidFields = formModel.AllValueFields().Where(f => f.Invalid).ForFrontEnd(),
+					FailedValidations = formModel.Validations.Where(v => v.Invalid).ForFrontEnd()
 				};
 				return ValidationErrorResponse(errorData);
 			}
@@ -109,7 +109,7 @@ namespace FormEditor.Api
 
 		private static JsonMediaTypeFormatter GetFormatter()
 		{
-			return new JsonMediaTypeFormatter { SerializerSettings = SerializationHelper.SerializerSettings };
+			return new JsonMediaTypeFormatter { SerializerSettings = RenderingExtensions.SerializerSettings };
 		}
 
 		public class ValidationErrorData

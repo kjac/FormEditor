@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using FormEditor.Fields;
+using FormEditor.Rendering;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Validation.Conditions
 {
-	public class FieldValuesDoNotMatchCondition : Condition, IFieldComparisonCondition
+	public class FieldValuesDoNotMatchCondition : Condition 
 	{
 		public string OtherFieldName { get; set; }
 
@@ -42,9 +43,20 @@ namespace FormEditor.Validation.Conditions
 			return fieldValue.HasSubmittedValue && fieldValue.SubmittedValue.Equals(otherFieldValue.SubmittedValue, StringComparison.InvariantCultureIgnoreCase) == false;
 		}
 
-		public string GetOtherFieldFormSafeName()
+		public override ConditionData ForFrontEnd()
 		{
-			return FieldHelper.FormSafeName(OtherFieldName);
+			return new FieldConditionData(this);
+		}
+
+		public class FieldConditionData : ConditionData
+		{
+			public FieldConditionData(FieldValuesDoNotMatchCondition condition)
+				: base(condition)
+			{
+				OtherFieldName = FieldHelper.FormSafeName(condition.OtherFieldName);
+			}
+
+			public string OtherFieldName { get; private set; }
 		}
 	}
 }

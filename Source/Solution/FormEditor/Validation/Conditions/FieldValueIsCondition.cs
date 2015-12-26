@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using FormEditor.Fields;
+using FormEditor.Rendering;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Validation.Conditions
 {
-	public class FieldValueIsCondition : Condition, IExpectedFieldValueCondition
+	public class FieldValueIsCondition : Condition
 	{
 		public string ExpectedFieldValue { get; set; }
 
@@ -32,6 +33,22 @@ namespace FormEditor.Validation.Conditions
 				return false;
 			}
 			return fieldValue.HasSubmittedValue && fieldValue.SubmittedValue == ExpectedFieldValue;
+		}
+
+		public override ConditionData ForFrontEnd()
+		{
+			return new FieldConditionData(this);
+		}
+
+		public class FieldConditionData : ConditionData
+		{
+			public FieldConditionData(FieldValueIsCondition condition)
+				: base(condition)
+			{
+				ExpectedFieldValue = condition.ExpectedFieldValue;
+			}
+
+			public string ExpectedFieldValue { get; private set; }
 		}
 	}
 }
