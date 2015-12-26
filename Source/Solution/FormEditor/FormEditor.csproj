@@ -323,8 +323,6 @@
     <Compile Include="Validation\Conditions\FieldValueIsNotCondition.cs" />
     <Compile Include="Validation\Conditions\FieldValueIsCondition.cs" />
     <Compile Include="Validation\Conditions\FieldValuesMatchCondition.cs" />
-    <Compile Include="Validation\Conditions\IExpectedFieldValueCondition.cs" />
-    <Compile Include="Validation\Conditions\IFieldComparisonCondition.cs" />
     <Compile Include="Validation\Rule.cs" />
     <Compile Include="Validation\Validation.cs">
       <SubType>Code</SubType>
