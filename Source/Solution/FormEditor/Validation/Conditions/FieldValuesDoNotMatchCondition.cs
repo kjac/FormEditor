@@ -29,18 +29,12 @@ namespace FormEditor.Validation.Conditions
 
 		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
-			if (fieldValue == null)
-			{
-				// no such field
-				return false;
-			}
+			var fieldSubmittedValue = fieldValue != null && fieldValue.HasSubmittedValue ? fieldValue.SubmittedValue : string.Empty;
 			var otherFieldValue = allCollectedFieldValues.FirstOrDefault(f => f.Name == OtherFieldName);
-			if (otherFieldValue == null)
-			{
-				// no such field
-				return false;
-			}
-			return fieldValue.HasSubmittedValue && fieldValue.SubmittedValue.Equals(otherFieldValue.SubmittedValue, StringComparison.InvariantCultureIgnoreCase) == false;
+			var otherFieldSubmittedValue = otherFieldValue != null && otherFieldValue.HasSubmittedValue ? otherFieldValue.SubmittedValue : string.Empty;
+
+			// condition is met if the two submitted values do not match
+			return fieldSubmittedValue.Equals(otherFieldSubmittedValue, StringComparison.InvariantCultureIgnoreCase) == false;
 		}
 
 		public override ConditionData ForFrontEnd()

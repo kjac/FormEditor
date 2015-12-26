@@ -125,16 +125,17 @@
           case "core.fieldisnotempty":
             ruleIsFulfilled = (fieldValue != null);
             break;
-          case "core.fieldvalueis":
-            ruleIsFulfilled = (fieldValue != null && fieldValue.toLowerCase() == (rule.condition.expectedFieldValue || "").toLowerCase());
-            break;
           case "core.fieldvalueisnot":
-            ruleIsFulfilled = (fieldValue != null && fieldValue.toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase());
+          case "core.fieldvalueis":
+            ruleIsFulfilled = (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
+            if (rule.condition.type == "core.fieldvalueis") {
+              ruleIsFulfilled = !ruleIsFulfilled;
+            }
             break;
           case "core.fieldvaluesdonotmatch":
           case "core.fieldvaluesmatch":
             var otherFieldValue = $scope.formData[rule.condition.otherFieldName];
-            ruleIsFulfilled = (fieldValue != null && otherFieldValue != null && fieldValue.toLowerCase() != otherFieldValue.toLowerCase());
+            ruleIsFulfilled = (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
             if (rule.condition.type == "core.fieldvaluesmatch") {
               ruleIsFulfilled = !ruleIsFulfilled;
             }

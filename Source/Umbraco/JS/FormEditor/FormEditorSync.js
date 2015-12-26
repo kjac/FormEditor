@@ -109,16 +109,18 @@
         case "core.fieldisnotempty":
           ruleIsFulfilled = (fieldValue != null);
           break;
-        case "core.fieldvalueis":
-          ruleIsFulfilled = (fieldValue != null && fieldValue.toLowerCase() == (rule.condition.expectedFieldValue || "").toLowerCase());
-          break;
         case "core.fieldvalueisnot":
-          ruleIsFulfilled = (fieldValue != null && fieldValue.toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase());
+        case "core.fieldvalueis":
+          ruleIsFulfilled = (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
+          if (rule.condition.type == "core.fieldvalueis") {
+            ruleIsFulfilled = !ruleIsFulfilled;
+          }
           break;
         case "core.fieldvaluesdonotmatch":
         case "core.fieldvaluesmatch":
           var otherField = $("[name='" + rule.condition.otherFieldName + "']", $form);
-          ruleIsFulfilled = (fieldValue != null && otherField != null && fieldValue.toLowerCase() != otherField.val().toLowerCase());
+          var otherFieldValue = otherField != null ? otherField.val() : null;
+          ruleIsFulfilled = (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
           if (rule.condition.type == "core.fieldvaluesmatch") {
             ruleIsFulfilled = !ruleIsFulfilled;
           }

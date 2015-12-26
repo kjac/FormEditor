@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FormEditor.Fields;
 using FormEditor.Rendering;
 using Umbraco.Core.Models;
@@ -27,12 +28,11 @@ namespace FormEditor.Validation.Conditions
 
 		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
-			if (fieldValue == null)
-			{
-				// no such field
-				return false;
-			}
-			return fieldValue.HasSubmittedValue && fieldValue.SubmittedValue == ExpectedFieldValue;
+			return (
+				fieldValue != null && fieldValue.HasSubmittedValue 
+					? fieldValue.SubmittedValue 
+					: string.Empty
+				).Equals(ExpectedFieldValue ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override ConditionData ForFrontEnd()
