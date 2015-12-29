@@ -102,29 +102,15 @@
 
       // now check if the field value matches the rule condition
       var ruleIsFulfilled = false;
-      switch (rule.condition.type) {
-        case "core.fieldisempty":
-          ruleIsFulfilled = (fieldValue == null);
-          break;
-        case "core.fieldisnotempty":
-          ruleIsFulfilled = (fieldValue != null);
-          break;
-        case "core.fieldvalueisnot":
-        case "core.fieldvalueis":
-          ruleIsFulfilled = (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
-          if (rule.condition.type == "core.fieldvalueis") {
-            ruleIsFulfilled = !ruleIsFulfilled;
-          }
-          break;
-        case "core.fieldvaluesdonotmatch":
-        case "core.fieldvaluesmatch":
-          var otherField = $("[name='" + rule.condition.otherFieldName + "']", $form);
-          var otherFieldValue = otherField != null ? otherField.val() : null;
-          ruleIsFulfilled = (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
-          if (rule.condition.type == "core.fieldvaluesmatch") {
-            ruleIsFulfilled = !ruleIsFulfilled;
-          }
-          break;
+      var conditionCallback = getFormEditorCondition(rule.condition.type);
+      if (conditionCallback) {
+        try {
+          ruleIsFulfilled = conditionCallback(rule, fieldValue, $form);
+        }
+        catch (err) {
+          // log error and continue (and hope the server side validation handles things)
+          console.log(err);
+        }
       }
 
       // all rules must be fulfilled for a validation to fail
@@ -136,4 +122,42 @@
     });
     return isValid;
   }
+});
+
+// global container and functions for handling cross field validation conditions
+// - makes it easier to extend the validation conditions
+var formEditorConditions = {};
+function addFormEditorCondition(type, callback) {
+  formEditorConditions[type] = callback;
+}
+function getFormEditorCondition(type) {
+  return formEditorConditions[type];
+}
+
+// add core validation conditions
+// - "field is not empty" condition:
+addFormEditorCondition("core.fieldisnotempty", function (rule, fieldValue, $form) {
+  return (fieldValue != null);
+});
+// - "field is empty" condition (negation of "field is not empty" condition):
+addFormEditorCondition("core.fieldisempty", function (rule, fieldValue, $form) {
+  return !(getFormEditorCondition("core.fieldisnotempty")(rule, fieldValue, $form));
+});
+// - "field value is not" condition:
+addFormEditorCondition("core.fieldvalueisnot", function (rule, fieldValue, $form) {
+  return (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
+});
+// - "field value is" condition (negation of "field value is not" condition):
+addFormEditorCondition("", function (rule, fieldValue, $form) {
+  return !(getFormEditorCondition("core.fieldvalueisnot")(rule, fieldValue, $form));
+});
+// - "field value does not other field value" condition:
+addFormEditorCondition("core.fieldvaluesdonotmatch", function (rule, fieldValue, $form) {
+  var otherField = $("[name='" + rule.condition.otherFieldName + "']", $form);
+  var otherFieldValue = otherField != null ? otherField.val() : null;
+  ruleIsFulfilled = (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
+});
+// - "field value matches other field value" condition (negation of "field value does not other field value" condition):
+addFormEditorCondition("core.fieldvaluesmatch", function (rule, fieldValue, $form) {
+  return !(getFormEditorCondition("core.fieldvaluesdonotmatch")(rule, fieldValue, $form));
 });
