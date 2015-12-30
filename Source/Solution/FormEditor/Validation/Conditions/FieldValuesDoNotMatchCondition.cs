@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using FormEditor.Fields;
+using FormEditor.Rendering;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Validation.Conditions
 {
-	public class FieldValuesDoNotMatchCondition : Condition, IFieldComparisonCondition
+	public class FieldValuesDoNotMatchCondition : Condition 
 	{
 		public string OtherFieldName { get; set; }
 
@@ -28,23 +29,28 @@ namespace FormEditor.Validation.Conditions
 
 		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
-			if (fieldValue == null)
-			{
-				// no such field
-				return false;
-			}
+			var fieldSubmittedValue = fieldValue != null && fieldValue.HasSubmittedValue ? fieldValue.SubmittedValue : string.Empty;
 			var otherFieldValue = allCollectedFieldValues.FirstOrDefault(f => f.Name == OtherFieldName);
-			if (otherFieldValue == null)
-			{
-				// no such field
-				return false;
-			}
-			return fieldValue.HasSubmittedValue && fieldValue.SubmittedValue.Equals(otherFieldValue.SubmittedValue, StringComparison.InvariantCultureIgnoreCase) == false;
+			var otherFieldSubmittedValue = otherFieldValue != null && otherFieldValue.HasSubmittedValue ? otherFieldValue.SubmittedValue : string.Empty;
+
+			// condition is met if the two submitted values do not match
+			return fieldSubmittedValue.Equals(otherFieldSubmittedValue, StringComparison.InvariantCultureIgnoreCase) == false;
 		}
 
-		public string GetOtherFieldFormSafeName()
+		public override ConditionData ForFrontEnd()
 		{
-			return FieldHelper.FormSafeName(OtherFieldName);
+			return new FieldConditionData(this);
+		}
+
+		public class FieldConditionData : ConditionData
+		{
+			public FieldConditionData(FieldValuesDoNotMatchCondition condition)
+				: base(condition)
+			{
+				OtherFieldName = FieldHelper.FormSafeName(condition.OtherFieldName);
+			}
+
+			public string OtherFieldName { get; private set; }
 		}
 	}
 }

@@ -1,0 +1,14 @@
+<!--
+  this is the editor that will be used to configure our condition.
+  our condition configuration is passed to the editor in the property: rule.condition.
+  the field that our condition will be applied to is passed to the editor in the property: rule.field.
+-->
+<div>
+  <!--
+    add editor for the "LessThan" property of our condition.
+  -->
+  <input type="number" min="0" id="lessThan" ng-model="rule.condition.lessThan" />
+  <label class="control-label" for="lessThan" style="padding-top: 0!important">
+    <small>Number of characters</small>
+  </label>
+</div>

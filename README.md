@@ -19,7 +19,7 @@ Some highlights include:
 * [Installing and setting up Form Editor](Docs/install.md)
 * [Rendering the form](Docs/render.md)
 * [Email templates](Docs/emails.md)
-* [Creating your own custom field](Docs/extend.md)
+* [Creating custom fields and more](Docs/extend.md)
 * [A note about storage](Docs/storage.md)
 * [Building and contributing](Docs/build.md)
 

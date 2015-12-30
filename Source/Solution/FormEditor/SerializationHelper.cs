@@ -18,7 +18,7 @@ namespace FormEditor
 		public static FormModel DeserializeFormModel(string json)
 		{
 			// see PropertyEditorController for an explanation :)
-			json = json.ToString().Replace(@"""runtimeType""", @"""$type""");
+			json = json.Replace(@"""runtimeType""", @"""$type""");
 
 			return JsonConvert.DeserializeObject<FormModel>(json, SerializerSettings);
 		}

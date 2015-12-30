@@ -1,13 +1,16 @@
-# Creating your own custom field
-So you find yourself lacking some special field for your project? No problem! Form Editor is super easy to extend with new field types. You can choose two ways to do this:
+# Extending Form Editor
+Form Editor can be extended in a lot of ways. The following sections outline the different extension points.
 
-1. [The simple way](extend_field_simple.md) - by configuration. No coding required. Choose this if you're not a .NET developer, or if you just don't need any custom configuration and validation of your field (mandatory validation is supported out of the box).
-2. [The advanced way](extend_field_advanced.md) - by coding. Choose this if the statement above doesn't suit you :)
+## Creating a custom field
+So you find yourself lacking some special field for your project? No problem! Form Editor is super easy to extend with new field types. Read more [here](extend_field.md). 
 
-## Field icon
-No matter which of the above you choose, you'll need a field icon. It has to be a 16x16 px PNG and it should be grayscale.
+## Form submission events
+If you need to react to form submissions, you can subscribe to the following events on `FormModel`:
+* `BeforeAddToIndex` is invoked just before a form submission is saved to the storage index. At this point the form submission has been validated according to the form setup. This event is cancelable; if canceled, the form submission will not be saved to the storage index.
+* `AfterAddToIndex` is invoked immediately after a form submission has been saved to the storage index.
 
-If you want your field icon to have the same look and feel as the ones shipped with Form Editor, head on over to http://p.yusukekamiyamane.com/, pick an icon from the Fugue Icons set and make it grayscale. 
+## Creating a custom condition for cross field validation
+The cross field validation system can be extended with your own custom conditions. Read more [here](extend_condition.md).
 
-## Next step
-Onwards to [creating a simple custom field](extend_field_simple.md) or  [creating an advanced custom field](extend_field_advanced.md).
+## Replacing the default storage 
+The storage for form submissions can be replaced by your own custom implementation (or with one of the sample implementations). Read more [here](storage.md).

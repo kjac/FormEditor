@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FormEditor.Fields;
+using FormEditor.Rendering;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Validation.Conditions
@@ -16,6 +17,11 @@ namespace FormEditor.Validation.Conditions
 			{
 				return DefaultIcon(Type);
 			}
+		}
+
+		public virtual ConditionData ForFrontEnd()
+		{
+			return new ConditionData(this);
 		}
 
 		protected static string DefaultIcon(string type)

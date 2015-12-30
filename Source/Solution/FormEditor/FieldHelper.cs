@@ -7,7 +7,7 @@ namespace FormEditor
 		private static readonly Regex FormSafeNameRegex = new Regex("[ -]", RegexOptions.Compiled);
 		public static string FormSafeName(string name)
 		{
-			return FormSafeNameRegex.Replace(name, "_");
+			return FormSafeNameRegex.Replace(name ?? string.Empty, "_");
 		}
 	}
 }

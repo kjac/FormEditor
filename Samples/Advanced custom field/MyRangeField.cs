@@ -2,7 +2,7 @@
 using FormEditor.Fields;
 using Umbraco.Core.Models;
 
-namespace My.Range
+namespace My.Fields
 {
 	// we'll implement our field as a specializatin of FieldWithMandatoryValidation
 	// - this gives us automatic mandatory validation for our field.

@@ -1,9 +1,14 @@
-﻿namespace FormEditor.Rendering
+﻿using FormEditor.Validation.Conditions;
+
+namespace FormEditor.Rendering
 {
 	public class ConditionData
 	{
-		public string Type { get; set; }
-		public string ExpectedFieldValue { get; set; }
-		public string OtherFieldName { get; set; }
+		public ConditionData(Condition condition)
+		{
+			Type = condition.Type;
+		}
+
+		public string Type { get; private set; }
 	}
 }
