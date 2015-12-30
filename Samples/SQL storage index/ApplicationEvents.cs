@@ -8,8 +8,10 @@ namespace FormEditor.SqlIndex
 	{
 		protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
 		{
+			var dbContext = applicationContext.DatabaseContext;
+			var db = new DatabaseSchemaHelper(dbContext.Database, applicationContext.ProfilingLogger.Logger, dbContext.SqlSyntax);
+
 			// automatically create the tables for the index on app start
-			var db = applicationContext.DatabaseContext.Database;
 			if (db.TableExist("FormEditorEntries") == false)
 			{
 				db.CreateTable<Entry>(false);

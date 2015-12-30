@@ -14,8 +14,9 @@ namespace FormEditor.Storage
 		/// Adds an entry to the index
 		/// </summary>
 		/// <param name="fields">The field names and values to add</param>
+		/// <param name="rowId">The ID of the entry to add</param>
 		/// <returns>The ID of the form entry</returns>
-		Guid Add(Dictionary<string, string> fields);
+		Guid Add(Dictionary<string, string> fields, Guid rowId);
 
 		/// <summary>
 		/// Removes entries from the index
@@ -52,14 +53,21 @@ namespace FormEditor.Storage
 		/// </summary>
 		/// <param name="file">The uploaded file to save</param>
 		/// <param name="filename">The filename that will be used to get the file from the index</param>
+		/// <param name="rowId">The ID of the form submission entry this file is a part of</param>
 		/// <returns>True if the file was saved successfully, false otherwise</returns>
-		bool SaveFile(HttpPostedFile file, string filename);
+		bool SaveFile(HttpPostedFile file, string filename, Guid rowId);
 
 		/// <summary>
 		/// Gets a file from the index
 		/// </summary>
 		/// <param name="filename">The filename used when the file was originally persisted</param>
+		/// <param name="rowId">The ID of the form submission entry this file is a part of</param>
 		/// <returns>The file contents as a stream</returns>
-		Stream GetFile(string filename);
+		Stream GetFile(string filename, Guid rowId);
+
+		/// <summary>
+		/// Deletes the entire index
+		/// </summary>
+		void Delete();
 	}
 }

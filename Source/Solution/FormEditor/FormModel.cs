@@ -112,7 +112,7 @@ namespace FormEditor
 		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
 		{
 			var index = IndexHelper.GetIndex(content.Id);
-			var result = index.Get(sortField, sortDescending, perPage, (page - 1) * perPage);
+			var result = index.Get(sortField, sortDescending, perPage, (page - 1) * perPage) ?? Result.Empty(sortField, sortDescending);
 			var fields = AllValueFields();
 
 			var rows = ExtractSubmittedValues(result, fields, (field, value, row) => value == null ? null : field.FormatValueForFrontend(value, content, row.Id));
@@ -192,8 +192,10 @@ namespace FormEditor
 
 		private void AddSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields)
 		{
+			var rowId = Guid.NewGuid();
+
 			// extract all index values
-			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content));
+			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content, rowId));
 
 			// add the IP of the user if enabled on the data type
 			if(LogIp)
@@ -203,12 +205,12 @@ namespace FormEditor
 
 			// store fields in index
 			var index = IndexHelper.GetIndex(content.Id);
-			index.Add(indexFields);
+			index.Add(indexFields, rowId);
 		}
 
-		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content)
+		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content, Guid rowId)
 		{
-			var value = field.FormatSubmittedValueForIndex(content);
+			var value = field.FormatSubmittedValueForIndex(content, rowId);
 			if (string.IsNullOrWhiteSpace(value) || StripHtml == false || field.SupportsStripHtml == false)
 			{
 				return value;

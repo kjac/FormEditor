@@ -54,7 +54,7 @@ namespace FormEditor.Fields
 			return true;
 		}
 
-		protected internal virtual string FormatSubmittedValueForIndex(IPublishedContent content)
+		protected internal virtual string FormatSubmittedValueForIndex(IPublishedContent content, Guid rowId)
 		{
 			return SubmittedValue;
 		}

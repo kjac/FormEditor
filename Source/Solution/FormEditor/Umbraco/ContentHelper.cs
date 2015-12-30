@@ -18,7 +18,7 @@ namespace FormEditor.Umbraco
 			{
 				return null;
 			}
-			var property = document.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == FormModel.PropertyEditorAlias);
+			var property = GetFormModelProperty(document.ContentType);
 			if (property == null)
 			{
 				return null;
@@ -29,6 +29,12 @@ namespace FormEditor.Umbraco
 				return null;
 			}
 			return SerializationHelper.DeserializeFormModel(json);
+		}
+
+		public static PropertyType GetFormModelProperty(IContentType contentType)
+		{
+			var property = contentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == FormModel.PropertyEditorAlias);
+			return property;
 		}
 
 		public static bool IpDisplayEnabled(IContent document)

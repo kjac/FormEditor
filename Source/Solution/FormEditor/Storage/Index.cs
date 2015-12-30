@@ -29,12 +29,11 @@ namespace FormEditor.Storage
 			_contentId = contentId;
 		}
 
-		public Guid Add(Dictionary<string, string> fields)
+		public Guid Add(Dictionary<string, string> fields, Guid rowId)
 		{
 			var doc = new Document();
 
-			var id = Guid.NewGuid();
-			doc.Add(new LuceneField(IdField, id.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(CreatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
@@ -54,7 +53,7 @@ namespace FormEditor.Storage
 			writer.Optimize(10);
 			writer.Close();
 
-			return id;
+			return rowId;
 		}
 
 		public void Remove(IEnumerable<Guid> rowIds)
@@ -62,6 +61,7 @@ namespace FormEditor.Storage
 			var writer = GetIndexWriter();
 			foreach (var rowId in rowIds)
 			{
+				RemoveFiles(rowId);
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
 			}
 			writer.Close();
@@ -69,8 +69,8 @@ namespace FormEditor.Storage
 
 		public Row Get(Guid rowId)
 		{
-			var reader = IndexReader.Open(IndexDirectory, true);
-			var searcher = new IndexSearcher(reader);
+			var reader = GetIndexReader();
+			var searcher = GetIndexSearcher(reader);
 
 			var hits = searcher.Search(new TermQuery(new Term(IdField, rowId.ToString())), 1);
 			if(hits.ScoreDocs.Length == 0)
@@ -78,13 +78,22 @@ namespace FormEditor.Storage
 				return null;
 			}
 			var doc = searcher.Doc(hits.ScoreDocs.First().doc);
+
+			searcher.Close();
+			reader.Close();
+			
 			return ParseRow(doc);
+		}
+
+		private static IndexSearcher GetIndexSearcher(IndexReader reader)
+		{
+			return new IndexSearcher(reader);
 		}
 
 		public IEnumerable<Row> Get(IEnumerable<Guid> rowIds)
 		{
-			var reader = IndexReader.Open(IndexDirectory, true);
-			var searcher = new IndexSearcher(reader);
+			var reader = GetIndexReader();
+			var searcher = GetIndexSearcher(reader);
 
 			var query = new BooleanQuery();
 			foreach (var rowId in rowIds)
@@ -108,8 +117,8 @@ namespace FormEditor.Storage
 
 		public Result Get(string sortField, bool sortDescending, int count, int skip)
 		{
-			var reader = IndexReader.Open(IndexDirectory, true);
-			var searcher = new IndexSearcher(reader);
+			var reader = GetIndexReader();
+			var searcher = GetIndexSearcher(reader);
 
 			string sortFieldName;
 			if (string.IsNullOrWhiteSpace(sortField))
@@ -152,10 +161,10 @@ namespace FormEditor.Storage
 			return new Result(scoreDocs.Count(), rows, sortField, sortDescending);
 		}
 
-		public bool SaveFile(HttpPostedFile file, string filename)
+		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
 		{
 			// save uploaded file to disk
-			var filesPath = PathToFiles();
+			var filesPath = PathToFiles(rowId);
 			if (filesPath.Exists == false)
 			{
 				filesPath.Create();
@@ -164,9 +173,9 @@ namespace FormEditor.Storage
 			return true;
 		}
 
-		public Stream GetFile(string filename)
+		public Stream GetFile(string filename, Guid rowId)
 		{
-			var filesPath = PathToFiles();
+			var filesPath = PathToFiles(rowId);
 			if (filesPath.Exists == false)
 			{
 				return null;
@@ -177,6 +186,56 @@ namespace FormEditor.Storage
 				return null;
 			}
 			return new FileStream(filePath, FileMode.Open);
+		}
+
+		public void Delete()
+		{
+			var storageDirectory = PathToFormStorage();
+
+			// step 1: delete all docs in the index to make sure it's as empty as possible in case a 
+			// file lock prevents us from actually deleting the index files.
+			try
+			{
+				using(var writer = GetIndexWriter())
+				{
+					writer.DeleteAll();
+					writer.Commit();
+					writer.Close();
+				}
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete all documents in index: {0}", storageDirectory.FullName);				
+				// don't quit here - we'll still attempt to clean up the hard way.
+			}
+
+			// step 2: explicitly delete all uploaded files (as they'll probably be taking up the most disk space).
+			var filesDirectory = PathToFiles();
+			if(filesDirectory.Exists)
+			{
+				try
+				{
+					filesDirectory.Delete(true);
+				}
+				catch(Exception ex)
+				{
+					Log.Error(ex, "Could not delete files directory: {0}", filesDirectory.FullName);
+				}				
+			}
+
+			// step 3: attempt to delete the entire index directory
+			if(storageDirectory.Exists == false)
+			{
+				return;
+			}
+			try
+			{
+				storageDirectory.Delete(true);
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete index directory: {0}", storageDirectory.FullName);				
+			}
 		}
 
 		private LuceneDirectory IndexDirectory
@@ -219,6 +278,11 @@ namespace FormEditor.Storage
 			return new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
 		}
 
+		private IndexReader GetIndexReader()
+		{
+			return IndexReader.Open(IndexDirectory, true);
+		}
+
 		private IndexWriter GetIndexWriter(bool create = false)
 		{
 			return new IndexWriter(IndexDirectory, GetAnalyzer(), create, IndexWriter.MaxFieldLength.UNLIMITED);
@@ -237,6 +301,27 @@ namespace FormEditor.Storage
 		private DirectoryInfo PathToFiles()
 		{
 			return new DirectoryInfo(Path.Combine(PathToFormStorage().FullName, "Files"));
+		}
+
+		private DirectoryInfo PathToFiles(Guid rowId)
+		{
+			return new DirectoryInfo(Path.Combine(PathToFiles().FullName, rowId.ToString("N")));
+		}
+
+		private void RemoveFiles(Guid rowId)
+		{
+			var filesPath = PathToFiles(rowId);
+			try
+			{
+				if(filesPath.Exists)
+				{
+					filesPath.Delete(true);
+				}
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not delete file upload directory: {0}", filesPath);
+			}
 		}
 	}
 }

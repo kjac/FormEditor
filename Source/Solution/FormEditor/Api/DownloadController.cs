@@ -33,7 +33,7 @@ namespace FormEditor.Api
 				return new HttpResponseMessage(HttpStatusCode.NotFound);
 			}
 
-			var stream = index.GetFile(fileData.PersistedFilename);
+			var stream = index.GetFile(fileData.PersistedFilename, rowId);
 			if (stream == null)
 			{
 				return new HttpResponseMessage(HttpStatusCode.NotFound);
