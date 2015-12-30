@@ -267,6 +267,8 @@
   <ItemGroup>
     <Content Include="App_Plugins\FormEditor\editor\conditions\my.length.html" />
     <Content Include="App_Plugins\FormEditor\editor\conditions\my.length.png" />
+    <Content Include="JS\FormEditor\MyLengthConditionAsync.js" />
+    <Content Include="JS\FormEditor\MyLengthConditionSync.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

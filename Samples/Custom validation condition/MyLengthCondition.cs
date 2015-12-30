@@ -36,14 +36,14 @@ namespace My.Conditions
 			if(fieldValue == null || fieldValue.HasSubmittedValue == false)
 			{
 				// no such field or no submitted field value - the condition is met (LessThan will always be >= 1)
-				return false;
+				return true;
 			}
 
 			// the condition is met if the length of the submitted value is less than the value defined for LessThan
 		    return fieldValue.SubmittedValue.Length < LessThan;
 	    }
 
-		// override this to pass custom condition configuration parameters etc. to the frontend rendering.
+		// override this to pass our custom condition configuration parameters etc. to the frontend rendering.
 		// you can skip this if you do not need to pass anything (condition type is handled by the base class implementation).
 		public override ConditionData ForFrontEnd()
 		{
