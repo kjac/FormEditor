@@ -1,6 +1,6 @@
 # Creating a simple custom field
 A simple custom field is created by completing these steps:
-1. [Create your icon](extend.md) and save it to */App_Plugins/FormEditor/editor/fields/*.
+1. [Create your icon](extend_field.md) and save it to */App_Plugins/FormEditor/editor/fields/*.
 2. Register your field in the `<CustomFields/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config).
 3. Create the partial view to render your field.
 
