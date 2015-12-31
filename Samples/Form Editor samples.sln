@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Fields", "Advanced custo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Conditions", "Custom validation condition\My.Conditions.csproj", "{441C35EB-7B90-428C-941F-EEE5921FD3E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Events", "Event handling\My.Events.csproj", "{F186B022-168A-4A49-90C5-F3E1211464D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{441C35EB-7B90-428C-941F-EEE5921FD3E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441C35EB-7B90-428C-941F-EEE5921FD3E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441C35EB-7B90-428C-941F-EEE5921FD3E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F186B022-168A-4A49-90C5-F3E1211464D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F186B022-168A-4A49-90C5-F3E1211464D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F186B022-168A-4A49-90C5-F3E1211464D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F186B022-168A-4A49-90C5-F3E1211464D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
