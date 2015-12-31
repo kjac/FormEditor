@@ -103,6 +103,10 @@
 
     // validate a validation (usually cross field validation)
     $scope.validate = function (validation) {
+      if (!validation.rules || !validation.rules.length) {
+        // edge case: validation contains no rules. must be valid.
+        return true;
+      }
       var isValid = false;
       angular.forEach(validation.rules, function (rule) {
         // get the field value from form data

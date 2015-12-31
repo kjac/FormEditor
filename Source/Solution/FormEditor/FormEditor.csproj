@@ -259,6 +259,10 @@
     <Compile Include="Api\PublicController.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="Events\FormEditorCancelEventArgs.cs" />
+    <Compile Include="Events\FormEditorCancelEventHandler.cs" />
+    <Compile Include="Events\FormEditorEventArgs.cs" />
+    <Compile Include="Events\FormEditorEventHandler.cs" />
     <Compile Include="FormDataModel.cs" />
     <Compile Include="Data\Field.cs" />
     <Compile Include="Data\FormData.cs" />

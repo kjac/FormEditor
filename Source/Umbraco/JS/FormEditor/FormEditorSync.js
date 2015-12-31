@@ -71,6 +71,10 @@
 
   // validate a validation (usually cross field validation)
   function validateValidation(validation) {
+    if (!validation.rules || !validation.rules.length) {
+      // edge case: validation contains no rules. must be valid.
+      return true;
+    }
     var isValid = false;
     $(validation.rules).each(function (index, rule) {
       // get all fields that matches the rule field name (in case of a group of fields with the same name, e.g. checkbox group)

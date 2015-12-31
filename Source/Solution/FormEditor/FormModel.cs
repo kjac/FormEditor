@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using FormEditor.Data;
+using FormEditor.Events;
 using FormEditor.Fields;
 using FormEditor.Storage;
 using Umbraco.Core.Models;
@@ -37,8 +38,8 @@ namespace FormEditor
 		private bool DisableValidation { get; set; }
 
 		// events
-		public static event CancelEventHandler BeforeAddToIndex;
-		public static event EventHandler AfterAddToIndex;
+		public static event FormEditorCancelEventHandler BeforeAddToIndex;
+		public static event FormEditorEventHandler AfterAddToIndex;
 
 		public bool CollectSubmittedValues(bool redirect = true)
 		{
@@ -79,8 +80,18 @@ namespace FormEditor
 			}
 
 			// we're about to add data to the index - let's run the before add to index event handler
-			if(RaiseBeforeAddToIndex() == false)
+			var beforeAddToIndexErrorMessage = RaiseBeforeAddToIndex();
+			if(beforeAddToIndexErrorMessage != null)
 			{
+				Validations = new List<Validation.Validation>(Validations ?? new Validation.Validation[] { })
+				{
+					new Validation.Validation
+					{
+						ErrorMessage = beforeAddToIndexErrorMessage, 
+						Invalid = true, 
+						Rules = new Validation.Rule[] {}
+					}
+				};
 				return false;
 			}
 
@@ -220,18 +231,18 @@ namespace FormEditor
 			return doc.DocumentNode.InnerText;
 		}
 
-		private bool RaiseBeforeAddToIndex()
+		private string RaiseBeforeAddToIndex()
 		{
 			if(BeforeAddToIndex != null)
 			{
 				try
 				{
-					var cancelEventArgs = new CancelEventArgs();
+					var cancelEventArgs = new FormEditorCancelEventArgs();
 					BeforeAddToIndex.Invoke(this, cancelEventArgs);
 					if(cancelEventArgs.Cancel)
 					{
 						Log.Info("The form submission was valid, but it was not added to the index because an event handler for BeforeAddToIndex cancelled the submission.");
-						return false;
+						return cancelEventArgs.ErrorMessage ?? "The form submission was cancelled by the BeforeAddToIndex event handler.";
 					}
 				}
 				catch(Exception ex)
@@ -240,7 +251,7 @@ namespace FormEditor
 					Log.Error(ex, "An event handler for BeforeAddToIndex threw an exception.");
 				}
 			}
-			return true;
+			return null;
 		}
 
 		private void RaiseAfterAddToIndex()
@@ -249,7 +260,7 @@ namespace FormEditor
 			{
 				try
 				{
-					AfterAddToIndex.Invoke(this, new EventArgs());
+					AfterAddToIndex.Invoke(this, new FormEditorEventArgs());
 				}
 				catch(Exception ex)
 				{

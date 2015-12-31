@@ -15,7 +15,7 @@ namespace FormEditor.Rendering
 		{
 			return validations.Select(v => new ValidationData
 			{
-				Rules = v.Rules.Select(r => new RuleData
+				Rules = (v.Rules ?? new List<Validation.Rule>()).Select(r => new RuleData
 				{
 					Field = ToFieldData(r.Field),
 					Condition = r.Condition.ForFrontEnd()
