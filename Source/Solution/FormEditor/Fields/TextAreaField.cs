@@ -4,7 +4,7 @@ using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
 {
-	public class TextAreaField : FieldWithMandatoryValidation
+	public class TextAreaField : FieldWithPlaceholder
 	{
 		public override string PrettyName
 		{

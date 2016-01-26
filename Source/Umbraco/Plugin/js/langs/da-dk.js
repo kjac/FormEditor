@@ -104,6 +104,8 @@
   "edit.options": "Valgmuligheder",
   "edit.options.add": "Tilføj en valgmulighed",  
   "edit.options.selected": "Valgt",  
+  "edit.placeholder": "Pladsholder",  
+  "edit.placeholder.helpText": "Tekst der vises når feltet ikke er udfyldt", 
   "edit.submitButton.label": "Tekst på knappen",
   "edit.text": "Tekst",
   "edit.upload.allowedFileTypes": "Tilladte filtyper",

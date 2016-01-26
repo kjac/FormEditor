@@ -3,7 +3,7 @@ using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
 {
-	public class NumberField : FieldWithMandatoryValidation
+	public class NumberField : FieldWithPlaceholder
 	{
 		public NumberField()
 		{

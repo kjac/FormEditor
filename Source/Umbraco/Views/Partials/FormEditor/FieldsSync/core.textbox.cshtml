@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.TextBoxField>
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
-  <input type="text" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" value="@Model.SubmittedValue" maxlength="@(Model.MaxLength > 0 ? @Model.MaxLength.ToString() : null)" @(Model.Mandatory ? "required" : null) />
+  <input type="text" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" placeholder="@Model.Placeholder" value="@Model.SubmittedValue" maxlength="@(Model.MaxLength > 0 ? @Model.MaxLength.ToString() : null)" @(Model.Mandatory ? "required" : null) />
 
   @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")

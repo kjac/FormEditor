@@ -22,6 +22,14 @@
   <input type="text" id="helpText" ng-model="dialogData.field.helpText" />
 </script>
 
+<script type="text/ng-template" id="formEditor.fieldPlaceholder.html">
+  <label class="control-label" for="placeholder">
+    <form-editor-localize key="edit.placeholder">Placeholder</form-editor-localize>
+    <small form-editor-localize key="edit.placeholder.helpText">The text shown when the field is empty</small>
+  </label>
+  <input type="text" id="placeholder" ng-model="dialogData.field.placeholder" />
+</script>
+
 <script type="text/ng-template" id="formEditor.fieldMandatory.html">
   <label class="control-label" for="mandatory">
     <input type="checkbox" id="mandatory" ng-model="dialogData.field.mandatory" />

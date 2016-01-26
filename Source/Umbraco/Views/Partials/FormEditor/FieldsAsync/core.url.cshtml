@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.UrlField>
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
-  <input type="url" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" @(Model.Mandatory ? "required" : null) http-prefix />
+  <input type="url" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" placeholder="@Model.Placeholder" ng-model="formData.@Model.FormSafeName" @(Model.Mandatory ? "required" : null) http-prefix />
 
   @Html.Partial("FormEditor/FieldsAsync/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
