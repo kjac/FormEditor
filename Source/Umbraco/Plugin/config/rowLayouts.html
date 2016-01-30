@@ -5,7 +5,7 @@
         <div class="row-layout-header" ng-click="rowLayout.expanded = !rowLayout.expanded">
           <span class="row-layout-tools">
             <i class="icon icon-delete dimmed" ng-click="deleteRowLayout(rowLayout)" ng-show="model.value.length > 1">
-              <span class="menu-label">delete this row layout</span>
+              <small>delete this row layout</small>
             </i>
           </span>
           <i class="icon" ng-class="{'icon-navigation-right dimmed': !rowLayout.expanded, 'icon-navigation-down': rowLayout.expanded}"></i>
@@ -43,19 +43,19 @@
                     </div>
 
                     <i class="icon icon-delete dimmed" ng-click="deleteCellLayout(rowLayout, cellLayout)" ng-show="rowLayout.cellLayouts.length > 1">
-                      <span class="menu-label">delete this cell</span>
+                      <small>delete this cell</small>
                     </i>
                   </div>
                 </li>
               </ol>
               <i class="icon icon-add dimmed" ng-click="addCellLayout(rowLayout)">
-                <span class="menu-label">add a cell</span>
+                <small>add a cell</small>
               </i>
             </div>
           </div>
           <div class="configuration-item configuration-info">
             <i class="icon icon-info">
-              <span class="menu-label">The sum of all cell widths must equal 100.</span>
+              <small>The sum of all cell widths must equal 100.</small>
             </i>
           </div>
         </div>
@@ -63,6 +63,6 @@
     </li>
   </ul>
   <i class="icon icon-add dimmed" ng-click="addRowLayout()">
-    <span class="menu-label">add a row layout</span>
+    <small>add a row layout</small>
   </i>
 </div>

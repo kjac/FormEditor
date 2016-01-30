@@ -63,6 +63,12 @@
                description: "Disable cross field validation rules",
                key: "disableValidation",
                view: "boolean"
+            },
+            {
+               label: "Don't use pages",
+               description: "Disable creation of multiple form page",
+               key: "disablePages",
+               view: "boolean"
             }
         ]
       }

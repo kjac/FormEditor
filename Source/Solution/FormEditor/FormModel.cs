@@ -17,10 +17,35 @@ namespace FormEditor
 {
 	public class FormModel
 	{
+		private IEnumerable<Page> _pages;
+		private IEnumerable<Row> _rows;
 		public const string PropertyEditorAlias = @"FormEditor.Form";
 
 		// properties configured by the editor
-		public IEnumerable<Row> Rows { get; set; }
+		public IEnumerable<Page> Pages
+		{
+			get
+			{
+				EnsurePagesForBackwardsCompatibility();
+				return _pages;
+			}
+			set
+			{
+				_pages = value;
+			}
+		}
+
+		[Obsolete("Use Pages instead of Rows. This will be removed before v1.0.")]
+		public IEnumerable<Row> Rows
+		{
+			get
+			{
+				EnsureRowsForBackwardsCompatibility();
+				return _rows;
+			}
+			set { _rows = value; }
+		}
+
 		public IEnumerable<Validation.Validation> Validations { get; set; }
 		public string EmailNotificationRecipients { get; set; }
 		public string EmailNotificationSubject { get; set; }
@@ -147,6 +172,33 @@ namespace FormEditor
 		{
 			return AllFields().OfType<FieldWithValue>();
 		}
+
+		#region This is for backwards compatability with v0.10.0.1 - should be removed before releasing v1.0
+
+		private void EnsurePagesForBackwardsCompatibility()
+		{
+			if(_pages == null && _rows != null)
+			{
+				_pages = new List<Page>
+				{
+					new Page
+					{
+						Rows = _rows
+					}
+				};
+			}
+		}
+
+		// this is for backwards compatability with v0.10.0.1 - should be removed at some point
+		private void EnsureRowsForBackwardsCompatibility()
+		{
+			if(_rows == null && _pages != null)
+			{
+				_rows = _pages.SelectMany(p => p.Rows).ToList();
+			}
+		}
+
+		#endregion
 
 		#region Collect submitted values
 

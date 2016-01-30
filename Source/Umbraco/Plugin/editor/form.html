@@ -5,44 +5,72 @@
       <p form-editor-localize key="composition.text">
         Add rows and fields below to layout your form. If you need to rearrange the form layout later on, you can do so by dragging rows and fields around as you please.
       </p>
-      <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="model.value.rows">
-        <li class="form-row" ng-class="row.alias" ng-repeat="row in model.value.rows">
-          <div>
-            <table class="form-cells">
-              <tr>
-                <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
-                  <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
-                    <div class="form-field" ng-repeat="field in cell.fields">
-                      <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
-                        <span class="form-field-icon-and-name" ng-click="editField(field)">
-                          <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
-                          <span class="form-field-name">{{getFieldName(field)}}</span>
-                        </span>
-                        <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td class="form-cell-delete" rowspan="2">
-                  <i class="icon icon-delete dimmed" ng-click="removeRow(row)"></i>
-                </td>
-              </tr>
-              <tr>
-                <td class="form-cell-tools form-cell{{$index}}" ng-repeat="cell in row.cells">
-                  <i class="icon icon-add dimmed" ng-click="pickField(cell)">
-                    <span class="menu-label" form-editor-localize key="composition.field.add">Add a field</span>
-                  </i>
-                </td>
-              </tr>
-            </table>
+      <div class="form-pages" ng-class="{'pages-disabled': !model.enablePages}" ui-sortable="sortableOptionsPage" ng-model="model.value.pages">
+        <div class="form-page" ng-repeat="page in model.value.pages">
+          <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
+            <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
+            {{page.title}}
+            <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
+            <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
+          </h5>
+          <div class="form-page-content" ng-hide="model.enablePages && page.collapsed">
+            <span ng-show="model.enablePages">
+              <label class="control-label" for="pageTitle1" form-editor-localize key="composition.page.title">
+                Page title
+              </label>
+              <input type="text" class="umb-editor" id="pageTitle1" ng-required="model.enablePages" ng-model="page.title" />
+              <label class="control-label" form-editor-localize key="composition.page.layout">
+                Page layout
+              </label>
+            </span>
+            <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="page.rows">
+              <li class="form-row" ng-class="row.alias" ng-repeat="row in page.rows">
+                <div>
+                  <table class="form-cells">
+                    <tr>
+                      <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
+                        <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
+                          <div class="form-field" ng-repeat="field in cell.fields">
+                            <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
+                              <span class="form-field-icon-and-name" ng-click="editField(field)">
+                                <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
+                                <span class="form-field-name">{{getFieldName(field)}}</span>
+                              </span>
+                              <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="form-cell-delete" rowspan="2">
+                        <i class="icon icon-delete dimmed" ng-click="removeRow(row, page)"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="form-cell-tools form-cell{{$index}}" ng-repeat="cell in row.cells">
+                        <i class="icon icon-add dimmed" ng-click="pickField(cell)">
+                          <small form-editor-localize key="composition.field.add">Add a field</small>
+                        </i>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </li>
+              <li ng-hide="page.rows.length" class="drop-target-empty">
+                <small class="dimmed dimmed-hover" ng-click="pickRow(page)" form-editor-localize key="composition.empty">Add a row to start</small>
+              </li>
+            </ul>
+            <div class="form-row-tools">
+              <i class="icon icon-add dimmed" ng-click="pickRow(page)">
+                <small form-editor-localize key="composition.row.add">Add a row</small>
+              </i>
+            </div>
           </div>
-        </li>
-      </ul>
-      <div class="form-row-tools">
-        <i class="icon icon-add dimmed" ng-click="pickRow()">
-          <span class="menu-label" form-editor-localize key="composition.row.add">Add a row</span>
-        </i>
+        </div>
       </div>
+      <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages">
+        <small form-editor-localize key="composition.page.add">Add a page</small>
+      </i>
+
     </div>
   </div>
   <div ng-if="model.enableValidation">
@@ -78,7 +106,7 @@
                       <td class="form-validation-rule-condition">
                         <div ng-if="rule.condition != null">
                           <i class="field-icon" style="background-image: url('{{pathToConditionFile(rule.condition.icon)}}')"></i>
-                          <span class="menu-label" form-editor-localize key="validation.condition.{{rule.condition.type}}">{{rule.condition.prettyName}}</span>
+                          <span form-editor-localize key="validation.condition.{{rule.condition.type}}">{{rule.condition.prettyName}}</span>
                         </div>
                       </td>
                       <td>
@@ -91,7 +119,7 @@
                   </tbody>
                 </table>
                 <i class="icon icon-add dimmed" ng-click="editRule(null, validation)">
-                  <span class="menu-label" form-editor-localize key="validation.rules.add">Add a rule</span>
+                  <small form-editor-localize key="validation.rules.add">Add a rule</small>
                 </i>
                 <div class="form-validation-error-message">
                   <label for="validationError{{$index}}" class="control-label" form-editor-localize key="validation.errorMessage">Error message</label>
@@ -106,7 +134,7 @@
         </li>
       </ul>
       <i class="icon icon-add dimmed" ng-click="addValidation()">
-        <span class="menu-label" form-editor-localize key="validation.add">Add a validation</span>
+        <small form-editor-localize key="validation.add">Add a validation</small>
       </i>
     </div>
     <div ng-show="expandedState.validation.expanded && allValueFields().length == 0">
