@@ -163,9 +163,9 @@ namespace FormEditor
 			};
 		}
 
-		public IEnumerable<Fields.Field> AllFields()
+		public IEnumerable<Field> AllFields()
 		{
-			return Rows.SelectMany(r => r.Cells.SelectMany(c => c.Fields));
+			return Pages.SelectMany(p => p.AllFields());
 		}
 
 		public IEnumerable<FieldWithValue> AllValueFields()
