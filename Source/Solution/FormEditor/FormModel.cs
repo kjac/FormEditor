@@ -254,7 +254,7 @@ namespace FormEditor
             return null;
         }
 
-        private void RaiseAfterAddToIndex(Guid rawId)
+        private void RaiseAfterAddToIndex(Guid rowId)
         {
             if (AfterAddToIndex != null)
             {
@@ -262,7 +262,7 @@ namespace FormEditor
                 {
                     AfterAddToIndex.Invoke(this, new FormEditorEventArgs
                     {
-                        RawId = rawId
+                        RowId = rowId
                     });
                 }
                 catch (Exception ex)
