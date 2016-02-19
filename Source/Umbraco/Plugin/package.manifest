@@ -65,9 +65,9 @@
                view: "boolean"
             },
             {
-               label: "Don't use pages",
-               description: "Disable creation of multiple form page",
-               key: "disablePages",
+               label: "Use form pages",
+               description: "Enable creation of multiple form page",
+               key: "enablePages",
                view: "boolean"
             }
         ]

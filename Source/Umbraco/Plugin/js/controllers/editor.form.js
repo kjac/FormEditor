@@ -9,7 +9,7 @@
     // is validation enabled?
     $scope.model.enableValidation = $scope.model.config.disableValidation != 1;
     // are multiple form pages enabled?
-    $scope.model.enablePages = $scope.model.config.disablePages != 1;
+    $scope.model.enablePages = $scope.model.config.enablePages == 1;
 
     $scope.emailTemplates = { notification: $scope.model.config.notificationEmailTemplate, confirmation: $scope.model.config.confirmationEmailTemplate };
 

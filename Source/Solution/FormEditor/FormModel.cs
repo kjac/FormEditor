@@ -17,11 +17,11 @@ namespace FormEditor
 {
 	public class FormModel
 	{
-		private IEnumerable<Page> _pages;
-		private IEnumerable<Row> _rows;
 		public const string PropertyEditorAlias = @"FormEditor.Form";
 
-		// properties configured by the editor
+		private IEnumerable<Page> _pages;
+		private IEnumerable<Row> _rows;
+
 		public IEnumerable<Page> Pages
 		{
 			get
@@ -35,7 +35,6 @@ namespace FormEditor
 			}
 		}
 
-		[Obsolete("Use Pages instead of Rows. This will be removed before v1.0.")]
 		public IEnumerable<Row> Rows
 		{
 			get
