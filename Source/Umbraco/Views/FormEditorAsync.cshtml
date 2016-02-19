@@ -51,17 +51,21 @@
           }
         </fieldset>
       }
-      @* paging buttons *@
-      <div class="row">
-        <div class="cell col-md-12">
-          <a class="btn btn-default" ng-click="goToPreviousPage()" ng-hide="isFirstPage()">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
-          </a>
-          <a class="btn btn-default" ng-click="goToNextPage()" ng-hide="isLastPage()">
-            @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          </a>
-        </div>
-      </div>
+      @* paging links *@
+      <nav>
+        <ul class="pager">
+          <li class="previous" ng-hide="isFirstPage()">
+            <a href ng-click="goToPreviousPage()">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+            </a>
+          </li>
+          <li class="next" ng-hide="isLastPage()">
+            <a href ng-click="goToNextPage()">
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       @{
         // if the form validation result container has not been added while rendering the submit button, add it as a row below the entire form
         if (validationErrorsContainerAdded == false)
