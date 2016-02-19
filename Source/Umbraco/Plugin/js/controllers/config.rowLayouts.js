@@ -12,7 +12,7 @@
     function defaultValue() {
       return [{
         alias: "two-column",
-        icon: "two-column.png",
+        icon: "core.two-column.png",
         prettyName: "Two columns",
         expanded: true,
         cellLayouts: [
@@ -31,7 +31,7 @@
     $scope.addRowLayout = function () {
       $scope.model.value.push({
         alias: "one-column",
-        icon: "one-column.png",
+        icon: "core.one-column.png",
         prettyName: "One column",
         expanded: true,
         cellLayouts: []
