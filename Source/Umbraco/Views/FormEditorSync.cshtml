@@ -11,9 +11,6 @@
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
   form.CollectSubmittedValues();
-
-  // this is used to keep track of the validation errors container (for cross field validations)
-  var validationErrorsContainerAdded = false;
 }
 <!DOCTYPE html>
 <html>
@@ -24,28 +21,22 @@
 <body>
   <form method="POST" enctype="multipart/form-data" novalidate>
     <div class="container">
-      @foreach(var page in form.Pages)
+      @foreach (var page in form.Pages)
       {
         <fieldset class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
           @* if the form does not have pages enabled, the page title is null or empty*@
-          @if(page.Title.IsNullOrWhiteSpace() == false)
+          @if (page.Title.IsNullOrWhiteSpace() == false)
           {
             <legend>@page.Title</legend>
           }
-          @foreach(var row in page.Rows)
+          @foreach (var row in page.Rows)
           {
             <div class="row @row.Alias">
-              @foreach(var cell in row.Cells)
+              @foreach (var cell in row.Cells)
               {
                 <div class="cell @cell.Alias">
-                  @foreach(var field in cell.Fields)
+                  @foreach (var field in cell.Fields)
                   {
-                    // insert the form validation result container above the submit button if one exists
-                    if(field.Type == "core.submitbutton" && validationErrorsContainerAdded == false)
-                    {
-                      validationErrorsContainerAdded = true;
-                      @AddValidationErrorsContainer(form);
-                    }
                     // render the form field with a partial view
                     // - the view is expected to be located at /Views/Partials/FormEditor/FieldsSync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsSync/core.checkbox.cshtml
                     @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
@@ -56,29 +47,41 @@
           }
         </fieldset>
       }
-      @* paging buttons *@
+      @* paging links *@
+      <nav>
+        <ul class="pager">
+          <li class="previous form-btn-previous" style="display: none">
+            <a href="javascript:;">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+            </a>
+          </li>
+          <li class="next form-btn-next" style="display: none">
+            <a href="javascript:;">
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      @* form validation errors container (for cross field validations) *@
       <div class="row">
-        <div class="cell col-md-12">
-          <a class="btn btn-default form-btn-previous" style="display: none">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
-          </a>
-          <a class="btn btn-default form-btn-next" style="display: none">
-            @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          </a>
-        </div>
-      </div>
-      @{
-        // if the form validation result container has not been added while rendering the submit button, add it as a row below the entire form
-        if (validationErrorsContainerAdded == false)
-        {
-          <div class="row">
-            <div class="cell">
-              @AddValidationErrorsContainer(form)
+        <div class="cell">
+          <div class="form-group">
+            <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
+              <h4>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
+              </h4>
+              <ul id="validationErrorsList">
+                @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
+                {
+                  <li>@invalidValidation.ErrorMessage</li>
+                }
+              </ul>
             </div>
           </div>
-        }
-      }
-</div>
+        </div>
+      </div>
+    </div>
   </form>
 
   @* include jQuery *@
@@ -101,22 +104,3 @@
   </script>
 </body>
 </html>
-
-@helper AddValidationErrorsContainer(FormModel form)
-{
-  <div class="form-group">
-    <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
-      <h4>
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Error:</span>
-        Form contains errors
-      </h4>
-      <ul id="validationErrorsList">
-        @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
-        {
-          <li>@invalidValidation.ErrorMessage</li>
-        }
-      </ul>
-    </div>
-  </div>
-}

@@ -6,9 +6,6 @@
 
   // get the form model (named "form" on the content type)
   var form = Model.Content.GetPropertyValue<FormModel>("form");
-
-  // this is used to keep track of the validation errors container (for cross field validations)
-  var validationErrorsContainerAdded = false;
 }
 <!DOCTYPE html>
 <html>
@@ -35,12 +32,6 @@
                 <div class="cell @cell.Alias">
                   @foreach(var field in cell.Fields)
                   {
-                    // insert the form validation result container above the submit button if one exists
-                    if(field.Type == "core.submitbutton" && validationErrorsContainerAdded == false)
-                    {
-                      validationErrorsContainerAdded = true;
-                      @AddValidationErrorsContainer(form);
-                    }
                     // render the form field with a partial view
                     // - the view is expected to be located at /Views/Partials/FormEditor/FieldsAsync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsAsync/core.checkbox.cshtml
                     @Html.Partial(string.Format(@"FormEditor/FieldsAsync/{0}", field.Type), field)
@@ -66,17 +57,18 @@
           </li>
         </ul>
       </nav>
-      @{
-        // if the form validation result container has not been added while rendering the submit button, add it as a row below the entire form
-        if (validationErrorsContainerAdded == false)
-        {
-          <div class="row">
-            <div class="cell">
-              @AddValidationErrorsContainer(form)
-            </div>
-          </div>
-        }
-      }
+      @* form validation errors container (for cross field validations) *@
+      <div class="form-group">
+        <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
+          <h4>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
+          </h4>
+          <ul id="validationErrorsList">
+            <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     @* add this if you want a live view of the form data *@
@@ -116,22 +108,5 @@
     *@
     var _formTotalPages = @form.Pages.Count();
   </script>
-
 </body>
 </html>
-
-@helper AddValidationErrorsContainer(FormModel form)
-{
-  <div class="form-group">
-    <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
-      <h4>
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Error:</span>
-        Form contains errors
-      </h4>
-      <ul id="validationErrorsList">
-        <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>
-      </ul>
-    </div>
-  </div>
-}
