@@ -17,6 +17,6 @@
         "grunt-template": "^0.2.3"
     },
     "meta": {
-        "version": "0.10.0.1"
+        "version": "0.10.0.2"
     }
 }

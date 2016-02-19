@@ -108,6 +108,7 @@ namespace FormEditor
 			var beforeAddToIndexErrorMessage = RaiseBeforeAddToIndex();
 			if(beforeAddToIndexErrorMessage != null)
 			{
+				// the event was cancelled - use the validation system to pass the error message back to the user
 				Validations = new List<Validation.Validation>(Validations ?? new Validation.Validation[] { })
 				{
 					new Validation.Validation
@@ -121,10 +122,10 @@ namespace FormEditor
 			}
 
 			// before add to index event handling did not cancel - add to index
-			AddSubmittedValuesToIndex(content, valueFields);
+			var rowId = AddSubmittedValuesToIndex(content, valueFields);
 
-			// tell everyone something was added
-			RaiseAfterAddToIndex();
+			// tell everyone that something was added
+			RaiseAfterAddToIndex(rowId);
 
 			SendEmails(content, valueFields);
 
@@ -253,7 +254,7 @@ namespace FormEditor
 			return true;
 		}
 
-		private void AddSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields)
+		private Guid AddSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields)
 		{
 			var rowId = Guid.NewGuid();
 
@@ -269,6 +270,8 @@ namespace FormEditor
 			// store fields in index
 			var index = IndexHelper.GetIndex(content.Id);
 			index.Add(indexFields, rowId);
+
+			return rowId;
 		}
 
 		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content, Guid rowId)
@@ -306,13 +309,13 @@ namespace FormEditor
 			return null;
 		}
 
-		private void RaiseAfterAddToIndex()
+		private void RaiseAfterAddToIndex(Guid rowId)
 		{
 			if(AfterAddToIndex != null)
 			{
 				try
 				{
-					AfterAddToIndex.Invoke(this, new FormEditorEventArgs());
+					AfterAddToIndex.Invoke(this, new FormEditorEventArgs(rowId));
 				}
 				catch(Exception ex)
 				{
