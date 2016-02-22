@@ -23,12 +23,7 @@
     <div class="container">
       @foreach (var page in form.Pages)
       {
-        <fieldset class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
-          @* if the form does not have pages enabled, the page title is null or empty*@
-          @if (page.Title.IsNullOrWhiteSpace() == false)
-          {
-            <legend>@page.Title</legend>
-          }
+        <div class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
           @foreach (var row in page.Rows)
           {
             <div class="row @row.Alias">
@@ -45,7 +40,7 @@
               }
             </div>
           }
-        </fieldset>
+        </div>
       }
       @* paging links *@
       <nav>

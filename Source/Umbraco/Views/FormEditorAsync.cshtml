@@ -18,12 +18,7 @@
     <div class="container">
       @foreach(var page in form.Pages)
       {
-        <fieldset ng-show="isActivePage(@(form.Pages.IndexOf(page)))">
-          @* if the form does not have paging enabled, the page title is null or empty*@
-          @if(page.Title.IsNullOrWhiteSpace() == false)
-          {
-            <legend>@page.Title</legend>
-          }
+        <div ng-show="isActivePage(@(form.Pages.IndexOf(page)))">
           @foreach(var row in page.Rows)
           {
             <div class="row @row.Alias">
@@ -40,7 +35,7 @@
               }
             </div>
           }
-        </fieldset>
+        </div>
       }
       @* paging links *@
       <nav>

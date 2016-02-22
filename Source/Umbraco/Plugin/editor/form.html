@@ -9,20 +9,11 @@
         <div class="form-page" ng-repeat="page in model.value.pages">
           <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
             <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
-            {{page.title}}
-            <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
+              Page #{{$index + 1}}
+              <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
             <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
           </h5>
           <div class="form-page-content" ng-hide="model.enablePages && page.collapsed">
-            <span ng-show="model.enablePages">
-              <label class="control-label" for="pageTitle1" form-editor-localize key="composition.page.title">
-                Page title
-              </label>
-              <input type="text" class="umb-editor" id="pageTitle1" ng-required="model.enablePages" ng-model="page.title" />
-              <label class="control-label" form-editor-localize key="composition.page.layout">
-                Page layout
-              </label>
-            </span>
             <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="page.rows">
               <li class="form-row" ng-class="row.alias" ng-repeat="row in page.rows">
                 <div>
