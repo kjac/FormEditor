@@ -19,6 +19,7 @@
   "composition.field.core.upload": "Fil-upload",
   "composition.field.core.url": "Web-adresse",
   "composition.header": "Form-layout",
+  "composition.page.header": "Side nr. ",
   "composition.pick.field.header": "Tilføj et felt",
   "composition.pick.field.text": "Vælg hvilken type felt der skal tilføjes.",
   "composition.pick.row.header": "Tilføj en række",  

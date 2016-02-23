@@ -9,8 +9,8 @@
         <div class="form-page" ng-repeat="page in model.value.pages">
           <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
             <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
-              Page #{{$index + 1}}
-              <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
+            <form-editor-localize key="composition.page.header">Page #</form-editor-localize>{{$index + 1}}
+            <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
             <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
           </h5>
           <div class="form-page-content" ng-hide="model.enablePages && page.collapsed">
