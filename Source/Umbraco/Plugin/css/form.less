@@ -230,9 +230,20 @@
     }
   }
 
-  .drop-target-empty {
+  .no-form-pages, .no-form-rows {
     text-align: center;
+    padding: 10px;
+    i {
+      display: block;
+    }
+    i:hover small {
+      color: @dimmedColorActive;
+    }
   }
+  .no-form-rows {
+    padding-top: 0;
+  }
+
 }
 
 .form-editor-edit-field {

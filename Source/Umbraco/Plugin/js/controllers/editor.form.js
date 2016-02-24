@@ -424,7 +424,7 @@
       cursor: "move",
       handle: ".form-cells",
       connectWith: ".form-rows",
-      items: "li:not(.drop-target-empty)",
+      items: "li:not(.no-form-rows)",
       update: function (ev, ui) {
         $scope.setDirty();
       },

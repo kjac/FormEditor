@@ -9,7 +9,7 @@
         <div class="form-page" ng-repeat="page in model.value.pages">
           <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
             <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
-            <form-editor-localize key="composition.page.header">Page #</form-editor-localize>{{$index + 1}}
+            <form-editor-localize key="composition.pages.header">Page #</form-editor-localize>{{$index + 1}}
             <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
             <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
           </h5>
@@ -46,20 +46,27 @@
                   </table>
                 </div>
               </li>
-              <li ng-hide="page.rows.length" class="drop-target-empty">
-                <small class="dimmed dimmed-hover" ng-click="pickRow(page)" form-editor-localize key="composition.empty">Add a row to start</small>
+              <li ng-hide="page.rows.length" class="no-form-rows">
+                <i class="icon icon-add dimmed" ng-click="pickRow(page)">
+                  <small class="dimmed dimmed-hover" form-editor-localize key="composition.rows.empty">Click here to add a row</small>
+                </i>
               </li>
             </ul>
             <div class="form-row-tools">
-              <i class="icon icon-add dimmed" ng-click="pickRow(page)">
+              <i class="icon icon-add dimmed" ng-show="page.rows.length" ng-click="pickRow(page)">
                 <small form-editor-localize key="composition.row.add">Add a row</small>
               </i>
             </div>
           </div>
         </div>
       </div>
-      <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages">
-        <small form-editor-localize key="composition.page.add">Add a page</small>
+      <div ng-show="model.enablePages && !model.value.pages.length" class="no-form-pages">
+        <i class="icon icon-add dimmed" ng-click="addPage()">
+          <small form-editor-localize key="composition.pages.empty">Click here to add a page</small>
+        </i>
+      </div>
+      <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages && model.value.pages.length">
+        <small form-editor-localize key="composition.pages.add">Add a page</small>
       </i>
 
     </div>
