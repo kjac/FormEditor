@@ -16,6 +16,7 @@
 <body ng-app="formEditor">
   <form ng-controller="FormController" name="form" novalidate ng-cloak>
     <div class="container">
+      @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
       @foreach(var page in form.Pages)
       {
         <div ng-show="isActivePage(@(form.Pages.IndexOf(page)))">

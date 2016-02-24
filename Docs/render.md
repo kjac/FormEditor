@@ -16,18 +16,24 @@ The following code sample shows how this could all be pieced together:
   var form = Model.Content.GetPropertyValue<FormModel>("form");
 }
 <div class="container">
-  @foreach(var row in form.Rows)
+  @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
+  @foreach (var page in form.Pages)
   {
-    // use the row alias as a class, so we end up with e.g. "row one-column"
-    <div class="row @row.Alias">
-      @foreach(var cell in row.Cells)
+    <div class="form-page">
+      @foreach (var row in page.Rows)
       {
-        // use the cell alias as a class, so we end up with e.g. "cell col-md-4"
-        <div class="cell @cell.Alias">
-          @foreach(var field in cell.Fields)
+        // use the row alias as a class, so we end up with e.g. "row one-column"
+        <div class="row @row.Alias">
+          @foreach (var cell in row.Cells)
           {
-            // render the form field with its partial view
-            @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+            // use the cell alias as a class, so we end up with e.g. "cell col-md-4"
+            <div class="cell @cell.Alias">
+              @foreach (var field in cell.Fields)
+              {
+                // render the form field with its partial view
+                @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+              }
+            </div>
           }
         </div>
       }

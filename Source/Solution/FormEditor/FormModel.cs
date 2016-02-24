@@ -173,7 +173,7 @@ namespace FormEditor
 			return AllFields().OfType<FieldWithValue>();
 		}
 
-		#region This is for backwards compatability with v0.10.0.1 - should be removed before releasing v1.0
+		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
 
 		private void EnsurePagesForBackwardsCompatibility()
 		{
@@ -189,7 +189,6 @@ namespace FormEditor
 			}
 		}
 
-		// this is for backwards compatability with v0.10.0.1 - should be removed at some point
 		private void EnsureRowsForBackwardsCompatibility()
 		{
 			if(_rows == null && _pages != null)

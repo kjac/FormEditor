@@ -21,6 +21,7 @@
 <body>
   <form method="POST" enctype="multipart/form-data" novalidate>
     <div class="container">
+      @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
       @foreach (var page in form.Pages)
       {
         <div class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
