@@ -19,6 +19,9 @@
   "composition.field.core.upload": "Fil-upload",
   "composition.field.core.url": "Web-adresse",
   "composition.header": "Form-layout",
+  "composition.pages.add": "Tilføj en side",
+  "composition.pages.empty": "Klik her for at tilføje en side",
+  "composition.pages.header": "Side nr. ",
   "composition.pick.field.header": "Tilføj et felt",
   "composition.pick.field.text": "Vælg hvilken type felt der skal tilføjes.",
   "composition.pick.row.header": "Tilføj en række",  
@@ -30,6 +33,7 @@
   "composition.row.two-column-wide-left": "To kolonner (bred venstre-kolonne)",
   "composition.row.two-column-wide-right": "To kolonner (bred højre-kolonne)",
   "composition.row.three-column": "Tre kolonner",
+  "composition.rows.empty": "Klik her for at tilføje en række",
   "composition.text": "Du sætter din form op ved at tilføje rækker og felter nedenfor. Hvis du senere hen får brug for at ændre på opsætningen, kan både rækker og felter flyttes rundt ved at trække i dem.",
 
   "validation.add": "Tilføj en validering",

@@ -8,11 +8,25 @@
     $scope.model.confirmDelete = $scope.model.config.confirmDelete == 1;
     // is validation enabled?
     $scope.model.enableValidation = $scope.model.config.disableValidation != 1;
-    //console.log("$scope.model.config", $scope.model.config);
+    // are multiple form pages enabled?
+    $scope.model.enablePages = $scope.model.config.enablePages == 1;
+
     $scope.emailTemplates = { notification: $scope.model.config.notificationEmailTemplate, confirmation: $scope.model.config.confirmationEmailTemplate };
 
     // initialize default model if applicable
     $scope.model.value = $scope.model.value || defaultValue();
+
+    // this is for backwards compatability with v0.10.0.1 - should be removed at some point
+    if ($scope.model.value.pages == null) {
+      $scope.model.value.pages = [
+        {
+          rows: $scope.model.value.rows || [],
+          title: ""
+        }
+      ];
+    }
+    $scope.model.value.rows = null;
+
     //console.log("$scope.model.value", $scope.model.value);
 
     $scope.expandedState = {
@@ -119,7 +133,7 @@
       });
     }
 
-    $scope.pickRow = function () {
+    $scope.pickRow = function (page) {
       var options = [];
       _.each($scope.model.config.rowLayouts, function (rowLayout) {
         formEditorLocalizationService.localize("composition.row." + rowLayout.alias, rowLayout.prettyName).then(function (value) {
@@ -131,11 +145,18 @@
         });
       });
       pick("row", options, function (alias) {
-        $scope.addRow(alias);
+        $scope.addRow(page, alias);
       });
     }
 
-    $scope.addRow = function (alias) {
+    $scope.addPage = function() {
+      $scope.model.value.pages.push({
+        rows: [],
+        title: ""
+      });
+    }
+
+    $scope.addRow = function (page, alias) {
       var rowLayout = getRowLayout(alias);
       if (rowLayout == null) {
         return;
@@ -153,7 +174,7 @@
           fields: []
         });
       }
-      $scope.model.value.rows.push(row);
+      page.rows.push(row);
       $scope.setDirty();
     }
 
@@ -163,22 +184,49 @@
       });
     }
 
-    $scope.removeRow = function (row) {
+    $scope.removePage = function (page) {
       if ($scope.model.confirmDelete) {
-        formEditorLocalizationService.localize("composition.row.deleteConfirmation", "Are you sure you want to delete this row?").then(function (value) {
+        formEditorLocalizationService.localize("composition.page.deleteConfirmation", "Are you sure you want to delete this page?").then(function (value) {
           if (confirm(value)) {
-            deleteRow(row);
+            deletePage(page);
           }
         });
       }
       else {
-        deleteRow(row);
+        deletePage(page);
       }
     }
 
-    function deleteRow(row) {
-      var index = $scope.model.value.rows.indexOf(row);
-      $scope.model.value.rows.splice(index, 1);
+    function deletePage(page) {
+      // deleteRow() modifies the rows collection on page, so we need to extract all first rows to delete them one by one
+      var containedRows = [];
+      _.each(page.rows, function (row) {
+        containedRows.push(row);
+      });
+      _.each(containedRows, function (row) {
+        deleteRow(row, page);
+      });
+
+      var index = $scope.model.value.pages.indexOf(page);
+      $scope.model.value.pages.splice(index, 1);
+    }
+
+    $scope.removeRow = function (row, page) {
+      if ($scope.model.confirmDelete) {
+        formEditorLocalizationService.localize("composition.row.deleteConfirmation", "Are you sure you want to delete this row?").then(function (value) {
+          if (confirm(value)) {
+            deleteRow(row, page);
+          }
+        });
+      }
+      else {
+        deleteRow(row, page);
+      }
+    }
+
+    function deleteRow(row, page) {
+      var index = page.rows.indexOf(row);
+      page.rows.splice(index, 1);
 
       var containedFields = [];
       _.each(row.cells, function (cell) {
@@ -302,10 +350,12 @@
     $scope.allFields = function () {
       if (!$scope._allFieldsCache) {
         $scope._allFieldsCache = [];
-        _.each($scope.model.value.rows, function (row) {
-          _.each(row.cells, function (cell) {
-            _.each(cell.fields, function (field) {
-              $scope._allFieldsCache.push(field);
+        _.each($scope.model.value.pages, function(page) {
+          _.each(page.rows, function (row) {
+            _.each(row.cells, function (cell) {
+              _.each(cell.fields, function (field) {
+                $scope._allFieldsCache.push(field);
+              });
             });
           });
         });
@@ -357,10 +407,24 @@
       $scope.setDirty();
     }
 
+    $scope.sortableOptionsPage = {
+      axis: "y",
+      cursor: "move",
+      //handle: ".form-page",
+      update: function (ev, ui) {
+        $scope.setDirty();
+      },
+      stop: function (ev, ui) {
+
+      }
+    };
+
     $scope.sortableOptionsRow = {
       axis: "y",
       cursor: "move",
       handle: ".form-cells",
+      connectWith: ".form-rows",
+      items: "li:not(.no-form-rows)",
       update: function (ev, ui) {
         $scope.setDirty();
       },
@@ -370,7 +434,6 @@
     };
 
     $scope.sortableOptionsField = {
-      //        axis: "y",
       cursor: "move",
       handle: ".form-field-content",
       connectWith: ".form-fields",

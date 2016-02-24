@@ -137,7 +137,7 @@ namespace FormEditor.Fields
 
 			return string.Format(
 @"<a href=""/umbraco/backoffice/FormEditorApi/Download/DownloadFile/{0}?rowId={1}&fieldName={2}"" onclick=""event.cancelBubble=true;"" class=""downloadFile"">
-	<i class=""icon icon-download-alt""></i><span class=""menu-label"">{3}</span>
+	<i class=""icon icon-download-alt""></i><small>{3}</small>
 </a>",
 				content.Id,
 				rowId,

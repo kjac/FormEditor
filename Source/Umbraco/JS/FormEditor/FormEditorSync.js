@@ -1,5 +1,6 @@
 ﻿$(function () {
   var $form = $("form");
+  var activePage = 0;
 
   // validate all named fields and all validations on submit
   $form.submit(function (event) {
@@ -126,6 +127,41 @@
     });
     return isValid;
   }
+
+  // form paging
+  $(".form-btn-next").click(function(e) {
+    if (activePage < _formTotalPages - 1) {
+      activePage++;
+      showActivePage();
+    }
+  });
+  $(".form-btn-previous").click(function(e) {
+    if (activePage > 0) {
+      activePage--;
+      showActivePage();
+    }
+  });
+  function showActivePage() {
+    $(".form-page").hide();
+    $($(".form-page")[activePage]).show();
+    showActivePagingButtons();
+  }
+  function showActivePagingButtons() {
+    if (activePage == 0) {
+      $(".form-btn-previous").hide();
+    }
+    else {
+      $(".form-btn-previous").show();
+    }
+    if (activePage == _formTotalPages - 1) {
+      $(".form-btn-next").hide();
+    }
+    else {
+      $(".form-btn-next").show();
+    }
+  }
+  showActivePagingButtons();
+
 });
 
 // global container and functions for handling cross field validation conditions

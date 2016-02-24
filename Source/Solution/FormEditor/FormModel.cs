@@ -19,8 +19,32 @@ namespace FormEditor
 	{
 		public const string PropertyEditorAlias = @"FormEditor.Form";
 
-		// properties configured by the editor
-		public IEnumerable<Row> Rows { get; set; }
+		private IEnumerable<Page> _pages;
+		private IEnumerable<Row> _rows;
+
+		public IEnumerable<Page> Pages
+		{
+			get
+			{
+				EnsurePagesForBackwardsCompatibility();
+				return _pages;
+			}
+			set
+			{
+				_pages = value;
+			}
+		}
+
+		public IEnumerable<Row> Rows
+		{
+			get
+			{
+				EnsureRowsForBackwardsCompatibility();
+				return _rows;
+			}
+			set { _rows = value; }
+		}
+
 		public IEnumerable<Validation.Validation> Validations { get; set; }
 		public string EmailNotificationRecipients { get; set; }
 		public string EmailNotificationSubject { get; set; }
@@ -139,15 +163,41 @@ namespace FormEditor
 			};
 		}
 
-		public IEnumerable<Fields.Field> AllFields()
+		public IEnumerable<Field> AllFields()
 		{
-			return Rows.SelectMany(r => r.Cells.SelectMany(c => c.Fields));
+			return Pages.SelectMany(p => p.AllFields());
 		}
 
 		public IEnumerable<FieldWithValue> AllValueFields()
 		{
 			return AllFields().OfType<FieldWithValue>();
 		}
+
+		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
+
+		private void EnsurePagesForBackwardsCompatibility()
+		{
+			if(_pages == null && _rows != null)
+			{
+				_pages = new List<Page>
+				{
+					new Page
+					{
+						Rows = _rows
+					}
+				};
+			}
+		}
+
+		private void EnsureRowsForBackwardsCompatibility()
+		{
+			if(_rows == null && _pages != null)
+			{
+				_rows = _pages.SelectMany(p => p.Rows).ToList();
+			}
+		}
+
+		#endregion
 
 		#region Collect submitted values
 

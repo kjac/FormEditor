@@ -22,6 +22,7 @@
     padding: 0;
 
     &.form-rows {
+      min-height: 30px;
 
       li.form-row {
         margin-bottom: 5px;
@@ -196,6 +197,53 @@
       padding: 0;
     }
   }
+
+  .form-pages {
+    margin-bottom: 5px;
+
+    &.pages-disabled {
+      margin-bottom: 0;
+
+      .form-page {
+        padding: 0;
+        margin: 0;
+        border: 0;
+      }
+    }
+
+    .form-page {
+      padding: 5px;
+      margin-bottom: 5px;
+      border: 1px solid @cellBorderColor;
+
+      &:hover {
+        border-color: @cellBorderColorActive;
+      }
+
+      h5 {
+        margin: 5px 0;
+      }
+
+      .form-page-content {
+        padding: 0 2px;
+      }
+    }
+  }
+
+  .no-form-pages, .no-form-rows {
+    text-align: center;
+    padding: 10px;
+    i {
+      display: block;
+    }
+    i:hover small {
+      color: @dimmedColorActive;
+    }
+  }
+  .no-form-rows {
+    padding-top: 0;
+  }
+
 }
 
 .form-editor-edit-field {
@@ -247,29 +295,46 @@
   input:not([type="checkbox"]), textarea, select {
     width: 90%;
   }
+
+  label.control-label {
+    small {
+      text-transform: none;
+    }
+  }
 }
 
 .form-editor, .form-editor-edit-field, .form-editor-picker, .form-editor-config, .form-editor-data, .form-editor-data-entry {
 
-  h4 {
+  h4, h5 {
     &.expandable {
       cursor: pointer;
 
       i {
         vertical-align: middle;
+
+        &.icon-delete {
+          float: right;
+        }
       }
 
-      &:hover i.dimmed {
-        color: @dimmedColorActive;
-      }
+      &:hover {
+        i.icon-navigation-right.dimmed, i.icon-navigation-down.dimmed {
+          color: @dimmedColorActive;
+        }
+      } 
+    }
+  }
+
+  .dimmed {
+    color: @dimmedColor;
+
+    &.dimmed-hover:hover {
+      color: @dimmedColorActive;
+      cursor: pointer;
     }
   }
 
   i {
-    &.dimmed {
-      color: @dimmedColor;
-    }
-
     &.dimmed:hover {
       color: @dimmedColorActive;
     }
@@ -296,6 +361,18 @@
       display: inline-block;
       vertical-align: top;
     }
+
+    small {
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+
+  .umb-actions {
+    .menu-label {
+      padding-left: 0;
+    }
   }
 
   .ui-sortable-placeholder {
@@ -305,6 +382,11 @@
 
   .umb-control-group label small {
     padding-top: 0;
+  }
+
+  small {
+    text-transform: uppercase;
+    font-size: 12px;
   }
 }
 

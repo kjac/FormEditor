@@ -299,6 +299,7 @@
     <Compile Include="Fields\Field.cs" />
     <Compile Include="FormModel.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormValueConverter.cs" />
     <Compile Include="Rendering\ConditionData.cs" />

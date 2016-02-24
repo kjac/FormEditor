@@ -9,6 +9,8 @@
 
     $scope.submitStatus = "none";
 
+    $scope.activePage = 0;
+
     // initialize field default values from global variable
     for (var key in _formDefaultValues) {
       $scope.formData[key] = _formDefaultValues[key];
@@ -152,6 +154,26 @@
       }
     });
 
+    // form paging
+    $scope.isFirstPage = function() {
+      return $scope.activePage == 0;
+    };
+    $scope.isLastPage = function () {
+      return $scope.activePage == (_formTotalPages - 1);
+    };
+    $scope.isActivePage = function (pageNumber) {
+      return $scope.activePage == pageNumber;
+    };
+    $scope.goToNextPage = function() {
+      if ($scope.isLastPage() == false) {
+        $scope.activePage++;
+      }
+    }
+    $scope.goToPreviousPage = function () {
+      if ($scope.isFirstPage() == false) {
+        $scope.activePage--;
+      }
+    }
   }])
   .directive("fileUpload", function () {
     return {

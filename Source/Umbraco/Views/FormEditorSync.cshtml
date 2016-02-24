@@ -11,9 +11,6 @@
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
   form.CollectSubmittedValues();
-
-  // this is used to keep track of the validation errors container (for cross field validations)
-  var validationErrorsContainerAdded = false;
 }
 <!DOCTYPE html>
 <html>
@@ -24,39 +21,62 @@
 <body>
   <form method="POST" enctype="multipart/form-data" novalidate>
     <div class="container">
-      @foreach (var row in form.Rows)
+      @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
+      @foreach (var page in form.Pages)
       {
-        <div class="row @row.Alias">
-          @foreach (var cell in row.Cells)
+        <div class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
+          @foreach (var row in page.Rows)
           {
-            <div class="cell @cell.Alias">
-              @foreach (var field in cell.Fields)
+            <div class="row @row.Alias">
+              @foreach (var cell in row.Cells)
               {
-                // insert the form validation result container above the submit button if one exists
-                if (field.Type == "core.submitbutton" && validationErrorsContainerAdded == false)
-                {
-                  validationErrorsContainerAdded = true;
-                  @AddValidationErrorsContainer(form);
-                }
-                // render the form field with a partial view 
-                // - the view is expected to be located at /Views/Partials/FormEditor/FieldsSync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsSync/core.checkbox.cshtml
-                @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+                <div class="cell @cell.Alias">
+                  @foreach (var field in cell.Fields)
+                  {
+                    // render the form field with a partial view
+                    // - the view is expected to be located at /Views/Partials/FormEditor/FieldsSync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsSync/core.checkbox.cshtml
+                    @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+                  }
+                </div>
               }
             </div>
           }
         </div>
       }
-      @{
-        // if the form validation result container has not been added while rendering the submit button, add it as a row below the entire form
-        if (validationErrorsContainerAdded == false)
-        {
-          <div class="row">
-            <div class="cell">
-              @AddValidationErrorsContainer(form)
+      @* paging links *@
+      <nav>
+        <ul class="pager">
+          <li class="previous form-btn-previous" style="display: none">
+            <a href="javascript:;">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+            </a>
+          </li>
+          <li class="next form-btn-next" style="display: none">
+            <a href="javascript:;">
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      @* form validation errors container (for cross field validations) *@
+      <div class="row">
+        <div class="cell">
+          <div class="form-group">
+            <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
+              <h4>
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
+              </h4>
+              <ul id="validationErrorsList">
+                @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
+                {
+                  <li>@invalidValidation.ErrorMessage</li>
+                }
+              </ul>
             </div>
           </div>
-        }
-      }
+        </div>
+      </div>
     </div>
   </form>
 
@@ -72,25 +92,11 @@
       render the form validations as an array of JSON objects
     *@
     var _formValidations = @form.Validations.Render();
+
+    @*
+      the total number of form pages
+    *@
+    var _formTotalPages = @form.Pages.Count();
   </script>
 </body>
 </html>
-
-@helper AddValidationErrorsContainer(FormModel form)
-{
-  <div class="form-group">
-    <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
-      <h4>
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Error:</span>
-        Form contains errors
-      </h4>
-      <ul id="validationErrorsList">
-        @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
-        {
-          <li>@invalidValidation.ErrorMessage</li>
-        }
-      </ul>
-    </div>
-  </div>
-}

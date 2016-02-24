@@ -10,7 +10,7 @@
       <li class="disallowedField" ng-repeat="fieldType in disallowedFieldTypes() | orderBy: 'prettyName'">
         {{fieldType.prettyName}}
         <i class="icon icon-delete dimmed" ng-click="removeFieldType(fieldType)">
-          <span class="menu-label">remove</span>
+          <small>remove</small>
         </i>
       </li>
     </ul>
