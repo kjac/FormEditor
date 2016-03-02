@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.SelectBoxField>
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
-  <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" @(Model.MultiSelect ? "multiple" : "") size="@(Model.MultiSelect ? Model.FieldValues.Count()" @(Model.Mandatory ? "required" : null)>
+  <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" @(Model.MultiSelect ? "multiple" : "") size="@(Model.MultiSelect ? Model.FieldValues.Count() : 0)" @(Model.Mandatory ? "required" : null)>
     @foreach (var fieldValue in Model.FieldValues)
     {
       <option value="@fieldValue.Value" @(fieldValue.Selected ? "selected" : "")>@fieldValue.Value</option>
