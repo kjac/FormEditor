@@ -7,12 +7,22 @@
         <div class="umb-pane">
           <form-editor-field-basics></form-editor-field-basics>
 
+          <form-editor-field-options></form-editor-field-options>
+
           <label class="control-label" for="multiSelect">
             <input type="checkbox" id="multiSelect" ng-model="dialogData.field.multiSelect" />
-            <form-editor-localize key="edit.dropdown.multiSelect">Multi-select</form-editor-localize>
+            <form-editor-localize key="edit.selectbox.multiSelect">Allow multi-select</form-editor-localize>
+            <small form-editor-localize key="edit.selectbox.multiSelect.helpText">Check this to let the users select multiple options</small>
           </label>
 
-          <form-editor-field-options></form-editor-field-options>
+          <label class="control-label" for="size">
+            <form-editor-localize key="edit.selectbox.size">Number of visible options</form-editor-localize>
+            <small form-editor-localize key="edit.selectbox.size.helpText">A scrollbar will appear if you choose a number less than the number of available options</small>
+          </label>
+          <select id="size" ng-model="dialogData.field.size">
+            <option value="" form-editor-localize key="edit.selectbox.size.all">All available options</option>
+            <option ng-repeat="fieldValue in dialogData.field.fieldValues" ng-value="$index + 1">{{$index + 1}}</option>
+          </select>
 
           <form-editor-field-mandatory></form-editor-field-mandatory>
           <form-editor-field-error-message></form-editor-field-error-message>

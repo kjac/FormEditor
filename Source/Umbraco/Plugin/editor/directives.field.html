@@ -57,7 +57,10 @@
 </script>
 
 <script type="text/ng-template" id="formEditor.fieldOptions.html">
-  <label class="control-label" form-editor-localize key="edit.options">Options</label>
+  <label class="control-label">
+    <form-editor-localize key="edit.options">Options</form-editor-localize>
+    <small form-editor-localize key="edit.options.helpText">Add the options the users should be able to choose from</small>
+  </label>
   <div class="fieldValues">
     <div ui-sortable="sortableOptionsFieldValues" ng-model="dialogData.field.fieldValues">
       <div class="fieldValue selectable" ng-repeat="fieldValue in dialogData.field.fieldValues">
