@@ -39,7 +39,7 @@
       emails: {
         expanded: false
       },
-      successPage: {
+      receipt: {
         expanded: false
       }
     };
@@ -394,7 +394,7 @@
           $scope.model.successPage = {
             name: data.name,
             id: data.id,
-            cssClass: data.cssClass
+            cssClass: "icon " + data.icon
           };
           $scope.setDirty();
         }

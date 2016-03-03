@@ -15,7 +15,14 @@
 </head>
 <body ng-app="formEditor">
   <form ng-controller="FormController" name="form" novalidate ng-cloak>
-    <div class="container">
+    <div class="container" ng-show="showReceipt">
+      <h2>@form.ReceiptHeader</h2>
+      <p>
+        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody)))
+      </p>
+    </div>
+
+    <div class="container" ng-hide="showReceipt">
       @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
       @foreach(var page in form.Pages)
       {
@@ -78,31 +85,26 @@
   @* include Form Editor script for asynchronous postback (using AngularJS) *@
   <script src="/JS/FormEditor/FormEditorAsync.js" type="text/javascript"></script>
 
-  @* this script section sets up state for the JS *@
+  @* this script section sets up state for the JS and thus needs to be a part of the template *@
   <script type="text/javascript">
-    @*
-      default values for form fields
-    *@
+    @* default values for form fields *@
     var _formDefaultValues = {};
     @foreach(var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
     {
       @:_formDefaultValues.@field.FormSafeName = @field.DefaultValue();
     }
 
-    @*
-      form validations as an array of JSON objects
-    *@
+    @* form validations as an array of JSON objects *@
     var _formValidations = @form.Validations.Render();
 
-    @*
-      the Umbraco ID of the content to where the form should be submitted to
-    *@
+    @* the Umbraco ID of the content to where the form should be submitted to *@
     var _formId = @Model.Content.Id;
 
-    @*
-      the total number of form pages
-    *@
+    @* the total number of form pages *@
     var _formTotalPages = @form.Pages.Count();
+
+    @* determine whether a receipt message is available *@
+    var _formHasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
   </script>
 </body>
 </html>

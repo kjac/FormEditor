@@ -1,4 +1,5 @@
 <div class="form-editor" ng-controller="FormEditor.Editor.FormController">
+  <!-- ## layout ## -->
   <div>
     <form-editor-expandable-header expandable="expandedState.composition" header-text-key="composition.header" header-text-default="Form layout"></form-editor-expandable-header>
     <div ng-show="expandedState.composition.expanded">
@@ -71,6 +72,7 @@
 
     </div>
   </div>
+  <!-- ## validation ## -->
   <div ng-if="model.enableValidation">
     <hr />
     <form-editor-expandable-header expandable="expandedState.validation" header-text-key="validation.header" header-text-default="Validation"></form-editor-expandable-header>
@@ -141,6 +143,7 @@
       </p>
     </div>
   </div>
+  <!-- ## notification ## -->
   <div ng-show="emailTemplates.notification || emailTemplates.confirmation">
     <hr />
     <form-editor-expandable-header expandable="expandedState.emails" header-text-key="emails.header" header-text-default="Emails"></form-editor-expandable-header>
@@ -185,17 +188,19 @@
       <input type="email" class="umb-editor" id="emailNotificationFromAddress" ng-model="model.value.emailNotificationFromAddress" ng-required="model.value.emailNotificationRecipients" />
     </div>
   </div>
+  <!-- ## receipt ## -->
   <div>
     <hr />
-    <form-editor-expandable-header expandable="expandedState.successPage" header-text-key="successPage.header" header-text-default="Receipt page"></form-editor-expandable-header>
-    <div ng-show="expandedState.successPage.expanded">
-      <p form-editor-localize key="successPage.text">
-        If you want to redirect the users to another page after a successful form submission, select the page below.
+    <form-editor-expandable-header expandable="expandedState.receipt" header-text-key="receipt.header" header-text-default="Receipt"></form-editor-expandable-header>
+    <div ng-show="expandedState.receipt.expanded">
+      <h5 form-editor-localize key="receipt.page.header">Select a page</h5>
+      <p form-editor-localize key="receipt.page.text">
+        If you want to redirect the users to another page after they have submitted the form, select the page below.
       </p>
       <ul class="unstyled list-icons success-page">
         <li ng-show="model.successPage == null">
           <i class="icon icon-add blue" />
-          <a href ng-click="pickSuccessPage()" form-editor-localize key="successPage.select">Select...</a>
+          <a href ng-click="pickSuccessPage()" form-editor-localize key="receipt.page.select">Select...</a>
         </li>
         <li ng-show="model.successPage != null">
           <i class="{{model.successPage.cssClass}}" />
@@ -205,6 +210,19 @@
           <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
         </li>
       </ul>
+
+      <h5 form-editor-localize key="receipt.message.header">...or enter a message</h5>
+      <p form-editor-localize key="receipt.message.text">
+        If you'd rather show a message to the users after they have submitted the form, enter the message below.
+      </p>
+      <label class="control-label" for="receiptHeader" form-editor-localize key="receipt.message.heading">
+        Heading
+      </label>
+      <input type="text" class="umb-editor" id="receiptHeader" ng-model="model.value.receiptHeader" />
+      <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="receipt.message.body">
+        Text
+      </label>
+      <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody"></textarea>
     </div>
   </div>
 </div>

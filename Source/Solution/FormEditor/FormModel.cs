@@ -22,6 +22,8 @@ namespace FormEditor
 		private IEnumerable<Page> _pages;
 		private IEnumerable<Row> _rows;
 
+		#region Properties configured in the form editor
+
 		public IEnumerable<Page> Pages
 		{
 			get
@@ -53,13 +55,20 @@ namespace FormEditor
 		public string EmailConfirmationSubject { get; set; }
 		public string EmailConfirmationFromAddress { get; set; }
 		public int SuccessPageId { get; set; }
+		public string ReceiptHeader { get; set; }
+		public string ReceiptBody { get; set; }
 
-		// properties configured in prevalues
+		#endregion
+
+		#region Properties configured in the prevalues
+
 		private string EmailNotificationTemplate { get; set; }
 		private string EmailConfirmationTemplate { get; set; }
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
 		private bool DisableValidation { get; set; }
+
+		#endregion
 
 		// events
 		public static event FormEditorCancelEventHandler BeforeAddToIndex;

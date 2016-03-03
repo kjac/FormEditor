@@ -8,6 +8,7 @@
     $scope.invalidValidations = [];
 
     $scope.submitStatus = "none";
+    $scope.showReceipt = false;
 
     $scope.activePage = 0;
 
@@ -86,6 +87,7 @@
           if (response.data && response.data.redirectUrl) {
             $window.location.href = response.data.redirectUrl;
           }
+          $scope.showReceipt = true;
           // add your own success handling here
         }, function errorCallback(response) {
           $scope.submitStatus = "failure";
