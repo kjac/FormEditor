@@ -134,6 +134,11 @@
     }
 
     $scope.pickRow = function (page) {
+      // if we only have one row, let's not bother the user with the dialog
+      if ($scope.model.config.rowLayouts.length == 1) {
+        $scope.addRow(page, $scope.model.config.rowLayouts[0].alias);
+        return;
+      }
       var options = [];
       _.each($scope.model.config.rowLayouts, function (rowLayout) {
         formEditorLocalizationService.localize("composition.row." + rowLayout.alias, rowLayout.prettyName).then(function (value) {
