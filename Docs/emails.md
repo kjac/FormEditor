@@ -17,4 +17,4 @@ An email template is rendered in the Umbraco context. This means you'll be able 
 Have a look at the sample email template for inspiration :)
 
 ## Next step
-Onwards to [extending Form Editor](extend.md).
+Onwards to [reusable forms](reuse.md).

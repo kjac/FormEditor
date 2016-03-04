@@ -4,8 +4,11 @@
 @{
   Layout = null;
 
+  // the content that contains the form model 
+  var formContent = Model.Content;
+
   // get the form model (named "form" on the content type)
-  var form = Model.Content.GetPropertyValue<FormModel>("form");
+  var form = formContent.GetPropertyValue<FormModel>("form");  
 }
 <!DOCTYPE html>
 <html>
@@ -98,7 +101,7 @@
     var _formValidations = @form.Validations.Render();
 
     @* the Umbraco ID of the content to where the form should be submitted to *@
-    var _formId = @Model.Content.Id;
+    var _formId = @formContent.Id;
 
     @* the total number of form pages *@
     var _formTotalPages = @form.Pages.Count();
