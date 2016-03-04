@@ -67,9 +67,14 @@
   "emailNotification.subject": "Emnetekst",
   "emailNotification.sender": "Afsenderens e-mailadresse",
   
-  "successPage.header": "Succes-side",
-  "successPage.text": "Hvis du vil videresende brugerne til en anden side, når de har udfyldt formen, skal du vælge denne side nedenfor.",
-  "successPage.select": "Vælg...",
+  "receipt.header" : "Kvittering",
+  "receipt.page.header": "Vælg en side",
+  "receipt.page.text": "Hvis du vil videresende brugerne til en anden side, når de har udfyldt formen, kan du vælge denne side nedenfor.",
+  "receipt.page.select": "Vælg...",
+  "receipt.message.header": "...eller indtast en besked",
+  "receipt.message.text": "Hvis du hellere vil vise en besked til brugerne, når de har udfyldt formen, kan du indtaste denne besked nedenfor.",
+  "receipt.message.heading": "Overskrift",
+  "receipt.message.body": "Tekst",
 
   "data.visibleFields.header": "Viste felter", 
   "data.visibleFields.text": "Vælg de felter, du ønsker vist i tabellen nedenfor. Hvis du vælger at skjule et eller flere felter, kan du klikke på en række i tabellen for at se alle rækkens felter.", 
