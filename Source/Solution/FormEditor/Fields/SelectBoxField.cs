@@ -10,7 +10,7 @@
 		}
 		public override string PrettyName
 		{
-			get { return "Select box"; }
+			get { return "Select box (multiple)"; }
 		}
 		public override string Type
 		{
@@ -21,5 +21,6 @@
 		{
 			get { return MultiSelect; }
 		}
+		public int? Size { get; set; }
 	}
 }

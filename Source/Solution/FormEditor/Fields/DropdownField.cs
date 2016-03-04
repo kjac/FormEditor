@@ -10,7 +10,7 @@
 		}
 		public override string PrettyName
 		{
-			get { return "Drop-down"; }
+			get { return "Select box (drop-down)"; }
 		}
 		public override string Type
 		{
