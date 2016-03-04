@@ -16,6 +16,7 @@ Now add a content picker to the page content type and select *My Reusable Form* 
 
 ## Tweaking the templates
 Once you've got the content all set up, you'll need to tweak the template a bit in order to:
+
 1. Retrieve the form model from the selected form.
 2. Store the form submissions on the selected form.
 
