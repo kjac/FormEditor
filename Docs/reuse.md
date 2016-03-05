@@ -50,4 +50,4 @@ var formContent = Umbraco.TypedContent(formContentId);
 That's it - you're done. 
 
 ## Next step
-Onwards to [extending Form Editor](extend.md).
+Onwards to [working with form submissions](submissions.md).
