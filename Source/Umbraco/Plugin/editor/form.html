@@ -1,82 +1,94 @@
 <div class="form-editor" ng-controller="FormEditor.Editor.FormController">
+  <ul class="nav nav-tabs">
+
+    <!-- ngRepeat: tab in visibleTabs -->
+    <li val-tab="" class="active">
+      <a href="#tabFormEditorLayout" data-toggle="tab" class="ng-binding" form-editor-localize key="composition.header">Form layout</a>
+    </li>
+    <li val-tab="" ng-if="model.enableValidation">
+      <a href="#tabFormEditorValidation" data-toggle="tab" class="ng-binding" form-editor-localize key="validation.header">Validation</a>
+    </li>
+    <li val-tab="" ng-if="emailTemplates.notification || emailTemplates.confirmation">
+      <a href="#tabFormEditorEmails" data-toggle="tab" class="ng-binding" form-editor-localize key="emails.header">Emails</a>
+    </li>
+    <li val-tab="">
+      <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.header">Receipt</a>
+    </li>
+
+  </ul>
+
   <!-- ## layout ## -->
-  <div>
-    <form-editor-expandable-header expandable="expandedState.composition" header-text-key="composition.header" header-text-default="Form layout"></form-editor-expandable-header>
-    <div ng-show="expandedState.composition.expanded">
-      <p form-editor-localize key="composition.text">
-        Add rows and fields below to layout your form. If you need to rearrange the form layout later on, you can do so by dragging rows and fields around as you please.
-      </p>
-      <div class="form-pages" ng-class="{'pages-disabled': !model.enablePages}" ui-sortable="sortableOptionsPage" ng-model="model.value.pages">
-        <div class="form-page" ng-repeat="page in model.value.pages">
-          <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
-            <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
-            <form-editor-localize key="composition.pages.header">Page #</form-editor-localize>{{$index + 1}}
-            <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
-            <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
-          </h5>
-          <div class="form-page-content" ng-hide="model.enablePages && page.collapsed">
-            <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="page.rows">
-              <li class="form-row" ng-class="row.alias" ng-repeat="row in page.rows">
-                <div>
-                  <table class="form-cells">
-                    <tr>
-                      <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
-                        <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
-                          <div class="form-field" ng-repeat="field in cell.fields">
-                            <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
-                              <span class="form-field-icon-and-name" ng-click="editField(field)">
-                                <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
-                                <span class="form-field-name">{{getFieldName(field)}}</span>
-                              </span>
-                              <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
-                            </div>
+  <div id="tabFormEditorLayout" class="tab-pane active">
+    <p form-editor-localize key="composition.text">
+      Add rows and fields below to layout your form. If you need to rearrange the form layout later on, you can do so by dragging rows and fields around as you please.
+    </p>
+    <div class="form-pages" ng-class="{'pages-disabled': !model.enablePages}" ui-sortable="sortableOptionsPage" ng-model="model.value.pages">
+      <div class="form-page" ng-repeat="page in model.value.pages">
+        <h5 class="expandable" ng-click="page.collapsed = !page.collapsed" ng-show="model.enablePages">
+          <i class="icon icon-navigation-{{page.collapsed ? 'right' : 'down'}} dimmed"></i>
+          <form-editor-localize key="composition.pages.header">Page #</form-editor-localize>{{$index + 1}}
+          <small ng-show="page.collapsed">(<form-editor-localize key="common.clickToExpand">click to expand</form-editor-localize>)</small>
+          <i class="icon icon-delete dimmed" ng-click="removePage(page)"></i>
+        </h5>
+        <div class="form-page-content" ng-hide="model.enablePages && page.collapsed">
+          <ul class="form-rows" ui-sortable="sortableOptionsRow" ng-model="page.rows">
+            <li class="form-row" ng-class="row.alias" ng-repeat="row in page.rows">
+              <div>
+                <table class="form-cells">
+                  <tr>
+                    <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
+                      <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
+                        <div class="form-field" ng-repeat="field in cell.fields">
+                          <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
+                            <span class="form-field-icon-and-name" ng-click="editField(field)">
+                              <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
+                              <span class="form-field-name">{{getFieldName(field)}}</span>
+                            </span>
+                            <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
                           </div>
                         </div>
-                      </td>
-                      <td class="form-cell-delete" rowspan="2">
-                        <i class="icon icon-delete dimmed" ng-click="removeRow(row, page)"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="form-cell-tools form-cell{{$index}}" ng-repeat="cell in row.cells">
-                        <i class="icon icon-add dimmed" ng-click="pickField(cell)">
-                          <small form-editor-localize key="composition.field.add">Add a field</small>
-                        </i>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </li>
-              <li ng-hide="page.rows.length" class="no-form-rows">
-                <i class="icon icon-add dimmed" ng-click="pickRow(page)">
-                  <small class="dimmed dimmed-hover" form-editor-localize key="composition.rows.empty">Click here to add a row</small>
-                </i>
-              </li>
-            </ul>
-            <div class="form-row-tools">
-              <i class="icon icon-add dimmed" ng-show="page.rows.length" ng-click="pickRow(page)">
-                <small form-editor-localize key="composition.row.add">Add a row</small>
+                      </div>
+                    </td>
+                    <td class="form-cell-delete" rowspan="2">
+                      <i class="icon icon-delete dimmed" ng-click="removeRow(row, page)"></i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="form-cell-tools form-cell{{$index}}" ng-repeat="cell in row.cells">
+                      <i class="icon icon-add dimmed" ng-click="pickField(cell)">
+                        <small form-editor-localize key="composition.field.add">Add a field</small>
+                      </i>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </li>
+            <li ng-hide="page.rows.length" class="no-form-rows">
+              <i class="icon icon-add dimmed" ng-click="pickRow(page)">
+                <small class="dimmed dimmed-hover" form-editor-localize key="composition.rows.empty">Click here to add a row</small>
               </i>
-            </div>
+            </li>
+          </ul>
+          <div class="form-row-tools">
+            <i class="icon icon-add dimmed" ng-show="page.rows.length" ng-click="pickRow(page)">
+              <small form-editor-localize key="composition.row.add">Add a row</small>
+            </i>
           </div>
         </div>
       </div>
-      <div ng-show="model.enablePages && !model.value.pages.length" class="no-form-pages">
-        <i class="icon icon-add dimmed" ng-click="addPage()">
-          <small form-editor-localize key="composition.pages.empty">Click here to add a page</small>
-        </i>
-      </div>
-      <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages && model.value.pages.length">
-        <small form-editor-localize key="composition.pages.add">Add a page</small>
-      </i>
-
     </div>
+    <div ng-show="model.enablePages && !model.value.pages.length" class="no-form-pages">
+      <i class="icon icon-add dimmed" ng-click="addPage()">
+        <small form-editor-localize key="composition.pages.empty">Click here to add a page</small>
+      </i>
+    </div>
+    <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages && model.value.pages.length">
+      <small form-editor-localize key="composition.pages.add">Add a page</small>
+    </i>
   </div>
   <!-- ## validation ## -->
-  <div ng-if="model.enableValidation">
-    <hr />
-    <form-editor-expandable-header expandable="expandedState.validation" header-text-key="validation.header" header-text-default="Validation"></form-editor-expandable-header>
-    <div ng-show="expandedState.validation.expanded && allValueFields().length > 0">
+  <div id="tabFormEditorValidation" ng-if="model.enableValidation" class="tab-pane">
+    <div ng-show="allValueFields().length > 0">
       <p form-editor-localize key="validation.text">
         Here you can set up validations for the entire form, for example "if field A is empty then field B can't be empty". A validation consists of a set of rules that must be fulfilled, and an error message to display if the rules are not fulfilled.
       </p>
@@ -137,17 +149,15 @@
         <small form-editor-localize key="validation.add">Add a validation</small>
       </i>
     </div>
-    <div ng-show="expandedState.validation.expanded && allValueFields().length == 0">
+    <div ng-show="allValueFields().length == 0">
       <p form-editor-localize key="validation.text.noFields">
         You must add fields to your form before you set up validation.
       </p>
     </div>
   </div>
   <!-- ## notification ## -->
-  <div ng-show="emailTemplates.notification || emailTemplates.confirmation">
-    <hr />
-    <form-editor-expandable-header expandable="expandedState.emails" header-text-key="emails.header" header-text-default="Emails"></form-editor-expandable-header>
-    <div ng-show="expandedState.emails.expanded && emailTemplates.confirmation">
+  <div id="tabFormEditorEmails" ng-if="emailTemplates.notification || emailTemplates.confirmation" class="tab-pane">
+    <div ng-show="emailTemplates.confirmation">
       <h5 ng-show="emailTemplates.notification" form-editor-localize key="emailConfirmation.header">Confirmation email</h5>
       <p form-editor-localize key="emailConfirmation.text">
         If you want to send a confirmation email to the users when they submit the form, select the form field which will contain the recipient email address(es) and enter the email subject line and the sender email address.
@@ -168,7 +178,7 @@
       </label>
       <input type="email" class="umb-editor" id="emailConfirmationFromAddress" ng-model="model.value.emailConfirmationFromAddress" ng-required="model.value.emailConfirmationRecipientsField" />
     </div>
-    <div ng-show="expandedState.emails.expanded && emailTemplates.notification">
+    <div ng-show="emailTemplates.notification">
       <h5 ng-show="emailTemplates.confirmation" form-editor-localize key="emailNotification.header">Notification email</h5>
       <p form-editor-localize key="emailNotification.text">
         If you want a notification email when the users submit the form, enter the recipient email address(es), the email subject line and the sender email address.
@@ -189,41 +199,37 @@
     </div>
   </div>
   <!-- ## receipt ## -->
-  <div>
-    <hr />
-    <form-editor-expandable-header expandable="expandedState.receipt" header-text-key="receipt.header" header-text-default="Receipt"></form-editor-expandable-header>
-    <div ng-show="expandedState.receipt.expanded">
-      <h5 form-editor-localize key="receipt.page.header">Select a page</h5>
-      <p form-editor-localize key="receipt.page.text">
-        If you want to redirect the users to another page after they have submitted the form, select the page below.
-      </p>
-      <ul class="unstyled list-icons success-page">
-        <li ng-show="model.successPage == null">
-          <i class="icon icon-add blue" />
-          <a href ng-click="pickSuccessPage()" form-editor-localize key="receipt.page.select">Select...</a>
-        </li>
-        <li ng-show="model.successPage != null">
-          <i class="{{model.successPage.cssClass}}" />
-          <a href ng-click="pickSuccessPage()">
-            {{model.successPage.name}}
-          </a>
-          <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
-        </li>
-      </ul>
+  <div id="tabFormEditorReceipt" class="tab-pane">
+    <h5 form-editor-localize key="receipt.page.header">Select a page</h5>
+    <p form-editor-localize key="receipt.page.text">
+      If you want to redirect the users to another page after they have submitted the form, select the page below.
+    </p>
+    <ul class="unstyled list-icons success-page">
+      <li ng-show="model.successPage == null">
+        <i class="icon icon-add blue" />
+        <a href ng-click="pickSuccessPage()" form-editor-localize key="receipt.page.select">Select...</a>
+      </li>
+      <li ng-show="model.successPage != null">
+        <i class="{{model.successPage.cssClass}}" />
+        <a href ng-click="pickSuccessPage()">
+          {{model.successPage.name}}
+        </a>
+        <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
+      </li>
+    </ul>
 
-      <h5 form-editor-localize key="receipt.message.header">...or enter a message</h5>
-      <p form-editor-localize key="receipt.message.text">
-        If you'd rather show a message to the users after they have submitted the form, enter the message below.
-      </p>
-      <label class="control-label" for="receiptHeader" form-editor-localize key="receipt.message.heading">
-        Heading
-      </label>
-      <input type="text" class="umb-editor" id="receiptHeader" ng-model="model.value.receiptHeader" />
-      <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="receipt.message.body">
-        Text
-      </label>
-      <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody" rows="5"></textarea>
-    </div>
+    <h5 form-editor-localize key="receipt.message.header">...or enter a message</h5>
+    <p form-editor-localize key="receipt.message.text">
+      If you'd rather show a message to the users after they have submitted the form, enter the message below.
+    </p>
+    <label class="control-label" for="receiptHeader" form-editor-localize key="receipt.message.heading">
+      Heading
+    </label>
+    <input type="text" class="umb-editor" id="receiptHeader" ng-model="model.value.receiptHeader" />
+    <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="receipt.message.body">
+      Text
+    </label>
+    <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody" rows="5"></textarea>
   </div>
 </div>
 
