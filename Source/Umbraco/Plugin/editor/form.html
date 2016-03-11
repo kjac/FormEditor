@@ -1,15 +1,15 @@
 <div class="form-editor" ng-controller="FormEditor.Editor.FormController">
   <ul class="tabs">
-    <li val-tab="" class="active">
+    <li class="active">
       <a href="#tabFormEditorLayout" data-toggle="tab" class="ng-binding" form-editor-localize key="composition.header">Form layout</a>
     </li>
-    <li val-tab="" ng-if="model.enableValidation">
+    <li ng-if="model.enableValidation">
       <a href="#tabFormEditorValidation" data-toggle="tab" class="ng-binding" form-editor-localize key="validation.header">Validation</a>
     </li>
-    <li val-tab="" ng-if="emailTemplates.notification || emailTemplates.confirmation">
+    <li ng-if="emailTemplates.notification || emailTemplates.confirmation">
       <a href="#tabFormEditorEmails" data-toggle="tab" class="ng-binding" form-editor-localize key="emails.header">Emails</a>
     </li>
-    <li val-tab="">
+    <li>
       <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.header">Receipt</a>
     </li>
   </ul>
