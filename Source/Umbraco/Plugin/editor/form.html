@@ -12,6 +12,9 @@
     <li>
       <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.header">Receipt</a>
     </li>
+    <li>
+      <a href="#tabFormEditorData" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.data">Submissions</a>
+    </li>
   </ul>
 
   <!-- ## layout ## -->
@@ -227,6 +230,10 @@
       Text
     </label>
     <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody" rows="5"></textarea>
+  </div>
+  <!-- ## data ##-->
+  <div id="tabFormEditorData" class="tab-pane">
+    <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
   </div>
 </div>
 

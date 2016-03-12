@@ -1,13 +1,16 @@
 <div class="umb-editor umb-listview form-editor-data" ng-controller="FormEditor.Editor.DataController" ng-switch="dataState">
+  <p form-editor-localize="" key="data.text">
+    The form submissions for your form are listed in the table below.
+  </p>
   <div class="row-fluid" ng-switch-when="loading">
     <span class="dimmed" form-editor-localize key="data.loadingData">
-      Loading data...
+      Loading submissions...
     </span>
   </div>
-  <div class="row-fluid" ng-switch-when="no-data">
-    <span class="dimmed" form-editor-localize key="data.noData">
-      No data found.
-    </span>
+  <div class="row-fluid no-data" ng-switch-when="no-data">
+    <i class="icon icon-info dimmed">
+      <small class="dimmed dimmed-hover" form-editor-localize="" key="data.noData">No submissions found</small>
+    </i>
   </div>
   <div class="row-fluid" ng-switch-when="data">
 

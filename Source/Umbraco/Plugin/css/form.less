@@ -13,7 +13,6 @@
 @fieldNameWidth: 140;
 
 .form-editor {
-  display: table;
   width: 100%;
 
   ul {
@@ -199,6 +198,8 @@
   }
 
   .form-pages {
+    display: table;
+    width: 100%;
     margin-bottom: 5px;
 
     &.pages-disabled {
@@ -256,22 +257,23 @@
     margin-bottom: 10px;
     border-bottom: 1px solid @cellBorderColorActive;
     li {
-        margin-bottom: -1px;
-        display: inline-block;
-        a, a.active, a:hover, a:focus {
-            text-decoration: none;
-            padding: 5px;
-            border: 0;
-            background: none;
-        }
-        &:hover {
-            transition: 0.3s ease;
-            border-bottom: 2px solid @cellBorderColorActive;
-        }
-        &.active {
-            font-weight: bold;
-            border-bottom: 2px solid black;
-        }
+      margin-bottom: -1px;
+      display: inline-block;
+      a, a.active, a:hover, a:focus {
+        text-decoration: none;
+        padding: 5px;
+        border: 0;
+        background: none;
+      }
+      &:hover {
+        transition: 0.4s ease-in;
+        border-bottom: 2px solid @cellBorderColorActive;
+      }
+      &.active {
+        transition: none;
+        font-weight: bold;
+        border-bottom: 2px solid black;
+      }
     }
   }
 }
@@ -425,6 +427,16 @@
 }
 
 .form-editor-data, .form-editor-data-entry {
+  .no-data {
+    text-align: center;
+    i.dimmed {
+      &:hover, *:hover {
+        cursor: default;
+        color: @dimmedColor;
+      }
+    }
+  }
+
   .dimmed {
     color: @dimmedColor;
   }
