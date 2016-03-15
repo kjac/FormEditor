@@ -47,6 +47,12 @@
                view: "boolean"
             },
             {
+               label: "Show IP addresses",
+               description: "Show the logged IP addresses of the form submissions (if IP logging is enabled)",
+               key: "showIp",
+               view: "boolean"
+            },
+            {
                label: "Strip HTML",
                description: "Automatically strip HTML from all fields in all form submissions",
                key: "stripHtml",
@@ -83,15 +89,9 @@
       prevalues: {
         fields: [
             {
-               label: "Hide label",
-               description: "Hide the label and let the data view take up the entire page width",
-               key: "hideLabel",
-               view: "boolean"
-            },
-            {
-               label: "Show IP addresses",
-               description: "Show the logged IP addresses of the form submissions (if IP logging is enabled)",
-               key: "showIp",
+               label: "Obsolete",
+               description: "This datatype is obsolete and will be removed in an upcoming version of FormEditor",
+               key: "obsolete",
                view: "boolean"
             }
         ]

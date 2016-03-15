@@ -264,7 +264,6 @@
     <Compile Include="Events\FormEditorEventArgs.cs" />
     <Compile Include="Events\FormEditorEventHandler.cs" />
     <Compile Include="Fields\FieldWithPlaceholder.cs" />
-    <Compile Include="FormDataModel.cs" />
     <Compile Include="Data\Field.cs" />
     <Compile Include="Data\FormData.cs" />
     <Compile Include="Data\Row.cs" />

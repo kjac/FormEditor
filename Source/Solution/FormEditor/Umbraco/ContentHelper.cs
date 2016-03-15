@@ -39,7 +39,7 @@ namespace FormEditor.Umbraco
 
 		public static bool IpDisplayEnabled(IContent document)
 		{
-			return PreValueEnabled(document, FormDataModel.PropertyEditorAlias, "showIp");
+			return PreValueEnabled(document, FormModel.PropertyEditorAlias, "showIp");
 		}
 
 		public static bool IpLoggingEnabled(IContent document)
