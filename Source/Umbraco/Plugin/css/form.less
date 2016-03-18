@@ -1,3 +1,4 @@
+@fontColor: #343434;
 @dangerColor: #b94a48;
 @dimmedColor: #d9d9d9;
 @dimmedColorActive: #343434;
@@ -44,9 +45,10 @@
           }
 
           th {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: bold;
             text-transform: uppercase;
+            padding-left: 2px;
           }
         }
 
@@ -253,7 +255,6 @@
   }
 
   ul.tabs {
-    text-transform: uppercase;
     margin-bottom: 10px;
     border-bottom: 1px solid @cellBorderColorActive;
     li {
@@ -264,6 +265,10 @@
         padding: 5px;
         border: 0;
         background: none;
+        color: @fontColor;
+        i {
+          vertical-align: text-top;
+        }
       }
       &:hover {
         transition: 0.4s ease-in;
@@ -338,7 +343,7 @@
 .form-editor, .form-editor-edit-field, .form-editor-picker, .form-editor-config, .form-editor-data, .form-editor-data-entry {
 
   h5 {
-    color: #343434;
+    color: @fontColor;
   }
 
   h4, h5 {

@@ -1,19 +1,34 @@
 <div class="form-editor" ng-controller="FormEditor.Editor.FormController">
   <ul class="tabs">
     <li class="active">
-      <a href="#tabFormEditorLayout" data-toggle="tab" class="ng-binding" form-editor-localize key="composition.header">Form layout</a>
+      <a href="#tabFormEditorLayout" data-toggle="tab" class="ng-binding">
+        <i class="icon icon-layout"></i>
+        <form-editor-localize key="composition.header">Form layout</form-editor-localize>
+      </a>
     </li>
     <li ng-if="model.enableValidation">
-      <a href="#tabFormEditorValidation" data-toggle="tab" class="ng-binding" form-editor-localize key="validation.header">Validation</a>
+      <a href="#tabFormEditorValidation" data-toggle="tab" class="ng-binding">
+        <i class="icon icon-check"></i>
+        <form-editor-localize key="validation.header">Validation</form-editor-localize>
+      </a>
     </li>
     <li ng-if="emailTemplates.notification || emailTemplates.confirmation">
-      <a href="#tabFormEditorEmails" data-toggle="tab" class="ng-binding" form-editor-localize key="emails.header">Emails</a>
+      <a href="#tabFormEditorEmails" data-toggle="tab" class="ng-binding">
+        <i class="icon icon-message"></i>
+        <form-editor-localize key="emails.header">Emails</form-editor-localize>
+      </a>
     </li>
     <li>
-      <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.header">Receipt</a>
+      <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding">
+        <i class="icon icon-document"></i>
+        <form-editor-localize key="receipt.header">Receipt</form-editor-localize>
+      </a>
     </li>
     <li>
-      <a href="#tabFormEditorData" data-toggle="tab" class="ng-binding" form-editor-localize key="receipt.data">Submissions</a>
+      <a href="#tabFormEditorData" data-toggle="tab" class="ng-binding">
+        <i class="icon icon-list"></i>
+        <form-editor-localize key="data.header">Submissions</form-editor-localize>
+      </a>
     </li>
   </ul>
 
