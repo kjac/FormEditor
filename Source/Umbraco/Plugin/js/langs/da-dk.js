@@ -70,6 +70,7 @@
   "emailNotification.sender": "Afsenderens e-mailadresse",
   
   "receipt.header" : "Kvittering",
+  "receipt.page": "Kvitteringsside",
   "receipt.page.header": "Vælg en side",
   "receipt.page.text": "Hvis du vil videresende brugerne til en anden side, når de har udfyldt formularen, kan du vælge denne side nedenfor.",
   "receipt.page.select": "Vælg...",
