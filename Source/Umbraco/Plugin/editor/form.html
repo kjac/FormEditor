@@ -150,7 +150,9 @@
                 </i>
                 <div class="form-validation-error-message">
                   <label for="validationError{{$index}}" class="control-label" form-editor-localize key="validation.errorMessage">Error message</label>
-                  <input id="validationError{{$index}}" class="umb-editor" type="text" ng-model="validation.errorMessage" />
+                  <div class="controls controls-row">
+                    <input id="validationError{{$index}}" class="umb-editor" type="text" ng-model="validation.errorMessage" />
+                  </div>
                 </div>
               </td>
               <td class="form-cell-delete">
@@ -180,18 +182,25 @@
       <label class="control-label" for="emailConfirmationRecipientsField" form-editor-localize key="emailConfirmation.recipientsField">
         Recipients field
       </label>
-      <select id="emailConfirmationRecipientsField" ng-model="model.value.emailConfirmationRecipientsField" ng-options="fieldName for fieldName in allFieldNames()">
-        <option value=""></option>
-      </select>
+      <div class="controls controls-row">
+        <select id="emailConfirmationRecipientsField" ng-model="model.value.emailConfirmationRecipientsField" ng-options="fieldName for fieldName in allFieldNames()">
+          <option value=""></option>
+        </select>
+      </div>
       <div class="propertySeparator"></div>
       <label class="control-label" for="emailConfirmationSubject" form-editor-localize key="emailConfirmation.subject">
         Email subject
       </label>
-      <input type="text" class="umb-editor" id="emailConfirmationSubject" ng-model="model.value.emailConfirmationSubject" ng-required="model.value.emailConfirmationRecipientsField" />
+      <div class="controls controls-row">
+        <input type="text" class="umb-editor" id="emailConfirmationSubject" ng-model="model.value.emailConfirmationSubject" ng-required="model.value.emailConfirmationRecipientsField" />
+      </div>
+      <div class="propertySeparator"></div>
       <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="emailConfirmation.sender">
         Sender email address
       </label>
-      <input type="email" class="umb-editor" id="emailConfirmationFromAddress" ng-model="model.value.emailConfirmationFromAddress" ng-required="model.value.emailConfirmationRecipientsField" />
+      <div class="controls controls-row">
+        <input type="email" class="umb-editor" id="emailConfirmationFromAddress" ng-model="model.value.emailConfirmationFromAddress" ng-required="model.value.emailConfirmationRecipientsField" />
+      </div>
     </div>
     <div ng-show="emailTemplates.notification">
       <h5 ng-show="emailTemplates.confirmation" form-editor-localize key="emailNotification.header">Notification email</h5>
@@ -201,21 +210,32 @@
       <label class="control-label" for="emailNotificationRecipients" form-editor-localize key="emailNotification.recipients">
         Recipient addresses
       </label>
-      <input type="email" multiple="true" class="umb-editor" id="emailNotificationRecipients" ng-model="model.value.emailNotificationRecipients" />
+      <div class="controls controls-row">
+        <input type="email" multiple="true" class="umb-editor" id="emailNotificationRecipients" ng-model="model.value.emailNotificationRecipients" />
+      </div>
       <div class="propertySeparator"></div>
       <label class="control-label" for="emailNotificationSubject" form-editor-localize key="emailNotification.subject">
         Email subject
       </label>
-      <input type="text" class="umb-editor" id="emailNotificationSubject" ng-model="model.value.emailNotificationSubject" ng-required="model.value.emailNotificationRecipients" />
+      <div class="controls controls-row">
+        <input type="text" class="umb-editor" id="emailNotificationSubject" ng-model="model.value.emailNotificationSubject" ng-required="model.value.emailNotificationRecipients" />
+      </div>
+      <div class="propertySeparator"></div>
       <label class="control-label" for="emailNotificationFromAddress" form-editor-localize key="emailNotification.sender">
         Sender email address
       </label>
-      <input type="email" class="umb-editor" id="emailNotificationFromAddress" ng-model="model.value.emailNotificationFromAddress" ng-required="model.value.emailNotificationRecipients" />
-      <label class="control-label">
-        <input type="checkbox" ng-model="model.value.emailNotificationAttachments" />
-        <form-editor-localize key="emailNotification.attachments">Attach uploaded files to the email</form-editor-localize>
-        <small class="help-text" form-editor-localize key="emailNotification.attachments.helpText">When choosing this option, please consider limiting the allowed size of the uploaded files.</small>
-      </label>
+      <div class="controls controls-row">
+        <input type="email" class="umb-editor" id="emailNotificationFromAddress" ng-model="model.value.emailNotificationFromAddress" ng-required="model.value.emailNotificationRecipients" />
+      </div>
+      <div class="propertySeparator"></div>
+      <label class="control-label"></label>
+      <div class="controls controls-row">
+        <label class="checkbox">
+          <input type="checkbox" ng-model="model.value.emailNotificationAttachments" />
+          <form-editor-localize key="emailNotification.attachments">Attach uploaded files to the email</form-editor-localize>
+          <small class="help-text" form-editor-localize key="emailNotification.attachments.helpText">When choosing this option, please consider limiting the allowed size of the uploaded files.</small>
+        </label>
+      </div>
     </div>
   </div>
   <!-- ## receipt ## -->
@@ -224,19 +244,22 @@
     <p form-editor-localize key="receipt.page.text">
       If you want to redirect the users to another page after they have submitted the form, select the page below.
     </p>
-    <ul class="unstyled list-icons success-page">
-      <li ng-show="model.successPage == null">
-        <i class="icon icon-add blue" />
-        <a href ng-click="pickSuccessPage()" form-editor-localize key="receipt.page.select">Select...</a>
-      </li>
-      <li ng-show="model.successPage != null">
-        <i class="{{model.successPage.cssClass}}" />
-        <a href ng-click="pickSuccessPage()">
-          {{model.successPage.name}}
-        </a>
-        <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
-      </li>
-    </ul>
+    <label class="control-label">Blah</label>
+    <div class="controls controls-row">
+      <ul class="unstyled list-icons success-page">
+        <li ng-show="model.successPage == null">
+          <i class="icon icon-add blue" />
+          <a href ng-click="pickSuccessPage()" form-editor-localize key="receipt.page.select">Select...</a>
+        </li>
+        <li ng-show="model.successPage != null">
+          <i class="{{model.successPage.cssClass}}" />
+          <a href ng-click="pickSuccessPage()">
+            {{model.successPage.name}}
+          </a>
+          <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
+        </li>
+      </ul>      
+    </div>
 
     <h5 form-editor-localize key="receipt.message.header">...or enter a message</h5>
     <p form-editor-localize key="receipt.message.text">
@@ -245,11 +268,16 @@
     <label class="control-label" for="receiptHeader" form-editor-localize key="receipt.message.heading">
       Heading
     </label>
-    <input type="text" class="umb-editor" id="receiptHeader" ng-model="model.value.receiptHeader" />
-    <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="receipt.message.body">
+    <div class="controls controls-row">
+      <input type="text" class="umb-editor" id="receiptHeader" ng-model="model.value.receiptHeader" />
+    </div>
+    <div class="propertySeparator"></div>
+    <label class="control-label" for="receiptBody" form-editor-localize key="receipt.message.body">
       Text
     </label>
-    <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody" rows="5"></textarea>
+    <div class="controls controls-row">
+      <textarea class="umb-editor" id="receiptBody" ng-model="model.value.receiptBody" rows="5"></textarea>
+    </div>
   </div>
   <!-- ## data ##-->
   <div id="tabFormEditorData" class="tab-pane">

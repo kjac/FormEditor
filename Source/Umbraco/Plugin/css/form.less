@@ -86,10 +86,6 @@
 
           div.form-validation-error-message {
             margin: 0px 4px 10px 4px;
-
-            input {
-              width: 98%;
-            }
           }
         }
       }
@@ -191,13 +187,13 @@
   }
 
   label {
-
-    &.control-label {
-      float: none;
-      display: block;
+    &.checkbox {
       padding: 0;
-      width: auto;
     }
+  }
+
+  .umb-editor {
+    min-width: 80%;
   }
 
   .form-pages {
@@ -309,7 +305,7 @@
     }
   }
 
-  label.control-label input[type=checkbox] {
+  label input[type=checkbox] {
     vertical-align: text-top;
   }
 
@@ -334,7 +330,7 @@
     width: 90%;
   }
 
-  label.control-label {
+  label {
     small {
       text-transform: none;
     }
