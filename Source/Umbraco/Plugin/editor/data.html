@@ -37,7 +37,7 @@
             <td class="select">
               <input type="checkbox" ng-click="selectAll()" ng-checked="allSelected()">
             </td>
-            <td class="date">
+            <td>
               <a href ng-click="sort('_created')" form-editor-localize key="data.sortSubmittedDate">
                 Date
               </a>
@@ -55,7 +55,7 @@
             <td>
               <input type="checkbox" ng-model="row.selected" no-dirty-check ng-click="$event.stopPropagation();">
             </td>
-            <td title="{{row._createdDateLong}}">
+            <td class="date" title="{{row._createdDateLong}}">
               {{row._createdDateShort}}
             </td>
             <td ng-repeat="value in row.values track by $index" ng-bind-html-unsafe="value" ng-show="isFieldVisible(model.data.fields[$index])"></td>
