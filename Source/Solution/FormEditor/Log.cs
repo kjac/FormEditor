@@ -23,7 +23,7 @@ namespace FormEditor
 
 		private static string LogMessageWithRequestedContentId(string message, params object[] args)
 		{
-			var id = UmbracoContext.Current.PublishedContentRequest != null
+			var id = UmbracoContext.Current != null && UmbracoContext.Current.PublishedContentRequest != null
 				? UmbracoContext.Current.PublishedContentRequest.PublishedContent.Id.ToString()
 				: "n/a";
 			return string.Format("{0} (requested content ID: {1})", string.Format(message, args), id);

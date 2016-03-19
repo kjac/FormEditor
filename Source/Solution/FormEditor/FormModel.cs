@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 using System.Web;
 using FormEditor.Data;
 using FormEditor.Events;
@@ -51,6 +53,7 @@ namespace FormEditor
 		public string EmailNotificationRecipients { get; set; }
 		public string EmailNotificationSubject { get; set; }
 		public string EmailNotificationFromAddress { get; set; }
+		public bool EmailNotificationAttachments { get; set; }
 		public string EmailConfirmationRecipientsField { get; set; }
 		public string EmailConfirmationSubject { get; set; }
 		public string EmailConfirmationFromAddress { get; set; }
@@ -86,7 +89,7 @@ namespace FormEditor
 		public bool CollectSubmittedValues(IPublishedContent content, bool redirect = true)
 		{
 			// currently not supporting GET forms ... will require some limitation on fields and stuff
-			if (HttpContext.Current.Request.HttpMethod != "POST")
+			if(Request.HttpMethod != "POST")
 			{
 				return false;
 			}
@@ -182,6 +185,11 @@ namespace FormEditor
 			return AllFields().OfType<FieldWithValue>();
 		}
 
+		private HttpRequest Request
+		{
+			get { return HttpContext.Current.Request; }
+		}
+
 		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
 
 		private void EnsurePagesForBackwardsCompatibility()
@@ -212,7 +220,7 @@ namespace FormEditor
 
 		private List<Field> CollectSubmittedValuesFromRequest(IPublishedContent content)
 		{
-			var valueCollection = HttpContext.Current.Request.Form;
+			var valueCollection = Request.Form;
 			var allSubmittedValues = valueCollection.AllKeys.ToDictionary(k => k, k => TryGetSubmittedValue(k, valueCollection));
 
 			var fields = AllFields().ToList();
@@ -271,7 +279,7 @@ namespace FormEditor
 			// add the IP of the user if enabled on the data type
 			if(LogIp)
 			{
-				indexFields.Add("_ip", HttpContext.Current.Request.UserHostAddress);
+				indexFields.Add("_ip", Request.UserHostAddress);
 			}
 
 			// store fields in index
@@ -338,7 +346,17 @@ namespace FormEditor
 
 			if(string.IsNullOrWhiteSpace(EmailNotificationRecipients) == false)
 			{
-				SendEmailType(EmailNotificationSubject, EmailNotificationFromAddress, EmailNotificationRecipients, content, EmailNotificationTemplate, "Notification", ref emailBody);
+				// extract uploaded files for mail attachments if this has been chosen by the editor.
+				// NOTE: it's tempting to use valueFields.OfType<UploadField>() for this, but then we'd explicitly be leaving out any 
+				// custom file upload fields. so instead we'll run through the files in the request and match their names against 
+				// the value field names.
+				var uploadedFiles = EmailNotificationAttachments 
+					? Request.Files.AllKeys
+						.Where(k => valueFields.Any(f => f.FormSafeName == k))
+						.Select(k => Request.Files[k])
+						.ToArray()
+					: null;
+				SendEmailType(EmailNotificationSubject, EmailNotificationFromAddress, EmailNotificationRecipients, content, EmailNotificationTemplate, "Notification", uploadedFiles, ref emailBody);
 			}
 
 			if(string.IsNullOrWhiteSpace(EmailConfirmationRecipientsField))
@@ -359,11 +377,11 @@ namespace FormEditor
 					// nope
 					emailBody = null;
 				}
-				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientsField.SubmittedValue, content, EmailConfirmationTemplate, "Confirmation", ref emailBody);
+				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientsField.SubmittedValue, content, EmailConfirmationTemplate, "Confirmation", null, ref emailBody);
 			}
 		}
 
-		private void SendEmailType(string subject, string senderAddress, string recipientAddresses, IPublishedContent currentContent, string template, string emailType, ref string emailBody)
+		private void SendEmailType(string subject, string senderAddress, string recipientAddresses, IPublishedContent currentContent, string template, string emailType, HttpPostedFile[] uploadedFiles, ref string emailBody)
 		{
 			if(string.IsNullOrEmpty(template))
 			{
@@ -398,38 +416,63 @@ namespace FormEditor
 				}				
 			}
 			// send emails to the recipients
-			SendEmails(subject, emailBody, senderEmailAddress, addresses);
-		}
-		
-		private static void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to)
-		{
-			subject = subject ?? string.Empty;
-			if(string.IsNullOrEmpty(body) == false)
-			{
-				var client = new SmtpClient();
-				foreach(var address in to)
-				{
-					var mail = new MailMessage
-					{
-						From = from,
-						Subject = subject,
-						Body = body,
-						IsBodyHtml = body.Contains("<html") || body.Contains("<body") || body.Contains("<div")
-					};
-					mail.To.Add(address);
-					try
-					{
-						client.Send(mail);
-					}
-					catch(Exception ex)
-					{
-						Log.Error(ex, "Email could not be sent, see exception for details.");
-					}
-				}
-			}
+			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles);
 		}
 
-		private IEnumerable<MailAddress> ParseEmailAddresses(string emails)
+		private static void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to, HttpPostedFile[] uploadedFiles)
+		{
+			if(string.IsNullOrEmpty(body))
+			{
+				return;
+			}
+			var mail = new MailMessage
+			{
+				From = @from,
+				Subject = subject ?? string.Empty,
+				Body = body,
+				IsBodyHtml = body.Contains("<html") || body.Contains("<body") || body.Contains("<div")
+			};
+			foreach(var address in to)
+			{
+				mail.To.Add(address);
+			}
+
+			// we need to load the uploaded files into memory because they're disposed when the request ends
+			var attachments = new List<FileAttachment>();
+			foreach(var file in uploadedFiles ?? new HttpPostedFile[0])
+			{
+				var attachment = new FileAttachment
+				{
+					Name = file.FileName,
+					ContentType = file.ContentType,
+					Bytes = new byte[file.ContentLength]
+				};
+				file.InputStream.Read(attachment.Bytes, 0, file.ContentLength);
+				attachments.Add(attachment);
+			}
+
+			// send the mail as fire-and-forget (pass the attachments as state)
+			ThreadPool.QueueUserWorkItem(state =>
+			{
+				foreach(var attachment in (IEnumerable<FileAttachment>)state)
+				{
+					mail.Attachments.Add(new Attachment(new MemoryStream(attachment.Bytes), attachment.Name, attachment.ContentType));
+				}
+				try
+				{
+					var client = new SmtpClient();
+					client.Send(mail);
+				}
+				catch(Exception ex)
+				{
+					// NOTE: we're out of the request context here, but the logging still seems to work just fine
+					Log.Error(ex, "Email could not be sent, see exception for details.");
+				}
+
+			}, attachments);
+		}
+
+		private List<MailAddress> ParseEmailAddresses(string emails)
 		{
 			var addresses = new List<MailAddress>();
 			foreach(var email in emails.Split(new[] { ',', ' ', ';' }))
@@ -498,6 +541,13 @@ namespace FormEditor
 			{
 				HttpContext.Current.Response.Redirect(redirectTo.Url);
 			}
+		}
+
+		private class FileAttachment
+		{
+			public string Name { get; set; }
+			public string ContentType { get; set; }
+			public byte[] Bytes { get; set; }
 		}
 
 		#endregion
