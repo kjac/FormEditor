@@ -60,7 +60,9 @@
   "emailConfirmation.recipientsField": "E-mailadresse-felt",
   "emailConfirmation.subject": "Emnetekst",
   "emailConfirmation.sender": "Afsenderens e-mailadresse",
-  
+
+  "emailNotification.attachments": "Vedhæft uploadede filer til mailen",
+  "emailNotification.attachments.helpText": "Hvis du vælger dette, bør du overveje at begrænse den tilladte fil-størrelse på upload-felterne.",
   "emailNotification.header": "E-mailnotifikation",
   "emailNotification.text": "Hvis du vil have e-mailnotifikation, når brugerne udfylder formen, skal du indtaste modtagernes e-mailadresser, e-mailens emnetekst og afsenderens e-mailadresse.",
   "emailNotification.recipients": "Modtager-adresser",
