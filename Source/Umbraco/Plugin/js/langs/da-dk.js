@@ -80,8 +80,8 @@
   "receipt.message.body": "Tekst",
 
   "data.text": "Her kan du se de formular-data, brugerne har indsendt.",
-  "data.visibleFields.header": "Viste felter", 
-  "data.visibleFields.text": "Vælg de felter, du ønsker vist i tabellen nedenfor. Hvis du vælger at skjule et eller flere felter, kan du klikke på en række i tabellen for at se alle rækkens felter.", 
+  "data.visibleFields.header": "Vælg viste felter", 
+  "data.visibleFields.text": "Vælg de felter, du ønsker vist i tabellen. Hvis du vælger at skjule et eller flere felter, kan du klikke på en række i tabellen for at se alle rækkens felter.", 
   "data.sortSubmittedDate": "Dato",
   "data.pagePrevious": "Forrige",
   "data.pageNext": "Næste",

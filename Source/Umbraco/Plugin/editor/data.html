@@ -13,23 +13,6 @@
     </i>
   </div>
   <div class="row-fluid" ng-switch-when="data">
-
-    <form-editor-expandable-header expandable="expandedState.visibleFields" header-text-key="data.visibleFields.header" header-text-default="Visible form fields"></form-editor-expandable-header>
-
-    <div ng-show="expandedState.visibleFields.expanded" class="form-data-visible-fields">
-      <p form-editor-localize key="data.visibleFields.text">
-        Select the form fields you want displayed in the table below. If you choose to hide one or more form fields, you can click the rows in the table to see all fields for the form entries.
-      </p>
-      <ul>
-        <li ng-repeat="field in model.data.fields">
-          <label>
-            <input type="checkbox" ng-checked="isFieldVisible(field)" ng-click="toggleFieldVisible(field)" />
-            {{field.name}}
-          </label>
-        </li>
-      </ul>
-    </div>
-
     <div class="form-data">
       <table class="table table-striped">
         <thead>
@@ -103,6 +86,11 @@
           Delete selected
         </a>
       </div>
+      <div class="btn-group" ng-default>
+        <a class="btn" ng-disabled="actionInProgress" ng-click="selectFields()" form-editor-localize key="data.visibleFields.header">
+          Choose visible form fields
+        </a>
+      </div>
     </div>
   </div>
 
@@ -139,6 +127,37 @@
         <div class="umb-el-wrap umb-panel-buttons">
           <div class="btn-toolbar umb-btn-toolbar pull-right">
             <button ng-click="close()" class="btn" form-editor-localize key="edit.close">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="data.selectFields.html">
+    <div class="umb-panel">
+      <div class="umb-panel-body no-header with-footer umb-scrollable">
+        <div class="umb-control-group">
+          <div class="tab-content form umb-el-wrap">
+            <div class="umb-pane">
+              <h4 form-editor-localize key="data.visibleFields.header" default-value="Choose visible form fields" />
+              <p form-editor-localize key="data.visibleFields.text">
+                Select the form fields you want displayed in the table. If you choose to hide one or more form fields, you can click the rows in the table to see all fields for the form entries.
+              </p>
+              <div ng-repeat="fieldConfiguration in dialogData.fieldConfigurations">
+                <label class="checkbox">
+                  <input type="checkbox" ng-model="fieldConfiguration.selected" />
+                  {{fieldConfiguration.field.name}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+          <div class="btn-toolbar umb-btn-toolbar pull-right">
+            <button ng-click="submit(dialogData)" class="btn btn-primary" form-editor-localize key="edit.ok">OK</button>
           </div>
         </div>
       </div>

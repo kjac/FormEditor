@@ -139,23 +139,32 @@
       });
     }
 
+    $scope.selectFields = function () {
+      dialogService.open({
+        dialogData: {
+          fieldConfigurations: _.map($scope.model.data.fields, function(field) {
+            return {
+              field: field,
+              selected: $scope.isFieldVisible(field)
+            };
+          })
+        },
+        template: "data.selectFields.html",
+        callback: function (dialogData) {
+          console.log("callback", dialogData);
+          $scope.model.value.visibleFields = _.map(_.where(dialogData.fieldConfigurations, { selected: true }), function(fieldConfiguration) {
+            return fieldConfiguration.field.name;
+          });
+        }
+      });
+    }
+
     $scope.isFieldVisible = function (field) {
       return !$scope.model.value.visibleFields || $scope.model.value.visibleFields.indexOf(field.name) >= 0;
     }
 
     $scope.hasHiddenFields = function () {
       return $scope.model.value.visibleFields && $scope.model.value.visibleFields.length !== $scope.model.data.fields.length;
-    }
-
-    $scope.toggleFieldVisible = function (field) {
-      var index = $scope.model.value.visibleFields.indexOf(field.name);
-      if (index >= 0) {
-        $scope.model.value.visibleFields.splice(index, 1);
-      }
-      else {
-        $scope.model.value.visibleFields.push(field.name);
-      }
-      $scope.setDirty();
     }
 
     // helper to force the current form into the dirty state
