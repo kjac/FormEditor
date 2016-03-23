@@ -87,7 +87,7 @@
           if (response.data && response.data.redirectUrl) {
             $window.location.href = response.data.redirectUrl;
           }
-          $scope.showReceipt = true;
+          $scope.showReceipt = _formHasReceipt;
           // add your own success handling here
         }, function errorCallback(response) {
           $scope.submitStatus = "failure";
