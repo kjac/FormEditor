@@ -1,6 +1,5 @@
 ﻿@using FormEditor;
 @using FormEditor.Rendering
-@using FormEditor.Validation.Conditions;
 @inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
   Layout = null;
@@ -11,6 +10,12 @@
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
   var formWasSubmitted = form.CollectSubmittedValues();
+
+  // show the receipt if the form was submitted and we have a receipt message
+  var showReceiptMessage = formWasSubmitted && string.IsNullOrWhiteSpace(form.ReceiptHeader) == false;
+
+  // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now)
+  var showMaxSubmissionsExceededMessage = formWasSubmitted == false && form.MaxSubmissionsExceeded();
 }
 <!DOCTYPE html>
 <html>
@@ -19,12 +24,23 @@
   <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
 </head>
 <body>
-  @if(formWasSubmitted == true && string.IsNullOrWhiteSpace(form.ReceiptHeader) == false)
+  @if(showReceiptMessage)
   {
+    @* form was submitted and we have a receipt message - show message *@
     <div class="container">
       <h2>@form.ReceiptHeader</h2>
       <p>
         @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody ?? string.Empty))
+      </p>
+    </div>
+  }
+  else if(showMaxSubmissionsExceededMessage)
+  {
+    @* max number of form submissions exceeded - show message *@
+    <div class="container">
+      <h2>@form.MaxSubmissionsExceededHeader</h2>
+      <p>
+        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsExceededText ?? string.Empty))
       </p>
     </div>
   }
