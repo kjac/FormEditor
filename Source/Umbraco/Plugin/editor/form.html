@@ -175,7 +175,7 @@
   <!-- ## notification ## -->
   <div id="tabFormEditorEmails" ng-if="emailTemplates.notification || emailTemplates.confirmation" class="tab-pane">
     <div ng-show="emailTemplates.confirmation">
-      <h5 ng-show="emailTemplates.notification" form-editor-localize key="emailConfirmation.header">Confirmation email</h5>
+      <h4 ng-show="emailTemplates.notification" form-editor-localize key="emailConfirmation.header">Confirmation email</h4>
       <p form-editor-localize key="emailConfirmation.text">
         If you want to send a confirmation email to the users when they submit the form, select the form field which will contain the recipient email address(es) and enter the email subject line and the sender email address.
       </p>
@@ -201,7 +201,7 @@
       </div>
     </div>
     <div ng-show="emailTemplates.notification">
-      <h5 ng-show="emailTemplates.confirmation" form-editor-localize key="emailNotification.header">Notification email</h5>
+      <h4 ng-show="emailTemplates.confirmation" form-editor-localize key="emailNotification.header">Notification email</h4>
       <p form-editor-localize key="emailNotification.text">
         If you want a notification email when the users submit the form, enter the recipient email address(es), the email subject line and the sender email address.
       </p>
@@ -235,7 +235,7 @@
   </div>
   <!-- ## receipt ## -->
   <div id="tabFormEditorReceipt" class="tab-pane">
-    <h5 form-editor-localize key="receipt.page.header">Select a page</h5>
+    <h4 form-editor-localize key="receipt.page.header">Select a page</h4>
     <p form-editor-localize key="receipt.page.text">
       If you want to redirect the users to another page after they have submitted the form, select the page below.
     </p>
@@ -256,7 +256,7 @@
       </ul>      
     </div>
 
-    <h5 form-editor-localize key="receipt.message.header">...or enter a message</h5>
+    <h4 form-editor-localize key="receipt.message.header">...or enter a message</h4>
     <p form-editor-localize key="receipt.message.text">
       If you'd rather show a message to the users after they have submitted the form, enter the message below.
     </p>
