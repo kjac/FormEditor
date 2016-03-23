@@ -199,7 +199,7 @@ namespace FormEditor.ElasticIndex.Storage
 		public int Count()
 		{
 			var response = Client.Count<Entry>();
-			return response.ServerError != null ? (int)response.Count : 0;
+			return response.ServerError == null ? (int)response.Count : 0;
 		}
 
 		private static StorageRow ToFormRow(Entry entry)

@@ -137,7 +137,7 @@ namespace FormEditor.SqlIndex.Storage
 
 		public int Count()
 		{
-			var page = GetPage(1, 0);
+			var page = GetPage(1, 1);
 			return (int)page.TotalItems;
 		}
 
