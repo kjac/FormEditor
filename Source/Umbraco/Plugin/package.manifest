@@ -78,24 +78,6 @@
             }
         ]
       }
-    },
-    {
-      alias: "FormEditor.Data",
-      name:  "Form Editor data",
-      editor: {
-        view: "~/App_Plugins/FormEditor/editor/data.html",
-        valueType: "JSON",
-      },
-      prevalues: {
-        fields: [
-            {
-               label: "Obsolete",
-               description: "This datatype is obsolete and will be removed in an upcoming version of FormEditor",
-               key: "obsolete",
-               view: "boolean"
-            }
-        ]
-      }
     }
   ],
   javascript: [
