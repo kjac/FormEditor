@@ -29,21 +29,6 @@
 
     //console.log("$scope.model.value", $scope.model.value);
 
-    $scope.expandedState = {
-      composition: {
-        expanded: true
-      },
-      validation: {
-        expanded: false
-      },
-      emails: {
-        expanded: false
-      },
-      receipt: {
-        expanded: false
-      }
-    };
-
     $scope.model.successPage = null;
     if ($scope.model.value.successPageId > 0) {
       contentResource.getById($scope.model.value.successPageId).then(

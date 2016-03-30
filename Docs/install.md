@@ -1,5 +1,5 @@
 # Installing and setting up Form Editor
-Form Editor works just like any other property editor for Umbraco. Or as it happens to be, two property editors. One for the form layout and one for the form submissions. Why two? Because then you can place the form layout and the form submissions on separate tabs. We'll get back to that.
+Form Editor works just like any other property editor for Umbraco, so installation is pretty straight forward. 
 
 ## Installing the package
 First and foremost grab the [latest Form Editor package](https://github.com/kjac/FormEditor/releases) and install it in your Umbraco site.
@@ -7,12 +7,11 @@ First and foremost grab the [latest Form Editor package](https://github.com/kjac
 Or, if you're using NuGet, you can install the [Form Editor](https://www.nuget.org/packages/FormEditor/) NuGet package. 
 
 ## Setting up the data types
-Once the package is installed, go ahead and create data types. You'll need one "Form Editor" data type and one "Form Editor data". 
+Once the package is installed, go ahead and create a "Form Editor" data type. 
 
 ![Form Editor data types](img/data types.png)
 
 ### Configuring the data type "Form Editor"
-The "Form Editor" data type is used for layouting the form and for controlling the form submissions. This is where the bulk of the Form Editor configuration is done.
 
 ##### Row layouts
 In the "Row layouts" section of the configuration you'll set up the row layouts you want available for your editors. A row layout consists of:
@@ -39,13 +38,10 @@ You can choose separate email templates for notification and confirmation emails
 ##### The rest
 Hopefully the rest of the "Form Editor" data type configuration is self explanatory. Oh, and it's strongly recommended to hide the property label to give the "Form Editor" property as much space as possible.
 
-### Configuring the data type "Form Editor data"
-This should be pretty straight forward. Once again, it's highly recommended to hide the property label.
-
 ## Setting up the content type
-When you have configured the data types, create a content type (or reuse an existing) and add properties based on the new data types. If you're going to use the sample templates, make sure the "Form Editor" property has the property alias "form".
+When you have configured the data type, create a content type (or reuse an existing) and add a property based on the new "Form Editor" data type. If you're going to use the sample templates, make sure the "Form Editor" property has the property alias "form".
 
-Since both properties take up a lot of space in the UI, you should consider placing them on separate tabs - e.g. "Form layout" and "Form data".
+Since the "Form Editor" property takes up a lot of space in the UI, you should consider placing it on a separate tab - e.g. "Form".
 
 **Please note:** You can only have *one* "Form Editor" property per content type.
 

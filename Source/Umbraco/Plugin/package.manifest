@@ -47,6 +47,12 @@
                view: "boolean"
             },
             {
+               label: "Show IP addresses",
+               description: "Show the logged IP addresses of the form submissions (if IP logging is enabled)",
+               key: "showIp",
+               view: "boolean"
+            },
+            {
                label: "Strip HTML",
                description: "Automatically strip HTML from all fields in all form submissions",
                key: "stripHtml",
@@ -68,30 +74,6 @@
                label: "Use form pages",
                description: "Enable creation of multiple form page",
                key: "enablePages",
-               view: "boolean"
-            }
-        ]
-      }
-    },
-    {
-      alias: "FormEditor.Data",
-      name:  "Form Editor data",
-      editor: {
-        view: "~/App_Plugins/FormEditor/editor/data.html",
-        valueType: "JSON",
-      },
-      prevalues: {
-        fields: [
-            {
-               label: "Hide label",
-               description: "Hide the label and let the data view take up the entire page width",
-               key: "hideLabel",
-               view: "boolean"
-            },
-            {
-               label: "Show IP addresses",
-               description: "Show the logged IP addresses of the form submissions (if IP logging is enabled)",
-               key: "showIp",
                view: "boolean"
             }
         ]
