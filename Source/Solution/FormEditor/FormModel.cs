@@ -60,6 +60,9 @@ namespace FormEditor
 		public int SuccessPageId { get; set; }
 		public string ReceiptHeader { get; set; }
 		public string ReceiptBody { get; set; }
+		public int? MaxSubmissions { get; set; }
+		public string MaxSubmissionsExceededHeader { get; set; }
+		public string MaxSubmissionsExceededText { get; set; }
 
 		#endregion
 
@@ -79,17 +82,23 @@ namespace FormEditor
 
 		public bool CollectSubmittedValues(bool redirect = true)
 		{
-			if (UmbracoContext.Current == null || UmbracoContext.Current.PublishedContentRequest == null || UmbracoContext.Current.PublishedContentRequest.PublishedContent == null)
+			if(RequestedContent == null)
 			{
 				return false;
 			}
-			return CollectSubmittedValues(UmbracoContext.Current.PublishedContentRequest.PublishedContent, redirect);
+			return CollectSubmittedValues(RequestedContent, redirect);
 		}
 
 		public bool CollectSubmittedValues(IPublishedContent content, bool redirect = true)
 		{
 			// currently not supporting GET forms ... will require some limitation on fields and stuff
 			if(Request.HttpMethod != "POST")
+			{
+				return false;
+			}
+
+			// are we able to accept any submissions for this form?
+			if(MaxSubmissionsExceeded(content))
 			{
 				return false;
 			}
@@ -134,6 +143,10 @@ namespace FormEditor
 
 			// before add to index event handling did not cancel - add to index
 			var rowId = AddSubmittedValuesToIndex(content, valueFields);
+			if(rowId == Guid.Empty)
+			{
+				return false;
+			}
 
 			// tell everyone that something was added
 			RaiseAfterAddToIndex(rowId);
@@ -150,11 +163,11 @@ namespace FormEditor
 
 		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
 		{
-			if(UmbracoContext.Current == null || UmbracoContext.Current.PublishedContentRequest == null || UmbracoContext.Current.PublishedContentRequest.PublishedContent == null)
+			if(RequestedContent == null)
 			{
 				return new FormData();
 			}
-			return GetSubmittedValues(UmbracoContext.Current.PublishedContentRequest.PublishedContent, page, perPage, sortField, sortDescending);
+			return GetSubmittedValues(RequestedContent, page, perPage, sortField, sortDescending);
 		}
 
 		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
@@ -185,9 +198,45 @@ namespace FormEditor
 			return AllFields().OfType<FieldWithValue>();
 		}
 
+		public bool MaxSubmissionsExceeded()
+		{
+			if(RequestedContent == null)
+			{
+				return true;
+			}
+			return MaxSubmissionsExceeded(RequestedContent);
+		}
+
+		public bool MaxSubmissionsExceeded(IPublishedContent content)
+		{
+			if(MaxSubmissions.HasValue == false)
+			{
+				return false;
+			}
+			var index = IndexHelper.GetIndex(content.Id);
+			return index.Count() >= MaxSubmissions.Value;
+		}
+
 		private HttpRequest Request
 		{
 			get { return HttpContext.Current.Request; }
+		}
+
+		private UmbracoContext Context
+		{
+			get { return UmbracoContext.Current; }
+		}
+
+		private IPublishedContent RequestedContent
+		{
+			get
+			{
+				if(Context == null || Context.PublishedContentRequest == null || Context.PublishedContentRequest.PublishedContent == null)
+				{
+					return null;
+				}
+				return Context.PublishedContentRequest.PublishedContent;
+			}
 		}
 
 		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
@@ -503,7 +552,7 @@ namespace FormEditor
 				{
 					return;
 				}
-				var preValues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeId);
+				var preValues = Context.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeId);
 				if(preValues == null)
 				{
 					return;
@@ -535,7 +584,7 @@ namespace FormEditor
 
 		private void RedirectToSuccesPage()
 		{
-			var helper = new UmbracoHelper(UmbracoContext.Current);
+			var helper = new UmbracoHelper(Context);
 			var redirectTo = helper.TypedContent(SuccessPageId);
 			if(redirectTo != null)
 			{

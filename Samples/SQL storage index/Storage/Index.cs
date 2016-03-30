@@ -80,13 +80,18 @@ namespace FormEditor.SqlIndex.Storage
 			// the field values were serialized into one column when they were added to the index, so we
 			// can't sort on sortField. instead we'll sort on Id DESC so we always return the newest entries first.
 			var pageNumber = (skip / count) + 1;
-			var page = Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 ORDER BY Id DESC", _contentId);
+			var page = GetPage(pageNumber, count);
 
 			var rows = page != null & page.Items.Any()
 				? page.Items.Select(ToFormRow).Where(r => r != null).ToList()
 				: new List<StorageRow>();
 
 			return new Result((int)page.TotalItems, rows, "Id", true);
+		}
+
+		private Page<Entry> GetPage(int pageNumber, int count)
+		{
+			return Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 ORDER BY Id DESC", _contentId);
 		}
 
 		public Stream GetFile(string filename, Guid rowId)
@@ -128,6 +133,12 @@ namespace FormEditor.SqlIndex.Storage
 		{
 			Database.Delete<File>("WHERE ContentId=@0", _contentId);
 			Database.Delete<Entry>("WHERE ContentId=@0", _contentId);
+		}
+
+		public int Count()
+		{
+			var page = GetPage(1, 1);
+			return (int)page.TotalItems;
 		}
 
 		private Database Database

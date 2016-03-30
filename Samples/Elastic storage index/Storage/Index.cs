@@ -190,22 +190,16 @@ namespace FormEditor.ElasticIndex.Storage
 
 		public void Delete()
 		{
-			// make sure the index exists before we attempt to delete it.
-			//var response = Client.Search<Entry>(s => s.Fields(f => f.Id).Take(1));
-			//if(response.ServerError != null)
-			//{
-			//	// - 404 = index was not found. that's ok.
-			//	if(response.ServerError.Status != NotFound)
-			//	{
-			//		Log.Warning("An error occurred trying to delete the index: {0}. Server error: {1} ({2}).", IndexName(), response.ServerError.Error, response.ServerError.Status);
-			//	}
-			//	return;
-			//}
-
 			// create a client for the base index uri and delete the entire index by name.
 			var uri = GetConnectionUri();
 			var client = new ElasticClient(new ConnectionSettings(uri));
 			client.DeleteIndex(IndexName());
+		}
+
+		public int Count()
+		{
+			var response = Client.Count<Entry>();
+			return response.ServerError == null ? (int)response.Count : 0;
 		}
 
 		private static StorageRow ToFormRow(Entry entry)

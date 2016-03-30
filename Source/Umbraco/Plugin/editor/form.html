@@ -276,6 +276,28 @@
   <!-- ## data ##-->
   <div id="tabFormEditorData" class="tab-pane">
     <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
+    <h5 form-editor-localize key="data.maxSubmissions.header">Limit the number of submissions</h5>
+    <p form-editor-localize key="data.maxSubmissions.text">
+      If you want to limit the number of submissions for this form, enter the maximum allowed number of submissions and a message to show the users when no more submissions are allowed.
+    </p>
+    <label class="control-label" for="maxSubmissions" form-editor-localize key="data.maxSubmissions">
+      Allowed submissions
+    </label>
+    <div class="controls controls-row">
+      <input type="number" class="umb-editor" id="maxSubmissions" ng-model="model.value.maxSubmissions" min="1" />
+    </div>
+    <label class="control-label" for="maxSubmissionsExceededHeader" form-editor-localize key="data.maxSubmissions.message.heading">
+      Heading
+    </label>
+    <div class="controls controls-row">
+      <input type="text" class="umb-editor" id="maxSubmissionsExceededHeader" ng-model="model.value.maxSubmissionsExceededHeader" />
+    </div>
+    <label class="control-label" for="maxSubmissionsExceededText" form-editor-localize key="data.maxSubmissions.message.body">
+      Text
+    </label>
+    <div class="controls controls-row">
+      <textarea class="umb-editor" id="maxSubmissionsExceededText" ng-model="model.value.maxSubmissionsExceededText" rows="5"></textarea>
+    </div>
   </div>
 </div>
 

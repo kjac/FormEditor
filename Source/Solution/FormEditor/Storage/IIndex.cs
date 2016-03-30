@@ -69,5 +69,11 @@ namespace FormEditor.Storage
 		/// Deletes the entire index
 		/// </summary>
 		void Delete();
+
+		/// <summary>
+		/// Gets the number of entries in the index
+		/// </summary>
+		/// <returns>The number of entries</returns>
+		int Count();
 	}
 }

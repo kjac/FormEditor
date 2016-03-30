@@ -238,6 +238,14 @@ namespace FormEditor.Storage
 			}
 		}
 
+		public int Count()
+		{
+			var reader = GetIndexReader();
+			var count = reader.NumDocs();
+			reader.Close();
+			return count;
+		}
+
 		private LuceneDirectory IndexDirectory
 		{
 			get
