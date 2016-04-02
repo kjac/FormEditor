@@ -74,7 +74,7 @@
         @foreach (var field in Model.AllValueFields())
         {
           <tr>
-            <th>@field.PrettyName</th>
+            <th>@field.Name</th>
             <td>@field.SubmittedValueForEmail()</td>
           </tr>
         }
