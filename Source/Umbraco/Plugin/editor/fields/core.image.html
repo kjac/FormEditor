@@ -7,6 +7,7 @@
         <div class="umb-pane">
           <label class="control-label">
             <form-editor-localize key="edit.image.choose">Choose image</form-editor-localize>
+            <small form-editor-localize key="edit.image.choose.helpText">Click below to choose an image</small>
           </label>
           <div class="imageField">
             <div ng-show="dialogData.field.mediaId == 0 || !dialogData.field.mediaUrl">
@@ -28,6 +29,7 @@
 
           <label class="control-label" for="text">
             <form-editor-localize key="edit.image.caption">Caption</form-editor-localize>
+            <small form-editor-localize key="edit.image.caption.helpText">The text to display as caption for the image</small>
           </label>
           <input type="text" id="text" autofocus ng-model="dialogData.field.text" />
         </div>
