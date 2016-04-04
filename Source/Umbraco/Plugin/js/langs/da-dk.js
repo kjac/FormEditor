@@ -8,6 +8,7 @@
   "composition.field.core.email": "E-mailadresse",
   "composition.field.core.heading": "Overskrift",
   "composition.field.core.image": "Billede",
+  "composition.field.core.memberinfo": "Medlems-information",
   "composition.field.core.number": "Heltal",
   "composition.field.core.radiobuttongroup": "Radioknapper",
   "composition.field.core.recaptcha": "Spambeskyttelse (reCAPTCHA)",

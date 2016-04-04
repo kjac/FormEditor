@@ -420,13 +420,18 @@ namespace FormEditor
 			}
 			else
 			{
+				var emailField = recipientsField as IEmailField;
+				var recipientAddresses = emailField != null
+					? string.Join(",", emailField.EmailAddresses ?? new string[0])
+					: recipientsField.SubmittedValue;
+
 				// can we reuse the rendered email body?
 				if(EmailConfirmationTemplate != EmailNotificationTemplate)
 				{
 					// nope
 					emailBody = null;
 				}
-				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientsField.SubmittedValue, content, EmailConfirmationTemplate, "Confirmation", null, ref emailBody);
+				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientAddresses, content, EmailConfirmationTemplate, "Confirmation", null, ref emailBody);
 			}
 		}
 
