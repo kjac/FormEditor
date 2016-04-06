@@ -19,13 +19,20 @@ namespace FormEditor.Fields
 
 		protected internal override void CollectSubmittedValue(Dictionary<string, string> allSubmittedValues, IPublishedContent content)
 		{
-			var currentUser = UmbracoContext.Current.Security.CurrentUser;
-			if (currentUser == null)
+			// get the logged in member (if any)
+			var user = UmbracoContext.Current.HttpContext.User;
+			var identity = user != null ? user.Identity : null;
+			var member = identity != null && string.IsNullOrWhiteSpace(identity.Name) == false 
+				? UmbracoContext.Current.Application.Services.MemberService.GetByUsername(identity.Name)
+				: null;
+			if (member == null)
 			{
+				// no member logged in
 				base.CollectSubmittedValue(allSubmittedValues, content);
 				return;
 			}
-			SubmittedValue = string.Format("{0}|{1}|{2}", currentUser.Name, currentUser.Email, currentUser.Id);
+			// gather member data for index
+			SubmittedValue = string.Format("{0}|{1}|{2}", member.Name, member.Email, member.Id);
 		}
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
@@ -43,6 +50,10 @@ namespace FormEditor.Fields
 			return FormatValue(value) ?? base.FormatValueForFrontend(value, content, rowId);
 		}
 
+		#region IEmailField members
+
+		// this field implements IEmailField so receipt emails can be sent to the member email
+
 		public IEnumerable<string> EmailAddresses
 		{
 			get
@@ -58,13 +69,15 @@ namespace FormEditor.Fields
 			}
 		}
 
+		#endregion
+
 		private string FormatValue(string value)
 		{
 			if (string.IsNullOrEmpty(value))
 			{
 				return null;
 			}
-			var parts = SubmittedValue.Split(new[] {'|'}, StringSplitOptions.None);
+			var parts = value.Split(new[] {'|'}, StringSplitOptions.None);
 			return parts.Length < 2 
 				? null 
 				: string.Format("{0} ({1})", parts[0], parts[1]);
