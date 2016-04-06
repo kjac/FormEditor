@@ -114,6 +114,7 @@
   "edit.mandatory.helpText": "Sæt kryds her hvis feltet skal være påkrævet", 
   "edit.maxLength": "Max antal karakterer",
   "edit.maxLength.helpText": "Max antal karakterer tilladt i feltet (0 = ubegrænset)",
+  "edit.memberInfo.helpText": "Når dette felt er føjet til formularen, bliver navne og e-mailadresser automatisk gemt for de medlemmer, der er logget ind.",
   "edit.name": "Navn",  
   "edit.name.helpText": "Navnet skal være unikt",
   "edit.number.minimum": "Minimum",
