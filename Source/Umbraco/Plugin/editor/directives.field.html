@@ -7,7 +7,13 @@
     <form-editor-localize key="edit.name">Name</form-editor-localize>
     <small form-editor-localize key="edit.name.helpText">The field name must be unique</small>
   </label>
-  <input type="text" id="name" autofocus ng-model="dialogData.field.name" ng-class="{invalid: !validateFieldName()}" />
+  <input type="text" id="name" autofocus ng-model="dialogData.field.name" ng-class="{invalid: !validateFieldName()}" ng-change="fieldNameChanged()" />
+  <div class="infoBox" ng-show="showRenameWarning">
+    <i class="icon icon-info"></i>
+    <div class="infoText" form-editor-localize key="edit.renameWarning">
+      When you rename an existing field, you will no longer be able to see the submissions for this field.
+    </div>
+  </div>
 </script>
 
 <script type="text/ng-template" id="formEditor.fieldBasics.html">

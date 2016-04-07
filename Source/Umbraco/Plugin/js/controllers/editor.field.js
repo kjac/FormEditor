@@ -1,5 +1,6 @@
 ﻿angular.module("umbraco").controller("FormEditor.Editor.FieldController", ["$scope", "formEditorPropertyEditorFieldValidator", "formEditorPropertyEditorResource", "dialogService",
   function ($scope, formEditorPropertyEditorFieldValidator, formEditorPropertyEditorResource, dialogService) {
+    $scope.originalFieldName = $scope.dialogData.field.name;
     $scope.addFieldValue = function () {
       $scope.dialogData.field.fieldValues.push({});
     };
@@ -32,6 +33,11 @@
         //console.log("Got media URL", $scope.dialogData.field.mediaId, data);
         $scope.dialogData.field.mediaUrl = data.url;
       });
+    }
+    $scope.fieldNameChanged = function() {
+      if ($scope.dialogData.warnWhenRenaming) {
+        $scope.showRenameWarning = $scope.dialogData.field.name != $scope.originalFieldName;
+      }
     }
     if ($scope.dialogData.field.mediaId) {
       $scope.loadMediaUrl();

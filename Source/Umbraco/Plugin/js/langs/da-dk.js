@@ -80,6 +80,7 @@
   "receipt.message.heading": "Overskrift",
   "receipt.message.body": "Tekst",
 
+  "data.header": "Indsendte data",
   "data.text": "Her kan du se de formular-data, brugerne har indsendt.",
   "data.visibleFields.header": "Vælg viste felter", 
   "data.visibleFields.text": "Vælg de felter, du ønsker vist i tabellen. Hvis du vælger at skjule et eller flere felter, kan du klikke på en række i tabellen for at se alle rækkens felter.", 
@@ -128,6 +129,7 @@
   "edit.options.selected": "Valgt",  
   "edit.placeholder": "Pladsholder",  
   "edit.placeholder.helpText": "Tekst der vises når feltet ikke er udfyldt", 
+  "edit.renameWarning": "Hvis du omdøber et eksisterende felt, vil du ikke længere kunne se de indsendte data for dette felt", 
   "edit.selectbox.multiSelect": "Tillad flere valgte",
   "edit.selectbox.multiSelect.helpText": "Sæt kryds her hvis brugerne skal kunne vælge flere valgmuligheder", 
   "edit.selectbox.size": "Antal viste valgmuligheder",
