@@ -23,7 +23,7 @@ The partial views in the sample project are almost identical with the ones in th
 See the [simple custom field section](extend_field_simple.md) for more details
 
 ## Multiple field values
-A field is only allowed one entry in the storage index. But your custom field might actually consist of several fields that the end users can fill out, or it might need to store multiple values for some other reason. If this is the case you'll have to concatinate your values into one field value for the index, and override the appropriate `FormatValueFor...` methods for display purposes. 
+A field is only allowed one entry in the storage index. But your custom field might actually consist of several fields that the end users can fill out, or it might need to store multiple values for some other reason. If this is the case you'll have to concatenate your values into one field value for the index, and override the appropriate `FormatValueFor...` methods for display purposes. 
 
 Have a look at the [`UploadField`](../Source/Solution/FormEditor/Fields/UploadField.cs) or the [`MemberInfoField`](../Source/Solution/FormEditor/Fields/MemberInfoField.cs) for inspiration. 
 
