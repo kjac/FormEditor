@@ -20,6 +20,7 @@ Some highlights include:
 * [Installing and setting up Form Editor](Docs/install.md)
 * [Rendering the form](Docs/render.md)
 * [Email templates](Docs/emails.md)
+* [Special form fields](Docs/fields.md)
 * [Reusable forms](Docs/reuse.md)
 * [Working with the form submissions](Docs/submissions.md)
 * [Creating custom fields and more](Docs/extend.md)
