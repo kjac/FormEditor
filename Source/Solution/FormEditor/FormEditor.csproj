@@ -270,6 +270,8 @@
     <Compile Include="EmailRenderer.cs" />
     <Compile Include="FieldHelper.cs" />
     <Compile Include="Fields\CustomField.cs" />
+    <Compile Include="Fields\IEmailField.cs" />
+    <Compile Include="Fields\MemberInfoField.cs" />
     <Compile Include="Fields\UrlField.cs" />
     <Compile Include="Fields\IFieldWithValidation.cs" />
     <Compile Include="Fields\IFieldWithHelpText.cs" />

@@ -45,18 +45,5 @@ Since the "Form Editor" property takes up a lot of space in the UI, you should c
 
 **Please note:** You can only have *one* "Form Editor" property per content type.
 
-## Configuring reCAPTCHA
-Form Editor supports [reCAPTCHA](https://www.google.com/recaptcha/) out of the box. However, for it to work you'll need to add your reCAPTCHA keys to the `<appSettings/>` of your site:
-* The reCAPTCHA "site" key goes in the app setting `FormEditor.reCAPTCHA.SiteKey`
-* The reCAPTCHA "secret" key goes in the app setting `FormEditor.reCAPTCHA.SecretKey`
-
-```xml
-  <appSettings>
-    <!-- ... -->
-    <add key="FormEditor.reCAPTCHA.SiteKey" value="****" />
-    <add key="FormEditor.reCAPTCHA.SecretKey" value="****" />
-  </appSettings>
-```
-
 ## Next step
 Onwards to [Rendering the form](render.md).

@@ -2,12 +2,16 @@
   <h4><form-editor-localize key="edit.edit">Edit</form-editor-localize> <form-editor-localize key="composition.field.{{dialogData.field.type}}" default-value="{{dialogData.field.prettyName}}"></form-editor-localize></h4>
 </script>
 
-<script type="text/ng-template" id="formEditor.fieldBasics.html">
+<script type="text/ng-template" id="formEditor.fieldName.html">
   <label class="control-label" for="name">
     <form-editor-localize key="edit.name">Name</form-editor-localize>
     <small form-editor-localize key="edit.name.helpText">The field name must be unique</small>
   </label>
   <input type="text" id="name" autofocus ng-model="dialogData.field.name" ng-class="{invalid: !validateFieldName()}" />
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldBasics.html">
+  <form-editor-field-name></form-editor-field-name>
 
   <label class="control-label" for="label">
     <form-editor-localize key="edit.label">Label</form-editor-localize>
@@ -20,6 +24,7 @@
     <small form-editor-localize key="edit.helpText.helpText">Explanatory text to help the users</small>
   </label>
   <input type="text" id="helpText" ng-model="dialogData.field.helpText" />
+
 </script>
 
 <script type="text/ng-template" id="formEditor.fieldPlaceholder.html">
