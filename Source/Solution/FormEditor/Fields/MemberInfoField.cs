@@ -31,6 +31,27 @@ namespace FormEditor.Fields
 			SubmittedValue = string.Format("{0}|{1}|{2}", member.Name, member.Email, member.Id);
 		}
 
+		private IMember CurrentMember()
+		{
+			var user = UmbracoContext.Current.HttpContext.User;
+			var identity = user != null ? user.Identity : null;
+			return identity != null && string.IsNullOrWhiteSpace(identity.Name) == false
+				? UmbracoContext.Current.Application.Services.MemberService.GetByUsername(identity.Name)
+				: null;			
+		}
+
+		public bool IsMemberLoggedIn
+		{
+			get { return CurrentMember() != null; }
+		}
+
+		#region Format value for various display scenarios
+
+		public override string SubmittedValueForEmail()
+		{
+			return FormatValue(SubmittedValue);
+		}
+
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
 		{
 			return FormatValue(value) ?? base.FormatValueForDataView(value, content, rowId);
@@ -52,25 +73,13 @@ namespace FormEditor.Fields
 			{
 				return null;
 			}
-			var parts = value.Split(new[] {'|'}, StringSplitOptions.None);
-			return parts.Length < 2 
-				? null 
+			var parts = value.Split(new[] { '|' }, StringSplitOptions.None);
+			return parts.Length < 2
+				? null
 				: string.Format("{0} ({1})", parts[0], parts[1]);
 		}
 
-		private IMember CurrentMember()
-		{
-			var user = UmbracoContext.Current.HttpContext.User;
-			var identity = user != null ? user.Identity : null;
-			return identity != null && string.IsNullOrWhiteSpace(identity.Name) == false
-				? UmbracoContext.Current.Application.Services.MemberService.GetByUsername(identity.Name)
-				: null;			
-		}
-
-		public bool IsMemberLoggedIn
-		{
-			get { return CurrentMember() != null; }
-		}
+		#endregion
 
 		#region IEmailField members
 
