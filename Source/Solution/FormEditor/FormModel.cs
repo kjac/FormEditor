@@ -481,7 +481,9 @@ namespace FormEditor
 			}
 			var mail = new MailMessage
 			{
-				From = @from,
+				From = from,
+				// #23 - explicitly set Reply-To field
+				ReplyToList = { from },
 				Subject = subject ?? string.Empty,
 				Body = body,
 				IsBodyHtml = body.Contains("<html") || body.Contains("<body") || body.Contains("<div")
