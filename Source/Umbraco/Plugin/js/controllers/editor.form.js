@@ -27,7 +27,8 @@
     }
     $scope.model.value.rows = null;
 
-    //console.log("$scope.model.value", $scope.model.value);
+    // this is for storing the newly added fields, so we know which fields need a warning when they're renamed
+    $scope.newlyAddedFields = [];
 
     $scope.model.successPage = null;
     if ($scope.model.value.successPageId > 0) {
@@ -267,6 +268,7 @@
           field.text = value;
         }
         cell.fields.push(field);
+        $scope.newlyAddedFields.push(field);
         $scope.clearFieldCache();
         formEditorPropertyEditorFieldValidator.registerFields($scope.allFields());
         $scope.editField(field);
@@ -280,7 +282,8 @@
 
       dialogService.open({
         dialogData: {
-          field: field
+          field: field,
+          warnWhenRenaming: _.contains($scope.newlyAddedFields, field) == false
         },
         template: $scope.pathToFieldFile(field.view),
         callback: function (field) {
@@ -442,6 +445,7 @@
 
     //watch for changes
     $scope.$watch("model.value", function (v) {
+      $scope.newlyAddedFields = [];
       // wire up the rule fields so any field changes are reflected on the validation rule fields
       $scope.clearFieldCache();
       _.each($scope.model.value.validations, function (validation) {
