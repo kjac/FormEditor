@@ -8,6 +8,7 @@ The editorial fields include:
 - Heading - a single line of text.
 - Text paragraph - a paragraph of non-formatted text.
 - Image - an image from the Umbraco media library.
+- Link - a link to a page in the Umbraco content.
 
 ## The reCAPTCHA field
 Form Editor supports [reCAPTCHA](https://www.google.com/recaptcha/) out of the box. However, for it to work you'll need to add your reCAPTCHA keys to the `<appSettings/>` of your site:
