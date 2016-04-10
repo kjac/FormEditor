@@ -1,0 +1,7 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.LinkField>
+@if (string.IsNullOrWhiteSpace(Model.Text) == false && Model.Page != null)
+{
+  <div class="form-group">
+    <a href="@Model.Page.Url" target="@(Model.OpenInNewWindow ? "_blank" : null)">@Model.Text</a>
+  </div>
+}
