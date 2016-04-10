@@ -1,0 +1,45 @@
+<div class="umb-panel form-editor-edit-field" ng-controller="FormEditor.Editor.FieldController">
+  <div class="umb-panel-body no-header with-footer umb-scrollable">
+    <div class="umb-control-group">
+      <div class="tab-content form umb-el-wrap">
+        <form-editor-field-header></form-editor-field-header>
+
+        <div class="umb-pane">
+          <label class="control-label" for="text">
+            <form-editor-localize key="edit.link.text">Text</form-editor-localize>
+            <small form-editor-localize key="edit.link.text.helpText">The text to display as a link</small>
+          </label>
+          <input type="text" id="text" autofocus ng-model="dialogData.field.text" />
+
+          <label class="control-label">
+            <form-editor-localize key="edit.link.target">Destination</form-editor-localize>
+            <small form-editor-localize key="edit.link.target.helpText">Choose the page you want to link to</small>
+          </label>
+          <div class="controls controls-row">
+            <ul class="unstyled list-icons page-selector">
+              <li ng-show="dialogData.page == null">
+                <i class="icon icon-add blue" />
+                <a href ng-click="pickPage()" form-editor-localize key="edit.link.select">Select...</a>
+              </li>
+              <li ng-show="dialogData.page != null">
+                <i class="{{dialogData.page.cssClass}}" />
+                <a href ng-click="pickPage()">
+                  {{dialogData.page.name}}
+                </a>
+                <i class="icon icon-delete dimmed" ng-click="removePage()" />
+              </li>
+            </ul>
+          </div>
+
+          <label class="control-label" for="openInNewWindow">
+            <input type="checkbox" id="openInNewWindow" ng-model="dialogData.field.openInNewWindow" />
+            <form-editor-localize key="edit.link.openInNewWindow">Open in new window</form-editor-localize>
+            <small form-editor-localize key="edit.link.openInNewWindow.helpText">Tick this box if the link should open in a new window</small>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form-editor-field-footer></form-editor-field-footer>
+</div>
