@@ -23,6 +23,12 @@
                view: "~/App_Plugins/FormEditor/config/rowLayouts.html"
             },
             {
+               label: "Field type groups",
+               description: "Define groups of related field types",
+               key: "fieldTypeGroups",
+               view: "~/App_Plugins/FormEditor/config/fieldTypeGroups.html"
+            },
+            {
                label: "Disallowed field types",
                description: "Select all fields types that should not be allowed to use",
                key: "disallowedFieldTypes",

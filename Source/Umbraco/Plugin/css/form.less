@@ -560,15 +560,15 @@
 
   ul {
 
-    &.row-layouts {
+    &.row-layouts, &.field-type-groups {
       list-style: none;
       margin: 0;
 
-      div.row-layout {
+      div.collapsible-block {
         border: 1px solid @cellBorderColor;
         padding: 10px;
 
-        div.row-layout-header {
+        div.collapsible-block-header {
           cursor: pointer;
 
           i {
@@ -582,18 +582,25 @@
             display: inline-block;
           }
 
-          span.row-layout-tools {
+          span.collapsible-block-tools {
             float: right;
           }
         }
 
-        div.row-layout-content {
+        div.collapsible-block-content {
           margin-top: 10px;
         }
       }
 
       li {
         margin-bottom: 10px;
+      }
+    }
+
+    &.field-type-groups {
+      .assigned-field-types-container {
+        cursor: default;
+        display: inline-block;
       }
     }
 
