@@ -1,6 +1,10 @@
 <div class="form-editor-config" ng-controller="FormEditor.Config.FieldTypeGroupsController">
   <p>
-    <b>TODO: EXPLANATION</b>
+    To help your editors navigate the available fields, you can create groups of related field types and order them as you like (drag to rearrange). 
+    If you don't create any groups, all available field types are listed alphabetically when your editors add a field to the form. 
+  </p>
+  <p>
+    <strong>Pro tip:</strong> If you don't want your editors to use some of the field types, simply don't add them to any group.
   </p>
   <ul class="field-type-groups" ui-sortable="sortableOptionsFieldTypeGroup" ng-model="model.value">
     <li ng-repeat="fieldTypeGroup in model.value">
