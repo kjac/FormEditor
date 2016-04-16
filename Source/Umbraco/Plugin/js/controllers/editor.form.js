@@ -53,12 +53,6 @@
 
     // get the available field types
     formEditorPropertyEditorResource.getAllFieldTypes().then(function (data) {
-      // filter out any disallowed field types (as per data type config)
-      if ($scope.model.config.disallowedFieldTypes && $scope.model.config.disallowedFieldTypes.length > 0) {
-        data = $filter("filter")(data, function (value, index, array) {
-          return $scope.model.config.disallowedFieldTypes.indexOf(value.type) < 0;
-        });
-      }
       $scope.model.config.fieldTypes = data;
     });
     // get the available validation condition types
@@ -125,17 +119,26 @@
         $scope.addRow(page, $scope.model.config.rowLayouts[0].alias);
         return;
       }
-      var options = [];
-      _.each($scope.model.config.rowLayouts, function (rowLayout) {
-        formEditorLocalizationService.localize("composition.row." + rowLayout.alias, rowLayout.prettyName).then(function (value) {
-          options.push({
-            name: value,
-            value: rowLayout.alias,
-            iconPath: $scope.pathToRowFile(rowLayout.icon)
+      if (!$scope.rowTypeOptions) {
+        var options = [];
+        _.each($scope.model.config.rowLayouts, function (rowLayout) {
+          formEditorLocalizationService.localize("composition.row." + rowLayout.alias, rowLayout.prettyName).then(function (value) {
+            options.push({
+              name: value,
+              value: rowLayout.alias,
+              iconPath: $scope.pathToRowFile(rowLayout.icon)
+            });
           });
         });
-      });
-      pick("row", options, function (alias) {
+        // the composition picker expects groups of options, so let's add all row types to one group
+        $scope.rowTypeOptions = [
+          {
+            title: "",
+            options: options
+          }
+        ];
+      }
+      pick("row", $scope.rowTypeOptions, function (alias) {
         $scope.addRow(page, alias);
       });
     }
@@ -241,17 +244,62 @@
     }
 
     $scope.pickField = function (cell) {
-      var options = [];
-      _.each($scope.model.config.fieldTypes, function (fieldType) {
-        formEditorLocalizationService.localize("composition.field." + fieldType.type, fieldType.prettyName).then(function (value) {
-          options.push({
-            name: value,
-            value: fieldType.type,
-            iconPath: $scope.pathToFieldFile(fieldType.icon)
+      if (!$scope.fieldTypeOptions) {
+        // lazy load field type groups
+        var fieldTypeGroups;
+        if ($scope.model.config.fieldTypeGroups && $scope.model.config.fieldTypeGroups.length) {
+          // only display the predefined field type groups
+          fieldTypeGroups = $scope.model.config.fieldTypeGroups;
+        }
+        else {
+          // display all fields in one group
+          var fieldTypes = $scope.model.config.fieldTypes;
+
+          // TODO: remove this once the obsoleted "disallowed field types" prevalue is removed entirely
+          if ($scope.model.config.disallowedFieldTypes && $scope.model.config.disallowedFieldTypes.length > 0) {
+            // filter out any disallowed field types (as per data type config)
+            fieldTypes = $filter("filter")(fieldTypes, function (value, index, array) {
+              return $scope.model.config.disallowedFieldTypes.indexOf(value.type) < 0;
+            });
+          }
+
+          var fieldTypeGroup = {
+            name: null,
+            fieldTypes: []
+          };
+          _.each(fieldTypes, function (fieldType) {
+            fieldTypeGroup.fieldTypes.push({
+              type: fieldType.type,
+              prettyName: fieldType.prettyName
+            });
+          });
+
+          fieldTypeGroups = [fieldTypeGroup];
+        }
+
+        $scope.fieldTypeOptions = [];
+        _.each(fieldTypeGroups, function (fieldTypeGroup) {
+          var optionGroup = {
+            title: fieldTypeGroup.name,
+            options: []
+          };
+          $scope.fieldTypeOptions.push(optionGroup);
+          _.each(fieldTypeGroup.fieldTypes, function (fieldType) {
+            var ft = getFieldType(fieldType.type);
+            if (ft != null) {
+              formEditorLocalizationService.localize("composition.field." + fieldType.type, fieldType.prettyName).then(function (value) {
+                optionGroup.options.push({
+                  name: value,
+                  value: ft.type,
+                  iconPath: $scope.pathToFieldFile(ft.icon)
+                });
+              });
+            }
           });
         });
-      });
-      pick("field", options, function (fieldType) {
+      }
+
+      pick("field", $scope.fieldTypeOptions, function (fieldType) {
         $scope.addField(fieldType, cell);
       }, "name");
     }
