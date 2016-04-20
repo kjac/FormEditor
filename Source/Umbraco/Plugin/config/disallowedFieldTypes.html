@@ -1,4 +1,10 @@
 <div class="form-editor-config" ng-controller="FormEditor.Config.DisallowedFieldTypesController">
+  <div class="alert">
+    <h5>This will be obsoleted soon</h5>
+    <p>
+      The disallowed field types will be made obsolete in an upcoming release. Please use field type groups instead.
+    </p>
+  </div>
   <div>
     <select ng-model="model.selectedFieldType" ng-change="addFieldType(model.selectedFieldType);model.selectedFieldType=null;" ng-options="fieldType.prettyName for fieldType in availableFieldTypes() | orderBy: 'prettyName'">
       <option value="">Select...</option>
