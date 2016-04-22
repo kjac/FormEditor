@@ -92,6 +92,7 @@
   "data.deleteSelected": "Slet valgte",
   "data.loadingData": "Henter formular-data...",
   "data.noData": "Ingen formular-data fundet",
+  "data.noSearchResults": "Ingen søgeresultater",
   
   "edit.checkbox.checked.helpText": "Sæt kryds her hvis feltet skal være valgt som standard",  
   "edit.checked": "Valgt",  

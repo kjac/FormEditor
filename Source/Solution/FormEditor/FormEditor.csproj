@@ -311,6 +311,7 @@
     <Compile Include="Rendering\ValidationData.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="SerializationHelper.cs" />
+    <Compile Include="Storage\IFullTextIndex.cs" />
     <Compile Include="Storage\IndexHelper.cs" />
     <Compile Include="Storage\IIndex.cs" />
     <Compile Include="Storage\Index.cs" />

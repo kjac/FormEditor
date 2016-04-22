@@ -445,6 +445,9 @@
 .form-editor-data, .form-editor-data-entry {
   .no-data {
     text-align: center;
+    i {
+      width: auto !important;
+    }
     i.dimmed {
       &:hover, *:hover {
         cursor: default;
@@ -531,6 +534,23 @@
 
   div.form-data-tools {
     padding: 10px 0px;
+  }
+
+  div.form-data-search {
+    border: 1px solid @cellBorderColor; 
+    border-top: 0; 
+    line-height: 30px;
+    * {
+      display: inline-block; 
+      vertical-align: middle;
+    }
+    i {
+      padding-left: 6px; 
+    }
+    input {
+      width: 92%; 
+      border: 0; 
+    }
   }
 }
 

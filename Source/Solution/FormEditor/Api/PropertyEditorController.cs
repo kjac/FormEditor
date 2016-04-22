@@ -130,7 +130,7 @@ namespace FormEditor.Api
 			index.Remove(ids);
 		}
 
-		public object GetData(int id, int page, string sortField, bool sortDescending)
+		public object GetData(int id, int page, string sortField, bool sortDescending, string searchQuery = null)
 		{
 
 			// NOTE: this is fine for now, but eventually make it should probably be configurable
@@ -150,7 +150,11 @@ namespace FormEditor.Api
 			var allFields = GetAllFieldsForDisplay(model, document);
 
 			var index = IndexHelper.GetIndex(id);
-			var result = index.Get(sortField, sortDescending, PerPage, (page - 1) * PerPage) ?? Result.Empty(sortField, sortDescending);
+			var fullTextIndex = index as IFullTextIndex;
+			var result = (fullTextIndex != null && string.IsNullOrWhiteSpace(searchQuery) == false
+					? fullTextIndex.Search(searchQuery, allFields.Select(f => f.FormSafeName).ToArray(), sortField, sortDescending, PerPage, (page - 1) * PerPage)
+					: index.Get(sortField, sortDescending, PerPage, (page - 1) * PerPage) 
+				) ?? Result.Empty(sortField, sortDescending);
 			var totalPages = (int)Math.Ceiling((double)result.TotalRows / PerPage);
 
 			// out of bounds request - e.g. right after removing some rows?
@@ -176,6 +180,7 @@ namespace FormEditor.Api
 				totalPages = totalPages,
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
+				supportsSearch = fullTextIndex != null
 			};
 		}
 

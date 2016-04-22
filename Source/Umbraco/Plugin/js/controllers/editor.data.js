@@ -1,5 +1,5 @@
-﻿angular.module("umbraco").controller("FormEditor.Editor.DataController", ["$scope", "$filter", "assetsService", "dialogService", "angularHelper", "formEditorPropertyEditorResource", "editorState",
-  function ($scope, $filter, assetsService, dialogService, angularHelper, formEditorPropertyEditorResource, editorState) {
+﻿angular.module("umbraco").controller("FormEditor.Editor.DataController", ["$scope", "$filter", "$timeout", "assetsService", "dialogService", "angularHelper", "formEditorPropertyEditorResource", "editorState",
+  function ($scope, $filter, $timeout, assetsService, dialogService, angularHelper, formEditorPropertyEditorResource, editorState) {
     assetsService.loadCss("/App_Plugins/FormEditor/css/form.css");
 
     // hide the property label?
@@ -21,6 +21,9 @@
     };
 
     $scope.hasSelection = function () {
+      if (!$scope.model.data) {
+        return false;
+      }
       return _.find($scope.model.data.rows, function (row) {
         return row.selected == true;
       }) != null;
@@ -34,6 +37,9 @@
     }
 
     $scope.allSelected = function () {
+      if (!$scope.model.data) {
+        return false;
+      }
       return _.find($scope.model.data.rows, function (row) {
         return row.selected == false;
       }) == null;
@@ -73,11 +79,13 @@
     }
 
     $scope.loadPage = function (page) {
-      formEditorPropertyEditorResource.getData(editorState.current.id, page, $scope.model.sortField, $scope.model.sortDescending).then(function (data) {
+      $scope.actionInProgress = true;
+      formEditorPropertyEditorResource.getData(editorState.current.id, page, $scope.model.sortField, $scope.model.sortDescending, $scope.model.searchQuery).then(function (data) {
 
         if (data == null || data.rows == null || data.rows.length == 0) {
           $scope.model.data = null;
-          $scope.dataState = "no-data";
+          $scope.dataState = $scope.model.searchQuery ? $scope.dataState : "no-data";
+          $scope.actionInProgress = false;
           return;
         }
 
@@ -93,6 +101,7 @@
           data.pages.push(i);
         }
 
+        $scope.supportsSearch = data.supportsSearch;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;
@@ -110,6 +119,7 @@
             return field.name == fieldName;
           }) != null;
         });
+        $scope.actionInProgress = false;
       });
     }
 
@@ -164,12 +174,25 @@
     }
 
     $scope.hasHiddenFields = function () {
+      if (!$scope.model.data) {
+        return false;
+      }
       return $scope.model.value.visibleFields && $scope.model.value.visibleFields.length !== $scope.model.data.fields.length;
     }
 
     // helper to force the current form into the dirty state
     $scope.setDirty = function () {
       angularHelper.getCurrentForm($scope).$setDirty();
+    }
+
+    $scope.searchPromise = null;
+    $scope.search = function () {
+      if ($scope.searchPromise != null) {
+        $timeout.cancel($scope.searchPromise);
+      }
+      $scope.searchPromise = $timeout(function () {
+        $scope.loadPage(1);
+      }, 600);
     }
 
     $scope.loadPage(1);
