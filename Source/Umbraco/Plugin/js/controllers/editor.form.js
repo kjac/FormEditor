@@ -301,7 +301,7 @@
 
       pick("field", $scope.fieldTypeOptions, function (fieldType) {
         $scope.addField(fieldType, cell);
-      }, "name");
+      }, "");
     }
 
     $scope.addField = function (fieldType, cell) {
