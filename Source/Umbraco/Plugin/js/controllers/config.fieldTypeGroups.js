@@ -39,6 +39,7 @@
     $scope.deleteFieldTypeGroup = function (fieldTypeGroup) {
       if (confirm("Are you sure you want to delete this field type group?")) {
         $scope.model.value.splice($scope.model.value.indexOf(fieldTypeGroup), 1);
+        loadUnassignedFieldTypes();
       }
     }
 
