@@ -101,7 +101,7 @@
     $scope.sortableOptionsRowLayout = {
       axis: "y",
       cursor: "move",
-      handle: ".row-layout",
+      handle: ".collapsible-block",
       update: function (ev, ui) {
         $scope.setDirty();
       },

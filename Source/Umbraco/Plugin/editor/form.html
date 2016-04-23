@@ -311,14 +311,17 @@
           <p form-editor-localize key="composition.pick.{{dialogData.type}}.text" default-value="Choose which {{dialogData.type}} type to add." />
 
           <div class="umb-pane">
-            <ul class="umb-actions">
-              <li ng-repeat="option in dialogData.options | orderBy: dialogData.orderBy" ng-click="submit(option.value)">
-                <a>
-                  <i class="field-icon" ng-style="{'background-image': 'url(' + option.iconPath + ')'}"></i>
-                  <span class="menu-label" form-editor-localize key="{{dialogData.type}}.{{option.value}}" default-value="{{option.name}}" />
-                </a>
-              </li>
-            </ul>
+            <div ng-repeat="group in dialogData.options">
+              <h5 ng-show="group.title">{{group.title}}</h5>
+              <ul class="umb-actions">
+                <li ng-repeat="option in group.options | orderBy: dialogData.orderBy" ng-click="submit(option.value)">
+                  <a>
+                    <i class="field-icon" ng-style="{'background-image': 'url(' + option.iconPath + ')'}"></i>
+                    <span class="menu-label" form-editor-localize key="{{dialogData.type}}.{{option.value}}" default-value="{{option.name}}" />
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

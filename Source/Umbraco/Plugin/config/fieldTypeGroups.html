@@ -1,0 +1,53 @@
+<div class="form-editor-config" ng-controller="FormEditor.Config.FieldTypeGroupsController">
+  <p>
+    To help your editors navigate the available fields, you can create groups of related field types and order them as you like (drag to rearrange). 
+    If you don't create any groups, all available field types are listed alphabetically when your editors add a field to the form. 
+  </p>
+  <p>
+    <strong>Pro tip:</strong> If you don't want your editors to use some of the field types, simply don't add them to any group.
+  </p>
+  <ul class="field-type-groups" ui-sortable="sortableOptionsFieldTypeGroup" ng-model="model.value">
+    <li ng-repeat="fieldTypeGroup in model.value">
+      <div class="collapsible-block">
+        <div class="collapsible-block-header" ng-click="fieldTypeGroup.expanded = !fieldTypeGroup.expanded">
+          <span class="collapsible-block-tools">
+            <i class="icon icon-delete dimmed" ng-click="deleteFieldTypeGroup(fieldTypeGroup)">
+              <small>delete this field type group</small>
+            </i>
+          </span>
+          <i class="icon" ng-class="{'icon-navigation-right dimmed': !fieldTypeGroup.expanded, 'icon-navigation-down': fieldTypeGroup.expanded}"></i>
+          <p>{{fieldTypeGroup.name}}</p>
+        </div>
+        <div class="collapsible-block-content" ng-show="fieldTypeGroup.expanded">
+          <div class="configuration-item">
+            <label for="rowName{{$index}}">Name</label>
+            <input id="rowName{{$index}}" type="text" ng-model="fieldTypeGroup.name" ng-required="true" />
+          </div>
+          <div class="configuration-item">
+            <label>Field types</label>
+            <div class="assigned-field-types-container">
+              <ol class="assigned-field-types" ui-sortable="sortableOptionsFieldType" ng-model="fieldTypeGroup.fieldTypes">
+                <li ng-repeat="fieldType in fieldTypeGroup.fieldTypes">
+                  <div class="assigned-field">
+                    {{fieldType.prettyName}}
+                    <i class="icon icon-delete dimmed" ng-click="deleteFieldType(fieldType, fieldTypeGroup)">
+                      <small>Remove field type</small>
+                    </i>
+                  </div>
+                </li>
+              </ol>
+              <div>
+                <select ng-model="model.selectedFieldType" ng-change="addSelectedFieldType(fieldTypeGroup)" ng-options="fieldType.prettyName for fieldType in model.unassignedFieldTypes | orderBy: 'prettyName'">
+                  <option value="">Add field type...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <i class="icon icon-add dimmed" ng-click="addFieldTypeGroup()">
+    <small>add a field type group</small>
+  </i>
+</div>

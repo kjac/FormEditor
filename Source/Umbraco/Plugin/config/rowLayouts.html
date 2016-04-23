@@ -1,9 +1,9 @@
 <div class="form-editor-config" ng-controller="FormEditor.Config.RowLayoutsController">
   <ul class="row-layouts" ui-sortable="sortableOptionsRowLayout" ng-model="model.value">
     <li ng-repeat="rowLayout in model.value">
-      <div class="row-layout" ng-class="{'ng-invalid': !isValidCellLayout(rowLayout)}">
-        <div class="row-layout-header" ng-click="rowLayout.expanded = !rowLayout.expanded">
-          <span class="row-layout-tools">
+      <div class="collapsible-block" ng-class="{'ng-invalid': !isValidCellLayout(rowLayout)}">
+        <div class="collapsible-block-header" ng-click="rowLayout.expanded = !rowLayout.expanded">
+          <span class="collapsible-block-tools">
             <i class="icon icon-delete dimmed" ng-click="deleteRowLayout(rowLayout)" ng-show="model.value.length > 1">
               <small>delete this row layout</small>
             </i>
@@ -11,7 +11,7 @@
           <i class="icon" ng-class="{'icon-navigation-right dimmed': !rowLayout.expanded, 'icon-navigation-down': rowLayout.expanded}"></i>
           <p>{{rowLayout.prettyName}}</p>
         </div>
-        <div class="row-layout-content" ng-show="rowLayout.expanded">
+        <div class="collapsible-block-content" ng-show="rowLayout.expanded">
           <div class="configuration-item">
             <label for="rowName{{$index}}">Name</label>
             <input id="rowName{{$index}}" type="text" ng-model="rowLayout.prettyName" ng-required="true" />
