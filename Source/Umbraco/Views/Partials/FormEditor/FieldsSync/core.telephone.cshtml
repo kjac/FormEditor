@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.TelephoneField>
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <input type="tel" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" placeholder="@Model.Placeholder" value="@Model.SubmittedValue" @(Model.Mandatory ? "required" : null) />
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>

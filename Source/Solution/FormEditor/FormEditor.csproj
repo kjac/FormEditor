@@ -263,6 +263,7 @@
     <Compile Include="Events\FormEditorCancelEventHandler.cs" />
     <Compile Include="Events\FormEditorEventArgs.cs" />
     <Compile Include="Events\FormEditorEventHandler.cs" />
+    <Compile Include="Fields\TelephoneField.cs" />
     <Compile Include="Fields\FieldWithPlaceholder.cs" />
     <Compile Include="Data\Field.cs" />
     <Compile Include="Data\FormData.cs" />
