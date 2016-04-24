@@ -46,6 +46,16 @@
               <i class="icon icon-right-double-arrow dimmed"></i>
             </td>
           </tr>
+          <!-- at the time of writing, the only case in which model.data.rows.length == 0 is when the user searched for something that had no matches -->
+          <tr ng-show="!model.data.rows.length">
+            <td colspan="2">
+              <div class="no-data">
+                <i class="icon icon-info dimmed">
+                  <small class="dimmed dimmed-hover" form-editor-localize key="data.noSearchResults">No search results</small>
+                </i>                
+              </div>
+            </td>
+          </tr>
         </tbody>
         <tfoot ng-show="model.data.totalPages > 1">
           <tr>
@@ -69,6 +79,10 @@
           </tr>
         </tfoot>
       </table>
+    </div>
+    <div class="form-data-search" ng-show="supportsSearch">
+      <i class="icon icon-search" ng-class="{'icon-hourglass': actionInProgress}"></i>
+      <input type="text" class="umb-editor" id="searchQuery" ng-model="model.searchQuery" ng-change="search()" no-dirty-check />
     </div>
     <div class="form-data-tools" ng-switch="hasSelection()">
       <div class="btn-group" ng-switch-when="false">

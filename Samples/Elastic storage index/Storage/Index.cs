@@ -13,7 +13,7 @@ namespace FormEditor.ElasticIndex.Storage
 	// custom Form Editor index that stores form entries to ElasticSearch.
 	// this is a working sample of how a custom index could be created. you may want to tweak it to suit your needs.
 	// see IIndex for the interface documentation.
-	public class Index : IIndex
+	public class Index : IIndex, IFullTextIndex
 	{
 		private const int NotFound = 404;
 		private readonly int _contentId;
@@ -98,15 +98,23 @@ namespace FormEditor.ElasticIndex.Storage
 
 		public Result Get(string sortField, bool sortDescending, int count, int skip)
 		{
-			// our FieldValues dictionary is serialized to JSON as an object with the dictionary keys mapped to object properties.
-			// therefore we need to sort on fieldValues.[field name].
-			var sortFieldName = string.Format("fieldValues.{0}", sortField);
+			return GetSearchResults(null, null, sortField, sortDescending, count, skip);
+		}
+
+		public Result Search(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
+		{
+			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
+		}
+
+		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
+		{
+			var sortFieldName = IndexFieldName(sortField);
 
 			// special case: system fields (like created date)
-			if (sortField.StartsWith("_"))
+			if(sortField.StartsWith("_"))
 			{
 				// translate system field names into something we know
-				switch (sortField)
+				switch(sortField)
 				{
 					// add more cases here when applicable
 
@@ -114,20 +122,33 @@ namespace FormEditor.ElasticIndex.Storage
 					default:
 						sortFieldName = "createdDate";
 						break;
-				}				
+				}
 			}
 
 			// run the search.
-			var response = Client.Search<Entry>(s => s.Sort(f =>
-			{
-				var sortFieldDescriptor = f.OnField(sortFieldName);
-				return sortDescending ? sortFieldDescriptor.Descending() : sortFieldDescriptor.Ascending();
-			}).From(skip).Take(count));
+			var response = Client.Search<Entry>(s =>
+				{
+					// is it a full text search?
+					if(string.IsNullOrWhiteSpace(searchQuery) == false && searchFields != null && searchFields.Any())
+					{
+						// yup - turn the search query into a wildcard query and add it to the search descriptor
+						// NOTE: this will have an impact on performance on large indexes, but we'll 
+						//       assume there won't be that many form submissions in one index 
+						searchQuery = searchQuery.Replace("*", "").Replace(" ", "* ") + "*";
+						s.Query(q => q.QueryString(qs => qs.OnFields(searchFields.Select(IndexFieldName)).Query(searchQuery)));
+					}
+					return s.Sort(f =>
+					{
+						var sortFieldDescriptor = f.OnField(sortFieldName);
+						return sortDescending ? sortFieldDescriptor.Descending() : sortFieldDescriptor.Ascending();
+					}).From(skip).Take(count);
+				}
+			);
 
-			if (response.ServerError == null)
+			if(response.ServerError == null)
 			{
 				// success.
-				return new Result((int)response.Total, response.Documents.Select(ToFormRow), sortField, sortDescending);
+				return new Result((int) response.Total, response.Documents.Select(ToFormRow), sortField, sortDescending);
 			}
 
 			// handle error
@@ -137,6 +158,13 @@ namespace FormEditor.ElasticIndex.Storage
 				Log.Warning("An error occurred searching the index: {0}. Server error: {1} ({2}).", IndexName(), response.ServerError.Error, response.ServerError.Status);
 			}
 			return null;
+		}
+
+		private static string IndexFieldName(string sortField)
+		{
+			// our FieldValues dictionary is serialized to JSON as an object with the dictionary keys mapped to object properties.
+			// therefore the index field name is fieldValues.[field name].
+			return string.Format("fieldValues.{0}", sortField);
 		}
 
 		public Stream GetFile(string filename, Guid rowId)

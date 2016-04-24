@@ -21,9 +21,9 @@
             $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetRowIcons"), "Could not retrieve row icons"
         );
       },
-      getData: function (documentId, page, sortField, sortDescending) {
+      getData: function (documentId, page, sortField, sortDescending, searchQuery) {
         return umbRequestHelper.resourcePromise(
-            $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetData/" + documentId + "?page=" + page + "&sortField=" + sortField + "&sortDescending=" + sortDescending), "Could not retrieve data"
+            $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetData/" + documentId, { params: { page: page, sortField: sortField, sortDescending: sortDescending, searchQuery: searchQuery } }), "Could not retrieve data"
         );
       },
       deleteData: function (documentId, ids) {

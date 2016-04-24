@@ -8,15 +8,17 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Store;
 using LuceneField = Lucene.Net.Documents.Field;
 using LuceneDirectory = Lucene.Net.Store.Directory;
 using Lucene.Net.Search;
 using System.Globalization;
+using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex
+	public class Index : IIndex, IFullTextIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
@@ -117,16 +119,26 @@ namespace FormEditor.Storage
 
 		public Result Get(string sortField, bool sortDescending, int count, int skip)
 		{
+			return GetSearchResults(null, null, sortField, sortDescending, count, skip);
+		}
+
+		public Result Search(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
+		{
+			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
+		}
+
+		private Result GetSearchResults(string searchQuery, string [] searchFields, string sortField, bool sortDescending, int count, int skip)
+		{
 			var reader = GetIndexReader();
 			var searcher = GetIndexSearcher(reader);
 
 			string sortFieldName;
-			if (string.IsNullOrWhiteSpace(sortField))
+			if(string.IsNullOrWhiteSpace(sortField))
 			{
 				sortField = sortFieldName = CreatedField;
 				sortDescending = true;
 			}
-			else if (sortField == CreatedField)
+			else if(sortField == CreatedField)
 			{
 				sortFieldName = CreatedField;
 			}
@@ -135,8 +147,28 @@ namespace FormEditor.Storage
 				sortFieldName = FieldNameForSorting(sortField);
 			}
 
+			Query query;
+			if(string.IsNullOrWhiteSpace(searchQuery) == false && searchFields != null && searchFields.Any())
+			{
+				searchQuery = searchQuery.Replace("*", "").Replace(" ", "* ") + "*";
+				var parser = new MultiFieldQueryParser(Version.LUCENE_29, searchFields, GetAnalyzer());
+				parser.SetDefaultOperator(QueryParser.Operator.AND);
+				try
+				{
+					query = parser.Parse(searchQuery.Trim());
+				}
+				catch(ParseException)
+				{
+					query = parser.Parse(QueryParser.Escape(searchQuery.Trim()));
+				}
+			}
+			else
+			{
+				query = new MatchAllDocsQuery();
+			}
+
 			var docs = searcher.Search(
-				new MatchAllDocsQuery(),
+				query,
 				null, reader.MaxDoc(),
 				new Sort(new SortField(sortFieldName, SortField.STRING, sortDescending))
 				);
@@ -144,9 +176,9 @@ namespace FormEditor.Storage
 			var scoreDocs = docs.ScoreDocs;
 
 			var rows = new List<Row>();
-			for (var i = skip; i < (skip + count) && i < scoreDocs.Length; i++)
+			for(var i = skip; i < (skip + count) && i < scoreDocs.Length; i++)
 			{
-				if (reader.IsDeleted(scoreDocs[i].doc))
+				if(reader.IsDeleted(scoreDocs[i].doc))
 				{
 					continue;
 				}
