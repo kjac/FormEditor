@@ -27,8 +27,10 @@ Form Editor ships with a bunch of row icons, but if you run out of icons you can
 
 By default, Form Editor will suggest [Bootstrap](http://getbootstrap.com/css/#grid) style `.col-md-*` classes as cell aliases, mostly because the sample templates shipped with Form Editor use Bootstrap to render the form grid. But Form Editor is not tied to Bootstrap in any way. You have complete control over the [form rendering](render.md), so just use whatever cell alias that makes sense. 
 
-##### Disallowed field types
-Don't want your editors adding certain field types to their forms? No problem. Just add these field types to the list of disallowed field types.
+##### Field type groups
+Form Editor ships with a bunch of field types (textbox, email, select box etc.). By default they are all listed in alphabetical order when the editors add a new field to a form. You can change this by grouping the available field types into field type groups, which is a great way to help your editors find the field types they need. 
+
+Don't want your editors adding certain field types to their forms? No problem. Just don't add these field types to any of the field type groups.
 
 ##### Email templates
 Form Editor supports two different types of emails - notification emails (sent to specific recipients of the editor's choosing) and confirmation emails (sent to the end users when submitting the form).
