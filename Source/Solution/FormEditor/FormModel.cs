@@ -10,7 +10,9 @@ using System.Web;
 using FormEditor.Data;
 using FormEditor.Events;
 using FormEditor.Fields;
+using FormEditor.Fields.Statistics;
 using FormEditor.Storage;
+using FormEditor.Storage.Statistics;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 using Field = FormEditor.Fields.Field;
@@ -73,6 +75,7 @@ namespace FormEditor
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
 		private bool DisableValidation { get; set; }
+		private bool UseStatistics { get; set; }
 
 		#endregion
 
@@ -333,7 +336,17 @@ namespace FormEditor
 
 			// store fields in index
 			var index = IndexHelper.GetIndex(content.Id);
-			index.Add(indexFields, rowId);
+			var statisticsIndex = index as IStatisticsIndex;
+
+			if (UseStatistics && statisticsIndex != null)
+			{
+				var indexFieldsForStatistics = valueFields.OfType<IStatisticsField>().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] {});
+				statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
+			}
+			else
+			{
+				index.Add(indexFields, rowId);				
+			}
 
 			return rowId;
 		}
@@ -570,6 +583,8 @@ namespace FormEditor
 				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
 				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
 				DisableValidation = GetPreValueAsBoolean("disableValidation", preValueDictionary);
+				// TODO: get from prevalues
+				UseStatistics = true;
 			}
 			catch(Exception ex)
 			{

@@ -263,6 +263,7 @@
     <Compile Include="Events\FormEditorCancelEventHandler.cs" />
     <Compile Include="Events\FormEditorEventArgs.cs" />
     <Compile Include="Events\FormEditorEventHandler.cs" />
+    <Compile Include="Fields\Statistics\IStatisticsField.cs" />
     <Compile Include="Fields\TelephoneField.cs" />
     <Compile Include="Fields\FieldWithPlaceholder.cs" />
     <Compile Include="Data\Field.cs" />
@@ -316,6 +317,9 @@
     <Compile Include="Storage\IndexHelper.cs" />
     <Compile Include="Storage\IIndex.cs" />
     <Compile Include="Storage\Index.cs" />
+    <Compile Include="Storage\Statistics\FieldValueFrequency.cs" />
+    <Compile Include="Storage\Statistics\FieldValueFrequencyStatistics.cs" />
+    <Compile Include="Storage\Statistics\IStatisticsIndex.cs" />
     <Compile Include="Storage\Row.cs" />
     <Compile Include="Storage\Result.cs" />
     <Compile Include="Umbraco\ApplicationEvents.cs" />
