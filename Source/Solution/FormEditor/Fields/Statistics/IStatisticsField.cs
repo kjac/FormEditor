@@ -15,5 +15,7 @@ namespace FormEditor.Fields.Statistics
 
 		// TODO: document this
 		string FormSafeName { get; }
+
+		string Name { get; set; }
 	}
 }

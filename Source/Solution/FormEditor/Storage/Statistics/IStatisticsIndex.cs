@@ -21,6 +21,6 @@ namespace FormEditor.Storage.Statistics
 		Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsForStatistics, Guid rowId);
 
 		// TODO: document this
-		FieldValueFrequencyStatistics GetFieldValueFrequencies(IEnumerable<string> fieldNames);
+		FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames);
 	}
 }

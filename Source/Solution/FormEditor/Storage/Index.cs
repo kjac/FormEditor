@@ -144,12 +144,9 @@ namespace FormEditor.Storage
 			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
 		}
 
-		public FieldValueFrequencyStatistics GetFieldValueFrequencies(IEnumerable<string> fieldNames)
+		public FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames)
 		{
-			var result = new FieldValueFrequencyStatistics
-			{
-				FieldValueFrequencies = new Dictionary<string, IEnumerable<FieldValueFrequency>>()
-			};
+			var result = new FieldValueFrequencyStatistics();
 
 			var reader = GetIndexReader();
 			foreach (var fieldName in fieldNames)
@@ -159,13 +156,11 @@ namespace FormEditor.Storage
 				var stats = new TermRangeTermEnum(reader, FieldNameForStatistics(fieldName), null, null, true, true, null);
 				do
 				{
-					//var term = stats.Term();
-					//var freq = stats.DocFreq();
 					fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
 				}
 				while (stats.Next());
 
-				result.FieldValueFrequencies[fieldName] = fieldValueFrequencies;
+				result.Add(fieldName, fieldValueFrequencies);
 			}
 
 			result.TotalRows = reader.NumDocs();

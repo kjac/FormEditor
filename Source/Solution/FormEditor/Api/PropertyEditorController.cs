@@ -7,7 +7,9 @@ using System.Text;
 using System.Web.Hosting;
 using System.Web.Http;
 using FormEditor.Fields;
+using FormEditor.Fields.Statistics;
 using FormEditor.Storage;
+using FormEditor.Storage.Statistics;
 using FormEditor.Umbraco;
 using FormEditor.Validation.Conditions;
 using Newtonsoft.Json;
@@ -189,6 +191,50 @@ namespace FormEditor.Api
 			var imageField = new ImageField { MediaId = id };
 			var image = imageField.Media;
 			return image != null ? new { id = image.Id, url = image.Url } : null;
+		}
+
+		public object GetFieldValueFrequencyStatistics(int id)
+		{
+			var document = ContentHelper.GetById(id);
+			if(document == null)
+			{
+				return null;
+			}
+			var model = ContentHelper.GetFormModel(document);
+			if(model == null)
+			{
+				return null;
+			}
+
+			var valueFields = model.AllValueFields().OfType<IStatisticsField>().ToList();
+			if(valueFields.Any() == false)
+			{
+				return null;
+			}
+
+			var index = IndexHelper.GetIndex(id) as IStatisticsIndex;
+			if(index == null)
+			{
+				return null;
+			}
+
+			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(valueFields.Select(f => f.FormSafeName));
+
+			return new
+			{
+				totalRows = fieldValueFrequencyStatistics.TotalRows,
+				fields = fieldValueFrequencyStatistics.FieldValueFrequencies
+					.Where(f => valueFields.Any(v => v.FormSafeName == f.Key))
+					.Select(f => new
+					{
+						name = valueFields.First(v => v.FormSafeName == f.Key).Name,
+						values = f.Value.Select(v => new
+						{
+							value = v.Value,
+							frequency = v.Frequency
+						})
+					})
+			};
 		}
 
 		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document)

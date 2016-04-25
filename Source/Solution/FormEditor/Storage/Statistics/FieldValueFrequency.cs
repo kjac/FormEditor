@@ -9,6 +9,7 @@ namespace FormEditor.Storage.Statistics
 		}
 
 		public string Value { get; private set; }
+
 		public int Frequency { get; private set; }
 	}
 }
