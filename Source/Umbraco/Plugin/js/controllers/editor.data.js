@@ -102,6 +102,7 @@
         }
 
         $scope.supportsSearch = data.supportsSearch;
+        $scope.supportsFieldValueFrequenyStatistics = data.supportsFieldValueFrequenyStatistics;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;
@@ -193,6 +194,10 @@
       $scope.searchPromise = $timeout(function () {
         $scope.loadPage(1);
       }, 600);
+    }
+
+    $scope.showFieldValueFrequenyStatistics = function() {
+      console.log("TODO: showFieldValueFrequenyStatistics");
     }
 
     $scope.loadPage(1);

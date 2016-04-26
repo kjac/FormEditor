@@ -105,6 +105,11 @@
           Choose visible form fields
         </a>
       </div>
+      <div class="btn-group" ng-show="supportsFieldValueFrequenyStatistics">
+        <a class="btn" ng-disabled="actionInProgress" ng-click="showFieldValueFrequenyStatistics()" form-editor-localize key="data.fieldValueFrequenyStatistics.header">
+          Statistics
+        </a>
+      </div>
     </div>
   </div>
 

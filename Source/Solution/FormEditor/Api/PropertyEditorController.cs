@@ -182,7 +182,8 @@ namespace FormEditor.Api
 				totalPages = totalPages,
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
-				supportsSearch = fullTextIndex != null
+				supportsSearch = fullTextIndex != null,
+				supportsFieldValueFrequenyStatistics = index is IStatisticsIndex && allFields.OfType<IStatisticsField>().Any()
 			};
 		}
 
