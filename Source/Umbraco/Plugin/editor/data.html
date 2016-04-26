@@ -1,4 +1,7 @@
 <div class="umb-editor umb-listview form-editor-data" ng-controller="FormEditor.Editor.DataController" ng-switch="dataState">
+  <!-- TODO: move this elsewhere - use assetsService perhaps? -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
   <p form-editor-localize="" key="data.text">
     The submissions for your form are listed in the table below.
   </p>
@@ -177,6 +180,36 @@
         <div class="umb-el-wrap umb-panel-buttons">
           <div class="btn-toolbar umb-btn-toolbar pull-right">
             <button ng-click="submit(dialogData)" class="btn btn-primary" form-editor-localize key="edit.ok">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+<script type="text/ng-template" id="data.fieldValueFrequenyStatistics.html">
+    <div class="umb-panel">
+      <div class="umb-panel-body no-header with-footer umb-scrollable">
+        <div class="umb-control-group">
+          <div class="tab-content form umb-el-wrap">
+            <div class="umb-pane">
+              <h4 form-editor-localize key="data.fieldValueFrequenyStatistics.header" default-value="Statistics" />
+              <div ng-controller="FormEditor.Editor.FieldValueFrequenyStatisticsController">
+                <div ng-repeat="field in fields">
+                  <h5>{{field.name}}</h5>
+                  <div id="{{field.formSafeName}}" style="height: 320px; background-color:red;">
+                    <span ng-if="loading">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="umb-panel-footer">
+        <div class="umb-el-wrap umb-panel-buttons">
+          <div class="btn-toolbar umb-btn-toolbar pull-right">
+            <button ng-click="close()" class="btn" form-editor-localize key="edit.close">Close</button>
           </div>
         </div>
       </div>

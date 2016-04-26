@@ -229,6 +229,7 @@ namespace FormEditor.Api
 					.Select(f => new
 					{
 						name = valueFields.First(v => v.FormSafeName == f.Key).Name,
+						formSafeName = f.Key,
 						values = f.Value.Select(v => new
 						{
 							value = v.Value,

@@ -196,10 +196,63 @@
       }, 600);
     }
 
-    $scope.showFieldValueFrequenyStatistics = function() {
-      console.log("TODO: showFieldValueFrequenyStatistics");
+    $scope.showFieldValueFrequenyStatistics = function () {
+      dialogService.open({
+        dialogData: {},
+        template: "data.fieldValueFrequenyStatistics.html"
+      });
     }
 
     $scope.loadPage(1);
   }
+]);
+
+// TODO: move this elsewhere
+angular.module("umbraco").controller("FormEditor.Editor.FieldValueFrequenyStatisticsController", ["$scope", "$timeout", "assetsService", "formEditorPropertyEditorResource", "editorState",
+    function ($scope, $timeout, assetsService, formEditorPropertyEditorResource, editorState) {
+
+      $scope.fields = null;
+      $scope.loading = true;
+
+      if (formEditorPropertyEditorResource.googleChartsLoaded == false) {
+        //console.log("Loading google charts...")
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(googleChartsLoadCallback);
+      }
+      else {
+        googleChartsLoadCallback();
+      }
+
+      function googleChartsLoadCallback() {
+        formEditorPropertyEditorResource.googleChartsLoaded = true;
+
+        formEditorPropertyEditorResource.getFieldValueFrequencyStatistics(editorState.current.id).then(function (data) {
+          $scope.fields = data.fields;
+          _.each($scope.fields, function (field) {
+            field.chartData = [['', '']]; // legend header - leave empty
+            _.each(field.values, function (value) {
+              field.chartData.push([value.value, value.frequency]);
+            });
+            //console.log("TODO: show data for", field.name, field.chartData);
+          });
+          $timeout(function () {
+            drawCharts();
+          }, 200);
+        });
+      }
+
+      function drawCharts() {
+        $scope.loading = false;
+        _.each($scope.fields, function (field) {
+          var data = google.visualization.arrayToDataTable(field.chartData);
+          var options = {
+            chartArea: { left: 20, top: 20 },
+            legend: "none",
+            pieSliceText: "label"
+          };
+          var chart = new google.visualization.PieChart(document.getElementById(field.formSafeName));
+          chart.draw(data, options);
+        });
+      }
+    }
 ]);
