@@ -149,7 +149,9 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var allFields = GetAllFieldsForDisplay(model, document);
+			var preValues = ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
+			var allFields = GetAllFieldsForDisplay(model, document, preValues);
+			var statisticsEnabled = ContentHelper.StatisticsEnabled(preValues);
 
 			var index = IndexHelper.GetIndex(id);
 			var fullTextIndex = index as IFullTextIndex;
@@ -183,7 +185,7 @@ namespace FormEditor.Api
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
 				supportsSearch = fullTextIndex != null,
-				supportsFieldValueFrequenyStatistics = index is IStatisticsIndex && allFields.OfType<IStatisticsField>().Any()
+				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.OfType<IStatisticsField>().Any()
 			};
 		}
 
@@ -226,25 +228,32 @@ namespace FormEditor.Api
 				totalRows = fieldValueFrequencyStatistics.TotalRows,
 				fields = fieldValueFrequencyStatistics.FieldValueFrequencies
 					.Where(f => valueFields.Any(v => v.FormSafeName == f.Key))
-					.Select(f => new
+					.Select(f =>
 					{
-						name = valueFields.First(v => v.FormSafeName == f.Key).Name,
-						formSafeName = f.Key,
-						values = f.Value.Select(v => new
+						var field = valueFields.First(v => v.FormSafeName == f.Key);
+						return new
 						{
-							value = v.Value,
-							frequency = v.Frequency
-						})
+							name = field.Name,
+							formSafeName = field.FormSafeName,
+							multipleValuesPerEntry = field.MultipleValuesPerEntry,
+							values = f.Value.Select(v => new
+							{
+								value = v.Value,
+								frequency = v.Frequency
+							})
+						};
 					})
 			};
 		}
 
-		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document)
+		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document, IDictionary<string, PreValue> preValues = null)
 		{
 			var allFields = model.AllValueFields().ToList();
 
+			preValues = preValues ?? ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
+
 			// show logged IPs?
-			if (ContentHelper.IpDisplayEnabled(document) && ContentHelper.IpLoggingEnabled(document))
+			if (ContentHelper.IpDisplayEnabled(preValues) && ContentHelper.IpLoggingEnabled(preValues))
 			{
 				// IPs are being logged, add a single line text field to retrieve IPs as a string
 				allFields.Add(new TextBoxField { Name = "IP", FormSafeName = "_ip" });

@@ -583,8 +583,7 @@ namespace FormEditor
 				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
 				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
 				DisableValidation = GetPreValueAsBoolean("disableValidation", preValueDictionary);
-				// TODO: get from prevalues
-				UseStatistics = true;
+				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
 			}
 			catch(Exception ex)
 			{

@@ -1,5 +1,5 @@
 <div class="umb-editor umb-listview form-editor-data" ng-controller="FormEditor.Editor.DataController" ng-switch="dataState">
-  <p form-editor-localize="" key="data.text">
+  <p form-editor-localize key="data.text">
     The submissions for your form are listed in the table below.
   </p>
   <div class="row-fluid" ng-switch-when="loading">
@@ -105,8 +105,8 @@
           Choose visible form fields
         </a>
       </div>
-      <div class="btn-group" ng-show="supportsFieldValueFrequenyStatistics">
-        <a class="btn" ng-disabled="actionInProgress" ng-click="showFieldValueFrequenyStatistics()" form-editor-localize key="data.fieldValueFrequenyStatistics.header">
+      <div class="btn-group" ng-show="supportsStatistics">
+        <a class="btn" ng-disabled="actionInProgress" ng-click="showStatistics()" form-editor-localize key="data.statistics.header">
           Statistics
         </a>
       </div>
@@ -183,18 +183,28 @@
     </div>
   </script>
 
-  <script type="text/ng-template" id="data.fieldValueFrequenyStatistics.html">
+  <script type="text/ng-template" id="data.statistics.html">
     <div class="umb-panel">
       <div class="umb-panel-body no-header with-footer umb-scrollable">
         <div class="umb-control-group">
           <div class="tab-content form umb-el-wrap">
-            <div class="umb-pane" ng-controller="FormEditor.Editor.FieldValueFrequenyStatisticsController">
-              <h4 form-editor-localize key="data.fieldValueFrequenyStatistics.header" default-value="Statistics" />
-              <div ng-if="fields == null">Loading statistics...</div>
+            <div class="umb-pane" ng-controller="FormEditor.Editor.StatisticsController">
+              <h4 form-editor-localize key="data.statistics.header" default-value="Statistics" />
+              <div ng-if="fields == null" form-editor-localize key="data.statistics.loadingData">Loading statistics...</div>
+              <div ng-if="fields != null">
+                <form-editor-localize key="data.statistics.totalRows">Total number of entries:</form-editor-localize> <strong>{{totalRows}}</strong>
+              </div>
+              <div ng-if="fields != null && fields.length == 0">
+                <h5 form-editor-localize key="data.statistics.noStatisticsHeader">No statistics available</h5>
+                <p form-editor-localize key="data.statistics.noStatisticsText">
+                  The form submissions currently have no statistics available.
+                </p>
+              </div>
               <div ng-repeat="field in fields">
                 <h5>{{field.name}}</h5>
-                <div id="{{field.formSafeName}}" style="height: 320px;">
-                  <div ng-show="loading" style="vertical-align: middle; text-align: center; line-height: 320px;">Loading graph...</div>
+                <!-- google charts API requires the graph container height to be inline... -->
+                <div id="{{field.formSafeName}}" style="height: 400px;">
+                  <div ng-show="loading" class="stats-loading" form-editor-localize key="data.statistics.loadingGraph">Loading graph...</div>
                 </div>
               </div>
             </div>

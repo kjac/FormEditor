@@ -47,5 +47,10 @@ namespace FormEditor.Fields
 		{
 			return SubmittedValue != null ? SubmittedValue.Split(',') : new string[] { };
 		}
+
+		public virtual bool MultipleValuesPerEntry
+		{
+			get { return IsMultiSelectEnabled; }
+		}
 	}
 }

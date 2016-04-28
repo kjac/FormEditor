@@ -102,7 +102,7 @@
         }
 
         $scope.supportsSearch = data.supportsSearch;
-        $scope.supportsFieldValueFrequenyStatistics = data.supportsFieldValueFrequenyStatistics;
+        $scope.supportsStatistics = data.supportsStatistics;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;
@@ -196,64 +196,14 @@
       }, 600);
     }
 
-    $scope.showFieldValueFrequenyStatistics = function () {
+    $scope.showStatistics = function () {
       dialogService.open({
         dialogData: {},
-        template: "data.fieldValueFrequenyStatistics.html"
+        template: "data.statistics.html",
+        modalClass: "umb-modal stats-modal"
       });
     }
 
     $scope.loadPage(1);
   }
-]);
-
-// TODO: move this elsewhere
-angular.module("umbraco").controller("FormEditor.Editor.FieldValueFrequenyStatisticsController", ["$scope", "$timeout", "assetsService", "formEditorPropertyEditorResource", "editorState",
-    function ($scope, $timeout, assetsService, formEditorPropertyEditorResource, editorState) {
-
-      $scope.fields = null;
-      $scope.loading = true;
-
-      formEditorPropertyEditorResource.getFieldValueFrequencyStatistics(editorState.current.id).then(function(data) {
-        $scope.fields = data.fields;
-        // TODO: make sure there are actually any fields before loading a whole bunch
-        assetsService.loadJs("https://www.gstatic.com/charts/loader.js").then(function() {
-          if (formEditorPropertyEditorResource.googleChartsLoaded == false) {
-            google.charts.load('current', { 'packages': ['corechart'] });
-            google.charts.setOnLoadCallback(googleChartsLoadCallback);
-          }
-          else {
-            googleChartsLoadCallback();
-          }
-        });
-      });
-
-      function googleChartsLoadCallback() {
-        formEditorPropertyEditorResource.googleChartsLoaded = true;
-        _.each($scope.fields, function (field) {
-          field.chartData = [['', '']]; // legend header - leave empty
-          _.each(field.values, function (value) {
-            field.chartData.push([value.value, value.frequency]);
-          });
-          //console.log("TODO: show data for", field.name, field.chartData);
-        });
-        $timeout(function () {
-          drawCharts();
-        }, 200);
-      }
-
-      function drawCharts() {
-        _.each($scope.fields, function (field) {
-          var data = google.visualization.arrayToDataTable(field.chartData);
-          var options = {
-            chartArea: { left: 20, top: 20 },
-            legend: "none",
-            pieSliceText: "label"
-          };
-          var chart = new google.visualization.PieChart(document.getElementById(field.formSafeName));
-          chart.draw(data, options);
-        });
-        $scope.loading = false;
-      }
-    }
 ]);

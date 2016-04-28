@@ -667,3 +667,16 @@
     margin-bottom: 10px;
   }
 }
+
+.stats-modal {
+  margin-left: -500px !important;
+  &.fade.in {
+    width: 500px !important;
+  }
+  .stats-loading {
+    vertical-align: middle; 
+    text-align: center; 
+    /* NOTE: this needs to be the same value as the container height (inline CSS in data.html) */
+    line-height: 400px;
+  }
+}

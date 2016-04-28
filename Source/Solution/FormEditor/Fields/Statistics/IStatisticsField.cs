@@ -10,12 +10,24 @@ namespace FormEditor.Fields.Statistics
 	/// </remarks>
 	public interface IStatisticsField
 	{
-		// TODO: document this
+		/// <summary>
+		/// The individual submitted values that should be put into the index for this field
+		/// </summary>
 		IEnumerable<string> SubmittedValues { get; }
 
-		// TODO: document this
+		/// <summary>
+		/// The field form safe name (should be inherited from FieldWithValue)
+		/// </summary>
 		string FormSafeName { get; }
 
+		/// <summary>
+		/// The field name (should be inherited from FieldWithValue)
+		/// </summary>
 		string Name { get; set; }
+
+		/// <summary>
+		/// Whether or not field type can contain multiple values per entry
+		/// </summary>
+		bool MultipleValuesPerEntry { get; }
 	}
 }

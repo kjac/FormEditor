@@ -20,7 +20,11 @@ namespace FormEditor.Storage.Statistics
 		/// <returns>The ID of the form entry</returns>
 		Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsForStatistics, Guid rowId);
 
-		// TODO: document this
+		/// <summary>
+		/// Gets the field value frequency statistics for specified fields
+		/// </summary>
+		/// <param name="fieldNames">The field names to get statistics for</param>
+		/// <returns>The field value frequencies</returns>
 		FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames);
 	}
 }

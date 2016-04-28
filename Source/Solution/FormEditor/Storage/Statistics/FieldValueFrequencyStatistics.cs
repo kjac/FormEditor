@@ -6,8 +6,9 @@ namespace FormEditor.Storage.Statistics
 	{
 		private readonly IDictionary<string, IEnumerable<FieldValueFrequency>> _fieldValueFrequencies;
 
-		public FieldValueFrequencyStatistics()
+		public FieldValueFrequencyStatistics(int totalRows)
 		{
+			TotalRows = totalRows;
 			_fieldValueFrequencies = new Dictionary<string, IEnumerable<FieldValueFrequency>>();
 		}
 
@@ -16,7 +17,7 @@ namespace FormEditor.Storage.Statistics
 			_fieldValueFrequencies[fieldName] = fieldValueFrequencies;
 		}
 
-		public int TotalRows { get; set; }
+		public int TotalRows { get; private set; }
 
 		public IEnumerable<KeyValuePair<string, IEnumerable<FieldValueFrequency>>> FieldValueFrequencies
 		{

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 
@@ -37,34 +38,47 @@ namespace FormEditor.Umbraco
 			return property;
 		}
 
-		public static bool IpDisplayEnabled(IContent document)
+		public static bool IpDisplayEnabled(IDictionary<string, PreValue> preValues)
 		{
-			return PreValueEnabled(document, FormModel.PropertyEditorAlias, "showIp");
+			return PreValueEnabled(preValues, "showIp");
 		}
 
-		public static bool IpLoggingEnabled(IContent document)
+		public static bool IpLoggingEnabled(IDictionary<string, PreValue> preValues)
 		{
-			return PreValueEnabled(document, FormModel.PropertyEditorAlias, "logIp");
+			return PreValueEnabled(preValues, "logIp");
 		}
 
-		private static bool PreValueEnabled(IContent document, string propertyEditorAlias, string preValueKey)
+		public static bool StatisticsEnabled(IDictionary<string, PreValue> preValues)
+		{
+			return PreValueEnabled(preValues, "enableStatistics");
+		}
+
+		public static IDictionary<string, PreValue> GetPreValues(IContent document, string propertyEditorAlias)
 		{
 			if (document == null)
 			{
-				return false;
+				return null;
 			}
 			var property = document.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == propertyEditorAlias);
 			if (property == null)
 			{
-				return false;
+				return null;
 			}
 			var preValues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeDefinitionId);
 			if (preValues == null)
 			{
+				return null;
+			}
+			return preValues.PreValuesAsDictionary;
+		}
+
+		private static bool PreValueEnabled(IDictionary<string, PreValue> preValues, string preValueKey)
+		{
+			if (preValues == null)
+			{
 				return false;
 			}
-			var preValueDictionary = preValues.PreValuesAsDictionary;
-			return preValueDictionary.ContainsKey(preValueKey) && preValueDictionary[preValueKey] != null && (preValueDictionary[preValueKey].Value == "1");
+			return preValues.ContainsKey(preValueKey) && preValues[preValueKey] != null && (preValues[preValueKey].Value == "1");
 		}
 	}
 }

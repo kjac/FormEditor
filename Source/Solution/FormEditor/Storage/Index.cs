@@ -146,24 +146,26 @@ namespace FormEditor.Storage
 
 		public FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames)
 		{
-			var result = new FieldValueFrequencyStatistics();
-
 			var reader = GetIndexReader();
+			var result = new FieldValueFrequencyStatistics(reader.NumDocs());
 			foreach (var fieldName in fieldNames)
 			{
 				var fieldValueFrequencies = new List<FieldValueFrequency>();
 
 				var stats = new TermRangeTermEnum(reader, FieldNameForStatistics(fieldName), null, null, true, true, null);
-				do
+				if (stats.Term() != null)
 				{
-					fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
+					do
+					{
+						fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
+					}
+					while (stats.Next());					
 				}
-				while (stats.Next());
-
-				result.Add(fieldName, fieldValueFrequencies);
+				if (fieldValueFrequencies.Any())
+				{
+					result.Add(fieldName, fieldValueFrequencies);					
+				}
 			}
-
-			result.TotalRows = reader.NumDocs();
 
 			reader.Close();
 

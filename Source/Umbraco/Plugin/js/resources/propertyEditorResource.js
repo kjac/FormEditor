@@ -54,6 +54,7 @@
       pathToConditionFile: function (file) {
         return "/App_Plugins/FormEditor/editor/conditions/" + file;
       },
+      // this indicates if the google charts loader has been executed or not
       googleChartsLoaded: false
     }
   }

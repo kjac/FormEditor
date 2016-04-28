@@ -81,6 +81,12 @@
                description: "Enable creation of multiple form page",
                key: "enablePages",
                view: "boolean"
+            },
+            {
+               label: "Use form statistics",
+               description: "Enable statistics for form submissions",
+               key: "enableStatistics",
+               view: "boolean"
             }
         ]
       }
