@@ -5,7 +5,7 @@ using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
 {
-	public abstract class FieldWithFieldValues : FieldWithMandatoryValidation, IStatisticsField
+	public abstract class FieldWithFieldValues : FieldWithMandatoryValidation, IValueFrequencyStatisticsField
 	{
 		public FieldValue[] FieldValues { get; set; }
 

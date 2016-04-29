@@ -3,7 +3,7 @@
 namespace FormEditor.Fields.Statistics
 {
 	/// <summary>
-	/// This interface describes a Form Editor field that supports statistics
+	/// This is the base interface for a Form Editor field that supports statistics
 	/// </summary>
 	/// <remarks>
 	/// Expect this interface to change over time as the demand for statistics grow
@@ -16,7 +16,7 @@ namespace FormEditor.Fields.Statistics
 		IEnumerable<string> SubmittedValues { get; }
 
 		/// <summary>
-		/// The field form safe name (should be inherited from FieldWithValue)
+		/// The field form safe name (should be inherited from FieldWithValue)u
 		/// </summary>
 		string FormSafeName { get; }
 
@@ -24,10 +24,5 @@ namespace FormEditor.Fields.Statistics
 		/// The field name (should be inherited from FieldWithValue)
 		/// </summary>
 		string Name { get; set; }
-
-		/// <summary>
-		/// Whether or not field type can contain multiple values per entry
-		/// </summary>
-		bool MultipleValuesPerEntry { get; }
 	}
 }

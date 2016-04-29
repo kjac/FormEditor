@@ -37,7 +37,7 @@ namespace FormEditor.Storage
 			return Add(fields, null, rowId);
 		}
 
-		public Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsForStatistics, Guid rowId)
+		public Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
 			var doc = new Document();
 
@@ -55,9 +55,9 @@ namespace FormEditor.Storage
 				doc.Add(new LuceneField(FieldNameForSorting(field.Key), sortValue.ToLowerInvariant(), LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
 			}
 
-			if (fieldsForStatistics != null)
+			if (fieldsValuesForStatistics != null)
 			{
-				foreach (var field in fieldsForStatistics)
+				foreach (var field in fieldsValuesForStatistics)
 				{
 					foreach (var value in field.Value)
 					{

@@ -15,10 +15,10 @@ namespace FormEditor.Storage.Statistics
 		/// Adds an entry to the index
 		/// </summary>
 		/// <param name="fields">The field names and values to add</param>
-		/// <param name="fieldsForStatistics">The field names and values to create statistics for</param>
+		/// <param name="fieldsValuesForStatistics">The field names and values to create statistics for</param>
 		/// <param name="rowId">The ID of the entry to add</param>
 		/// <returns>The ID of the form entry</returns>
-		Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsForStatistics, Guid rowId);
+		Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId);
 
 		/// <summary>
 		/// Gets the field value frequency statistics for specified fields

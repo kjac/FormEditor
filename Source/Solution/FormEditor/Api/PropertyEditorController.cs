@@ -209,8 +209,8 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var valueFields = model.AllValueFields().OfType<IStatisticsField>().ToList();
-			if(valueFields.Any() == false)
+			var statisticsFields = model.AllValueFields().OfType<IValueFrequencyStatisticsField>().ToList();
+			if(statisticsFields.Any() == false)
 			{
 				return null;
 			}
@@ -221,16 +221,16 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(valueFields.Select(f => f.FormSafeName));
+			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.Select(f => f.FormSafeName));
 
 			return new
 			{
 				totalRows = fieldValueFrequencyStatistics.TotalRows,
 				fields = fieldValueFrequencyStatistics.FieldValueFrequencies
-					.Where(f => valueFields.Any(v => v.FormSafeName == f.Key))
+					.Where(f => statisticsFields.Any(v => v.FormSafeName == f.Key))
 					.Select(f =>
 					{
-						var field = valueFields.First(v => v.FormSafeName == f.Key);
+						var field = statisticsFields.First(v => v.FormSafeName == f.Key);
 						return new
 						{
 							name = field.Name,
