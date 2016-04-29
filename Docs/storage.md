@@ -49,4 +49,9 @@ You must supply the Elastic connection string as `FormEditor.ElasticIndex` in th
 </connectionStrings>
 ```
 
+## Supporting statistics
+To make your index work with the build-in statistics it must implement the [`IStatisticsIndex`](../Source/Solution/FormEditor/Storage/Statistics/IStatisticsIndex.cs) interface. Nothing else is required - Form Editor will automatically enable statistics if it's backed by an index that implements this interface.
 
+**Please note:** The `IStatisticsIndex` interface will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
+
+None of the sample indexes currently support statistics, but you can have a look at the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
