@@ -221,7 +221,7 @@ namespace FormEditor
 
 		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames = null)
 		{
-			return GetFieldValueFrequencyStatistics(RequestedContent);
+			return GetFieldValueFrequencyStatistics(RequestedContent, fieldNames);
 		}
 
 		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IPublishedContent content, IEnumerable<string> fieldNames = null)
@@ -233,7 +233,7 @@ namespace FormEditor
 			var fields = AllValueFields().StatisticsFields();
 			if(fieldNames != null)
 			{
-				fieldNames = fieldNames.Intersect(fields.StatisticsFieldNames());
+				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase);
 			}
 			else
 			{

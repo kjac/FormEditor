@@ -13,7 +13,7 @@
         if ($scope.fields != null && $scope.fields.length) {
           assetsService.loadJs("https://www.gstatic.com/charts/loader.js").then(function () {
             if (formEditorPropertyEditorResource.googleChartsLoaded == false) {
-              google.charts.load('current', { 'packages': ['corechart', 'bar'] });
+              google.charts.load("current", { "packages": ["corechart", "bar"] });
               google.charts.setOnLoadCallback(googleChartsLoadCallback);
             }
             else {
@@ -26,7 +26,7 @@
       function googleChartsLoadCallback() {
         formEditorPropertyEditorResource.googleChartsLoaded = true;
         _.each($scope.fields, function (field) {
-          field.chartData = [['', '']]; // legend header - leave empty
+          field.chartData = [["", ""]]; // legend header - leave empty
           _.each(field.values, function (value) {
             field.chartData.push([value.value, value.frequency]);
           });
@@ -46,7 +46,7 @@
           if (field.multipleValuesPerEntry) {
             // use bar charts for multiselect fields
             options = {
-              chartArea: { width: '60%' },
+              chartArea: { width: "60%" },
               hAxis: {
                 minValue: 0
               },
