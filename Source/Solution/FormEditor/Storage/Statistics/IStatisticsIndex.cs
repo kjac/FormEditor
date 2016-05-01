@@ -25,6 +25,6 @@ namespace FormEditor.Storage.Statistics
 		/// </summary>
 		/// <param name="fieldNames">The field names to get statistics for</param>
 		/// <returns>The field value frequencies</returns>
-		FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames);
+		FieldValueFrequencyStatistics<string> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames);
 	}
 }

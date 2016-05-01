@@ -2,24 +2,24 @@ using System.Collections.Generic;
 
 namespace FormEditor.Storage.Statistics
 {
-	public class FieldValueFrequencyStatistics
+	public class FieldValueFrequencyStatistics<T>
 	{
-		private readonly IDictionary<string, IEnumerable<FieldValueFrequency>> _fieldValueFrequencies;
+		private readonly List<FieldValueFrequencies<T>> _fieldValueFrequencies;
 
 		public FieldValueFrequencyStatistics(int totalRows)
 		{
 			TotalRows = totalRows;
-			_fieldValueFrequencies = new Dictionary<string, IEnumerable<FieldValueFrequency>>();
+			_fieldValueFrequencies = new List<FieldValueFrequencies<T>>();
 		}
 
-		public void Add(string fieldName, IEnumerable<FieldValueFrequency> fieldValueFrequencies)
+		public void Add(T field, IEnumerable<FieldValueFrequency> fieldValueFrequencies)
 		{
-			_fieldValueFrequencies[fieldName] = fieldValueFrequencies;
+			_fieldValueFrequencies.Add(new FieldValueFrequencies<T>(field, fieldValueFrequencies));
 		}
 
 		public int TotalRows { get; private set; }
 
-		public IEnumerable<KeyValuePair<string, IEnumerable<FieldValueFrequency>>> FieldValueFrequencies
+		public IEnumerable<FieldValueFrequencies<T>> FieldValueFrequencies
 		{
 			get { return _fieldValueFrequencies; }
 		}

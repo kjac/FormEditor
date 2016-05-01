@@ -144,10 +144,10 @@ namespace FormEditor.Storage
 			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
 		}
 
-		public FieldValueFrequencyStatistics GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames)
+		public FieldValueFrequencyStatistics<string> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames)
 		{
 			var reader = GetIndexReader();
-			var result = new FieldValueFrequencyStatistics(reader.NumDocs());
+			var result = new FieldValueFrequencyStatistics<string>(reader.NumDocs());
 			foreach (var fieldName in fieldNames)
 			{
 				var fieldValueFrequencies = new List<FieldValueFrequency>();

@@ -185,7 +185,7 @@ namespace FormEditor.Api
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
 				supportsSearch = fullTextIndex != null,
-				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.OfType<IStatisticsField>().Any()
+				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any()
 			};
 		}
 
@@ -221,22 +221,22 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.Select(f => f.FormSafeName));
+			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
 
 			return new
 			{
 				totalRows = fieldValueFrequencyStatistics.TotalRows,
 				fields = fieldValueFrequencyStatistics.FieldValueFrequencies
-					.Where(f => statisticsFields.Any(v => v.FormSafeName == f.Key))
+					.Where(f => statisticsFields.Any(v => v.FormSafeName == f.Field))
 					.Select(f =>
 					{
-						var field = statisticsFields.First(v => v.FormSafeName == f.Key);
+						var field = statisticsFields.First(v => v.FormSafeName == f.Field);
 						return new
 						{
 							name = field.Name,
 							formSafeName = field.FormSafeName,
 							multipleValuesPerEntry = field.MultipleValuesPerEntry,
-							values = f.Value.Select(v => new
+							values = f.Frequencies.Select(v => new
 							{
 								value = v.Value,
 								frequency = v.Frequency

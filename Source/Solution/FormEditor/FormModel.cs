@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -220,6 +219,51 @@ namespace FormEditor
 			return index.Count() >= MaxSubmissions.Value;
 		}
 
+		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames = null)
+		{
+			return GetFieldValueFrequencyStatistics(RequestedContent);
+		}
+
+		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IPublishedContent content, IEnumerable<string> fieldNames = null)
+		{
+			if(content == null)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var fields = AllValueFields().StatisticsFields();
+			if(fieldNames != null)
+			{
+				fieldNames = fieldNames.Intersect(fields.StatisticsFieldNames());
+			}
+			else
+			{
+				fieldNames = fields.StatisticsFieldNames();
+			}
+			if(fieldNames.Any() == false)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var index = IndexHelper.GetIndex(content.Id) as IStatisticsIndex;
+			if(index == null)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var statistics = index.GetFieldValueFrequencyStatistics(fieldNames);
+			// the statistics are indexed by field.FormSafeName - we need to reindex them by 
+			// the fields themselves to support the frontend rendering 
+			var result = new FieldValueFrequencyStatistics<IStatisticsField>(statistics.TotalRows);
+			foreach(var fieldValueFrequency in statistics.FieldValueFrequencies)
+			{
+				var field = fields.FirstOrDefault(f => f.FormSafeName == fieldValueFrequency.Field);
+				if(field == null)
+				{
+					continue;
+				}
+				result.Add(field, fieldValueFrequency.Frequencies);
+			}
+			return result;
+		}
+
 		private HttpRequest Request
 		{
 			get { return HttpContext.Current.Request; }
@@ -340,7 +384,7 @@ namespace FormEditor
 
 			if (UseStatistics && statisticsIndex != null)
 			{
-				var indexFieldsForStatistics = valueFields.OfType<IStatisticsField>().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] {});
+				var indexFieldsForStatistics = valueFields.StatisticsFields().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] {});
 				statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
 			}
 			else
