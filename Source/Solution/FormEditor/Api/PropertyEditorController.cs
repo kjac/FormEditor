@@ -7,7 +7,9 @@ using System.Text;
 using System.Web.Hosting;
 using System.Web.Http;
 using FormEditor.Fields;
+using FormEditor.Fields.Statistics;
 using FormEditor.Storage;
+using FormEditor.Storage.Statistics;
 using FormEditor.Umbraco;
 using FormEditor.Validation.Conditions;
 using Newtonsoft.Json;
@@ -147,7 +149,9 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var allFields = GetAllFieldsForDisplay(model, document);
+			var preValues = ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
+			var allFields = GetAllFieldsForDisplay(model, document, preValues);
+			var statisticsEnabled = ContentHelper.StatisticsEnabled(preValues);
 
 			var index = IndexHelper.GetIndex(id);
 			var fullTextIndex = index as IFullTextIndex;
@@ -180,7 +184,8 @@ namespace FormEditor.Api
 				totalPages = totalPages,
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
-				supportsSearch = fullTextIndex != null
+				supportsSearch = fullTextIndex != null,
+				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any()
 			};
 		}
 
@@ -191,12 +196,64 @@ namespace FormEditor.Api
 			return image != null ? new { id = image.Id, url = image.Url } : null;
 		}
 
-		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document)
+		public object GetFieldValueFrequencyStatistics(int id)
+		{
+			var document = ContentHelper.GetById(id);
+			if(document == null)
+			{
+				return null;
+			}
+			var model = ContentHelper.GetFormModel(document);
+			if(model == null)
+			{
+				return null;
+			}
+
+			var statisticsFields = model.AllValueFields().OfType<IValueFrequencyStatisticsField>().ToList();
+			if(statisticsFields.Any() == false)
+			{
+				return null;
+			}
+
+			var index = IndexHelper.GetIndex(id) as IStatisticsIndex;
+			if(index == null)
+			{
+				return null;
+			}
+
+			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
+
+			return new
+			{
+				totalRows = fieldValueFrequencyStatistics.TotalRows,
+				fields = fieldValueFrequencyStatistics.FieldValueFrequencies
+					.Where(f => statisticsFields.Any(v => v.FormSafeName == f.Field))
+					.Select(f =>
+					{
+						var field = statisticsFields.First(v => v.FormSafeName == f.Field);
+						return new
+						{
+							name = field.Name,
+							formSafeName = field.FormSafeName,
+							multipleValuesPerEntry = field.MultipleValuesPerEntry,
+							values = f.Frequencies.Select(v => new
+							{
+								value = v.Value,
+								frequency = v.Frequency
+							})
+						};
+					})
+			};
+		}
+
+		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document, IDictionary<string, PreValue> preValues = null)
 		{
 			var allFields = model.AllValueFields().ToList();
 
+			preValues = preValues ?? ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
+
 			// show logged IPs?
-			if (ContentHelper.IpDisplayEnabled(document) && ContentHelper.IpLoggingEnabled(document))
+			if (ContentHelper.IpDisplayEnabled(preValues) && ContentHelper.IpLoggingEnabled(preValues))
 			{
 				// IPs are being logged, add a single line text field to retrieve IPs as a string
 				allFields.Add(new TextBoxField { Name = "IP", FormSafeName = "_ip" });

@@ -22,5 +22,12 @@
 			get { return MultiSelect; }
 		}
 		public int? Size { get; set; }
+
+		// force the statistics graphs to view this field type as multivalue, as it might 
+		// have been at one time or another (it can be toggled on and off at will)
+		public override bool MultipleValuesPerEntry
+		{
+			get { return true; }
+		}
 	}
 }

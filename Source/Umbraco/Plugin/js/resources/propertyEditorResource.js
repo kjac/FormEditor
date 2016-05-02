@@ -1,5 +1,5 @@
-﻿angular.module("umbraco.resources").factory("formEditorPropertyEditorResource", ["$q", "$http", "umbRequestHelper",
-  function ($q, $http, umbRequestHelper) {
+﻿angular.module("umbraco.resources").factory("formEditorPropertyEditorResource", ["$q", "$http", "$timeout", "umbRequestHelper",
+  function ($q, $http, $timeout, umbRequestHelper) {
     return {
       getAllFieldTypes: function () {
         return umbRequestHelper.resourcePromise(
@@ -26,6 +26,11 @@
             $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetData/" + documentId, { params: { page: page, sortField: sortField, sortDescending: sortDescending, searchQuery: searchQuery } }), "Could not retrieve data"
         );
       },
+      getFieldValueFrequencyStatistics: function (documentId) {
+        return umbRequestHelper.resourcePromise(
+            $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetFieldValueFrequencyStatistics/" + documentId), "Could not retrieve field value frequency statistics"
+        );
+      },
       deleteData: function (documentId, ids) {
         // posting all IDs for deletion here in one bulk operation .. not quite the REST way but more efficient this way.
         return umbRequestHelper.resourcePromise(
@@ -49,6 +54,8 @@
       pathToConditionFile: function (file) {
         return "/App_Plugins/FormEditor/editor/conditions/" + file;
       },
+      // this indicates if the google charts loader has been executed or not
+      googleChartsLoaded: false
     }
   }
 ]);

@@ -31,3 +31,10 @@ Have a look at the [`UploadField`](../Source/Solution/FormEditor/Fields/UploadFi
 In case the value stored by your field is not an email address, but you need your field to work as a source for receipt email addresses, you can implement the interface [`IEmailField`](../Source/Solution/FormEditor/Fields/IEmailField.cs) to translate your field value into the appropriate email addresses.
 
 Have a look at the [`MemberInfoField`](../Source/Solution/FormEditor/Fields/MemberInfoField.cs) for an example. 
+
+## Supporting statistics
+You can easily include the submitted values for your field in the built-in statistics. All you need to do is implement an interface and Form Editor will do the rest.
+
+**Please note:** The statistics interfaces will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
+
+At the time of writing, the only type of statistics that's supported is field value frequency statistics. The typical fields for this type of statistics are fields with predefined value ranges. To support field value frequency statistics, your field must implement [`IValueFrequencyStatisticsField`](../Source/Solution/FormEditor/Fields/Statistics/IValueFrequencyStatisticsField.cs).

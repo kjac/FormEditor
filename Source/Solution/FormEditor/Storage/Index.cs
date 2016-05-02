@@ -14,11 +14,12 @@ using LuceneField = Lucene.Net.Documents.Field;
 using LuceneDirectory = Lucene.Net.Store.Directory;
 using Lucene.Net.Search;
 using System.Globalization;
+using FormEditor.Storage.Statistics;
 using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
@@ -32,6 +33,11 @@ namespace FormEditor.Storage
 		}
 
 		public Guid Add(Dictionary<string, string> fields, Guid rowId)
+		{
+			return Add(fields, null, rowId);
+		}
+
+		public Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
 			var doc = new Document();
 
@@ -47,6 +53,17 @@ namespace FormEditor.Storage
 				// lo-fi sorting - just use the first 10 chars of a value for sorting
 				var sortValue = fieldValue.Length > 10 ? fieldValue.Substring(0, 10) : fieldValue;
 				doc.Add(new LuceneField(FieldNameForSorting(field.Key), sortValue.ToLowerInvariant(), LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
+			}
+
+			if (fieldsValuesForStatistics != null)
+			{
+				foreach (var field in fieldsValuesForStatistics)
+				{
+					foreach (var value in field.Value)
+					{
+						doc.Add(new LuceneField(FieldNameForStatistics(field.Key), value, LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
+					}
+				}
 			}
 
 			var writer = GetIndexWriter();
@@ -125,6 +142,34 @@ namespace FormEditor.Storage
 		public Result Search(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
 		{
 			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
+		}
+
+		public FieldValueFrequencyStatistics<string> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames)
+		{
+			var reader = GetIndexReader();
+			var result = new FieldValueFrequencyStatistics<string>(reader.NumDocs());
+			foreach (var fieldName in fieldNames)
+			{
+				var fieldValueFrequencies = new List<FieldValueFrequency>();
+
+				var stats = new TermRangeTermEnum(reader, FieldNameForStatistics(fieldName), null, null, true, true, null);
+				if (stats.Term() != null)
+				{
+					do
+					{
+						fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
+					}
+					while (stats.Next());					
+				}
+				if (fieldValueFrequencies.Any())
+				{
+					result.Add(fieldName, fieldValueFrequencies);					
+				}
+			}
+
+			reader.Close();
+
+			return result;
 		}
 
 		private Result GetSearchResults(string searchQuery, string [] searchFields, string sortField, bool sortDescending, int count, int skip)
@@ -311,6 +356,11 @@ namespace FormEditor.Storage
 		private static string FieldNameForSorting(string fieldName)
 		{
 			return string.Format("{0}_sort", fieldName);
+		}
+
+		private static string FieldNameForStatistics(string fieldName)
+		{
+			return string.Format("{0}_stats", fieldName);
 		}
 
 		private static Analyzer GetAnalyzer()

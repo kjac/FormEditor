@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -10,7 +9,9 @@ using System.Web;
 using FormEditor.Data;
 using FormEditor.Events;
 using FormEditor.Fields;
+using FormEditor.Fields.Statistics;
 using FormEditor.Storage;
+using FormEditor.Storage.Statistics;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 using Field = FormEditor.Fields.Field;
@@ -73,6 +74,7 @@ namespace FormEditor
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
 		private bool DisableValidation { get; set; }
+		private bool UseStatistics { get; set; }
 
 		#endregion
 
@@ -217,6 +219,51 @@ namespace FormEditor
 			return index.Count() >= MaxSubmissions.Value;
 		}
 
+		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IEnumerable<string> fieldNames = null)
+		{
+			return GetFieldValueFrequencyStatistics(RequestedContent, fieldNames);
+		}
+
+		public FieldValueFrequencyStatistics<IStatisticsField> GetFieldValueFrequencyStatistics(IPublishedContent content, IEnumerable<string> fieldNames = null)
+		{
+			if(content == null)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var fields = AllValueFields().StatisticsFields();
+			if(fieldNames != null)
+			{
+				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase);
+			}
+			else
+			{
+				fieldNames = fields.StatisticsFieldNames();
+			}
+			if(fieldNames.Any() == false)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var index = IndexHelper.GetIndex(content.Id) as IStatisticsIndex;
+			if(index == null)
+			{
+				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
+			}
+			var statistics = index.GetFieldValueFrequencyStatistics(fieldNames);
+			// the statistics are indexed by field.FormSafeName - we need to reindex them by 
+			// the fields themselves to support the frontend rendering 
+			var result = new FieldValueFrequencyStatistics<IStatisticsField>(statistics.TotalRows);
+			foreach(var fieldValueFrequency in statistics.FieldValueFrequencies)
+			{
+				var field = fields.FirstOrDefault(f => f.FormSafeName == fieldValueFrequency.Field);
+				if(field == null)
+				{
+					continue;
+				}
+				result.Add(field, fieldValueFrequency.Frequencies);
+			}
+			return result;
+		}
+
 		private HttpRequest Request
 		{
 			get { return HttpContext.Current.Request; }
@@ -333,7 +380,17 @@ namespace FormEditor
 
 			// store fields in index
 			var index = IndexHelper.GetIndex(content.Id);
-			index.Add(indexFields, rowId);
+			var statisticsIndex = index as IStatisticsIndex;
+
+			if (UseStatistics && statisticsIndex != null)
+			{
+				var indexFieldsForStatistics = valueFields.StatisticsFields().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] {});
+				statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
+			}
+			else
+			{
+				index.Add(indexFields, rowId);				
+			}
 
 			return rowId;
 		}
@@ -570,6 +627,7 @@ namespace FormEditor
 				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
 				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
 				DisableValidation = GetPreValueAsBoolean("disableValidation", preValueDictionary);
+				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
 			}
 			catch(Exception ex)
 			{

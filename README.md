@@ -12,6 +12,7 @@ Some highlights include:
 * Full control over the frontend rendering.
 * Full support for asynchronous postback, e.g. for AngularJS.
 * Easily extendable with custom fields.
+* Built-in statistics for form submissions.
 * Editors can add texts and images alongside the form fields.
 * reCAPTCHA support.
 * Fully localizable.
