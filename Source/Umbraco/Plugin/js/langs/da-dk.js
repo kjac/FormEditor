@@ -93,6 +93,12 @@
   "data.loadingData": "Henter formular-data...",
   "data.noData": "Ingen formular-data fundet",
   "data.noSearchResults": "Ingen søgeresultater",
+  "data.statistics.header": "Statistik",
+  "data.statistics.loadingData": "Henter statistikken...",
+  "data.statistics.totalRows": "Total antal:",
+  "data.statistics.noStatisticsHeader": "Ingen statistik tilgængelig",
+  "data.statistics.noStatisticsText": "Der kan desværre ikke dannes nogen statistik ud fra de indsendte data.",
+  "data.statistics.loadingGraph": "Tegner grafen...",
   
   "edit.checkbox.checked.helpText": "Sæt kryds her hvis feltet skal være valgt som standard",  
   "edit.checked": "Valgt",  

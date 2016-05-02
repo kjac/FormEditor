@@ -190,7 +190,7 @@
           <div class="tab-content form umb-el-wrap">
             <div class="umb-pane" ng-controller="FormEditor.Editor.StatisticsController">
               <h4 form-editor-localize key="data.statistics.header" default-value="Statistics" />
-              <div ng-if="fields == null" form-editor-localize key="data.statistics.loadingData">Loading statistics...</div>
+              <div ng-if="fields == null" form-editor-localize key="data.statistics.loadingData">Loading the statistics...</div>
               <div ng-if="fields != null">
                 <form-editor-localize key="data.statistics.totalRows">Total number of entries:</form-editor-localize> <strong>{{totalRows}}</strong>
               </div>
@@ -204,7 +204,7 @@
                 <h5>{{field.name}}</h5>
                 <!-- google charts API requires the graph container height to be inline... -->
                 <div id="{{field.formSafeName}}" style="height: 400px;">
-                  <div ng-show="loading" class="stats-loading" form-editor-localize key="data.statistics.loadingGraph">Loading graph...</div>
+                  <div ng-show="loading" class="stats-loading" form-editor-localize key="data.statistics.loadingGraph">Drawing the graph...</div>
                 </div>
               </div>
             </div>
