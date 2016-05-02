@@ -96,8 +96,26 @@
           row._createdDateLong = $filter("date")(row._createdDate, "yyyy-MM-dd HH:mm:ss");
         });
 
+        // make sure we don't end up with a gazillion pagination links if we have lots of submissions
+        var start, end;
+        var maxPages = 10;
+        if (data.totalPages > maxPages) {
+          start = page - maxPages / 2;
+          if (start < 1) {
+            start = 1;
+          }
+          end = start + maxPages;
+          if (end > data.totalPages) {
+            end = data.totalPages;
+            start = end - maxPages;
+          }
+        }
+        else {
+          start = 1;
+          end = data.totalPages;
+        }
         data.pages = [];
-        for (var i = 1; i <= data.totalPages; i++) {
+        for (var i = start; i <= end; i++) {
           data.pages.push(i);
         }
 
