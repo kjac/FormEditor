@@ -46,12 +46,21 @@ namespace FormEditor.Rendering
 
 		public static bool HasDefaultValue(this FieldWithValue field)
 		{
+			if(field is CheckboxField)
+			{
+				return true;
+			}
 			var fieldWithFieldValues = field as FieldWithFieldValues;
 			return fieldWithFieldValues != null && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
 		}
 
 		public static IHtmlString DefaultValue(this FieldWithValue field)
 		{
+			var checkboxField = field as CheckboxField;
+			if(checkboxField != null)
+			{
+				return new HtmlString(checkboxField.Selected ? "true" : "undefined");
+			}
 			var fieldWithFieldValues = field as FieldWithFieldValues;
 			if (fieldWithFieldValues == null)
 			{
