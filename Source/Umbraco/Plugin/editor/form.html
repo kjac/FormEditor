@@ -193,6 +193,13 @@
       <div class="controls controls-row">
         <input type="text" class="umb-editor" id="emailConfirmationSubject" ng-model="model.value.emailConfirmationSubject" ng-required="model.value.emailConfirmationRecipientsField" />
       </div>
+      <label class="control-label" for="emailConfirmationBody" form-editor-localize key="emailConfirmation.body">
+        Email body
+        <small class="help-text" form-editor-localize key="emailConfirmation.body.helpText">Tip! You can include the submitted values of the form fields in the email body. If for example you have a text box called "Name", you can include its submitted value by adding "[Name]".</small>
+      </label>
+      <div class="controls controls-row">
+        <textarea class="umb-editor" id="emailConfirmationBody" ng-model="model.value.emailConfirmationBody" rows="5"></textarea>
+      </div>
       <label class="control-label" for="emailConfirmationFromAddress" form-editor-localize key="emailConfirmation.sender">
         Sender email address
       </label>

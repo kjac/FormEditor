@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using FormEditor.Data;
@@ -57,6 +58,7 @@ namespace FormEditor
 		public bool EmailNotificationAttachments { get; set; }
 		public string EmailConfirmationRecipientsField { get; set; }
 		public string EmailConfirmationSubject { get; set; }
+		public string EmailConfirmationBody { get; set; }
 		public string EmailConfirmationFromAddress { get; set; }
 		public int SuccessPageId { get; set; }
 		public string ReceiptHeader { get; set; }
@@ -663,6 +665,27 @@ namespace FormEditor
 			public string ContentType { get; set; }
 			public byte[] Bytes { get; set; }
 		}
+
+		public IHtmlString GetEmailConfirmationBodyText(bool forHtmlEmail = true)
+		{
+			if(string.IsNullOrWhiteSpace(EmailConfirmationBody))
+			{
+				return new HtmlString(string.Empty);
+			}
+
+			// interpolate submitted field values
+			var valueFields = AllValueFields();
+			var emailBody = Regex.Replace(EmailConfirmationBody, @"\[.*?\]", match =>
+			{
+				var field = valueFields.FirstOrDefault(f => string.Format("[{0}]", f.Name).Equals(match.Value, StringComparison.InvariantCultureIgnoreCase));
+				return field != null && field.HasSubmittedValue 
+					? field.SubmittedValueForEmail() 
+					: string.Empty;
+			});
+
+			// replace newlines with <br/> in email body for HTML mails
+			return new HtmlString(forHtmlEmail ? Regex.Replace(emailBody, @"\n\r?", @"<br />") : emailBody);
+		} 
 
 		#endregion
 
