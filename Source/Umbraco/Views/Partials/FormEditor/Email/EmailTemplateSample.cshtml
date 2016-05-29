@@ -58,6 +58,12 @@
   <p>
     This is a sample email template. You should probably roll your own.
   </p>
+  @* 
+  for the confirmation email, you can add the interpolated confirmation email body text like this 
+  <p>
+    @Model.GetEmailConfirmationBodyText()
+  </p>
+  *@
   <h2>Submitted data</h2>
   <p>
     The following data was submitted.
