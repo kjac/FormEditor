@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Hosting;
@@ -30,59 +31,73 @@ namespace FormEditor.Api
 
 		public object GetAllFieldTypes()
 		{
-			if (_fieldTypes == null)
+			try
 			{
-				_fieldTypes = GetInstancesOf<Field>(typeof(CustomField));
-
-				// add any defined custom fields
-				if (FormEditor.Configuration.Instance.CustomFields.Any())
+				if (_fieldTypes == null)
 				{
-					_fieldTypes.AddRange(
-						FormEditor.Configuration.Instance.CustomFields.Select(c =>
-							new CustomField(c.Type, c.Name)
-						)
-					);
+					_fieldTypes = GetInstancesOf<Field>(typeof(CustomField));
+
+					// add any defined custom fields
+					if (FormEditor.Configuration.Instance.CustomFields.Any())
+					{
+						_fieldTypes.AddRange(
+							FormEditor.Configuration.Instance.CustomFields.Select(c =>
+								new CustomField(c.Type, c.Name)
+								)
+							);
+					}
 				}
+				_fieldTypes.RemoveAll(f => f.CanBeAddedToForm == false);
+
+				var jsonFields = JArray.FromObject(_fieldTypes, new JsonSerializer
+				{
+					TypeNameHandling = SerializationHelper.TypeNameHandling,
+					ContractResolver = SerializationHelper.ContractResolver
+				});
+				for (var i = 0; i < _fieldTypes.Count; i++)
+				{
+					jsonFields[i]["isValueField"] = _fieldTypes[i] is FieldWithValue;
+				}
+
+				var json = jsonFields.ToString();
+				json = FormatJson(json);
+
+				var resp = new HttpResponseMessage
+				{
+					Content = new StringContent(json, Encoding.UTF8, "application/json")
+				};
+
+				return resp;
 			}
-			_fieldTypes.RemoveAll(f => f.CanBeAddedToForm == false);
-
-			var jsonFields = JArray.FromObject(_fieldTypes, new JsonSerializer
+			catch (Exception ex)
 			{
-				TypeNameHandling = SerializationHelper.TypeNameHandling,
-				ContractResolver = SerializationHelper.ContractResolver
-			});
-			for (var i = 0; i < _fieldTypes.Count; i++)
-			{
-				jsonFields[i]["isValueField"] = _fieldTypes[i] is FieldWithValue;
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
-
-			var json = jsonFields.ToString();
-			json = FormatJson(json);
-
-			var resp = new HttpResponseMessage
-			{
-				Content = new StringContent(json, Encoding.UTF8, "application/json")
-			};
-
-			return resp;
 		}
 
 		public object GetAllConditionTypes()
 		{
-			if (_conditionTypes == null)
+			try
 			{
-				_conditionTypes = GetInstancesOf<Condition>();
+				if (_conditionTypes == null)
+				{
+					_conditionTypes = GetInstancesOf<Condition>();
+				}
+
+				var json = JsonConvert.SerializeObject(_conditionTypes, SerializationHelper.SerializerSettings);
+				json = FormatJson(json);
+
+				var resp = new HttpResponseMessage
+				{
+					Content = new StringContent(json, Encoding.UTF8, "application/json")
+				};
+
+				return resp;				
 			}
-
-			var json = JsonConvert.SerializeObject(_conditionTypes, SerializationHelper.SerializerSettings);
-			json = FormatJson(json);
-
-			var resp = new HttpResponseMessage
+			catch (Exception ex)
 			{
-				Content = new StringContent(json, Encoding.UTF8, "application/json")
-			};
-
-			return resp;
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
 		}
 
 		private static string FormatJson(string json)
@@ -95,17 +110,27 @@ namespace FormEditor.Api
 		private static List<T> GetInstancesOf<T>(params Type[] ignoredTypes) where T : class
 		{
 			var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
-				a.GetTypes().Where(t =>
-					// no abstract types
-					t.IsAbstract == false
-						// must be type of T
-					&& typeof(T).IsAssignableFrom(t)
-						// must have a parameterless constructor
-					&& t.GetConstructor(Type.EmptyTypes) != null
-						// not in the ignored list of types
-					&& ignoredTypes.Contains(t) == false
-					)
-				).ToList();
+				{
+					try
+					{
+						return a.GetTypes().Where(t =>
+							// no abstract types
+							t.IsAbstract == false
+								// must be type of T
+							&& typeof(T).IsAssignableFrom(t)
+								// must have a parameterless constructor
+							&& t.GetConstructor(Type.EmptyTypes) != null
+								// not in the ignored list of types
+							&& ignoredTypes.Contains(t) == false
+							);
+					}
+					catch
+					{
+						// ignore for now
+						return new Type[] {};
+					}
+				}
+			).ToList();
 
 			return types.Select(t => Activator.CreateInstance(t) as T).ToList();
 		}
