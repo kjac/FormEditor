@@ -111,6 +111,7 @@ namespace FormEditor.Api
 		{
 			var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a =>
 				{
+					// #42 - for some reason this has a tendency to fail on UaaS. we'll try/catch it for now and maybe handle it better down the road.
 					try
 					{
 						return a.GetTypes().Where(t =>
