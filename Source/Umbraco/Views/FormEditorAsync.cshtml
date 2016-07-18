@@ -1,14 +1,12 @@
-﻿@using FormEditor;
-@using FormEditor.Rendering;
-@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
   Layout = null;
 
-  // the content that contains the form model 
-  var formContent = Model.Content;
+  @* if the content being rendered does not containt the form property, pass the applicable content like this *@
+  // ViewBag.FormContent = myInstanceOfIPublishedContent;
 
-  // get the form model (named "form" on the content type)
-  var form = formContent.GetPropertyValue<FormModel>("form");  
+  @* if your form property is not called "form" on the content type, pass the property name like this *@
+  // ViewBag.FormName = "myForm";
 }
 <!DOCTYPE html>
 <html>
@@ -16,111 +14,16 @@
   <title>@Model.Content.Name</title>
   <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
 </head>
-<body ng-app="formEditor">
-  @if(form.MaxSubmissionsExceeded() == false)
-  {
-    <form ng-controller="FormController" name="form" novalidate ng-cloak>
-      <div class="container" ng-show="showReceipt">
-        <h2>@form.ReceiptHeader</h2>
-        <p>
-          @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody ?? string.Empty))
-        </p>
-      </div>
+<body>
+  
+  @* render the form *@
+  @Html.Partial("FormEditor/Async");  
 
-      <div class="container" ng-hide="showReceipt">
-        @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
-        @foreach(var page in form.Pages)
-        {
-          <div ng-show="isActivePage(@(form.Pages.IndexOf(page)))">
-            @foreach(var row in page.Rows)
-            {
-              <div class="row @row.Alias">
-                @foreach(var cell in row.Cells)
-                {
-                  <div class="cell @cell.Alias">
-                    @foreach(var field in cell.Fields)
-                    {
-                      // render the form field with a partial view
-                      // - the view is expected to be located at /Views/Partials/FormEditor/FieldsAsync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsAsync/core.checkbox.cshtml
-                      @Html.Partial(string.Format(@"FormEditor/FieldsAsync/{0}", field.Type), field)
-                    }
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        }
-        @* paging links *@
-        <nav>
-          <ul class="pager">
-            <li class="previous" ng-hide="isFirstPage()">
-              <a href ng-click="goToPreviousPage()">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
-              </a>
-            </li>
-            <li class="next" ng-hide="isLastPage()">
-              <a href ng-click="goToNextPage()">
-                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        @* form validation errors container (for cross field validations) *@
-        <div class="form-group">
-          <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
-            <h4>
-              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
-            </h4>
-            <ul id="validationErrorsList">
-              <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+  @* include AngularJS *@
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 
-      @* add this if you want a live view of the form data *@
-      @*<hr/>
-        <pre>{{formData}}</pre>*@
-    </form>
+  @* include Form Editor script for asynchronous postback (using AngularJS) *@
+  <script src="/JS/FormEditor/FormEditorAsync.js" type="text/javascript"></script>
 
-    @* include AngularJS *@
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-
-    @* include Form Editor script for asynchronous postback (using AngularJS) *@
-    <script src="/JS/FormEditor/FormEditorAsync.js" type="text/javascript"></script>
-
-    @* this script section sets up state for the JS and thus needs to be a part of the template *@
-    <script type="text/javascript">
-      @* default values for form fields *@
-      var _formDefaultValues = {};
-      @foreach(var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
-      {
-        @:_formDefaultValues.@field.FormSafeName = @field.DefaultValue();
-      }
-
-      @* form validations as an array of JSON objects *@
-      var _formValidations = @form.Validations.Render();
-
-      @* the Umbraco ID of the content to where the form should be submitted to *@
-      var _formId = @formContent.Id;
-
-      @* the total number of form pages *@
-      var _formTotalPages = @form.Pages.Count();
-
-      @* determine whether a receipt message is available *@
-      var _formHasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
-    </script>
-  }
-  else
-  {
-    @* max number of form submissions exceeded - show message *@
-    <div class="container">
-      <h2>@form.MaxSubmissionsExceededHeader</h2>
-      <p>
-        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsExceededText ?? string.Empty))
-      </p>
-    </div>
-  }
 </body>
 </html>
