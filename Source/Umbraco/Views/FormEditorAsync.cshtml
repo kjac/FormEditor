@@ -2,7 +2,7 @@
 @{
   Layout = null;
 
-  @* if the content being rendered does not containt the form property, pass the applicable content like this *@
+  @* if the content being rendered does not contain the form property, pass the applicable content like this *@
   // ViewBag.FormContent = myInstanceOfIPublishedContent;
 
   @* if your form property is not called "form" on the content type, pass the property name like this *@
@@ -17,7 +17,7 @@
 <body>
   
   @* render the form *@
-  @Html.Partial("FormEditor/Async");  
+  @Html.Partial("FormEditor/Async", Umbraco.AssignedContentItem);  
 
   @* include AngularJS *@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
