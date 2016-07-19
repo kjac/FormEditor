@@ -92,7 +92,6 @@ else
           <div class="form-group">
             <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
               <h4>
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
               </h4>
               <ul id="validationErrorsList">
