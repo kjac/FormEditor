@@ -25,7 +25,7 @@ In the "Row layouts" section of the configuration you'll set up the row layouts 
 
 Form Editor ships with a bunch of row icons, but if you run out of icons you can add more simply by dumping them in */App_Plugins/FormEditor/editor/rows/*.
 
-By default, Form Editor will suggest [Bootstrap](http://getbootstrap.com/css/#grid) style `.col-md-*` classes as cell aliases, mostly because the sample templates shipped with Form Editor use Bootstrap to render the form grid. But Form Editor is not tied to Bootstrap in any way. You have complete control over the [form rendering](render.md), so just use whatever cell alias that makes sense. 
+By default, Form Editor will suggest [Bootstrap](http://getbootstrap.com/css/#grid) style `.col-md-*` classes as cell aliases, mainly because the sample templates shipped with Form Editor use Bootstrap to render the form grid. But Form Editor is not tied to Bootstrap in any way. You have complete control over the [form rendering](render.md), so just use whatever cell alias that makes sense. 
 
 ##### Field type groups
 Form Editor ships with a bunch of field types (textbox, email, select box etc.). By default they are all listed in alphabetical order when the editors add a new field to a form. You can change this by grouping the available field types into field type groups, which is a great way to help your editors find the field types they need. 

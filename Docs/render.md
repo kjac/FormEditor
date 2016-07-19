@@ -1,10 +1,14 @@
 # Rendering the form
-Form Editor ships with two sample templates, one that demonstrates [synchronous form postback](../Source/Umbraco/Views/FormEditorSync.cshtml) and one that demonstrates [asynchronous form postback](../Source/Umbraco/Views/FormEditorAsync.cshtml) (using [AngularJS](https://angularjs.org/)). Once the package is installed, these sample templates are located at */Views/FormEditorSync.cshtml* and */Views/FormEditorAsync.cshtml* respectively. They are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning.
+To make sure you hit the ground running, Form Editor ships with premade partial views for [synchronous form postback](../Source/Umbraco/Views/Partials/FormEditor/Sync.cshtml) (using [jQuery](https://jquery.com/)) and [asynchronous form postback](../Source/Umbraco/Views/Partials/FormEditor/Async.cshtml) (using [AngularJS](https://angularjs.org/)). Once the package is installed, these partial views can be found at */Views/Partials/FormEditor/*. 
+
+The package also installs two sample templates that demonstrate how to use the partial views - one that demonstrates [synchronous form postback](../Source/Umbraco/Views/FormEditorSync.cshtml) and one that demonstrates [asynchronous form postback](../Source/Umbraco/Views/FormEditorAsync.cshtml).
+
+The sample templates and partial views are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning, in case you want feel like creating your own renderings.
 
 ## Rendering rows, cells and fields
 As mentioned in the [setup guide](install.md), the rows and cells have aliases to help you recognize them when rendering the form. 
 
-As for field rendering, the sample templates use partial views to render all form fields. The partial views are referenced by convention based on the field `Type` name, and are expected to be located at:
+As for field rendering, Form Editor uses partial views to render all form fields. The partial views are referenced by convention based on the field `Type` name, and are expected to be located at:
 * */Views/Partials/FormEditor/FieldsSync/* for synchronous form postback 
 * */Views/Partials/FormEditor/FieldsAsync/* for asynchronous postback 
 
@@ -16,7 +20,6 @@ The following code sample shows how this could all be pieced together:
   var form = Model.Content.GetPropertyValue<FormModel>("form");
 }
 <div class="container">
-  @* NOTE: if you're not using form pages, you can access all form rows directly with form.Rows *@
   @foreach (var page in form.Pages)
   {
     <div class="form-page">
@@ -30,7 +33,7 @@ The following code sample shows how this could all be pieced together:
             <div class="cell @cell.Alias">
               @foreach (var field in cell.Fields)
               {
-                // render the form field with its partial view
+                // render the form field using its partial view
                 @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
               }
             </div>
