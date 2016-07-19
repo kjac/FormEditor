@@ -5,7 +5,7 @@
   {
     <div class="checkbox">
       <label>
-        <input type="checkbox" ng-checked="hasMultiSelectValue('@Model.FormSafeName', '@HttpUtility.JavaScriptStringEncode(fieldValue.Value)')" ng-click="toggleMultiSelectValue('@Model.FormSafeName', '@fieldValue.Value', @Model.Mandatory.ToString().ToLowerInvariant())" />
+        <input type="checkbox" ng-checked="hasMultiSelectValue('@Model.FormSafeName', '@HttpUtility.JavaScriptStringEncode(fieldValue.Value)')" ng-click="toggleMultiSelectValue('@Model.FormSafeName', @ViewBag.FormEditorPageNumber, '@fieldValue.Value', @Model.Mandatory.ToString().ToLowerInvariant())" />
         @fieldValue.Value
       </label>
     </div>

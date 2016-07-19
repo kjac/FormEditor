@@ -590,7 +590,7 @@ namespace FormEditor
 		private List<MailAddress> ParseEmailAddresses(string emails)
 		{
 			var addresses = new List<MailAddress>();
-			foreach(var email in emails.Split(new[] { ',', ' ', ';' }))
+			foreach(var email in (emails ?? string.Empty).Split(new[] { ',', ' ', ';' }, StringSplitOptions.RemoveEmptyEntries))
 			{
 				try
 				{
