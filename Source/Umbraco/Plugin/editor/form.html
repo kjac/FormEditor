@@ -54,13 +54,13 @@
                     <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
                       <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
                         <div class="form-field" ng-repeat="field in cell.fields">
-                          <div class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
+                          <span class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
                             <span class="form-field-icon-and-name" ng-click="editField(field)">
                               <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
                               <span class="form-field-name">{{getFieldName(field)}}</span>
                             </span>
                             <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
-                          </div>
+                          </span>
                         </div>
                       </div>
                     </td>
@@ -123,11 +123,9 @@
                   <tbody>
                     <tr class="form-validation-rule" ng-repeat="rule in validation.rules">
                       <td class="form-validation-rule-field">
-                        <div class="form-field" ng-if="rule.field != null">
-                          <span ng-click="editRule(rule, validation)">
-                            <i class="field-icon" style="background-image: url('{{pathToFieldFile(rule.field.icon)}}')"></i>
-                            <span class="form-field-name">{{getFieldName(rule.field)}}</span>
-                          </span>
+                        <div class="form-field" ng-if="rule.field != null" ng-click="editRule(rule, validation)">
+                          <i class="field-icon" style="background-image: url('{{pathToFieldFile(rule.field.icon)}}')"></i>
+                          <span class="form-field-name">{{getFieldName(rule.field)}}</span>
                         </div>
                       </td>
                       <td class="form-validation-rule-condition">
