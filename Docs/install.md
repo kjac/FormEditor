@@ -7,11 +7,11 @@ First and foremost grab the [latest Form Editor package](https://github.com/kjac
 Or, if you're using NuGet, you can install the [Form Editor](https://www.nuget.org/packages/FormEditor/) NuGet package. 
 
 ## Setting up the data types
-Once the package is installed, go ahead and create a "Form Editor" data type. 
+Once the package is installed, go ahead and create a Form Editor data type. 
 
 ![Form Editor data types](img/data types.png)
 
-### Configuring the data type "Form Editor"
+### Configuring the Form Editor data type
 
 ##### Row layouts
 In the "Row layouts" section of the configuration you'll set up the row layouts you want available for your editors. A row layout consists of:
@@ -38,14 +38,14 @@ Form Editor supports two different types of emails - notification emails (sent t
 You can choose separate email templates for notification and confirmation emails, or leave them blank if you don't want to support one or both types of emails. See [Email templates](emails.md) for more info.
 
 ##### The rest
-Hopefully the rest of the "Form Editor" data type configuration is self explanatory. Oh, and it's strongly recommended to hide the property label to give the "Form Editor" property as much space as possible.
+Hopefully the rest of the Form Editor data type configuration is self explanatory. Oh, and it's strongly recommended to hide the property label to give the Form Editor property as much space as possible.
 
 ## Setting up the content type
-When you have configured the data type, create a content type (or reuse an existing) and add a property based on the new "Form Editor" data type. If you're going to use the sample templates, make sure the "Form Editor" property has the property alias "form".
+When you have configured the data type, create a content type (or reuse an existing) and add a property based on the new Form Editor data type. If you're going to use the templates and views shipped with Form Editor for rendering (see [Rendering the form](render.md)), make sure the Form Editor property has the property alias "form".
 
-Since the "Form Editor" property takes up a lot of space in the UI, you should consider placing it on a separate tab - e.g. "Form".
+Since the Form Editor data type takes up a lot of space in the UI, you should consider placing the property on a separate tab - e.g. "Form".
 
-**Please note:** You can only have *one* "Form Editor" property per content type.
+**Please note:** You can only have *one* Form Editor property per content type.
 
 ## Next step
 Onwards to [Rendering the form](render.md).

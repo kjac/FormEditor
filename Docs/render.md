@@ -3,9 +3,25 @@ To make sure you hit the ground running, Form Editor ships with premade partial 
 
 The package also installs two sample templates that demonstrate how to use the partial views - one that demonstrates [synchronous form postback](../Source/Umbraco/Views/FormEditorSync.cshtml) and one that demonstrates [asynchronous form postback](../Source/Umbraco/Views/FormEditorAsync.cshtml).
 
-The sample templates and partial views are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning, in case you want feel like creating your own renderings.
+## 1-2-3-done!
+By completing these three steps, you'll have your first form rendered in no time:
 
-## Rendering rows, cells and fields
+1. Render the applicable partial view in your template: 
+    * Use ```@Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem);``` for synchronous form postback.
+    * Use  ```@Html.Partial("FormEditor/Async", Umbraco.AssignedContentItem);``` for asynchronous form postback.
+2. Make sure you have included either [jQuery](https://jquery.com/) or [AngularJS](https://angularjs.org/) in your template (even if you're using synchronous form postback, you'll still want scripting support for client side validation).
+3. Include the applicable Form Editor script for handling validation and form submission:
+    * Use ```/JS/FormEditor/FormEditorSync.js``` for synchronous form postback.
+    * Use ```/JS/FormEditor/FormEditorAsync.js``` for asynchronous form postback.
+
+Have a look at the sample templates to see actual implementations of this.
+
+**Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
+
+## Creating your own rendering
+If you want to create your own renderings, the sample templates and partial views should always be your starting point for inspiration. They are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning.
+
+### Rendering rows, cells and fields
 As mentioned in the [setup guide](install.md), the rows and cells have aliases to help you recognize them when rendering the form. 
 
 As for field rendering, Form Editor uses partial views to render all form fields. The partial views are referenced by convention based on the field `Type` name, and are expected to be located at:
@@ -45,7 +61,7 @@ The following code sample shows how this could all be pieced together:
 </div>
 ```
 
-## Submitting form data using synchronous postback
+### Submitting form data using synchronous postback
 When using synchronous postback for form submission, simply call `CollectSubmittedValues()` on the `FormModel` property and everything (including redirects to the success page, if configured) will be handled for you: 
 
 ```cs
@@ -55,7 +71,7 @@ var form = Model.Content.GetPropertyValue<FormModel>("form");
 form.CollectSubmittedValues();
 ```
 
-## Submitting form data using asynchronous postback
+### Submitting form data using asynchronous postback
 When using asynchronous postback for form submission you'll need to create a `FormData` object, populate it with the form data you want to submit and POST it to the Form Editor `SubmitEntry` endpoint at */umbraco/FormEditorApi/Public/SubmitEntry/* - like this: 
 
 ```javascript

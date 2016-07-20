@@ -40,13 +40,13 @@
 </head>
 <body>
   
-  @* render the form *@
+  @* step 1: render the form with the Sync partial *@
   @Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem);
 
-  @* include jQuery *@
+  @* step 2: include jQuery *@
   <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
 
-  @* include Form Editor script for synchronous postback (using jQuery) *@
+  @* step 3: include Form Editor script for synchronous postback (using jQuery) *@
   <script src="/JS/FormEditor/FormEditorSync.js" type="text/javascript"></script>
 
 </body>
