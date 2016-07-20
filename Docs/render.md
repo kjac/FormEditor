@@ -16,7 +16,7 @@ By completing these three steps, you'll have your first form rendered in no time
 
 Have a look at the sample templates to see actual implementations of this.
 
-**Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md#setting-up-the-content-type)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
+**Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
 
 ## Creating your own rendering
 If you want to create your own renderings, the sample templates and partial views should always be your starting point for inspiration. They are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning.
