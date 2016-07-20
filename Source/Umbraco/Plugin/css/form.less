@@ -391,6 +391,16 @@
       height: 20px;
       display: inline-block;
       vertical-align: top;
+
+      &.field-mandatory:after {
+        content: '*';
+        color: #b94a48;
+        position: relative;
+        left: 13px;
+        top: -3px;
+        font-size: 1.3em;
+        font-style: normal;
+      }
     }
 
     span.menu-label {

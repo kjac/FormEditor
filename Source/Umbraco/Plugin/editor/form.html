@@ -56,7 +56,7 @@
                         <div class="form-field" ng-repeat="field in cell.fields">
                           <span class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
                             <span class="form-field-icon-and-name" ng-click="editField(field)">
-                              <i class="field-icon" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
+                              <i class="field-icon" ng-class="{'field-mandatory': field.mandatory}" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
                               <span class="form-field-name">{{getFieldName(field)}}</span>
                             </span>
                             <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
