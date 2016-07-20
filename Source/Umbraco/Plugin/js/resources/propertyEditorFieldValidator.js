@@ -5,7 +5,7 @@
       this.indexSafeFieldName = function (field) {
         // lower case comparison and remove white spaces and other stuff
         // - this must match the corresponding method for index safe field names in the C# code!
-        return field.name.replace(/[^a-z0-9-_]/gi, "");
+        return field.name.replace(/^\d*|[^a-zA-Z0-9_]/gi, "");
       }
       this.registerFields = function (allFields) {
         this.fields = allFields;
@@ -21,7 +21,6 @@
         if (field.name == null || field.name == "") {
           return false;
         }
-
         var $this = this;
         var fieldWithSameName = _.find(this.fields, function (f) {
           return $this.isNamedField(f) && f != field && $this.indexSafeFieldName(f) == $this.indexSafeFieldName(field);
