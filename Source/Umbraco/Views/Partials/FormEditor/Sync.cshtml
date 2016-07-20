@@ -68,31 +68,37 @@ else
           }
         </div>
       }
-      @* paging links *@
+      @* 
+        paging links 
+        TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
+      *@
       @if(form.Pages.Count() > 1)
       {
         <nav>
           <ul class="pager">
             <li class="previous form-btn-previous" style="display: none">
               <a href="javascript:;">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
               </a>
             </li>
             <li class="next form-btn-next" style="display: none">
               <a href="javascript:;">
-                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
               </a>
             </li>
           </ul>
         </nav>
       }
-      @* form validation errors container (for cross field validations) *@
+      @*
+        form validation errors container (for cross field validations)
+        TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+      *@
       <div class="row form-validation-errors">
         <div class="cell">
           <div class="form-group">
             <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
               <h4>
-                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
               </h4>
               <ul id="validationErrorsList">
                 @foreach(var invalidValidation in form.Validations.Where(v => v.Invalid))

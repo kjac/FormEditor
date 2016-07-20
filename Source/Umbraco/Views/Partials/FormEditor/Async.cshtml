@@ -51,28 +51,34 @@
           </div>
         }
       </form>
-      @* paging links *@
+      @* 
+        paging links 
+        TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
+      *@
       <nav>
         <ul class="pager">
           <li class="previous" ng-hide="isFirstPage()">
             <a href ng-click="goToPreviousPage()">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
             </a>
           </li>
           <li class="next" ng-hide="isLastPage()">
             <a href ng-click="goToNextPage()">
-              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next") <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
             </a>
           </li>
         </ul>
       </nav>
-      @* form validation errors container (for cross field validations) *@
+      @* 
+        form validation errors container (for cross field validations) 
+        TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+      *@
       <div class="row form-validation-errors">
         <div class="cell">
           <div class="form-group">
             <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
               <h4>
-                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "Form contains errors")
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
               </h4>
               <ul id="validationErrorsList">
                 <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>

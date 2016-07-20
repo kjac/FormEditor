@@ -12,7 +12,31 @@
 <html>
 <head>
   <title>@Model.Content.Name</title>
-  <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css"/>
+  @* add some styles for Form Editor *@
+  <style>
+    /* required field indicator on the field labels */
+    div.form-group.required > label:after {
+      content: ' *';
+      color: #a94442;
+    }
+
+    /* pagination arrows */
+    ul.pager li.previous a:before, ul.pager li.next a:after {
+      content: "\e080";
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      font-family: 'Glyphicons Halflings';
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    ul.pager li.previous a:before {
+      content: "\e079";
+    }
+  </style>
 </head>
 <body>
   
