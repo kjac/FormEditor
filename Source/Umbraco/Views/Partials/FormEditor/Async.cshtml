@@ -11,11 +11,17 @@
   var formPropertyName = ViewBag.FormName as string ?? "form";
 
   // get the form model (named "form" on the content type)
-  var form = formContent.GetPropertyValue<FormModel>(formPropertyName);  
+  var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
+
+  // max submissions exceeded for the current user?
+  var maxSubmissionsExceededForCurrentUser = form.MaxSubmissionsExceededForCurrentUser(formContent);
+
+  // max submissions exceeded in total? (no need to check if max submissions are exceeded for the current user)
+  var maxSubmissionsExceeded = maxSubmissionsExceededForCurrentUser == false && form.MaxSubmissionsExceeded(formContent);
 }
 <div ng-app="formEditor" ng-controller="FormController" ng-cloak>
   @* only render the form if we can actually submit to it *@
-  @if(form.MaxSubmissionsExceeded() == false)
+  @if (maxSubmissionsExceeded == false && maxSubmissionsExceededForCurrentUser == false)
   {
     @* render the receipt message *@
     <div class="container form-receipt" ng-show="showReceipt">
@@ -110,6 +116,16 @@
       @* determine whether a receipt message is available *@
       var _formHasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
     </script>
+  }
+  else if (maxSubmissionsExceededForCurrentUser)
+  {
+    @* max number of form submissions for the current user exceeded - show message *@
+    <div class="container form-max-submissions-exceeded">
+      <h2>@form.MaxSubmissionsForCurrentUserExceededHeader</h2>
+      <p>
+        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsForCurrentUserExceededText ?? string.Empty))
+      </p>
+    </div>
   }
   else
   {

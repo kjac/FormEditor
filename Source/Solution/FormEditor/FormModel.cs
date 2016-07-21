@@ -23,6 +23,8 @@ namespace FormEditor
 	{
 		public const string PropertyEditorAlias = @"FormEditor.Form";
 
+		private const string FormSubmittedCookieKey = "_fe";
+
 		private IEnumerable<Page> _pages;
 		private IEnumerable<Row> _rows;
 
@@ -66,6 +68,9 @@ namespace FormEditor
 		public int? MaxSubmissions { get; set; }
 		public string MaxSubmissionsExceededHeader { get; set; }
 		public string MaxSubmissionsExceededText { get; set; }
+		public bool DisallowMultipleSubmissionsPerUser { get; set; }
+		public string MaxSubmissionsForCurrentUserExceededHeader { get; set; }
+		public string MaxSubmissionsForCurrentUserExceededText { get; set; }
 
 		#endregion
 
@@ -101,7 +106,13 @@ namespace FormEditor
 				return false;
 			}
 
-			// are we able to accept any submissions for this form?
+			// are we able to accept any submissions for this form for the current user?
+			if (MaxSubmissionsExceededForCurrentUser(content))
+			{
+				return false;
+			}
+
+			// are we able to accept any submissions for this form at all?
 			if(MaxSubmissionsExceeded(content))
 			{
 				return false;
@@ -155,6 +166,8 @@ namespace FormEditor
 			// tell everyone that something was added
 			RaiseAfterAddToIndex(rowId);
 
+			SetFormSubmittedCookie(content);
+
 			SendEmails(content, valueFields);
 
 			if (redirect && SuccessPageId > 0)
@@ -200,6 +213,25 @@ namespace FormEditor
 		public IEnumerable<FieldWithValue> AllValueFields()
 		{
 			return AllFields().OfType<FieldWithValue>();
+		}
+
+		public bool MaxSubmissionsExceededForCurrentUser()
+		{
+			if (RequestedContent == null)
+			{
+				return true;
+			}
+			return MaxSubmissionsExceededForCurrentUser(RequestedContent);
+		}
+
+		public bool MaxSubmissionsExceededForCurrentUser(IPublishedContent content)
+		{
+			if (DisallowMultipleSubmissionsPerUser == false)
+			{
+				return false;
+			}
+			var cookie = Request.Cookies[FormSubmittedCookieKey];
+			return cookie != null && cookie.Value.Contains(FormSubmittedCookieValue(content));
 		}
 
 		public bool MaxSubmissionsExceeded()
@@ -269,6 +301,11 @@ namespace FormEditor
 		private HttpRequest Request
 		{
 			get { return HttpContext.Current.Request; }
+		}
+
+		private HttpResponse Response
+		{
+			get { return HttpContext.Current.Response; }
 		}
 
 		private UmbracoContext Context
@@ -685,7 +722,46 @@ namespace FormEditor
 
 			// replace newlines with <br/> in email body for HTML mails
 			return new HtmlString(forHtmlEmail ? Regex.Replace(emailBody, @"\n\r?", @"<br />") : emailBody);
-		} 
+		}
+
+		private void SetFormSubmittedCookie(IPublishedContent content)
+		{
+			var cookieValue = (Request.Cookies.AllKeys.Contains(FormSubmittedCookieKey) ? Request.Cookies[FormSubmittedCookieKey].Value : null) ?? string.Empty;
+			var containsCurrentContent = cookieValue.Contains(FormSubmittedCookieValue(content));
+
+			if (DisallowMultipleSubmissionsPerUser == false)
+			{
+				if (containsCurrentContent)
+				{
+					// "only one submission per user" must've been enabled for this form at some point - explicitly remove the content ID from the cookie
+					cookieValue = cookieValue.Replace(FormSubmittedCookieValue(content), ",");
+					if (cookieValue == ",")
+					{
+						// this was the last content ID - remove the cookie 
+						Response.Cookies.Add(new HttpCookie(FormSubmittedCookieKey, cookieValue) { Expires = DateTime.Today.AddDays(-1) });
+					}
+					else
+					{
+						// update the cookie value
+						Response.Cookies.Add(new HttpCookie(FormSubmittedCookieKey, cookieValue) { Expires = DateTime.Today.AddDays(30) });						
+					}
+				}
+
+				return;
+			}
+
+			// add the content ID to the cookie value if it's not there already
+			if (containsCurrentContent == false)
+			{
+				cookieValue = string.Format("{0}{1}", cookieValue.TrimEnd(','), FormSubmittedCookieValue(content));
+			}
+			Response.Cookies.Add(new HttpCookie(FormSubmittedCookieKey, cookieValue) { Expires = DateTime.Today.AddDays(30) });
+		}
+
+		private static string FormSubmittedCookieValue(IPublishedContent content)
+		{
+			return string.Format(",{0},", content.Id);
+		}
 
 		#endregion
 

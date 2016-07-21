@@ -18,8 +18,11 @@
   // show the receipt if the form was submitted and we have a receipt message
   var showReceiptMessage = formWasSubmitted && string.IsNullOrWhiteSpace(form.ReceiptHeader) == false;
 
-  // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now)
-  var showMaxSubmissionsExceededMessage = formWasSubmitted == false && form.MaxSubmissionsExceeded();
+  //  show the max number of submissions exceeded for current user message if applicable (and if the form was not submitted just now)
+  var showMaxSubmissionsExceededForCurrentUserMessage = formWasSubmitted == false && form.MaxSubmissionsExceededForCurrentUser(formContent);
+
+  // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now) (no need to check if max submissions are exceeded for the current user)
+  var showMaxSubmissionsExceededMessage = showMaxSubmissionsExceededForCurrentUserMessage == false && formWasSubmitted == false && form.MaxSubmissionsExceeded(formContent);
 }
 
 @if(showReceiptMessage)
@@ -32,7 +35,17 @@
     </p>
   </div>
 }
-else if(showMaxSubmissionsExceededMessage)
+else if (showMaxSubmissionsExceededForCurrentUserMessage)
+{
+  @* max number of form submissions for the current user exceeded - show message *@
+  <div class="container form-max-submissions-exceeded">
+    <h2>@form.MaxSubmissionsForCurrentUserExceededHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsForCurrentUserExceededText ?? string.Empty))
+    </p>
+  </div>
+}
+else if (showMaxSubmissionsExceededMessage)
 {
   @* max number of form submissions exceeded - show message *@
   <div class="container form-max-submissions-exceeded">

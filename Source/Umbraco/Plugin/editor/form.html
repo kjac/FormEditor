@@ -281,7 +281,8 @@
   <!-- ## data ##-->
   <div id="tabFormEditorData" class="tab-pane">
     <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
-    <h5 form-editor-localize key="data.maxSubmissions.header">Limit the number of submissions</h5>
+
+    <h4 form-editor-localize key="data.maxSubmissions.header">Limit the number of submissions</h4>
     <p form-editor-localize key="data.maxSubmissions.text">
       If you want to limit the number of submissions for this form, enter the maximum allowed number of submissions and a message to show the users when no more submissions are allowed.
     </p>
@@ -302,6 +303,32 @@
     </label>
     <div class="controls controls-row">
       <textarea class="umb-editor" id="maxSubmissionsExceededText" ng-model="model.value.maxSubmissionsExceededText" rows="5"></textarea>
+    </div>
+
+    <h4 form-editor-localize key="data.maxSubmissionsPerUser.header">Multiple submissions per user</h4>
+    <p form-editor-localize key="data.maxSubmissionsPerUser.text">
+      If you don't want the same user submitting this form multiple times, check the box below and enter a message to show the users that have already submitted the form.
+    </p>
+    <label class="control-label" for="disallowMultipleSubmissionsPerUser" form-editor-localize key="data.maxSubmissionsPerUser">
+      Multiple submissions
+    </label>
+    <div class="controls controls-row">
+      <label class="checkbox">
+        <input type="checkbox" ng-model="model.value.disallowMultipleSubmissionsPerUser" id="disallowMultipleSubmissionsPerUser" />
+        <form-editor-localize key="data.disallowMultipleSubmissionsPerUser">Only one submission per user</form-editor-localize>
+      </label>
+    </div>
+    <label class="control-label" for="maxSubmissionsForCurrentUserExceededHeader" form-editor-localize key="data.maxSubmissionsPerUser.message.heading">
+      Heading
+    </label>
+    <div class="controls controls-row">
+      <input type="text" class="umb-editor" id="maxSubmissionsForCurrentUserExceededHeader" ng-model="model.value.maxSubmissionsForCurrentUserExceededHeader" />
+    </div>
+    <label class="control-label" for="maxSubmissionsForCurrentUserExceededText" form-editor-localize key="data.maxSubmissionsPerUser.message.body">
+      Text
+    </label>
+    <div class="controls controls-row">
+      <textarea class="umb-editor" id="maxSubmissionsForCurrentUserExceededText" ng-model="model.value.maxSubmissionsForCurrentUserExceededText" rows="5"></textarea>
     </div>
   </div>
 </div>
