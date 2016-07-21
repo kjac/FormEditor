@@ -1,11 +1,9 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CheckboxField>
-<div class="form-group @(Model.Invalid? "has-error" : null)">
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" name="@Model.FormSafeName" value="true" @(Model.Selected ? "checked" : null) @(Model.Mandatory ? "required" : null) />
-      @Model.Label
-    </label>
-  </div>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid? "has-error" : null) checkbox">
+  <label>
+    <input type="checkbox" name="@Model.FormSafeName" value="true" @(Model.Selected ? "checked" : null) @(Model.Mandatory ? "required" : null)/>
+    @Model.Label
+  </label>
 
   @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")

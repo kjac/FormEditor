@@ -1,6 +1,4 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.IFieldWithValidation>
-<div class="text-danger validation-error hide" ng-class="{show: form.$submitted && form.@(Model.FormSafeName).$invalid}">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
+<div class="text-danger validation-error hide" ng-class="{show: shouldShowValidationError('@(Model.FormSafeName)', @(ViewBag.FormEditorPageNumber))}">
   @Model.ErrorMessage
 </div>

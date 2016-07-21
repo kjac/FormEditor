@@ -17,7 +17,7 @@
       $scope.formData[key] = _formDefaultValues[key];
     }
 
-    $scope.toggleMultiSelectValue = function (fieldName, value, required) {
+    $scope.toggleMultiSelectValue = function (fieldName, pageNumber, value, required) {
       var values = $scope.formData[fieldName] || [];
       var index = values.indexOf(value);
       if (index < 0) {
@@ -30,7 +30,7 @@
       }
       $scope.formData[fieldName] = values;
       if (required) {
-        $scope.form[fieldName].$setValidity("required", values != undefined && values.length != 0);
+        $scope.getFormPage(pageNumber)[fieldName].$setValidity("required", values != undefined && values.length != 0);
       }
     };
 
@@ -40,6 +40,10 @@
     };
 
     $scope.submit = function () {
+      for (var i = 0; i < _formTotalPages; i++) {
+        $scope.getFormPage(i).showValidationErrors = true;
+      }
+
       if ($scope.form.$invalid) {
         return;
       }
@@ -93,8 +97,10 @@
           $scope.submitStatus = "failure";
           if (response.data) {
             if (response.data.invalidFields && response.data.invalidFields.length > 0) {
-              angular.forEach(response.data.invalidFields, function (field) {
-                $scope.form[field.formSafeName].$invalid = true;
+              angular.forEach(response.data.invalidFields, function (f) {
+                for (var i = 0; i < _formTotalPages; i++) {
+                  $scope.getFormPage(i)[f.formSafeName].$setValidity("required", false);
+                }
               });
             }
             if (response.data.failedValidations && response.data.failedValidations.length > 0) {
@@ -133,7 +139,7 @@
           }
           catch (err) {
             // log error and continue (and hope the server side validation handles things)
-            console.log(err);
+            console.warn(err);
           }
         }
 
@@ -156,8 +162,23 @@
       }
     });
 
+    $scope.shouldShowValidationError = function (fieldName, pageNumber) {
+      var formPage = $scope.getFormPage(pageNumber);
+      var field = formPage[fieldName];
+      if (field == null) {
+        console.warn("could not find field", fieldName);
+      }
+      if (field == null || field.$invalid == false) {
+        return false;
+      }
+      return formPage.$invalid && formPage.showValidationErrors;
+    }
+
     // form paging
-    $scope.isFirstPage = function() {
+    $scope.getFormPage = function (pageNumber) {
+      return $scope.form["formPage" + pageNumber];
+    }
+    $scope.isFirstPage = function () {
       return $scope.activePage == 0;
     };
     $scope.isLastPage = function () {
@@ -166,7 +187,12 @@
     $scope.isActivePage = function (pageNumber) {
       return $scope.activePage == pageNumber;
     };
-    $scope.goToNextPage = function() {
+    $scope.goToNextPage = function () {
+      var formPage = $scope.getFormPage($scope.activePage);
+      formPage.showValidationErrors = true;
+      if (formPage.$invalid) {
+        return;
+      }
       if ($scope.isLastPage() == false) {
         $scope.activePage++;
       }
@@ -187,6 +213,21 @@
         });
       }
     };
+  })
+  .directive("requiredFile", function () {
+    return {
+      require: "ngModel",
+      link: function (scope, el, attrs, ctrl) {
+        ctrl.$setValidity("requiredFile", el.val() != "");
+        el.bind("change", function () {
+          ctrl.$setValidity("requiredFile", el.val() != "");
+          scope.$apply(function () {
+            ctrl.$setViewValue(el.val());
+            ctrl.$render();
+          });
+        });
+      }
+    }
   })
   .directive("httpPrefix", function () {
     return {

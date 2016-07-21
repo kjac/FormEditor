@@ -1,0 +1,124 @@
+﻿@using FormEditor;
+@using FormEditor.Rendering
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+  // get the content that contains the form model (defaults to the current page)
+  var formContent = ViewBag.FormContent as IPublishedContent ?? Model;
+  
+  // get the name of the form model property on the content type (defaults to "form")
+  var formPropertyName = ViewBag.FormName as string ?? "form";
+  
+  // get the form model
+  var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
+  
+  // handle form submission if this is a postback
+  // - this will also take care of redirecting to the success page (if configured)
+  var formWasSubmitted = form.CollectSubmittedValues(formContent);
+
+  // show the receipt if the form was submitted and we have a receipt message
+  var showReceiptMessage = formWasSubmitted && string.IsNullOrWhiteSpace(form.ReceiptHeader) == false;
+
+  // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now)
+  var showMaxSubmissionsExceededMessage = formWasSubmitted == false && form.MaxSubmissionsExceeded();
+}
+
+@if(showReceiptMessage)
+{
+  @* form was submitted and we have a receipt message - show message *@
+  <div class="container form-receipt">
+    <h2>@form.ReceiptHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody ?? string.Empty))
+    </p>
+  </div>
+}
+else if(showMaxSubmissionsExceededMessage)
+{
+  @* max number of form submissions exceeded - show message *@
+  <div class="container form-max-submissions-exceeded">
+    <h2>@form.MaxSubmissionsExceededHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsExceededText ?? string.Empty))
+    </p>
+  </div>
+}
+else
+{
+  @* render the form *@
+  <form method="POST" enctype="multipart/form-data" novalidate>
+    <div class="container form-data">
+      @foreach(var page in form.Pages)
+      {
+        <div class="form-page" style="@(page == form.Pages.First() ? null : "display:none;")">
+          @foreach(var row in page.Rows)
+          {
+            <div class="row @row.Alias">
+              @foreach(var cell in row.Cells)
+              {
+                <div class="cell @cell.Alias">
+                  @foreach(var field in cell.Fields)
+                  {
+                    // render the form field with a partial view
+                    // - the view is expected to be located at /Views/Partials/FormEditor/FieldsSync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsSync/core.checkbox.cshtml
+                    @Html.Partial(string.Format(@"FormEditor/FieldsSync/{0}", field.Type), field)
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+      @* 
+        paging links 
+        TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
+      *@
+      @if(form.Pages.Count() > 1)
+      {
+        <nav>
+          <ul class="pager">
+            <li class="previous form-btn-previous" style="display: none">
+              <a href="javascript:;">
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+              </a>
+            </li>
+            <li class="next form-btn-next" style="display: none">
+              <a href="javascript:;">
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
+              </a>
+            </li>
+          </ul>
+        </nav>
+      }
+      @*
+        form validation errors container (for cross field validations)
+        TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+      *@
+      <div class="row form-validation-errors">
+        <div class="cell">
+          <div class="form-group">
+            <div id="validationErrors" class="alert alert-danger @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
+              <h4>
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
+              </h4>
+              <ul id="validationErrorsList">
+                @foreach(var invalidValidation in form.Validations.Where(v => v.Invalid))
+                {
+                  <li>@invalidValidation.ErrorMessage</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+    
+  @* this script section sets up state for the JS and thus needs to be a part of the template *@
+  <script type="text/javascript">
+    @* render the form validations as an array of JSON objects *@
+    var _formValidations = @form.Validations.Render();
+
+    @* the total number of form pages *@
+    var _formTotalPages = @form.Pages.Count();
+  </script>
+}

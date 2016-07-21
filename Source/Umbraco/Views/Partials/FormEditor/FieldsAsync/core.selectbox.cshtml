@@ -1,5 +1,5 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.SelectBoxField>
-<div class="form-group @(Model.Invalid ? "has-error" : null)">
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
   <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" @(Model.MultiSelect ? "multiple" : "") size="@(Model.Size ?? Model.FieldValues.Count())" @(Model.Mandatory ? "required" : null)>
     @* add non-visible default option - this keeps Angular from adding one *@

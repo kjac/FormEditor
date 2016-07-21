@@ -1,0 +1,124 @@
+﻿@using FormEditor;
+@using FormEditor.Rendering;
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+  Layout = null;
+
+  // get the content that contains the form model (defaults to the current page)
+  var formContent = ViewBag.FormContent as IPublishedContent ?? Model;
+
+  // get the name of the form model property on the content type (defaults to "form")
+  var formPropertyName = ViewBag.FormName as string ?? "form";
+
+  // get the form model (named "form" on the content type)
+  var form = formContent.GetPropertyValue<FormModel>(formPropertyName);  
+}
+<div ng-app="formEditor" ng-controller="FormController" ng-cloak>
+  @* only render the form if we can actually submit to it *@
+  @if(form.MaxSubmissionsExceeded() == false)
+  {
+    @* render the receipt message *@
+    <div class="container form-receipt" ng-show="showReceipt">
+      <h2>@form.ReceiptHeader</h2>
+      <p>
+        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody ?? string.Empty))
+      </p>
+    </div>
+
+    @* render the form *@
+    <div class="container form-data" ng-hide="showReceipt">
+      <form name="form" novalidate>
+        @foreach(var page in form.Pages)
+        {
+          ViewBag.FormEditorPageNumber = form.Pages.IndexOf(page);
+          <div class="form-page" ng-show="isActivePage(@(ViewBag.FormEditorPageNumber))" ng-form="formPage@(ViewBag.FormEditorPageNumber)">
+            @foreach(var row in page.Rows)
+            {
+              <div class="row @row.Alias">
+                @foreach(var cell in row.Cells)
+                {
+                  <div class="cell @cell.Alias">
+                    @foreach(var field in cell.Fields)
+                    {
+                      // render the form field with a partial view
+                      // - the view is expected to be located at /Views/Partials/FormEditor/FieldsAsync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsAsync/core.checkbox.cshtml
+                      @Html.Partial(string.Format(@"FormEditor/FieldsAsync/{0}", field.Type), field)
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </form>
+      @* 
+        paging links 
+        TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
+      *@
+      <nav>
+        <ul class="pager">
+          <li class="previous" ng-hide="isFirstPage()">
+            <a href ng-click="goToPreviousPage()">
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+            </a>
+          </li>
+          <li class="next" ng-hide="isLastPage()">
+            <a href ng-click="goToNextPage()">
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
+            </a>
+          </li>
+        </ul>
+      </nav>
+      @* 
+        form validation errors container (for cross field validations) 
+        TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+      *@
+      <div class="row form-validation-errors">
+        <div class="cell">
+          <div class="form-group">
+            <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
+              <h4>
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
+              </h4>
+              <ul id="validationErrorsList">
+                <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @* this script section sets up state for the JS and thus needs to be a part of the template *@
+    <script type="text/javascript">
+      @* default values for form fields *@
+      var _formDefaultValues = {};
+      @foreach(var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
+      {
+        @:_formDefaultValues.@field.FormSafeName = @field.DefaultValue();
+      }
+
+      @* form validations as an array of JSON objects *@
+      var _formValidations = @form.Validations.Render();
+
+      @* the Umbraco ID of the content to where the form should be submitted to *@
+      var _formId = @formContent.Id;
+
+      @* the total number of form pages *@
+      var _formTotalPages = @form.Pages.Count();
+
+      @* determine whether a receipt message is available *@
+      var _formHasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
+    </script>
+  }
+  else
+  {
+    @* max number of form submissions exceeded - show message *@
+    <div class="container form-max-submissions-exceeded">
+      <h2>@form.MaxSubmissionsExceededHeader</h2>
+      <p>
+        @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsExceededText ?? string.Empty))
+      </p>
+    </div>
+  }
+</div>

@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.UploadField>
-<div class="form-group @(Model.Invalid ? "has-error" : null)">
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
-  <input type="file" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required" : null) accept="@Model.GetValidExtensions()" file-upload />
+  <input type="file" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required-file" : null) accept="@Model.GetValidExtensions()" file-upload ng-model="formData.@Model.FormSafeName" />
 
   @Html.Partial("FormEditor/FieldsAsync/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")

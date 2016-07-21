@@ -7,12 +7,6 @@
 @sortablePlaceholderColor: #d0e7f1;
 @fontFamily: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 
-/* 
-  this magic width should keep the field from breaking the view on a 768px screen
-  if the form label is disabled
-*/
-@fieldNameWidth: 140;
-
 .form-editor {
   width: 100%;
 
@@ -93,6 +87,10 @@
 
   table {
     width: 100%;
+    
+    &.form-cells{
+      table-layout: fixed;
+    }
 
     &.form-cells:hover tr td {
       border-color: @cellBorderColorActive;
@@ -127,23 +125,19 @@
         display: block;
         white-space: nowrap;
 
-        div.form-field-content {
-          display: inline-block;
+        span.form-field-content {
+          display: inline;
           cursor: pointer;
 
-          &.form-field-invalid {
-            span.form-field-icon-and-name:after {
-              font-family: "icomoon";
-              content: "\e25d";
-              color: @dangerColor;
-              font-size: 18px;
-              vertical-align: top;
-            }
+          &:hover span.form-field-name{
+            text-decoration: underline
+          }
 
+          &.form-field-invalid {
             span.form-field-name {
               /* take the width of the error icon into account */
-              width: (@fieldNameWidth - 20)*1px;
               color: @dangerColor;
+              font-weight: bold;
             }
           }
         }
@@ -155,14 +149,10 @@
 
         span.form-field-name {
           display: inline-block;
-          width: @fieldNameWidth*1px;
+          max-width: 75%;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
-
-          &:hover {
-            text-decoration: underline;
-          }
         }
       }
     }
@@ -401,6 +391,16 @@
       height: 20px;
       display: inline-block;
       vertical-align: top;
+
+      &.field-mandatory:after {
+        content: '*';
+        color: #b94a48;
+        position: relative;
+        left: 13px;
+        top: -3px;
+        font-size: 1.3em;
+        font-style: normal;
+      }
     }
 
     span.menu-label {

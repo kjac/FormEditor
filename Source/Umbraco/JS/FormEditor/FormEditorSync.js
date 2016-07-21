@@ -129,7 +129,10 @@
   }
 
   // form paging
-  $(".form-btn-next").click(function(e) {
+  $(".form-btn-next").click(function (e) {
+    if (validateActivePage() == false) {
+      return;
+    }
     if (activePage < _formTotalPages - 1) {
       activePage++;
       showActivePage();
@@ -141,6 +144,17 @@
       showActivePage();
     }
   });
+  function validateActivePage() {
+    var pageIsValid = true;
+    $("[name]", $($(".form-page")[activePage])).each(function (index, input) {
+      var isValid = validateField(input);
+      showHideValidationErrorForField(input, isValid);
+      if (isValid == false) {
+        pageIsValid = false;
+      }
+    });
+    return pageIsValid;
+  }
   function showActivePage() {
     $(".form-page").hide();
     $($(".form-page")[activePage]).show();

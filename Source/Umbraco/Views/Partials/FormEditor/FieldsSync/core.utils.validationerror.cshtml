@@ -1,6 +1,4 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.IFieldWithValidation>
 <div class="text-danger validation-error @(Model.Invalid ? null : "hide")">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
   @Model.ErrorMessage
 </div>

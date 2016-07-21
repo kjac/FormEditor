@@ -1,5 +1,5 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.DropdownField>
-<div class="form-group @(Model.Invalid ? "has-error" : null)">
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
   <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" @(Model.Mandatory ? "required" : null)>
     @if (string.IsNullOrEmpty(Model.DefaultText) == false)
