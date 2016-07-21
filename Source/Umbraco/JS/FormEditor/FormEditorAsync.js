@@ -4,7 +4,7 @@
     $scope.fileData = {};
 
     // fetch the validations from global variable
-    $scope.validations = _formValidations;
+    $scope.validations = typeof _formValidations == "undefined" ? null : _formValidations;
     $scope.invalidValidations = [];
 
     $scope.submitStatus = "none";
@@ -13,8 +13,10 @@
     $scope.activePage = 0;
 
     // initialize field default values from global variable
-    for (var key in _formDefaultValues) {
-      $scope.formData[key] = _formDefaultValues[key];
+    if (typeof _formDefaultValues != "undefined" && _formDefaultValues != null) {
+      for (var key in _formDefaultValues) {
+        $scope.formData[key] = _formDefaultValues[key];
+      }
     }
 
     $scope.toggleMultiSelectValue = function (fieldName, pageNumber, value, required) {

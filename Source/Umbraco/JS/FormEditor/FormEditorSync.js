@@ -133,7 +133,7 @@
     if (validateActivePage() == false) {
       return;
     }
-    if (activePage < _formTotalPages - 1) {
+    if (activePage < formTotalPages()) {
       activePage++;
       showActivePage();
     }
@@ -144,6 +144,12 @@
       showActivePage();
     }
   });
+  function formTotalPages () {
+    if (typeof _formTotalPages == "undefined") {
+      return 0;
+    }
+    return _formTotalPages - 1;
+  }
   function validateActivePage() {
     var pageIsValid = true;
     $("[name]", $($(".form-page")[activePage])).each(function (index, input) {
@@ -167,7 +173,7 @@
     else {
       $(".form-btn-previous").show();
     }
-    if (activePage == _formTotalPages - 1) {
+    if (activePage == formTotalPages()) {
       $(".form-btn-next").hide();
     }
     else {
