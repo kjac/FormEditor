@@ -16,6 +16,8 @@ By completing these three steps, you'll have your first form rendered in no time
 
 Have a look at the sample templates to see actual implementations of this.
 
+**Note:** If your Form Editor property does not reside on the currently requested content element, you can specify the applicable content element like this: ```ViewBag.FormContent = myInstanceOfIPublishedContent;``` (see also [this page](reuse.md))
+
 **Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
 
 ## Creating your own rendering
