@@ -7,8 +7,8 @@ The package also installs two sample templates that demonstrate how to use the p
 By completing these three steps, you'll have your first form rendered in no time:
 
 1. Render the applicable partial view in your template: 
-    * Use ```@Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem);``` for synchronous form postback.
-    * Use  ```@Html.Partial("FormEditor/Async", Umbraco.AssignedContentItem);``` for asynchronous form postback.
+    * Use ```@Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem)``` for synchronous form postback.
+    * Use  ```@Html.Partial("FormEditor/Async", Umbraco.AssignedContentItem)``` for asynchronous form postback.
 2. Make sure you have included either [jQuery](https://jquery.com/) or [AngularJS](https://angularjs.org/) in your template (even if you're using synchronous form postback, you'll still want scripting support for client side validation).
 3. Include the applicable Form Editor script for handling validation and form submission:
     * Use ```/JS/FormEditor/FormEditorSync.js``` for synchronous form postback.
