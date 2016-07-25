@@ -11,6 +11,17 @@
 
     function defaultValue() {
       return [{
+        alias: "one-column",
+        icon: "core.one-column.png",
+        prettyName: "One column",
+        expanded: true,
+        cellLayouts: [
+            {
+              alias: "col-md-12",
+              width: 100
+            }
+        ]
+      }, {
         alias: "two-column",
         icon: "core.two-column.png",
         prettyName: "Two columns",
