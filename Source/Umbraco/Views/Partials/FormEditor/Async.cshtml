@@ -34,17 +34,17 @@
     @* render the form *@
     <div class="container form-data" ng-hide="showReceipt">
       <form name="form" novalidate>
-        @foreach(var page in form.Pages)
+        @foreach (var page in form.Pages)
         {
           ViewBag.FormEditorPageNumber = form.Pages.IndexOf(page);
           <div class="form-page" ng-show="isActivePage(@(ViewBag.FormEditorPageNumber))" ng-form="formPage@(ViewBag.FormEditorPageNumber)">
-            @foreach(var row in page.Rows)
+            @foreach (var row in page.Rows)
             {
               <div class="row @row.Alias">
-                @foreach(var cell in row.Cells)
+                @foreach (var cell in row.Cells)
                 {
                   <div class="cell @cell.Alias">
-                    @foreach(var field in cell.Fields)
+                    @foreach (var field in cell.Fields)
                     {
                       // render the form field with a partial view
                       // - the view is expected to be located at /Views/Partials/FormEditor/FieldsAsync/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsAsync/core.checkbox.cshtml
@@ -57,32 +57,35 @@
           </div>
         }
       </form>
-      @* 
-        paging links 
+      @*
+        paging links
         TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
       *@
-      <nav>
-        <ul class="pager">
-          <li class="previous" ng-hide="isFirstPage()">
-            <a href ng-click="goToPreviousPage()">
-              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
-            </a>
-          </li>
-          <li class="next" ng-hide="isLastPage()">
-            <a href ng-click="goToNextPage()">
-              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
-            </a>
-          </li>
-        </ul>
-      </nav>
-      @* 
-        form validation errors container (for cross field validations) 
+      @if (form.Pages.Count() > 1)
+      {
+        <nav>
+          <ul class="pager">
+            <li class="previous" ng-hide="isFirstPage()">
+              <a href ng-click="goToPreviousPage()">
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.previous"), "Previous")
+              </a>
+            </li>
+            <li class="next" ng-hide="isLastPage()">
+              <a href ng-click="goToNextPage()">
+                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.paging.next"), "Next")
+              </a>
+            </li>
+          </ul>
+        </nav>
+      }
+      @*
+        form validation errors container (for cross field validations)
         TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
       *@
-      <div class="row form-validation-errors">
+      <div id="validationErrors" class="row form-validation-errors" ng-show="invalidValidations.length > 0">
         <div class="cell">
           <div class="form-group">
-            <div id="validationErrors" class="alert alert-danger hide" ng-class="{show: invalidValidations.length > 0}">
+            <div class="alert alert-danger">
               <h4>
                 @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
               </h4>
@@ -99,7 +102,7 @@
     <script type="text/javascript">
       @* default values for form fields *@
       var _formDefaultValues = {};
-      @foreach(var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
+      @foreach (var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
       {
         @:_formDefaultValues.@field.FormSafeName = @field.DefaultValue();
       }
