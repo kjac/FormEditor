@@ -16,16 +16,19 @@ using FormEditor.Storage.Statistics;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 using Field = FormEditor.Fields.Field;
+using FormEditor.Interfaces;
 
 namespace FormEditor
 {
-	public class FormModel
+	public class FormModel  : IFormModel
 	{
 		public const string PropertyEditorAlias = @"FormEditor.Form";
 
 		private const string FormSubmittedCookieKey = "_fe";
 
-		private IEnumerable<Page> _pages;
+        public IEnumerable<FormWorkflowInfo> Workflow { get; set; }
+
+        private IEnumerable<Page> _pages;
 		private IEnumerable<Row> _rows;
 
 		#region Properties configured in the form editor
@@ -163,6 +166,7 @@ namespace FormEditor
 				return false;
 			}
 
+            ExecuteRegisteredWorkflows(content);
 			// tell everyone that something was added
 			RaiseAfterAddToIndex(rowId);
 
@@ -178,7 +182,20 @@ namespace FormEditor
 			return true;
 		}
 
-		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
+        private void ExecuteRegisteredWorkflows(IPublishedContent content)
+        {
+            Workflow.ToList().ForEach(wrk =>
+            {
+
+                FormEditorWorkflow workflow = Activator.CreateInstance(Type.GetType(wrk.WokflowType, true)) as FormEditorWorkflow;
+                workflow.SetWorkflowProperties(wrk.Properties);
+                var fields = AllValueFields().ToDictionary(x => x.PrettyName, y => (object)y.SubmittedValue);
+                workflow.Execute(fields, content, this);
+
+            });
+        }
+
+        public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
 		{
 			if(RequestedContent == null)
 			{

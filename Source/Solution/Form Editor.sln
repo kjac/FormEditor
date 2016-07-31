@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Umbraco", "http://localhost:27226", "{98B5BC93-71BB-48D6-9CCC-643E7E2C5C4F}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grunt", "Grunt", "{479E2588
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormEditor", "FormEditor\FormEditor.csproj", "{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormEditor.Interfaces", "FormEditor.Interfaces\FormEditor.Interfaces.csproj", "{A46396B5-584E-4D38-A00C-03F634F6DF89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{868A44E0-C7FC-4297-A4E8-3E2DDF8E53E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46396B5-584E-4D38-A00C-03F634F6DF89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46396B5-584E-4D38-A00C-03F634F6DF89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46396B5-584E-4D38-A00C-03F634F6DF89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46396B5-584E-4D38-A00C-03F634F6DF89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
