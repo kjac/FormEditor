@@ -25,7 +25,9 @@ namespace FormEditor
 
 		private const string FormSubmittedCookieKey = "_fe";
 
-		private IEnumerable<Page> _pages;
+        public IPublishedContent CurrentPublishedContent { get; private set; }
+
+        private IEnumerable<Page> _pages;
 		private IEnumerable<Row> _rows;
 
 		#region Properties configured in the form editor
@@ -100,6 +102,9 @@ namespace FormEditor
 
 		public bool CollectSubmittedValues(IPublishedContent content, bool redirect = true)
 		{
+
+            this.CurrentPublishedContent = content;
+
 			// currently not supporting GET forms ... will require some limitation on fields and stuff
 			if(Request.HttpMethod != "POST")
 			{
@@ -317,6 +322,8 @@ namespace FormEditor
 		{
 			get
 			{
+                if (null != this.CurrentPublishedContent) return this.CurrentPublishedContent;
+
 				if(Context == null || Context.PublishedContentRequest == null || Context.PublishedContentRequest.PublishedContent == null)
 				{
 					return null;
@@ -325,9 +332,11 @@ namespace FormEditor
 			}
 		}
 
-		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
+     
 
-		private void EnsurePagesForBackwardsCompatibility()
+        #region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
+
+        private void EnsurePagesForBackwardsCompatibility()
 		{
 			if(_pages == null && _rows != null)
 			{
