@@ -140,7 +140,7 @@ namespace FormEditor
 			}
 
 			// we're about to add data to the index - let's run the before add to index event handler
-			var beforeAddToIndexErrorMessage = RaiseBeforeAddToIndex();
+			var beforeAddToIndexErrorMessage = RaiseBeforeAddToIndex(content);
 			if(beforeAddToIndexErrorMessage != null)
 			{
 				// the event was cancelled - use the validation system to pass the error message back to the user
@@ -164,7 +164,7 @@ namespace FormEditor
 			}
 
 			// tell everyone that something was added
-			RaiseAfterAddToIndex(rowId);
+			RaiseAfterAddToIndex(rowId, content);
 
 			SetFormSubmittedCookie(content);
 
@@ -446,13 +446,13 @@ namespace FormEditor
 			return doc.DocumentNode.InnerText;
 		}
 
-		private string RaiseBeforeAddToIndex()
+		private string RaiseBeforeAddToIndex(IPublishedContent content)
 		{
 			if(BeforeAddToIndex != null)
 			{
 				try
 				{
-					var cancelEventArgs = new FormEditorCancelEventArgs();
+					var cancelEventArgs = new FormEditorCancelEventArgs(content);
 					BeforeAddToIndex.Invoke(this, cancelEventArgs);
 					if(cancelEventArgs.Cancel)
 					{
@@ -469,13 +469,13 @@ namespace FormEditor
 			return null;
 		}
 
-		private void RaiseAfterAddToIndex(Guid rowId)
+		private void RaiseAfterAddToIndex(Guid rowId, IPublishedContent content)
 		{
 			if(AfterAddToIndex != null)
 			{
 				try
 				{
-					AfterAddToIndex.Invoke(this, new FormEditorEventArgs(rowId));
+					AfterAddToIndex.Invoke(this, new FormEditorEventArgs(rowId, content));
 				}
 				catch(Exception ex)
 				{
