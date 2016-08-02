@@ -3,8 +3,7 @@
     $scope.formData = {};
     $scope.fileData = {};
 
-    // fetch the validations from global variable
-    $scope.validations = typeof _formValidations == "undefined" ? null : _formValidations;
+    $scope.formState = {};
     $scope.invalidValidations = [];
 
     $scope.submitStatus = "none";
@@ -12,10 +11,16 @@
 
     $scope.activePage = 0;
 
-    // initialize field default values from global variable
-    if (typeof _formDefaultValues != "undefined" && _formDefaultValues != null) {
-      for (var key in _formDefaultValues) {
-        $scope.formData[key] = _formDefaultValues[key];
+    $scope.init = function (formId) {
+      if (typeof _fe == "undefined" || typeof _fe[formId] == "undefined") {
+        console.error("Could not find any Form Editor state for form ID " + formId);
+        return;
+      }
+
+      $scope.formState = _fe[formId];
+      $scope.formState.formId = formId;
+      for (var key in $scope.formState.defaultValues) {
+        $scope.formData[key] = $scope.formState.defaultValues[key];
       }
     }
 
@@ -42,7 +47,7 @@
     };
 
     $scope.submit = function () {
-      for (var i = 0; i < _formTotalPages; i++) {
+      for (var i = 0; i < $scope.formState.totalPages; i++) {
         $scope.getFormPage(i).showValidationErrors = true;
       }
 
@@ -50,7 +55,7 @@
         return;
       }
 
-      $scope.invalidValidations = $filter("filter")($scope.validations, function (validation, index, array) {
+      $scope.invalidValidations = $filter("filter")($scope.formState.validations, function (validation, index, array) {
         return $scope.validate(validation) == false;
       });
       if ($scope.invalidValidations.length > 0) {
@@ -59,7 +64,7 @@
 
       var data = new FormData();
       // add form ID from global variable
-      data.append("_id", _formId);
+      data.append("_id", $scope.formState.formId);
       // add form data
       for (var key in $scope.formData) {
         var value = $scope.formData[key];
@@ -93,14 +98,14 @@
           if (response.data && response.data.redirectUrl) {
             $window.location.href = response.data.redirectUrl;
           }
-          $scope.showReceipt = _formHasReceipt;
+          $scope.showReceipt = $scope.formState.hasReceipt;
           // add your own success handling here
         }, function errorCallback(response) {
           $scope.submitStatus = "failure";
           if (response.data) {
             if (response.data.invalidFields && response.data.invalidFields.length > 0) {
               angular.forEach(response.data.invalidFields, function (f) {
-                for (var i = 0; i < _formTotalPages; i++) {
+                for (var i = 0; i < $scope.formState.totalPages; i++) {
                   $scope.getFormPage(i)[f.formSafeName].$setValidity("required", false);
                 }
               });
@@ -184,7 +189,7 @@
       return $scope.activePage == 0;
     };
     $scope.isLastPage = function () {
-      return $scope.activePage == (_formTotalPages - 1);
+      return $scope.activePage == ($scope.formState.totalPages - 1);
     };
     $scope.isActivePage = function (pageNumber) {
       return $scope.activePage == pageNumber;

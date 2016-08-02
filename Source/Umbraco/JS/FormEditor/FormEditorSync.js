@@ -79,7 +79,7 @@
     var isValid = false;
     $(validation.rules).each(function (index, rule) {
       // get all fields that matches the rule field name (in case of a group of fields with the same name, e.g. checkbox group)
-      var group = $("[name=" + rule.field.formSafeName + "]");
+      var group = $("[name=" + rule.field.formSafeName + "]", $form);
 
       // figure out the value of the field group
       var fieldValue = null;
@@ -129,7 +129,7 @@
   }
 
   // form paging
-  $(".form-btn-next").click(function (e) {
+  $(".form-btn-next", $form).click(function (e) {
     if (validateActivePage() == false) {
       return;
     }
@@ -138,7 +138,7 @@
       showActivePage();
     }
   });
-  $(".form-btn-previous").click(function(e) {
+  $(".form-btn-previous", $form).click(function (e) {
     if (activePage > 0) {
       activePage--;
       showActivePage();
@@ -152,7 +152,7 @@
   }
   function validateActivePage() {
     var pageIsValid = true;
-    $("[name]", $($(".form-page")[activePage])).each(function (index, input) {
+    $("[name]", $($(".form-page", $form)[activePage])).each(function (index, input) {
       var isValid = validateField(input);
       showHideValidationErrorForField(input, isValid);
       if (isValid == false) {
@@ -162,22 +162,22 @@
     return pageIsValid;
   }
   function showActivePage() {
-    $(".form-page").hide();
-    $($(".form-page")[activePage]).show();
+    $(".form-page", $form).hide();
+    $($(".form-page", $form)[activePage]).show();
     showActivePagingButtons();
   }
   function showActivePagingButtons() {
     if (activePage == 0) {
-      $(".form-btn-previous").hide();
+      $(".form-btn-previous", $form).hide();
     }
     else {
-      $(".form-btn-previous").show();
+      $(".form-btn-previous", $form).show();
     }
     if (activePage == formTotalPages()) {
-      $(".form-btn-next").hide();
+      $(".form-btn-next", $form).hide();
     }
     else {
-      $(".form-btn-next").show();
+      $(".form-btn-next", $form).show();
     }
   }
   showActivePagingButtons();

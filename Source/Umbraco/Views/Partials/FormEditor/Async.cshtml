@@ -19,7 +19,7 @@
   // max submissions exceeded in total? (no need to check if max submissions are exceeded for the current user)
   var maxSubmissionsExceeded = maxSubmissionsExceededForCurrentUser == false && form.MaxSubmissionsExceeded(formContent);
 }
-<div ng-app="formEditor" ng-controller="FormController" ng-cloak>
+<div ng-app="formEditor" ng-controller="FormController" ng-init="init(@formContent.Id)" ng-cloak>
   @* only render the form if we can actually submit to it *@
   @if (maxSubmissionsExceeded == false && maxSubmissionsExceededForCurrentUser == false)
   {
@@ -81,8 +81,7 @@
       @*
         form validation errors container (for cross field validations)
         TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
-      *@
-      <div id="validationErrors" class="row form-validation-errors" ng-show="invalidValidations.length > 0">
+      *@<div id="validationErrors" class="row form-validation-errors" ng-show="invalidValidations.length > 0">
         <div class="cell">
           <div class="form-group">
             <div class="alert alert-danger">
@@ -100,24 +99,25 @@
 
     @* this script section sets up state for the JS and thus needs to be a part of the template *@
     <script type="text/javascript">
+      @* global container for form state data *@
+      var _fe = _fe || {};
+      _fe[@formContent.Id] = {};
+
       @* default values for form fields *@
-      var _formDefaultValues = {};
+      _fe[@formContent.Id].defaultValues = {};
       @foreach (var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
       {
-        @:_formDefaultValues.@field.FormSafeName = @field.DefaultValue();
+        @:_fe[@formContent.Id].defaultValues.@field.FormSafeName = @field.DefaultValue();
       }
 
       @* form validations as an array of JSON objects *@
-      var _formValidations = @form.Validations.Render();
-
-      @* the Umbraco ID of the content to where the form should be submitted to *@
-      var _formId = @formContent.Id;
+      _fe[@formContent.Id].validations = @form.Validations.Render();
 
       @* the total number of form pages *@
-      var _formTotalPages = @form.Pages.Count();
+      _fe[@formContent.Id].totalPages = @form.Pages.Count();
 
       @* determine whether a receipt message is available *@
-      var _formHasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
+      _fe[@formContent.Id].hasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
     </script>
   }
   else if (maxSubmissionsExceededForCurrentUser)
