@@ -499,6 +499,7 @@ namespace FormEditor
 					? Request.Files.AllKeys
 						.Where(k => valueFields.Any(f => f.FormSafeName == k))
 						.Select(k => Request.Files[k])
+						.Where(f => f != null && f.ContentLength > 0)
 						.ToArray()
 					: null;
 				SendEmailType(EmailNotificationSubject, EmailNotificationFromAddress, EmailNotificationRecipients, content, EmailNotificationTemplate, "Notification", uploadedFiles, ref emailBody);
