@@ -275,7 +275,7 @@ addFormEditorCondition("core.fieldisempty", function (rule, fieldValue, formData
 });
 // - "field value is not" condition:
 addFormEditorCondition("core.fieldvalueisnot", function (rule, fieldValue, formData) {
-  return (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
+  return (fieldValue + "" || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
 });
 // - "field value is" condition (negation of "field value is not" condition):
 addFormEditorCondition("core.fieldvalueis", function (rule, fieldValue, formData) {
