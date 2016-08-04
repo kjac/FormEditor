@@ -208,7 +208,7 @@ addFormEditorCondition("core.fieldvalueisnot", function (rule, fieldValue, $form
   return (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
 });
 // - "field value is" condition (negation of "field value is not" condition):
-addFormEditorCondition("", function (rule, fieldValue, $form) {
+addFormEditorCondition("core.fieldvalueis", function (rule, fieldValue, $form) {
   return !(getFormEditorCondition("core.fieldvalueisnot")(rule, fieldValue, $form));
 });
 // - "field value does not other field value" condition:
