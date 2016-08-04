@@ -205,7 +205,7 @@ addFormEditorCondition("core.fieldisempty", function (rule, fieldValue, $form) {
 });
 // - "field value is not" condition:
 addFormEditorCondition("core.fieldvalueisnot", function (rule, fieldValue, $form) {
-  return (fieldValue || "").toLowerCase() != (rule.condition.expectedFieldValue || "").toLowerCase();
+  return (fieldValue + "" || "").toLowerCase() != (rule.condition.expectedFieldValue + "" || "").toLowerCase();
 });
 // - "field value is" condition (negation of "field value is not" condition):
 addFormEditorCondition("core.fieldvalueis", function (rule, fieldValue, $form) {
