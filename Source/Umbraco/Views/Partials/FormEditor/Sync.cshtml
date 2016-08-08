@@ -58,7 +58,9 @@ else if (showMaxSubmissionsExceededMessage)
 else
 {
   @* render the form *@
-  <form method="POST" enctype="multipart/form-data" novalidate>
+  <form method="POST" enctype="multipart/form-data" data-form-editor="@formContent.Id" novalidate>
+    @* add hidden _id to support multiple forms submitting to the same page *@
+    <input type="hidden" name="_id" value="@formContent.Id" />
     <div class="container form-data">
       @foreach (var page in form.Pages)
       {
@@ -128,10 +130,14 @@ else
 
   @* this script section sets up state for the JS and thus needs to be a part of the template *@
   <script type="text/javascript">
-    @* render the form validations as an array of JSON objects *@
-    var _formValidations = @form.Validations.Render();
+    @* global container for form state data *@
+    var _fe = _fe || {};
+    _fe[@formContent.Id] = {};
+
+    @* form validations as an array of JSON objects *@
+    _fe[@formContent.Id].validations = @form.Validations.Render();
 
     @* the total number of form pages *@
-    var _formTotalPages = @form.Pages.Count();
+    _fe[@formContent.Id].totalPages = @form.Pages.Count();
   </script>
 }

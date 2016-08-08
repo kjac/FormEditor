@@ -1,48 +1,87 @@
-﻿$(function () {
-  var $form = $("form");
-  var activePage = 0;
+﻿(function ($) {
+ $.fn.formEditor = function () {
+   this.each(function (idx, el) {
+      var $form = $(el);
+      var formId = $form.data("form-editor");
 
-  // validate all named fields and all validations on submit
-  $form.submit(function (event) {
-    var hasError = false;
-
-    // validate all named fields
-    $("[name]", $form).each(function (index, input) {
-      var isValid = validateField(input);
-      showHideValidationErrorForField(input, isValid);
-      if (isValid == false) {
-        hasError = true;
+      if (typeof formId == "undefined") {
+        console.error("Could not find any Form Editor ID in data-form-editor");
+        return;
       }
+
+      if (typeof _fe == "undefined" || typeof _fe[formId] == "undefined") {
+        console.error("Could not find any Form Editor state for form ID " + formId);
+        return;
+      }
+
+      $form.formState = _fe[formId];
+      $form.activePage = 0;
+
+      // validate all named fields and all validations on submit
+      $form.submit(function (event) {
+        var hasError = false;
+
+        // validate all named fields
+        $("[name]", $form).each(function (index, input) {
+          var isValid = validateField(input, $form);
+          showHideValidationErrorForField(input, isValid);
+          if (isValid == false) {
+            hasError = true;
+          }
+        });
+
+        // validate all validations
+        var validationErrors = $("#validationErrors", $form);
+        var validationErrorsList = $("#validationErrorsList", $form);
+        validationErrors.addClass("hide");
+        validationErrorsList.empty();
+        // traverse the validations
+        $($form.formState.validations).each(function (index, validation) {
+          if (validateValidation(validation, $form) == false) {
+            hasError = true;
+            validationErrors.removeClass("hide");
+            validationErrorsList.append("<li>" + validation.errorMessage + "</li>");
+          }
+        });
+
+        if (hasError == true) {
+          event.preventDefault();
+        }
+      });
+
+      // validate all named fields on value change
+      $("[name]", $form).change(function (event) {
+        var input = event.target;
+        var isValid = validateField(input, $form);
+        showHideValidationErrorForField(input, isValid);
+      });
+
+      // form paging
+      $(".form-btn-next", $form).click(function (e) {
+        if (validateActivePage($form) == false) {
+          return;
+        }
+        if ($form.activePage < formTotalPages($form)) {
+          $form.activePage++;
+          showActivePage($form);
+        }
+      });
+      $(".form-btn-previous", $form).click(function (e) {
+        if ($form.activePage > 0) {
+          $form.activePage--;
+          showActivePage($form);
+        }
+      });
+
+      showActivePagingButtons($form);
     });
 
-    // validate all validations
-    var validationErrors = $("#validationErrors", $form);
-    var validationErrorsList = $("#validationErrorsList", $form);
-    validationErrors.addClass("hide");
-    validationErrorsList.empty();
-    // traverse the validations (in the global variable _formValidations)
-    $(_formValidations).each(function (index, validation) {
-      if (validateValidation(validation) == false) {
-        hasError = true;
-        validationErrors.removeClass("hide");
-        validationErrorsList.append("<li>" + validation.errorMessage + "</li>");
-      }
-    });
+    return this;
+  };
 
-    if (hasError == true) {
-      event.preventDefault();
-    }
-  });
-
-  // validate all named fields on value change
-  $("[name]", $form).change(function (event) {
-    var input = event.target;
-    var isValid = validateField(input);
-    showHideValidationErrorForField(input, isValid);
-  });
 
   // validate a single input field
-  function validateField(input) {
+  function validateField(input, $form) {
     var isValid = false;
 
     // get all required fields grouped by name (in case of a group of fields with the same name, e.g. checkbox group)
@@ -71,7 +110,7 @@
   }
 
   // validate a validation (usually cross field validation)
-  function validateValidation(validation) {
+  function validateValidation(validation, $form) {
     if (!validation.rules || !validation.rules.length) {
       // edge case: validation contains no rules. must be valid.
       return true;
@@ -79,7 +118,7 @@
     var isValid = false;
     $(validation.rules).each(function (index, rule) {
       // get all fields that matches the rule field name (in case of a group of fields with the same name, e.g. checkbox group)
-      var group = $("[name=" + rule.field.formSafeName + "]");
+      var group = $("[name=" + rule.field.formSafeName + "]", $form);
 
       // figure out the value of the field group
       var fieldValue = null;
@@ -128,32 +167,13 @@
     return isValid;
   }
 
-  // form paging
-  $(".form-btn-next").click(function (e) {
-    if (validateActivePage() == false) {
-      return;
-    }
-    if (activePage < formTotalPages()) {
-      activePage++;
-      showActivePage();
-    }
-  });
-  $(".form-btn-previous").click(function(e) {
-    if (activePage > 0) {
-      activePage--;
-      showActivePage();
-    }
-  });
-  function formTotalPages () {
-    if (typeof _formTotalPages == "undefined") {
-      return 0;
-    }
-    return _formTotalPages - 1;
+  function formTotalPages($form) {
+    return $form.formState.totalPages - 1;
   }
-  function validateActivePage() {
+  function validateActivePage($form) {
     var pageIsValid = true;
-    $("[name]", $($(".form-page")[activePage])).each(function (index, input) {
-      var isValid = validateField(input);
+    $("[name]", $($(".form-page", $form)[$form.activePage])).each(function (index, input) {
+      var isValid = validateField(input, $form);
       showHideValidationErrorForField(input, isValid);
       if (isValid == false) {
         pageIsValid = false;
@@ -161,27 +181,29 @@
     });
     return pageIsValid;
   }
-  function showActivePage() {
-    $(".form-page").hide();
-    $($(".form-page")[activePage]).show();
-    showActivePagingButtons();
+  function showActivePage($form) {
+    $(".form-page", $form).hide();
+    $($(".form-page", $form)[$form.activePage]).show();
+    showActivePagingButtons($form);
   }
-  function showActivePagingButtons() {
-    if (activePage == 0) {
-      $(".form-btn-previous").hide();
+  function showActivePagingButtons($form) {
+    if ($form.activePage == 0) {
+      $(".form-btn-previous", $form).hide();
     }
     else {
-      $(".form-btn-previous").show();
+      $(".form-btn-previous", $form).show();
     }
-    if (activePage == formTotalPages()) {
-      $(".form-btn-next").hide();
+    if ($form.activePage == formTotalPages($form)) {
+      $(".form-btn-next", $form).hide();
     }
     else {
-      $(".form-btn-next").show();
+      $(".form-btn-next", $form).show();
     }
   }
-  showActivePagingButtons();
+}(jQuery));
 
+$(function () {
+  $("form[data-form-editor]").formEditor();
 });
 
 // global container and functions for handling cross field validation conditions
