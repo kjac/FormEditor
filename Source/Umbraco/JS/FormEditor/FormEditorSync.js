@@ -2,7 +2,6 @@
  $.fn.formEditor = function () {
    this.each(function (idx, el) {
       var $form = $(el);
-      console.log("$form", $form)
       var formId = $form.data("form-editor");
 
       if (typeof formId == "undefined") {
