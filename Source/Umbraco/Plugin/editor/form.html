@@ -105,7 +105,7 @@
   <div id="tabFormEditorValidation" ng-if="model.enableValidation" class="tab-pane">
     <div ng-show="allValueFields().length > 0">
       <p form-editor-localize key="validation.text">
-        Here you can set up validations for the entire form, for example "if field A is empty then field B can't be empty". A validation consists of a set of rules that must be fulfilled, and an error message to display if the rules are not fulfilled.
+        Here you can set up validations that span across the individual form fields - for example "the form is invalid if field A is empty and field B is not empty". A validation consists of a set of rules to test, and an error message to display if all the rules are fulfilled.
       </p>
       <ul class="form-validations">
         <li class="form-validation" ng-repeat="validation in model.value.validations">

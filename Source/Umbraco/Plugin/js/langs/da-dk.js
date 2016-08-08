@@ -54,7 +54,7 @@
   "validation.rules.add": "Tilføj en regel",
   "validation.rules.add.header": "Tilføj en regel",
   "validation.rules.add.text": "En regel består af et felt og en betingelse. Hvis feltets værdi opfylder betingelsen, er reglen opfyldt.",
-  "validation.text": "Her kan du sætte valideringer op  for hele formularen, f.eks. \"hvis felt A er tomt, skal felt B være udfyldt\". En validering består af et sæt regler, der skal opfyldes, samt en fejlbesked der vises, hvis ikke reglerne er opfyldt.",
+  "validation.text": "Her kan du sætte valideringer op, der går på tværs af de enkelte felter i formularen - f.eks. \"formularen er ugyldig hvis felt A er tomt og felt B ikke er tomt\". En validering består af et sæt regler samt den fejlbesked, der skal vises, hvis alle reglerne er opfyldt.",
   "validation.text.noFields": "Du skal tilføje felter til formularen, før du kan sætte validering op.",
 
   "emailConfirmation.header": "E-mailbekræftelse",
