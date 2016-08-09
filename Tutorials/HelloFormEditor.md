@@ -16,8 +16,9 @@ Now go to the Umbraco Settings section and edit the document type *Home*. Add a 
 ![Document type](img/HelloFormEditor/doctype.png)
 
 
-## Step 2: Define the contact form
+## Step 2: Layout the contact form
 In the Umbraco Content section, edit the front page (*Home*) and open the *Contact* tab. The Form Editor property will show the *Form layout* tab by default. You can layout your form any way you like, but here's a suggestion:
+
 1. Add a one column row with a *Heading* and a *Text paragraph* field to create an intro text.
 2. Add a two column row with a *Text box* field for the user's name in the left column and an *Email address* field for the user's email in the right column. Make both fields mandatory and add suitable error messages to them.
 3. Add a one column row with a *Text area* field for the user's message (optionally make it mandatory) and a *Submit button* field so the user can send the message.
@@ -34,9 +35,7 @@ As described in the [documentation for rendering](../Docs/render.md), Form Edito
 The footer is rendered by the master template, so that's where we'll add the contact form rendering as well. Open */Views/Master.cshtml* and follow these steps (see also [the documentation](../Docs/render.md#1-2-3-done)).
 
 ### Render the partial view
-Usually the Form Editor property resides on the currently requested page as any other Umbraco property, and we can just let the partial view render the form. But in this particular case, the Form Editor property is always located on the front page (*Home*) alongside the other site wide properties, and therefore we need to tell the partial view where to look for the Form Editor property. We do that by assigning the front page to ```ViewBag.FormContent``` before rendering the partial view.
-
-In the ```<footer />``` element, specify ```ViewBag.FormContent``` and then render the partial view for asynchronous form postback:
+In the ```<footer />``` element, assign the front page to ```ViewBag.FormContent``` and then render the partial view for asynchronous form postback:
 
 ```html
 <footer class="field dark">
@@ -51,6 +50,11 @@ In the ```<footer />``` element, specify ```ViewBag.FormContent``` and then rend
     <!-- ... -->
 </footer>
 ```
+
+##### Why do we need to set `ViewBag.FormContent`?
+Usually the Form Editor property resides on the currently requested page as any other Umbraco property, and we can just let the partial view render the form without worrying about specifying `ViewBag.FormContent`. 
+
+In this particular case however, the Form Editor property is always located on the front page (*Home*) alongside the other site wide properties - not on the currently requested page (unless we're viewing the front page). So we need to tell the partial view where to find the Form Editor property, and we do that by assigning the front page to `ViewBag.FormContent`.
 
 ### Include AngularJS
 In the bottom of the master template, include AngularJS **after** including jQuery:
