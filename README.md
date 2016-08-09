@@ -28,5 +28,8 @@ Some highlights include:
 * [A note about storage](Docs/storage.md)
 * [Building and contributing](Docs/build.md)
 
+## Tutorials
+* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
+
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
