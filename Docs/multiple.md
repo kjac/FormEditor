@@ -30,7 +30,7 @@ The second step isn't much harder. Declare a new `ng-app` (or add the *formEdito
 </script>
 ```
 
-And lastly, add your `ng-app` to the outer scope:
+And lastly, declare your `ng-app` in the outer scope:
 ```html
 <body ng-app="myApp">
 ```
