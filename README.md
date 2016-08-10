@@ -23,6 +23,7 @@ Some highlights include:
 * [Email templates](Docs/emails.md)
 * [Special form fields](Docs/fields.md)
 * [Reusable forms](Docs/reuse.md)
+* [Multiple forms per page](Docs/multiple.md)
 * [Working with the form submissions](Docs/submissions.md)
 * [Creating custom fields and more](Docs/extend.md)
 * [A note about storage](Docs/storage.md)
