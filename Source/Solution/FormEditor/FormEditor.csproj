@@ -256,6 +256,7 @@
   <ItemGroup>
     <Compile Include="Api\CsvExport.cs" />
     <Compile Include="Api\DownloadController.cs" />
+    <Compile Include="Api\WorkflowSelectorController.cs" />
     <Compile Include="Api\PublicController.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Configuration.cs" />
@@ -345,7 +346,12 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FormEditor.Interfaces\FormEditor.Interfaces.csproj">
+      <Project>{a46396b5-584e-4d38-a00c-03f634f6df89}</Project>
+      <Name>FormEditor.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
