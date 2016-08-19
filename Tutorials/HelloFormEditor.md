@@ -104,7 +104,7 @@ div.show {
   display: block;
 }
 
-/* add some styles for AngularJS */
+@* add some styles for AngularJS *@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
