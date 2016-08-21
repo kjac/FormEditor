@@ -7,6 +7,7 @@ If you haven't already completed the [Hello Form Editor](HelloFormEditor.md) tut
 
 ## Goals
 Before we start, let's figure out what we want to achieve.
+
 1. A poll should be reusable, so it can be added to multiple pages.
 2. A poll should be rendered as part of the grid to blend with the rest of the site content.
 3. A poll may not interfere with other forms on the page - e.g. the footer contact form from the Hello Form Editor tutorial.
@@ -26,6 +27,7 @@ Start by creating a new Form Editor data type and name it *Form Editor - Poll*. 
 
 ### The document types
 We need two document types: One for the polls and one for the folder that should contain the polls in the content tree:
+
 1. Create a *Poll* document type with a single property based on the newly created *Form Editor - Poll* data type. Make sure the property alias is *form*.
 2. Create a *Poll folder* document type. On the permissions tab, enable *Allow at root* and add the *Poll* document type as allowed child type.
 
@@ -35,6 +37,7 @@ This isn't a tutorial on how to use the grid, so we'll go with the easiest way o
 Create a macro template (partial view macro file) called *Poll* and let Umbraco create a macro for it. For the time being, just add some dummy markup to the macro template, e.g. ```<p>This is where the poll will be rendered</p>```.
 
 Now edit the *Poll* macro and make the following changes:
+
 1. Tick *Use in rich text editor and the grid* and *Render in rich text editor and the grid* and hit save.
 2. Add a macro parameter with the alias *pollPicker* of the type *Content Picker*. We'll use this to pick the poll that should be rendered by the macro. 
 
@@ -64,7 +67,7 @@ Once you've selected the poll, the *Poll* macro should render the dummy markup w
 ### Some AngularJS fun
 We're going to use asynchronous form postback ([read more](../Docs/render.md)) for the polls, to avoid a full page reload upon answering a poll. We've already got some of the setup covered for the contact form we created in the Hello Form Editor tutorial. However, now that we start having multiple forms on the same page, we run into an issue because of the way AngularJS works.
 
-AngularJS does not allow multiple `ng-app` directives on the same page, but the Form Editor partial view declares `ng-app` each time it's called by default. To avoid this we need to tell the Form Editor partial view not to declare `ng-app` and then declare it ourselves in an outer scope:
+AngularJS does not allow multiple `ng-app` directives on the same page, but the Form Editor partial view declares `ng-app` each time it's called by default. To avoid this we need to tell the Form Editor partial view not to declare `ng-app` and then declare it ourselves in an outer scope. Here's how you do it:
 
 1. Add `ViewBag.FormAppDeclared = true;` to */Views/Master.cshtml* just before calling the Form Editor partial view that renders the contact form.
 ```cs
@@ -89,9 +92,9 @@ ViewBag.FormAppDeclared = true;
 To render the poll in the grid, replace the dummy markup in your *Poll* macro template with the macro template below. When you read through it, keep the following in mind:
 
 - Rendering the poll form is no different from rendering the contact form. You need to:
-    1. Tell Form Editor to render the selected poll from the *pollPicker* macro parameter.
-    2. Tell Form Editor not to declare `ng-app`.
-    3. Call the partial view for asynchronous form postback.
+    - Tell Form Editor to render the selected poll from the *pollPicker* macro parameter.
+    - Tell Form Editor not to declare `ng-app`.
+    - Call the partial view for asynchronous form postback.
 - We want to show the poll results to the users once they've answered the poll. The [documentation](../Docs/submissions.md) describes how to work with the form submission statistics, and this has been added to the macro template. 
 - The *Poll* macro is configured to be rendered within the backend grid editor. The macro template detects this and renders some useful info for the editors in the backend.
 
@@ -220,6 +223,10 @@ ul.formStatistics li div.formStatisticsItem {
 }
 ```
 
-If everything went well, the *Poll* macro should now render the name of the selected poll in the grid editor, and the frontend poll rendering should look something like the image at the top of this tutorial.
+If everything went well, the *Poll* macro should now render the name of the selected poll in the grid editor:
 
 ![Poll within the grid editor](img/Poll/grid editor with poll.png)
+
+...and the frontend poll rendering should look something like this:
+
+![Poll score](img/Poll/poll score.png)
