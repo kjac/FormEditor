@@ -31,6 +31,7 @@ Some highlights include:
 
 ## Tutorials
 * [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
+* [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
