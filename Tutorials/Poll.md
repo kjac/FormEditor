@@ -1,5 +1,5 @@
 # Creating a poll with Form Editor
-In this tutorial you'll use Form Editor to add polls to the Fanoe starter kit.
+In this tutorial you'll use Form Editor to add polls to the Fanoe starter kit. You'll also learn how to handle multiple forms on the same page.
 
 ![Poll](img/Poll/poll.png)
 
