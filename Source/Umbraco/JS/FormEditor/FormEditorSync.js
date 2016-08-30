@@ -1,16 +1,5 @@
 (function ($) {
     $.fn.formEditor = function () {
-        // show/hide the validation error for a single input field
-        $.fn.formEditor.showHideValidationErrorForField = function (input, isValid) {
-            var validationError = $(".validation-error", $(input).closest(".form-group"));
-            if (isValid) {
-                validationError.addClass("hide");
-            }
-            else {
-                validationError.removeClass("hide");
-            }
-        }
-
         this.each(function (idx, el) {
             var $form = $(el);
             var formId = $form.data("form-editor");
@@ -89,6 +78,17 @@
 
         return this;
     };
+    
+    // show/hide the validation error for a single input field
+    $.fn.formEditor.showHideValidationErrorForField = function (input, isValid) {
+        var validationError = $(".validation-error", $(input).closest(".form-group"));
+        if (isValid) {
+            validationError.addClass("hide");
+        }
+        else {
+            validationError.removeClass("hide");
+        }
+    }
 
     // validate a single input field
     function validateField(input, $form) {
