@@ -1,6 +1,6 @@
 # Form Editor for Umbraco
 
-Form Editor is a package for [Umbraco](http://umbraco.com/) 7.3+ that lets the editors create forms and manage form submissions as just another part of the Umbraco content.
+Form Editor is a free and open source package for [Umbraco](http://umbraco.com/) 7.3+ that lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
 
 ![Form Editor UI](Docs/img/form layout.png)
 
