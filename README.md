@@ -30,7 +30,7 @@ Some highlights include:
 * [Building and contributing](Docs/build.md)
 
 ## Tutorials
-* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
+* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
 * [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
 
 ## Credits
