@@ -18,20 +18,20 @@ Some highlights include:
 * Fully localizable.
 
 ## Table of contents
-* [Installing and setting up Form Editor](Docs/install.md)
-* [Rendering the form](Docs/render.md)
-* [Email templates](Docs/emails.md)
-* [Special form fields](Docs/fields.md)
-* [Reusable forms](Docs/reuse.md)
-* [Multiple forms per page](Docs/multiple.md)
-* [Working with the form submissions](Docs/submissions.md)
-* [Creating custom fields and more](Docs/extend.md)
-* [A note about storage](Docs/storage.md)
-* [Building and contributing](Docs/build.md)
+* [Installing and setting up Form Editor](FormEditor/blob/master/Docs/install.md)
+* [Rendering the form](FormEditor/blob/master/Docs/render.md)
+* [Email templates](FormEditor/blob/master/Docs/emails.md)
+* [Special form fields](FormEditor/blob/master/Docs/fields.md)
+* [Reusable forms](FormEditor/blob/master/Docs/reuse.md)
+* [Multiple forms per page](FormEditor/blob/master/Docs/multiple.md)
+* [Working with the form submissions](FormEditor/blob/master/Docs/submissions.md)
+* [Creating custom fields and more](FormEditor/blob/master/Docs/extend.md)
+* [A note about storage](FormEditor/blob/master/Docs/storage.md)
+* [Building and contributing](FormEditor/blob/master/Docs/build.md)
 
 ## Tutorials
-* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
-* [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
+* [Hello Form Editor](FormEditor/blob/master/Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
+* [Creating a poll with Form Editor](FormEditor/blob/master/Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
