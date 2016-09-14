@@ -1,6 +1,6 @@
 ﻿(function ($) {
- $.fn.formEditor = function () {
-   this.each(function (idx, el) {
+  $.fn.formEditor = function () {
+    this.each(function (idx, el) {
       var $form = $(el);
       var formId = $form.data("form-editor");
 
@@ -24,7 +24,7 @@
         // validate all named fields
         $("[name]", $form).each(function (index, input) {
           var isValid = validateField(input, $form);
-          showHideValidationErrorForField(input, isValid);
+          $.fn.formEditor.showHideValidationErrorForField(input, isValid);
           if (isValid == false) {
             hasError = true;
           }
@@ -53,7 +53,7 @@
       $("[name]", $form).change(function (event) {
         var input = event.target;
         var isValid = validateField(input, $form);
-        showHideValidationErrorForField(input, isValid);
+        $.fn.formEditor.showHideValidationErrorForField(input, isValid);
       });
 
       // form paging
@@ -79,6 +79,16 @@
     return this;
   };
 
+  // show/hide the validation error for a single input field
+  $.fn.formEditor.showHideValidationErrorForField = function (input, isValid) {
+    var validationError = $(".validation-error", $(input).closest(".form-group"));
+    if (isValid) {
+      validationError.addClass("hide");
+    }
+    else {
+      validationError.removeClass("hide");
+    }
+  }
 
   // validate a single input field
   function validateField(input, $form) {
@@ -96,17 +106,6 @@
     });
 
     return isValid;
-  }
-
-  // show/hide the validation error for a single input field
-  function showHideValidationErrorForField(input, isValid) {
-    var validationError = $(".validation-error", $(input).closest(".form-group"));
-    if (isValid) {
-      validationError.addClass("hide");
-    }
-    else {
-      validationError.removeClass("hide");
-    }
   }
 
   // validate a validation (usually cross field validation)
@@ -174,7 +173,7 @@
     var pageIsValid = true;
     $("[name]", $($(".form-page", $form)[$form.activePage])).each(function (index, input) {
       var isValid = validateField(input, $form);
-      showHideValidationErrorForField(input, isValid);
+      $.fn.formEditor.showHideValidationErrorForField(input, isValid);
       if (isValid == false) {
         pageIsValid = false;
       }
