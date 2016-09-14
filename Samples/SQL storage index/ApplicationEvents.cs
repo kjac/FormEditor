@@ -15,7 +15,9 @@ namespace FormEditor.SqlIndex
 			if (db.TableExist("FormEditorEntries") == false)
 			{
 				db.CreateTable<Entry>(false);
-			}
+                //Hack to get SQL server to use NVARCHAR(MAX) datatype
+                dbContext.Database.Execute("ALTER TABLE FormEditorEntries ALTER COLUMN FieldValues NVARCHAR(MAX)");
+            }
 			if (db.TableExist("FormEditorFiles") == false)
 			{
 				db.CreateTable<File>(false);
