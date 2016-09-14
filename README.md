@@ -1,6 +1,6 @@
 # Form Editor for Umbraco
 
-Form Editor is a package for [Umbraco](http://umbraco.com/) 7.3+ that lets the editors create forms and manage form submissions as just another part of the Umbraco content.
+Form Editor is a free and open source package for [Umbraco](http://umbraco.com/) 7.3+ that lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
 
 ![Form Editor UI](Docs/img/form layout.png)
 
@@ -30,7 +30,7 @@ Some highlights include:
 * [Building and contributing](Docs/build.md)
 
 ## Tutorials
-* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in 15 minutes.
+* [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
 * [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
 
 ## Credits
