@@ -17,10 +17,17 @@ namespace FormEditor
 
 		public static FormModel DeserializeFormModel(string json)
 		{
-			// see PropertyEditorController for an explanation :)
+			// see below for an explanation :)
 			json = json.Replace(@"""runtimeType""", @"""$type""");
 
 			return JsonConvert.DeserializeObject<FormModel>(json, SerializerSettings);
+		}
+
+		public static string SerializeFormModel(FormModel formModel)
+		{
+			return formModel == null 
+				? null 
+				: FormatJson(JsonConvert.SerializeObject(formModel, SerializerSettings));
 		}
 
 		public static JsonSerializerSettings SerializerSettings
@@ -33,6 +40,13 @@ namespace FormEditor
 					ContractResolver = ContractResolver
 				};
 			}
+		}
+
+		internal static string FormatJson(string json)
+		{
+			// AngularJS messes with properties that start with $, so we need to swap $type with something else
+			json = json.Replace(@"""$type""", @"""runtimeType""");
+			return json;
 		}
 	}
 }

@@ -25,7 +25,8 @@ Some highlights include:
 * [Reusable forms](Docs/reuse.md)
 * [Multiple forms per page](Docs/multiple.md)
 * [Working with the form submissions](Docs/submissions.md)
-* [Creating custom fields and more](Docs/extend.md)
+* [Extending Form Editor (custom fields, workflows and more)](Docs/extend.md)
+* [Create a default form](Docs/initialize.md)
 * [A note about storage](Docs/storage.md)
 * [Building and contributing](Docs/build.md)
 
