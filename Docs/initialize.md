@@ -1,5 +1,5 @@
 # Creating a default form
-If you'd like to have a default form added whenever your editors create content, you can create the form programmatically by hooking into Umbracos `ContentService.Created` event. 
+If you'd like to have a default form added whenever your editors create content, you can create the form programmatically by hooking into the Umbraco `ContentService.Created` event. 
 
 The following sample creates a default contact form for all newly created "myFormContentType" content.
 
