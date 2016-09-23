@@ -28,7 +28,8 @@ public class UmbracoEventsHandler : ApplicationEventHandler
           {
             Rows = new List<Row>
             {
-              // the row and cell aliases used below are the default aliases from the Form Editor data type - replace them with your own
+              // the row and cell aliases used below are the default aliases from the 
+              // Form Editor data type - replace them with your own
               new Row
               {
                 Alias = "two-column",
@@ -99,7 +100,8 @@ public class UmbracoEventsHandler : ApplicationEventHandler
         }
       };
 
-      // use the Form Editor serialization helper to serialize the form to JSON
+      // serialize the form to JSON using the Form Editor serialization helper
+      // and store the JSON in the "form" property
       newEventArgs.Entity.SetValue("form", SerializationHelper.SerializeFormModel(form));
     }
   }
