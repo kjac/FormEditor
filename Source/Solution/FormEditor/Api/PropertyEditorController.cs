@@ -42,7 +42,9 @@ namespace FormEditor.Api
 					{
 						_fieldTypes.AddRange(
 							FormEditor.Configuration.Instance.CustomFields.Select(c =>
-								new CustomField(c.Type, c.Name)
+								c.FixedOptions 
+									? (Field) new CustomFieldFixedOptions(c.Type, c.Name) 
+									: new CustomField(c.Type, c.Name)
 								)
 							);
 					}
