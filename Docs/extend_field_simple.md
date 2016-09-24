@@ -32,14 +32,15 @@ The last step is to create the partial view that will render your slider field f
 Create the partial view in the folder where your form template looks for field partials. See the [rendering section](render.md) for details.
 
 The following example illustrates of how the partial view could be implemented (of course the actual implementation is entirely up to you):
+
 ```xml
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CustomField>
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   <label for="@Model.FormSafeName">@Model.Label</label>
   <input type="range" id="@Model.FormSafeName" name="@Model.FormSafeName" value="@Model.SubmittedValue" min="0" max="100" step="10" @(Model.Mandatory ? "required" : null) />
 
-  @Html.Partial("FormEditor/Postback/core.utils.helptext")
-  @Html.Partial("FormEditor/Postback/core.utils.validationerror")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
 </div>
 ```
 
