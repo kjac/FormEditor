@@ -66,6 +66,8 @@ If you want the editors to be able to enter a range of fixed values when configu
 </FormEditor>
 ```
 
+Form Editor will then add the fixed field values configuration to the field configuration window in Umbraco. 
+
 When you render your field, you need to use `FormEditor.Fields.CustomFieldFixedValues` instead of `FormEditor.Fields.CustomField`. The fixed field values will be available in `Model.FieldValues`:
 
 ```xml
@@ -83,3 +85,5 @@ When you render your field, you need to use `FormEditor.Fields.CustomFieldFixedV
   @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
 </div>
 ```
+
+Any values submitted by the end users to this field will be validated server side against the configured range of values. And as an added bonus, the field will automatically support field value statistics.
