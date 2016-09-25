@@ -54,6 +54,7 @@ namespace FormEditor
 		}
 
 		public IEnumerable<Validation.Validation> Validations { get; set; }
+		public Guid RowId { get; set; } = Guid.Empty;
 		public string EmailNotificationRecipients { get; set; }
 		public string EmailNotificationSubject { get; set; }
 		public string EmailNotificationFromAddress { get; set; }
@@ -104,7 +105,10 @@ namespace FormEditor
 			{
 				return false;
 			}
-
+			//get fields from Database if they exist
+			var fields = CollectSubmittedValuesFromDatabase(content);
+			//Use ValidateSubmittedValues to load up select boxes
+			ValidateSubmittedValues(content, fields);
 			// currently not supporting GET forms ... will require some limitation on fields and stuff
 			if(Request.HttpMethod != "POST")
 			{
@@ -131,7 +135,7 @@ namespace FormEditor
 			}
 
 			// first collect the submitted values
-			var fields = CollectSubmittedValuesFromRequest(content);
+			fields = CollectSubmittedValuesFromRequest(content);
 
 			// next validate the submitted values
 			if(ValidateSubmittedValues(content, fields) == false)
@@ -167,9 +171,16 @@ namespace FormEditor
 				};
 				return false;
 			}
-
 			// before add to index event handling did not cancel - add to index
-			var rowId = AddSubmittedValuesToIndex(content, valueFields);
+			var rowId = Guid.Empty;
+			if (RowId==Guid.Empty)
+			{
+				rowId = AddSubmittedValuesToIndex(content, valueFields);
+			}
+			else
+			{
+				rowId = UpdateSubmittedValuesToIndex(content, valueFields, RowId);
+			}
 			if(rowId == Guid.Empty)
 			{
 				return false;
@@ -365,6 +376,35 @@ namespace FormEditor
 
 		#region Collect submitted values
 
+		private List<Field> CollectSubmittedValuesFromDatabase(IPublishedContent content)
+		{
+			var fields = AllFields().ToList();
+
+			Guid rowId;
+			if (Guid.TryParse(Request.QueryString["RowId"], out rowId))
+			{
+				RowId = rowId;
+				var index = IndexHelper.GetIndex(content.Id);
+				var row2 = index.Get(RowId);
+				var result = new Result(1, Enumerable.Repeat(row2, 1), "", true);
+				var fieldsWithValues = AllValueFields();
+				var rows = ExtractSubmittedValues(result, fieldsWithValues, (field, value, myRow) => value == null ? null : value);// field.FormatValueForFrontend(value, content, myRow.Id));
+				var row = rows.FirstOrDefault();
+				if (row != null)
+				{
+					var allSubmittedValues = row.Fields.ToDictionary(f => f.FormSafeName, f => f.Value);
+					foreach (var field in fields)
+					{
+						field.CollectSubmittedValue(allSubmittedValues, content);
+						//field.
+					}
+				}
+
+			}
+			return fields;
+
+		}
+
 		private List<Field> CollectSubmittedValuesFromRequest(IPublishedContent content)
 		{
 			var valueCollection = Request.Form;
@@ -378,6 +418,7 @@ namespace FormEditor
 				field.CollectSubmittedValue(allSubmittedValues, content);
 			}
 			return fields;
+
 		}
 
 		private static string TryGetSubmittedValue(string k, NameValueCollection valueCollection)
@@ -442,6 +483,36 @@ namespace FormEditor
 			{
 				index.Add(indexFields, rowId);				
 			}
+
+			return rowId;
+		}
+		private Guid UpdateSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields,Guid rowId)
+		{
+			//var rowId = Guid.NewGuid();
+
+			// extract all index values
+			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content, rowId));
+
+			// add the IP of the user if enabled on the data type
+			if (LogIp)
+			{
+				indexFields.Add("_ip", Request.UserHostAddress);
+			}
+
+			// store fields in index
+			var index = UpdateIndexHelper.GetIndex(content.Id);
+			//TODO: support for
+			//var statisticsIndex = index as IStatisticsIndex;
+
+			//if (UseStatistics && statisticsIndex != null)
+			//{
+			//	var indexFieldsForStatistics = valueFields.StatisticsFields().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] { });
+			//	statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
+			//}
+			//else
+			//{
+			index.Update(indexFields, rowId);
+			//}
 
 			return rowId;
 		}
