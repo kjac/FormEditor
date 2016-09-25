@@ -60,7 +60,7 @@ namespace FormEditor.Api
 				}
 
 				var json = jsonFields.ToString();
-				json = FormatJson(json);
+				json = SerializationHelper.FormatJson(json);
 
 				var resp = new HttpResponseMessage
 				{
@@ -85,7 +85,7 @@ namespace FormEditor.Api
 				}
 
 				var json = JsonConvert.SerializeObject(_conditionTypes, SerializationHelper.SerializerSettings);
-				json = FormatJson(json);
+				json = SerializationHelper.FormatJson(json);
 
 				var resp = new HttpResponseMessage
 				{
@@ -98,13 +98,6 @@ namespace FormEditor.Api
 			{
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
 			}
-		}
-
-		private static string FormatJson(string json)
-		{
-			// AngularJS messes with properties that start with $, so we need to swap $type with something else
-			json = json.Replace(@"""$type""", @"""runtimeType""");
-			return json;
 		}
 
 		private static List<T> GetInstancesOf<T>(params Type[] ignoredTypes) where T : class
