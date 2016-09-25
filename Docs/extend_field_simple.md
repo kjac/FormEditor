@@ -53,3 +53,33 @@ A few things are worth pointing out in the field partial above:
     1. The form was submitted, but was found to be invalid by the server side validation, and thus the form was re-rendered.
     2. The form was submitted, but no success page was configured for redirection upon successful form submission, and thus the form was re-rendered.
 * The two partial views `core.utils.helptext` and `core.utils.validationerror` are generic helpers for rendering the field help text and validation error (if the field value is invalid). Use them or don't, that's entirely up to you.
+
+## Fields with fixed values
+If you want the editors to be able to enter a range of fixed values when configuring the your custom field (like a select box), set `fixedOptions` to `true` in */Config/FormEditor.config*:
+
+```xml
+<FormEditor>
+  <CustomFields>
+    <Field type="my.options" name="Options" fixedOptions="true" />
+  </CustomFields>
+  <!-- ... -->
+</FormEditor>
+```
+
+When you render your field, you need to use `FormEditor.Fields.CustomFieldFixedOptions` instead of `FormEditor.Fields.CustomField`. The fixed field values will be available in `Model.FieldValues`:
+
+```xml
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CustomFieldFixedOptions>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required" : null)>
+    @foreach (var fieldValue in Model.FieldValues)
+    {
+      <option value="@fieldValue.Value" @(fieldValue.Selected ? "selected" : "")>@fieldValue.Value</option>
+    }
+  </select>
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsSync/core.utils.validationerror")
+</div>
+```
