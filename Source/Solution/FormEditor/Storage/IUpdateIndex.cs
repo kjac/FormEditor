@@ -6,7 +6,7 @@ namespace FormEditor.Storage
 	/// <summary>
 	/// This interface describes a Form Editor storage index that supports updating entries
 	/// </summary>
-	public interface IUpdateIndex
+	public interface IUpdateIndex : IIndex
 	{
 		/// <summary>
 		/// Updates an entry in the index
