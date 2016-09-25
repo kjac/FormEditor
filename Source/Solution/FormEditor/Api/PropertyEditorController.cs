@@ -35,14 +35,16 @@ namespace FormEditor.Api
 			{
 				if (_fieldTypes == null)
 				{
-					_fieldTypes = GetInstancesOf<Field>(typeof(CustomField));
+					_fieldTypes = GetInstancesOf<Field>(typeof(CustomField), typeof(CustomFieldFixedValues));
 
 					// add any defined custom fields
 					if (FormEditor.Configuration.Instance.CustomFields.Any())
 					{
 						_fieldTypes.AddRange(
 							FormEditor.Configuration.Instance.CustomFields.Select(c =>
-								new CustomField(c.Type, c.Name)
+								c.FixedValues 
+									? (Field) new CustomFieldFixedValues(c.Type, c.Name) 
+									: new CustomField(c.Type, c.Name)
 								)
 							);
 					}
@@ -110,13 +112,13 @@ namespace FormEditor.Api
 						return a.GetTypes().Where(t =>
 							// no abstract types
 							t.IsAbstract == false
-								// must be type of T
+							// must be type of T
 							&& typeof(T).IsAssignableFrom(t)
-								// must have a parameterless constructor
+							// must have a parameterless constructor
 							&& t.GetConstructor(Type.EmptyTypes) != null
-								// not in the ignored list of types
+							// not in the ignored list of types
 							&& ignoredTypes.Contains(t) == false
-							);
+						);
 					}
 					catch
 					{

@@ -55,7 +55,8 @@ namespace FormEditor
 						new CustomField
 						{
 							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
-							Type = e.Attribute("type").Value
+							Type = e.Attribute("type").Value,
+							FixedValues = e.Attribute("fixedValues") != null && e.Attribute("fixedValues").Value == "true"
 						}
 					)
 				);
@@ -126,6 +127,7 @@ namespace FormEditor
 		{
 			public string Type { get; set; }
 			public string Name { get; set; }
+			public bool FixedValues { get; set; }
 		}
 	}
 }
