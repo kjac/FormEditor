@@ -56,7 +56,7 @@ namespace FormEditor
 						{
 							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
 							Type = e.Attribute("type").Value,
-							FixedOptions = e.Attribute("fixedOptions") != null && e.Attribute("fixedOptions").Value == "true"
+							FixedValues = e.Attribute("fixedValues") != null && e.Attribute("fixedValues").Value == "true"
 						}
 					)
 				);
@@ -127,7 +127,7 @@ namespace FormEditor
 		{
 			public string Type { get; set; }
 			public string Name { get; set; }
-			public bool FixedOptions { get; set; }
+			public bool FixedValues { get; set; }
 		}
 	}
 }

@@ -35,15 +35,15 @@ namespace FormEditor.Api
 			{
 				if (_fieldTypes == null)
 				{
-					_fieldTypes = GetInstancesOf<Field>(typeof(CustomField), typeof(CustomFieldFixedOptions));
+					_fieldTypes = GetInstancesOf<Field>(typeof(CustomField), typeof(CustomFieldFixedValues));
 
 					// add any defined custom fields
 					if (FormEditor.Configuration.Instance.CustomFields.Any())
 					{
 						_fieldTypes.AddRange(
 							FormEditor.Configuration.Instance.CustomFields.Select(c =>
-								c.FixedOptions 
-									? (Field) new CustomFieldFixedOptions(c.Type, c.Name) 
+								c.FixedValues 
+									? (Field) new CustomFieldFixedValues(c.Type, c.Name) 
 									: new CustomField(c.Type, c.Name)
 								)
 							);

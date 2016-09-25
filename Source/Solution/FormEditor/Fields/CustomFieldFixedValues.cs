@@ -1,11 +1,11 @@
 ﻿namespace FormEditor.Fields
 {
-	public class CustomFieldFixedOptions : FieldWithFieldValues
+	public class CustomFieldFixedValues : FieldWithFieldValues
 	{
 		private readonly string _type;
 		private readonly string _prettyName;
 
-		public CustomFieldFixedOptions(string type, string prettyName)
+		public CustomFieldFixedValues(string type, string prettyName)
 		{
 			_type = type;
 			_prettyName = prettyName;
