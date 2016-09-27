@@ -105,10 +105,7 @@ namespace FormEditor
 			{
 				return false;
 			}
-			//get fields from Database if they exist
-			var fields = CollectSubmittedValuesFromDatabase(content);
-			//Use ValidateSubmittedValues to load up select boxes
-			ValidateSubmittedValues(content, fields);
+			
 			// currently not supporting GET forms ... will require some limitation on fields and stuff
 			if(Request.HttpMethod != "POST")
 			{
@@ -135,7 +132,7 @@ namespace FormEditor
 			}
 
 			// first collect the submitted values
-			fields = CollectSubmittedValuesFromRequest(content);
+			var fields = CollectSubmittedValuesFromRequest(content);
 
 			// next validate the submitted values
 			if(ValidateSubmittedValues(content, fields) == false)
@@ -226,6 +223,26 @@ namespace FormEditor
 				Rows = rows,
 				Fields = fields.Select(f => ToDataField(null, f, null))
 			};
+		}
+
+		public void LoadValues(Guid rowId)
+		{
+			if (RequestedContent == null)
+			{
+				return;
+			}
+			LoadValues(RequestedContent, rowId);
+		}
+
+		public void LoadValues(IPublishedContent content, Guid rowId)
+		{
+			//get fields from Database if they exist
+			var fields = CollectSubmittedValuesFromDatabase(content,rowId);
+			//Using ValidateSubmittedValue to load up select boxes
+			foreach (var field in fields)
+			{
+				field.ValidateSubmittedValue(fields, content);
+			}
 		}
 
 		public IEnumerable<Field> AllFields()
@@ -376,12 +393,11 @@ namespace FormEditor
 
 		#region Collect submitted values
 
-		private List<Field> CollectSubmittedValuesFromDatabase(IPublishedContent content)
+		private List<Field> CollectSubmittedValuesFromDatabase(IPublishedContent content,Guid rowId)
 		{
 			var fields = AllFields().ToList();
 
-			Guid rowId;
-			if (Guid.TryParse(Request.QueryString["RowId"], out rowId))
+			if (rowId != Guid.Empty)
 			{
 				RowId = rowId;
 				var index = IndexHelper.GetIndex(content.Id);
@@ -501,7 +517,7 @@ namespace FormEditor
 
 			// store fields in index
 			var index = UpdateIndexHelper.GetIndex(content.Id);
-			//TODO: support for
+			//TODO: Support for Statistics
 			//var statisticsIndex = index as IStatisticsIndex;
 
 			//if (UseStatistics && statisticsIndex != null)

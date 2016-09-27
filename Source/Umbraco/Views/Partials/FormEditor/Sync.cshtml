@@ -8,9 +8,15 @@
   // get the name of the form model property on the content type (defaults to "form")
   var formPropertyName = ViewBag.FormName as string ?? "form";
 
+  var rowId = Guid.Empty; //something from the querystring?
+  Guid.TryParse(Request.QueryString["RowId"], out rowId);
+  
   // get the form model
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
 
+  // first seed the form model with the existing values and the corresponding row ID
+  form.LoadValues(rowId);
+  
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
   var formWasSubmitted = form.CollectSubmittedValues(formContent);
