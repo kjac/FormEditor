@@ -40,10 +40,17 @@ namespace FormEditor.Storage
 
 		public Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
+			var created = DateTime.Now;
+			return Add(fields, fieldsValuesForStatistics, rowId, created, created);
+		}
+
+		private Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId, DateTime created, DateTime updated)
+		{
 			var doc = new Document();
 
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(CreatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
 			{
@@ -83,54 +90,24 @@ namespace FormEditor.Storage
 
 		public Guid Update(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
-			var reader = GetIndexReader();
-			var searcher = GetIndexSearcher(reader);
+			/*
+			 This implementation isn't performing too well - needs a small rewrite so we limit the number of index readers, searchers and writers we open and close
+			 */
 
-			var hits = searcher.Search(new TermQuery(new Term(IdField, rowId.ToString())), 1);
-			if (hits.ScoreDocs.Length == 0)
+			var row = Get(rowId);
+			if (row == null)
 			{
-				//If does not exist add new record (throw error, add or return empty guid?)
+				// the row does not exist, add a new one
 				return Add(fields, fieldsValuesForStatistics, rowId);
 			}
-			var doc = searcher.Doc(hits.ScoreDocs.First().doc);
-			doc.RemoveFields(UpdatedField);
-			doc.Add(new LuceneField(UpdatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
-			foreach (var field in fields)
-			{
-				// make sure we don't add null values
-				var fieldValue = field.Value ?? string.Empty;
-				//Only updating the fields that we know about, alternatively we could clear all fields and re-add
-				doc.RemoveFields(field.Key);
-				doc.Add(new LuceneField(field.Key, fieldValue, LuceneField.Store.YES, LuceneField.Index.ANALYZED));
+			var created = row.CreatedDate;
 
-				// lo-fi sorting - just use the first 10 chars of a value for sorting
-				var sortValue = fieldValue.Length > 10 ? fieldValue.Substring(0, 10) : fieldValue;
-				doc.RemoveFields(FieldNameForSorting(field.Key));
-				doc.Add(new LuceneField(FieldNameForSorting(field.Key), sortValue.ToLowerInvariant(), LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
-			}
+			Remove(new[] {rowId});
 
-			if (fieldsValuesForStatistics != null)
-			{
-				foreach (var field in fieldsValuesForStatistics)
-				{
-					foreach (var value in field.Value)
-					{
-						doc.RemoveFields(FieldNameForStatistics(field.Key));
-						doc.Add(new LuceneField(FieldNameForStatistics(field.Key), value, LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
-					}
-				}
-			}
-
-			var writer = GetIndexWriter();
-			//Do Update, this actually does a remove followed by an add.
-			writer.UpdateDocument(new Term(IdField, rowId.ToString()), doc);
-			// optimize index for each 10 submits
-			writer.Optimize(10);
-			writer.Close();
-
-			return rowId;
+			return Add(fields, fieldsValuesForStatistics, rowId, created, DateTime.Now);
 		}
+
 		public void Remove(IEnumerable<Guid> rowIds)
 		{
 			var writer = GetIndexWriter();

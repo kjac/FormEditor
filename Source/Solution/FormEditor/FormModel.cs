@@ -168,16 +168,9 @@ namespace FormEditor
 				};
 				return false;
 			}
+
 			// before add to index event handling did not cancel - add to index
-			var rowId = Guid.Empty;
-			if (RowId==Guid.Empty)
-			{
-				rowId = AddSubmittedValuesToIndex(content, valueFields);
-			}
-			else
-			{
-				rowId = UpdateSubmittedValuesToIndex(content, valueFields, RowId);
-			}
+			var rowId = AddSubmittedValuesToIndex(content, valueFields);
 			if(rowId == Guid.Empty)
 			{
 				return false;
@@ -464,10 +457,30 @@ namespace FormEditor
 
 		private Guid AddSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields)
 		{
-			var rowId = Guid.NewGuid();
+			// we're performing an update if RowId as a value
+			var isUpdate = RowId != Guid.Empty;
+			// generate a new row ID for the index only if we're not performing an update, otherwise reuse RowId
+			var indexRowId = isUpdate ? RowId : Guid.NewGuid();
+
+			// get the storage index
+			var index = IndexHelper.GetIndex(content.Id);
+			// - attempt to cast to IStatisticsIndex if statistics are enabled
+			var statisticsIndex = UseStatistics ? index as IStatisticsIndex : null;
+			// - attempt to cast to IUpdateIndex if we're performing an update 
+			//   (this will change in an upcoming release when IUpdateIndex is merged into IIndex)
+			var updateIndex = isUpdate ? index as IUpdateIndex : null;
+
+			if (isUpdate)
+			{
+				// can we perform the update? only IStatisticsIndex and IUpdateIndex support updates
+				if (statisticsIndex == null && updateIndex == null)
+				{
+					return Guid.Empty;
+				}
+			}
 
 			// extract all index values
-			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content, rowId));
+			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content, indexRowId));
 
 			// add the IP of the user if enabled on the data type
 			if(LogIp)
@@ -475,53 +488,21 @@ namespace FormEditor
 				indexFields.Add("_ip", Request.UserHostAddress);
 			}
 
-			// store fields in index
-			var index = IndexHelper.GetIndex(content.Id);
-			var statisticsIndex = index as IStatisticsIndex;
-
-			if (UseStatistics && statisticsIndex != null)
+			if (statisticsIndex != null)
 			{
 				var indexFieldsForStatistics = valueFields.StatisticsFields().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] {});
-				statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
+				return isUpdate
+					? statisticsIndex.Update(indexFields, indexFieldsForStatistics, indexRowId)
+					: statisticsIndex.Add(indexFields, indexFieldsForStatistics, indexRowId);
 			}
-			else
+			if (updateIndex != null)
 			{
-				index.Add(indexFields, rowId);				
+				return updateIndex.Update(indexFields, indexRowId);
 			}
 
-			return rowId;
+			return index.Add(indexFields, indexRowId);			
 		}
-		private Guid UpdateSubmittedValuesToIndex(IPublishedContent content, IEnumerable<FieldWithValue> valueFields,Guid rowId)
-		{
-			//var rowId = Guid.NewGuid();
-
-			// extract all index values
-			var indexFields = valueFields.ToDictionary(f => f.FormSafeName, f => FormatForIndexAndSanitize(f, content, rowId));
-
-			// add the IP of the user if enabled on the data type
-			if (LogIp)
-			{
-				indexFields.Add("_ip", Request.UserHostAddress);
-			}
-
-			// store fields in index
-			var index = UpdateIndexHelper.GetIndex(content.Id);
-			//TODO: Support for Statistics
-			//var statisticsIndex = index as IStatisticsIndex;
-
-			//if (UseStatistics && statisticsIndex != null)
-			//{
-			//	var indexFieldsForStatistics = valueFields.StatisticsFields().ToDictionary(f => f.FormSafeName, f => f.SubmittedValues ?? new string[] { });
-			//	statisticsIndex.Add(indexFields, indexFieldsForStatistics, rowId);
-			//}
-			//else
-			//{
-			index.Update(indexFields, rowId);
-			//}
-
-			return rowId;
-		}
-
+		
 		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content, Guid rowId)
 		{
 			var value = field.FormatSubmittedValueForIndex(content, rowId);
