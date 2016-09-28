@@ -54,7 +54,7 @@ namespace FormEditor
 		}
 
 		public IEnumerable<Validation.Validation> Validations { get; set; }
-		public Guid RowId { get; set; } = Guid.Empty;
+		public Guid RowId { get; set; }
 		public string EmailNotificationRecipients { get; set; }
 		public string EmailNotificationSubject { get; set; }
 		public string EmailNotificationFromAddress { get; set; }
@@ -236,11 +236,28 @@ namespace FormEditor
 
 		public void LoadValues(IPublishedContent content, Guid rowId)
 		{
-			//get fields from Database if they exist
-			var fields = CollectSubmittedValuesFromDatabase(content,rowId);
-			//Using ValidateSubmittedValue to load up select boxes
+			if (rowId == Guid.Empty)
+			{
+				return;
+			}
+			var index = IndexHelper.GetIndex(content.Id);
+			var formData = index.Get(rowId);
+
+			if (formData == null)
+			{
+				return;
+			}
+
+			RowId = rowId;
+
+			var fields = AllFields().ToArray();
 			foreach (var field in fields)
 			{
+				field.CollectSubmittedValue(formData.Fields, content);
+			}
+			foreach (var field in fields)
+			{
+				// using ValidateSubmittedValue to load up select boxes
 				field.ValidateSubmittedValue(fields, content);
 			}
 		}
@@ -392,34 +409,6 @@ namespace FormEditor
 		#endregion
 
 		#region Collect submitted values
-
-		private List<Field> CollectSubmittedValuesFromDatabase(IPublishedContent content,Guid rowId)
-		{
-			var fields = AllFields().ToList();
-
-			if (rowId != Guid.Empty)
-			{
-				RowId = rowId;
-				var index = IndexHelper.GetIndex(content.Id);
-				var row2 = index.Get(RowId);
-				var result = new Result(1, Enumerable.Repeat(row2, 1), "", true);
-				var fieldsWithValues = AllValueFields();
-				var rows = ExtractSubmittedValues(result, fieldsWithValues, (field, value, myRow) => value == null ? null : value);// field.FormatValueForFrontend(value, content, myRow.Id));
-				var row = rows.FirstOrDefault();
-				if (row != null)
-				{
-					var allSubmittedValues = row.Fields.ToDictionary(f => f.FormSafeName, f => f.Value);
-					foreach (var field in fields)
-					{
-						field.CollectSubmittedValue(allSubmittedValues, content);
-						//field.
-					}
-				}
-
-			}
-			return fields;
-
-		}
 
 		private List<Field> CollectSubmittedValuesFromRequest(IPublishedContent content)
 		{
