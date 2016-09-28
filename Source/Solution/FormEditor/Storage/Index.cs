@@ -19,12 +19,13 @@ using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex, IStatisticsIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
 		private const string IdField = "_id";
 		private const string CreatedField = "_created";
+		private const string UpdatedField = "_updated";
 		private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 		public Index(int contentId)
@@ -75,6 +76,61 @@ namespace FormEditor.Storage
 			return rowId;
 		}
 
+		public Guid Update(Dictionary<string, string> fields, Guid rowId)
+		{
+			return Update(fields, null, rowId);
+		}
+
+		public Guid Update(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
+		{
+			var reader = GetIndexReader();
+			var searcher = GetIndexSearcher(reader);
+
+			var hits = searcher.Search(new TermQuery(new Term(IdField, rowId.ToString())), 1);
+			if (hits.ScoreDocs.Length == 0)
+			{
+				//If does not exist add new record (throw error, add or return empty guid?)
+				return Add(fields, fieldsValuesForStatistics, rowId);
+			}
+			var doc = searcher.Doc(hits.ScoreDocs.First().doc);
+			doc.RemoveFields(UpdatedField);
+			doc.Add(new LuceneField(UpdatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+
+			foreach (var field in fields)
+			{
+				// make sure we don't add null values
+				var fieldValue = field.Value ?? string.Empty;
+				//Only updating the fields that we know about, alternatively we could clear all fields and re-add
+				doc.RemoveFields(field.Key);
+				doc.Add(new LuceneField(field.Key, fieldValue, LuceneField.Store.YES, LuceneField.Index.ANALYZED));
+
+				// lo-fi sorting - just use the first 10 chars of a value for sorting
+				var sortValue = fieldValue.Length > 10 ? fieldValue.Substring(0, 10) : fieldValue;
+				doc.RemoveFields(FieldNameForSorting(field.Key));
+				doc.Add(new LuceneField(FieldNameForSorting(field.Key), sortValue.ToLowerInvariant(), LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
+			}
+
+			if (fieldsValuesForStatistics != null)
+			{
+				foreach (var field in fieldsValuesForStatistics)
+				{
+					foreach (var value in field.Value)
+					{
+						doc.RemoveFields(FieldNameForStatistics(field.Key));
+						doc.Add(new LuceneField(FieldNameForStatistics(field.Key), value, LuceneField.Store.NO, LuceneField.Index.NOT_ANALYZED));
+					}
+				}
+			}
+
+			var writer = GetIndexWriter();
+			//Do Update, this actually does a remove followed by an add.
+			writer.UpdateDocument(new Term(IdField, rowId.ToString()), doc);
+			// optimize index for each 10 submits
+			writer.Optimize(10);
+			writer.Close();
+
+			return rowId;
+		}
 		public void Remove(IEnumerable<Guid> rowIds)
 		{
 			var writer = GetIndexWriter();
@@ -100,7 +156,7 @@ namespace FormEditor.Storage
 
 			searcher.Close();
 			reader.Close();
-			
+
 			return ParseRow(doc);
 		}
 
@@ -159,11 +215,11 @@ namespace FormEditor.Storage
 					{
 						fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
 					}
-					while (stats.Next());					
+					while (stats.Next());
 				}
 				if (fieldValueFrequencies.Any())
 				{
-					result.Add(fieldName, fieldValueFrequencies);					
+					result.Add(fieldName, fieldValueFrequencies);
 				}
 			}
 
@@ -269,7 +325,7 @@ namespace FormEditor.Storage
 		{
 			var storageDirectory = PathToFormStorage();
 
-			// step 1: delete all docs in the index to make sure it's as empty as possible in case a 
+			// step 1: delete all docs in the index to make sure it's as empty as possible in case a
 			// file lock prevents us from actually deleting the index files.
 			try
 			{
@@ -282,7 +338,7 @@ namespace FormEditor.Storage
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, "Could not delete all documents in index: {0}", storageDirectory.FullName);				
+				Log.Error(ex, "Could not delete all documents in index: {0}", storageDirectory.FullName);
 				// don't quit here - we'll still attempt to clean up the hard way.
 			}
 
@@ -297,7 +353,7 @@ namespace FormEditor.Storage
 				catch(Exception ex)
 				{
 					Log.Error(ex, "Could not delete files directory: {0}", filesDirectory.FullName);
-				}				
+				}
 			}
 
 			// step 3: attempt to delete the entire index directory
@@ -311,7 +367,7 @@ namespace FormEditor.Storage
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, "Could not delete index directory: {0}", storageDirectory.FullName);				
+				Log.Error(ex, "Could not delete index directory: {0}", storageDirectory.FullName);
 			}
 		}
 
