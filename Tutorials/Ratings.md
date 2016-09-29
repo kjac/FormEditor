@@ -248,7 +248,7 @@ Create a *Receipt* document type with a matching template, and then create a *Re
 Now when you submit a review to the article, you'll be redirected to the receipt page.
 
 ## Spam protection
-You should probably consider adding spam protecting to the review form, to ensure that the article ratings are not messed up by spam robots. Remember that Form Editor [supports reCAPTCHA](Docs/fields.md#the-recaptcha-field) out of the box.
+You should probably consider adding spam protecting to the review form, to ensure that the article ratings are not messed up by spam robots. Remember that Form Editor [supports reCAPTCHA](../Docs/fields.md#the-recaptcha-field) out of the box.
 
 ## Alright... so what now?
 This tutorial outlines a fully functional review system that could be put to use as-is. However, it could be improved on a few points.
