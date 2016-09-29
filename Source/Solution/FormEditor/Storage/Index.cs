@@ -46,6 +46,15 @@ namespace FormEditor.Storage
 
 		private Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId, DateTime created, DateTime updated)
 		{
+			var writer = GetIndexWriter();
+			Add(fields, fieldsValuesForStatistics, rowId, created, updated, writer);
+			writer.Close();
+
+			return rowId;
+		}
+
+		private void Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId, DateTime created, DateTime updated, IndexWriter writer)
+		{
 			var doc = new Document();
 
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
@@ -74,13 +83,9 @@ namespace FormEditor.Storage
 				}
 			}
 
-			var writer = GetIndexWriter();
 			writer.AddDocument(doc);
 			// optimize index for each 10 submits
 			writer.Optimize(10);
-			writer.Close();
-
-			return rowId;
 		}
 
 		public Guid Update(Dictionary<string, string> fields, Guid rowId)
@@ -90,10 +95,6 @@ namespace FormEditor.Storage
 
 		public Guid Update(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
-			/*
-			 This implementation isn't performing too well - needs a small rewrite so we limit the number of index readers, searchers and writers we open and close
-			 */
-
 			var row = Get(rowId);
 			if (row == null)
 			{
@@ -103,20 +104,28 @@ namespace FormEditor.Storage
 
 			var created = row.CreatedDate;
 
-			Remove(new[] {rowId});
+			var writer = GetIndexWriter();
+			Remove(new[] {rowId}, writer);
+			Add(fields, fieldsValuesForStatistics, rowId, created, DateTime.Now, writer);
+			writer.Close();
 
-			return Add(fields, fieldsValuesForStatistics, rowId, created, DateTime.Now);
+			return rowId;
 		}
 
 		public void Remove(IEnumerable<Guid> rowIds)
 		{
 			var writer = GetIndexWriter();
+			Remove(rowIds, writer);
+			writer.Close();
+		}
+
+		private void Remove(IEnumerable<Guid> rowIds, IndexWriter writer)
+		{
 			foreach (var rowId in rowIds)
 			{
 				RemoveFiles(rowId);
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
 			}
-			writer.Close();
 		}
 
 		public Row Get(Guid rowId)
