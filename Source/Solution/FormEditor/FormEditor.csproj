@@ -320,6 +320,7 @@
     <Compile Include="Storage\IndexHelper.cs" />
     <Compile Include="Storage\IIndex.cs" />
     <Compile Include="Storage\Index.cs" />
+    <Compile Include="Storage\IUpdateIndex.cs" />
     <Compile Include="Storage\Statistics\FieldValueFrequencies.cs" />
     <Compile Include="Storage\Statistics\FieldValueFrequency.cs" />
     <Compile Include="Storage\Statistics\FieldValueFrequencyStatistics.cs" />

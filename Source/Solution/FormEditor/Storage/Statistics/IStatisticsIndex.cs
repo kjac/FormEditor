@@ -21,6 +21,15 @@ namespace FormEditor.Storage.Statistics
 		Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId);
 
 		/// <summary>
+		/// Updates an entry to the index
+		/// </summary>
+		/// <param name="fields">The field names and values to update</param>
+		/// <param name="fieldsValuesForStatistics">The field names and values to create statistics for</param>
+		/// <param name="rowId">The ID of the entry to update</param>
+		/// <returns>The ID of the form entry</returns>
+		Guid Update(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId);
+
+		/// <summary>
 		/// Gets the field value frequency statistics for specified fields
 		/// </summary>
 		/// <param name="fieldNames">The field names to get statistics for</param>

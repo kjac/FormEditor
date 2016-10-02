@@ -19,12 +19,13 @@ using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex, IStatisticsIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
 		private const string IdField = "_id";
 		private const string CreatedField = "_created";
+		private const string UpdatedField = "_updated";
 		private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 		public Index(int contentId)
@@ -39,10 +40,26 @@ namespace FormEditor.Storage
 
 		public Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
 		{
+			var created = DateTime.Now;
+			return Add(fields, fieldsValuesForStatistics, rowId, created, created);
+		}
+
+		private Guid Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId, DateTime created, DateTime updated)
+		{
+			var writer = GetIndexWriter();
+			Add(fields, fieldsValuesForStatistics, rowId, created, updated, writer);
+			writer.Close();
+
+			return rowId;
+		}
+
+		private void Add(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId, DateTime created, DateTime updated, IndexWriter writer)
+		{
 			var doc = new Document();
 
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(CreatedField, DateTime.Now.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
 			{
@@ -66,10 +83,30 @@ namespace FormEditor.Storage
 				}
 			}
 
-			var writer = GetIndexWriter();
 			writer.AddDocument(doc);
 			// optimize index for each 10 submits
 			writer.Optimize(10);
+		}
+
+		public Guid Update(Dictionary<string, string> fields, Guid rowId)
+		{
+			return Update(fields, null, rowId);
+		}
+
+		public Guid Update(Dictionary<string, string> fields, Dictionary<string, IEnumerable<string>> fieldsValuesForStatistics, Guid rowId)
+		{
+			var row = Get(rowId);
+			if (row == null)
+			{
+				// the row does not exist, add a new one
+				return Add(fields, fieldsValuesForStatistics, rowId);
+			}
+
+			var created = row.CreatedDate;
+
+			var writer = GetIndexWriter();
+			Remove(new[] {rowId}, writer);
+			Add(fields, fieldsValuesForStatistics, rowId, created, DateTime.Now, writer);
 			writer.Close();
 
 			return rowId;
@@ -78,12 +115,17 @@ namespace FormEditor.Storage
 		public void Remove(IEnumerable<Guid> rowIds)
 		{
 			var writer = GetIndexWriter();
+			Remove(rowIds, writer);
+			writer.Close();
+		}
+
+		private void Remove(IEnumerable<Guid> rowIds, IndexWriter writer)
+		{
 			foreach (var rowId in rowIds)
 			{
 				RemoveFiles(rowId);
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
 			}
-			writer.Close();
 		}
 
 		public Row Get(Guid rowId)
@@ -100,7 +142,7 @@ namespace FormEditor.Storage
 
 			searcher.Close();
 			reader.Close();
-			
+
 			return ParseRow(doc);
 		}
 
@@ -159,11 +201,11 @@ namespace FormEditor.Storage
 					{
 						fieldValueFrequencies.Add(new FieldValueFrequency(stats.Term().Text(), stats.DocFreq()));
 					}
-					while (stats.Next());					
+					while (stats.Next());
 				}
 				if (fieldValueFrequencies.Any())
 				{
-					result.Add(fieldName, fieldValueFrequencies);					
+					result.Add(fieldName, fieldValueFrequencies);
 				}
 			}
 
@@ -269,7 +311,7 @@ namespace FormEditor.Storage
 		{
 			var storageDirectory = PathToFormStorage();
 
-			// step 1: delete all docs in the index to make sure it's as empty as possible in case a 
+			// step 1: delete all docs in the index to make sure it's as empty as possible in case a
 			// file lock prevents us from actually deleting the index files.
 			try
 			{
@@ -282,7 +324,7 @@ namespace FormEditor.Storage
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, "Could not delete all documents in index: {0}", storageDirectory.FullName);				
+				Log.Error(ex, "Could not delete all documents in index: {0}", storageDirectory.FullName);
 				// don't quit here - we'll still attempt to clean up the hard way.
 			}
 
@@ -297,7 +339,7 @@ namespace FormEditor.Storage
 				catch(Exception ex)
 				{
 					Log.Error(ex, "Could not delete files directory: {0}", filesDirectory.FullName);
-				}				
+				}
 			}
 
 			// step 3: attempt to delete the entire index directory
@@ -311,7 +353,7 @@ namespace FormEditor.Storage
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, "Could not delete index directory: {0}", storageDirectory.FullName);				
+				Log.Error(ex, "Could not delete index directory: {0}", storageDirectory.FullName);
 			}
 		}
 
