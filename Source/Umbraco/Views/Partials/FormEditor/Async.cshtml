@@ -13,6 +13,16 @@
   // get the form model (named "form" on the content type)
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
 
+  // attempt to load an existing submission if ViewBag.FormRowId is defined
+  if(ViewBag.FormRowId is string)
+  {
+    Guid rowId;
+    if(Guid.TryParse((string) ViewBag.FormRowId, out rowId))
+    {
+      form.LoadValues(formContent, rowId);      
+    }
+  }
+
   // max submissions exceeded for the current user?
   var maxSubmissionsExceededForCurrentUser = form.MaxSubmissionsExceededForCurrentUser(formContent);
 
@@ -108,6 +118,11 @@
       @foreach (var field in form.AllValueFields().Where(f => f.HasDefaultValue()))
       {
         @:_fe[@formContent.Id].defaultValues.@field.FormSafeName = @field.DefaultValue();
+      }
+
+      @if(ViewBag.FormRowId is string)
+      {
+        @:_fe[@formContent.Id].formRowId = "@ViewBag.FormRowId";
       }
 
       @* form validations as an array of JSON objects *@

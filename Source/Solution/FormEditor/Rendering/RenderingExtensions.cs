@@ -50,6 +50,10 @@ namespace FormEditor.Rendering
 			{
 				return true;
 			}
+			if(field.HasSubmittedValue)
+			{
+				return true;
+			}
 			var fieldWithFieldValues = field as FieldWithFieldValues;
 			return fieldWithFieldValues != null && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
 		}
@@ -60,6 +64,14 @@ namespace FormEditor.Rendering
 			if(checkboxField != null)
 			{
 				return new HtmlString(checkboxField.Selected ? "true" : "undefined");
+			}
+			if(field.HasSubmittedValue)
+			{
+				if(field is DateField)
+				{
+					return new HtmlString(string.Format("new Date(\"{0}\")", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
+				}
+				return new HtmlString(string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
 			}
 			var fieldWithFieldValues = field as FieldWithFieldValues;
 			if (fieldWithFieldValues == null)

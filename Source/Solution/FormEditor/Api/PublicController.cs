@@ -27,6 +27,8 @@ namespace FormEditor.Api
 			{
 				return ValidationErrorResponse("Could not find _id in the request data");
 			}
+			var rowId = Guid.Empty;
+			Guid.TryParse(HttpContext.Current.Request.Form["_rowId"], out rowId);
 
 			var content = Umbraco.TypedContent(id);
 			if (content == null)
@@ -63,7 +65,10 @@ namespace FormEditor.Api
 			{
 				return ValidationErrorResponse("Could not extract the form property on content with id {0}: {1}", id, ex.Message);
 			}
-
+			if(rowId != Guid.Empty)
+			{
+				formModel.LoadValues(content, rowId);
+			}
 			var result = formModel.CollectSubmittedValues(content, false);
 			if (result == false)
 			{

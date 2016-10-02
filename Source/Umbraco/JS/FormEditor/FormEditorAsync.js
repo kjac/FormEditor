@@ -65,6 +65,7 @@
       var data = new FormData();
       // add form ID from global variable
       data.append("_id", $scope.formState.formId);
+      data.append("_rowId", $scope.formState.formRowId);
       // add form data
       for (var key in $scope.formData) {
         var value = $scope.formData[key];

@@ -10,6 +10,16 @@
  
   // get the form model
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
+
+  // attempt to load an existing submission if ViewBag.FormRowId is defined
+  if(ViewBag.FormRowId is string)
+  {
+    Guid rowId;
+    if(Guid.TryParse((string)ViewBag.FormRowId, out rowId))
+    {
+      form.LoadValues(formContent, rowId);
+    }
+  }
   
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
