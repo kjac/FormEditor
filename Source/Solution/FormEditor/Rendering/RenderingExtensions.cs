@@ -65,15 +65,19 @@ namespace FormEditor.Rendering
 			{
 				return new HtmlString(checkboxField.Selected ? "true" : "undefined");
 			}
+			var fieldWithFieldValues = field as FieldWithFieldValues;
 			if(field.HasSubmittedValue)
 			{
 				if(field is DateField)
 				{
 					return new HtmlString(string.Format("new Date(\"{0}\")", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
 				}
+				if(fieldWithFieldValues != null)
+				{
+					return new HtmlString(string.Format("[{0}]", string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))));
+				}
 				return new HtmlString(string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
 			}
-			var fieldWithFieldValues = field as FieldWithFieldValues;
 			if (fieldWithFieldValues == null)
 			{
 				return new HtmlString("undefined");
