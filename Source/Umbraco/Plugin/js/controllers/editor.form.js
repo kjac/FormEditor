@@ -267,7 +267,8 @@
             name: null,
             fieldTypes: []
           };
-          _.each(fieldTypes, function (fieldType) {
+          // sort the fields by name, as we have no custom sort order to use
+          _.each($filter("orderBy")(fieldTypes, "prettyName"), function (fieldType) {
             fieldTypeGroup.fieldTypes.push({
               type: fieldType.type,
               prettyName: fieldType.prettyName
