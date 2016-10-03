@@ -1,6 +1,9 @@
 ﻿angular.module("umbraco").controller("FormEditor.Editor.FormController", ["$scope", "$filter", "assetsService", "dialogService", "angularHelper", "contentResource", "formEditorPropertyEditorResource", "formEditorPropertyEditorFieldValidator", "formEditorLocalizationService",
   function ($scope, $filter, assetsService, dialogService, angularHelper, contentResource, formEditorPropertyEditorResource, formEditorPropertyEditorFieldValidator, formEditorLocalizationService) {
     assetsService.loadCss("/App_Plugins/FormEditor/css/form.css");
+    if ($scope.model.config.customCss) {
+      assetsService.loadCss($scope.model.config.customCss);
+    }
 
     // hide the property label?
     $scope.model.hideLabel = $scope.model.config.hideLabel == 1;

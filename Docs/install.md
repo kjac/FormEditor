@@ -37,8 +37,11 @@ Form Editor supports two different types of emails - notification emails (sent t
 
 You can choose separate email templates for notification and confirmation emails, or leave them blank if you don't want to support one or both types of emails. See [Email templates](emails.md) for more info.
 
+##### Custom CSS
+If you feel the need to style Form Editor differently, specify the path to your custom style sheet here and it will be loaded whenever a Form Editor property loads. The path must be from the root of your site.
+
 ##### The rest
-Hopefully the rest of the Form Editor data type configuration is self explanatory. Oh, and it's strongly recommended to hide the property label to give the Form Editor property as much space as possible.
+Hopefully the rest of the Form Editor data type configuration is self explanatory. Oh, and it's highly recommended to tick the "Hide label" checkbox to give the Form Editor property as much space as possible.
 
 ## Setting up the content type
 When you have configured the data type, create a content type (or reuse an existing) and add a property based on the new Form Editor data type. If you're going to use the templates and views shipped with Form Editor for rendering (see [Rendering the form](render.md)), make sure the Form Editor property has the property alias "form".

@@ -87,6 +87,12 @@
                description: "Enable statistics for form submissions",
                key: "enableStatistics",
                view: "boolean"
+            },
+            {
+               label: "Custom CSS",
+               description: "Path to custom CSS to include in the property editor (e.g. /my/custom.css)",
+               key: "customCss",
+               view: "textstring"
             }
         ]
       }
