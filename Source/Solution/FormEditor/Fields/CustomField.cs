@@ -5,9 +5,6 @@
 		private readonly string _type;
 		private readonly string _prettyName;
 
-		// added for deserialization
-		public CustomField() { }
-
 		public CustomField(string type, string prettyName)
 		{
 			_type = type;

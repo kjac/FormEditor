@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FormEditor.Fields.Statistics;
+using Newtonsoft.Json;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
@@ -38,6 +39,7 @@ namespace FormEditor.Fields
 			get { return false; }
 		}
 
+		[JsonIgnore]
 		public IEnumerable<string> SubmittedValues
 		{
 			get { return ExtractSubmittedValues(); }
