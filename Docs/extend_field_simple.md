@@ -1,5 +1,6 @@
 # Creating a simple custom field
 A simple custom field is created by completing these steps:
+
 1. [Create your icon](extend_field.md) and save it to */App_Plugins/FormEditor/editor/fields/*.
 2. Register your field in the `<CustomFields/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config).
 3. Create the partial view to render your field.
@@ -25,6 +26,9 @@ Open */Config/FormEditor.config* and add your field to the <CustomFields/> secti
 The `name` given here is the field name presented to your editors when they're layouting the form. In case you want to localize the field name you can add an entry called `composition.field.my.range` to the localization files under */App_Plugins/FormEditor/js/langs/*.
 
 **Note**: You may have to restart the site to make Form Editor pick up the new configuration.
+
+### Help! I can't find my field!?
+If your custom field doesn't show up in the Form Editor even after restarting the site, maybe you forgot to add it to a field type group? Read more about field type groups [here](install.md).
 
 ## Step 3: Render the field
 The last step is to create the partial view that will render your slider field for the end users. Again, the partial view must be named after the field type name, so in this case it will be `my.range.cshtml`.

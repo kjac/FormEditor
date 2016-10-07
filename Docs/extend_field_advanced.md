@@ -18,6 +18,9 @@ The field assets (icon, editor and view) are included in the sample project. The
 ## Project output
 The sample project references the [Form Editor Binaries](https://www.nuget.org/packages/FormEditor.Binaries/) NuGet package, which has a dependency on the [Umbraco Cms Core Binaries](https://www.nuget.org/packages/UmbracoCms.Core/) NuGet package. That's why a bunch of Umbraco DLLs are found in the project output bin folder. Don't copy all of these to your site, or it will most likely explode. Please copy only the project output DLL (`My.Range.dll`).
 
+### Help! I can't find my field!?
+If your custom field doesn't show up in the Form Editor after adding the field assets to your site, maybe you forgot to add it to a field type group? Read more about field type groups [here](install.md).
+
 ## Rendering the field
 The partial views in the sample project are almost identical with the ones in the simple custom field sample, with the exception of using the configured field properties rather than hard-coded values for `min`, `max` and `step` in the input field.
 
