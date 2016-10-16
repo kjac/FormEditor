@@ -1,39 +1,15 @@
 <div class="form-editor" ng-controller="FormEditor.Editor.FormController">
   <ul class="tabs">
-    <li class="active">
-      <a href="#tabFormEditorLayout" data-toggle="tab" class="ng-binding">
-        <i class="icon icon-layout"></i>
-        <form-editor-localize key="composition.header">Form layout</form-editor-localize>
-      </a>
-    </li>
-    <li ng-if="model.enableValidation">
-      <a href="#tabFormEditorValidation" data-toggle="tab" class="ng-binding">
-        <i class="icon icon-check"></i>
-        <form-editor-localize key="validation.header">Validation</form-editor-localize>
-      </a>
-    </li>
-    <li ng-if="emailTemplates.notification || emailTemplates.confirmation">
-      <a href="#tabFormEditorEmails" data-toggle="tab" class="ng-binding">
-        <i class="icon icon-message"></i>
-        <form-editor-localize key="emails.header">Emails</form-editor-localize>
-      </a>
-    </li>
-    <li>
-      <a href="#tabFormEditorReceipt" data-toggle="tab" class="ng-binding">
-        <i class="icon icon-document"></i>
-        <form-editor-localize key="receipt.header">Receipt</form-editor-localize>
-      </a>
-    </li>
-    <li>
-      <a href="#tabFormEditorData" data-toggle="tab" class="ng-binding">
-        <i class="icon icon-list"></i>
-        <form-editor-localize key="data.header">Submissions</form-editor-localize>
+    <li ng-repeat="tab in tabs" ng-class="{active: tab.active}">
+      <a href="#{{tab.anchor}}" data-toggle="tab" class="ng-binding">
+        <i class="icon {{tab.icon}}"></i>
+        <form-editor-localize key="{{tab.localizationKey}}">{{tab.title}}</form-editor-localize>
       </a>
     </li>
   </ul>
 
   <!-- ## layout ## -->
-  <div id="tabFormEditorLayout" class="tab-pane active">
+  <div id="tabFormEditorLayout" ng-if="isVisibleTab('layout')" class="tab-pane" ng-class="{active: isActiveTab('layout')}">
     <p form-editor-localize key="composition.text">
       Add rows and fields below to layout your form. If you need to rearrange the form layout later on, you can do so by dragging rows and fields around as you please.
     </p>
@@ -102,7 +78,7 @@
     </i>
   </div>
   <!-- ## validation ## -->
-  <div id="tabFormEditorValidation" ng-if="model.enableValidation" class="tab-pane">
+  <div id="tabFormEditorValidation" ng-if="isVisibleTab('validation')" class="tab-pane" ng-class="{active: isActiveTab('validation')}">
     <div ng-show="allValueFields().length > 0">
       <p form-editor-localize key="validation.text">
         Here you can set up validations that span across the individual form fields - for example "the form is invalid if field A is empty and field B is not empty". A validation consists of a set of rules to test, and an error message to display if all the rules are fulfilled.
@@ -171,7 +147,7 @@
     </div>
   </div>
   <!-- ## notification ## -->
-  <div id="tabFormEditorEmails" ng-if="emailTemplates.notification || emailTemplates.confirmation" class="tab-pane">
+  <div id="tabFormEditorEmails" ng-if="isVisibleTab('emails')" class="tab-pane" ng-class="{active: isActiveTab('emails')}">
     <div ng-show="emailTemplates.confirmation">
       <h4 ng-show="emailTemplates.notification" form-editor-localize key="emailConfirmation.header">Confirmation email</h4>
       <p form-editor-localize key="emailConfirmation.text">
@@ -239,7 +215,7 @@
     </div>
   </div>
   <!-- ## receipt ## -->
-  <div id="tabFormEditorReceipt" class="tab-pane">
+  <div id="tabFormEditorReceipt" ng-if="isVisibleTab('receipt')" class="tab-pane" ng-class="{active: isActiveTab('receipt')}">
     <h4 form-editor-localize key="receipt.page.header">Select a page</h4>
     <p form-editor-localize key="receipt.page.text">
       If you want to redirect the users to another page after they have submitted the form, select the page below.
@@ -258,7 +234,7 @@
           </a>
           <i class="icon icon-delete dimmed" ng-click="removeSuccessPage()" />
         </li>
-      </ul>      
+      </ul>
     </div>
 
     <h4 form-editor-localize key="receipt.message.header">...or enter a message</h4>
@@ -279,7 +255,7 @@
     </div>
   </div>
   <!-- ## data ##-->
-  <div id="tabFormEditorData" class="tab-pane">
+  <div id="tabFormEditorData" ng-if="isVisibleTab('submissions')" class="tab-pane" ng-class="{active: isActiveTab('submissions')}">
     <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
 
     <h4 form-editor-localize key="data.maxSubmissions.header">Limit the number of submissions</h4>

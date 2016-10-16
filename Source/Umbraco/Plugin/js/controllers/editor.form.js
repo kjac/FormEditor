@@ -16,6 +16,8 @@
 
     $scope.emailTemplates = { notification: $scope.model.config.notificationEmailTemplate, confirmation: $scope.model.config.confirmationEmailTemplate };
 
+    $scope.tabs = getVisibleTabs();
+
     // initialize default model if applicable
     $scope.model.value = $scope.model.value || defaultValue();
 
@@ -629,5 +631,41 @@
       $scope.setDirty();
     }
 
+    $scope.isActiveTab = function (id) {
+      var tab = _.find($scope.tabs, function (t) { return t.id == id; });
+      return tab != null && tab.active;
+    }
+
+    $scope.isVisibleTab = function (id) {
+      return _.find($scope.tabs, function (t) { return t.id == id; }) != null;
+    }
+
+    function getVisibleTabs() {
+      var tabs = [
+        { title: "Form layout", localizationKey: "composition.header", icon: "icon-layout", id: "layout", anchor: "tabFormEditorLayout", visible: true },
+        { title: "Validation", localizationKey: "validation.header", icon: "icon-check", id: "validation", anchor: "tabFormEditorValidation", visible: true },
+        { title: "Emails", localizationKey: "emails.header", icon: "icon-message", id: "emails", anchor: "tabFormEditorEmails", visible: true },
+        { title: "Receipt", localizationKey: "receipt.header", icon: "icon-document", id: "receipt", anchor: "tabFormEditorReceipt", visible: true },
+        { title: "Submissions", localizationKey: "data.header", icon: "icon-list", id: "submissions", anchor: "tabFormEditorData", visible: true }
+      ];
+
+      if (!$scope.model.config.tabOrder) {
+        // for backwards compability with the old "disable validation" config - will be removed eventually
+        tabs[1].visible = $scope.model.config.disableValidation != 1;
+        return tabs;
+      }
+
+      _.each($scope.model.config.tabOrder, function(tabOrder, index) {
+        var tab = _.find(tabs, function (t) { return t.id == tabOrder.id; });
+        tab.sortOrder = index;
+        tab.visible = tabOrder.visible;
+        if (tab.id == "emails" && tab.visible) {
+          tab.visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation);
+        }
+      });
+      var orderedTabs = $filter("orderBy")(_.where(tabs, { visible: true }), "sortOrder");
+      orderedTabs[0].active = true;
+      return orderedTabs;
+    }
   }
 ]);

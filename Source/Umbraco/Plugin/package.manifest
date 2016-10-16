@@ -47,6 +47,12 @@
                view: "~/App_Plugins/FormEditor/config/emailTemplates.html"
             },
             {
+               label: "Tab order",
+               description: "Order the tabs in the editor and choose which tabs should be enabled for use",
+               key: "tabOrder",
+               view: "~/App_Plugins/FormEditor/config/tabOrder.html"
+            },
+            {
                label: "Log IP addresses",
                description: "Log the IP addresses of all form submissions",
                key: "logIp",
