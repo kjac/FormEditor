@@ -81,6 +81,7 @@ namespace FormEditor
 		private string EmailConfirmationTemplate { get; set; }
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
+		// TODO: remove this in an upcoming release (obsolete)
 		private bool DisableValidation { get; set; }
 		private bool UseStatistics { get; set; }
 

@@ -22,6 +22,7 @@ Start by creating a new Form Editor data type and name it *Form Editor - Poll*. 
 - Remove the two column row layout - we only want a single column for the polls.
 - Create a field type group containing the field types *Heading*, *Text paragraph*, *Radio button group* and *Submit button*. 
 ![Set up the field type group](img/Poll/field type group.png)
+- Disable the *Validation* and *Emails* tabs - we don't need them for polls, so the editors don't need to be concerned with them.
 - Check *Don't use validation* - cross field validation makes no sense for polls, so the editors don't need to be concerned with it.
 - Check *Use form statistics* so we can generate a bar chart of the poll results.
 
@@ -53,7 +54,7 @@ Now add a *Poll* document to the folder. You can layout the poll any way you wan
 
 When you're done layouting the poll, switch to the *Receipt* tab and enter a thank-you message to show when the users answer the poll.
 
-We need to make sure that the users only answer the poll once. Switch to the *Submissions* tab, tick *Only one submission per user* and enter a suitable message for the users that have already submitted the form. 
+We need to make sure that the users only answer the poll once. Switch to the *Limitations* tab, tick *Only one submission per user* and enter a suitable message for the users that have already submitted the form. 
 
 Finally hit save and publish.
 

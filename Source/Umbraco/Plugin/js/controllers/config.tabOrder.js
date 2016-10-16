@@ -7,6 +7,7 @@
       { name: "Validation", icon: "icon-check", id: "validation", visible: true },
       { name: "Emails", icon: "icon-message", id: "emails", visible: true },
       { name: "Receipt", icon: "icon-document", id: "receipt", visible: true },
+      { name: "Limitations", icon: "icon-filter", id: "limitations", visible: true },
       { name: "Submissions", icon: "icon-list", id: "submissions", visible: true }
     ];
 

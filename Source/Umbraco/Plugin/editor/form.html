@@ -255,9 +255,7 @@
     </div>
   </div>
   <!-- ## data ##-->
-  <div id="tabFormEditorData" ng-if="isVisibleTab('submissions')" class="tab-pane" ng-class="{active: isActiveTab('submissions')}">
-    <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
-
+  <div id="tabFormEditorLimitations" ng-if="isVisibleTab('limitations')" class="tab-pane" ng-class="{active: isActiveTab('limitations')}">
     <h4 form-editor-localize key="data.maxSubmissions.header">Limit the number of submissions</h4>
     <p form-editor-localize key="data.maxSubmissions.text">
       If you want to limit the number of submissions for this form, enter the maximum allowed number of submissions and a message to show the users when no more submissions are allowed.
@@ -306,6 +304,10 @@
     <div class="controls controls-row">
       <textarea class="umb-editor" id="maxSubmissionsForCurrentUserExceededText" ng-model="model.value.maxSubmissionsForCurrentUserExceededText" rows="5"></textarea>
     </div>
+  </div>
+  <!-- ## data ##-->
+  <div id="tabFormEditorData" ng-if="isVisibleTab('submissions')" class="tab-pane" ng-class="{active: isActiveTab('submissions')}">
+    <div ng-include="'/App_Plugins/FormEditor/editor/data.html'"></div>
   </div>
 </div>
 

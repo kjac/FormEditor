@@ -646,6 +646,7 @@
         { title: "Validation", localizationKey: "validation.header", icon: "icon-check", id: "validation", anchor: "tabFormEditorValidation", visible: true },
         { title: "Emails", localizationKey: "emails.header", icon: "icon-message", id: "emails", anchor: "tabFormEditorEmails", visible: true },
         { title: "Receipt", localizationKey: "receipt.header", icon: "icon-document", id: "receipt", anchor: "tabFormEditorReceipt", visible: true },
+        { title: "Limitations", localizationKey: "limitations.header", icon: "icon-filter", id: "limitations", anchor: "tabFormEditorLimitations", visible: true },
         { title: "Submissions", localizationKey: "data.header", icon: "icon-list", id: "submissions", anchor: "tabFormEditorData", visible: true }
       ];
 
