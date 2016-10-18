@@ -4,7 +4,7 @@
       <i class="icon {{tab.icon}}"></i>
       <span class="tab-name">{{tab.name}}</span>
       <label>
-        <input type="checkbox" ng-model="tab.visible" />
+        <input type="checkbox" ng-model="tab.visible" ng-disabled="isLastVisibleTab(tab)" />
         Enable this tab
       </label>
     </li>

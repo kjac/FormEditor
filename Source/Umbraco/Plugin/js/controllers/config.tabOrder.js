@@ -22,6 +22,10 @@
       }
     };
 
+    $scope.isLastVisibleTab = function (tab) {
+      return tab.visible == true && _.where($scope.model.value, { visible: true }).length == 1;
+    }
+
     // helper to force the current form into the dirty state
     $scope.setDirty = function () {
       angularHelper.getCurrentForm($scope).$setDirty();
