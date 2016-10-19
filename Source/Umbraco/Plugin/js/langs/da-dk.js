@@ -83,6 +83,8 @@
   "receipt.message.heading": "Overskrift",
   "receipt.message.body": "Tekst",
 
+  "limitations.header": "Begrænsninger",
+
   "data.header": "Indsendte data",
   "data.text": "Her kan du se de formular-data, brugerne har indsendt.",
   "data.visibleFields.header": "Vælg viste felter", 
