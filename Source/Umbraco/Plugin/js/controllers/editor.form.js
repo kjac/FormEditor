@@ -653,13 +653,14 @@
       if (!$scope.model.config.tabOrder) {
         // for backwards compability with the old "disable validation" config - will be removed eventually
         tabs[1].visible = $scope.model.config.disableValidation != 1;
+        tabs[2].visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
       } else {
         _.each($scope.model.config.tabOrder, function (tabOrder, index) {
           var tab = _.find(tabs, function (t) { return t.id == tabOrder.id; });
           tab.sortOrder = index;
           tab.visible = tabOrder.visible;
           if (tab.id == "emails" && tab.visible) {
-            tab.visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation);
+            tab.visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
           }
         });
       }
