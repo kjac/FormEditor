@@ -62,19 +62,23 @@ That's it! Now we can use the field in our review form:
 
 - Edit the *Article* page and switch to the *Reviews* tab. 
 - Replace the *Rating* field with the new custom field and add the same option values as before ("5", "4", "3", "2" and "1"). 
-  - If the field does appear in the list of available fields, you probably have to restart the site to make Umbraco pick up the configuration changes.
 - Hit save and publish and view the page in frontend. 
+
+**Note:** If the field does appear in the list of available fields, you probably have to either:
+
+- Restart the site to make Umbraco pick up the configuration changes.
+- Add the field to a field type group (if you have set up field type groups on the Form Editor data type).
 
 If you're not interrested in the Visual Studio way of creating fields, scroll down to the bottom now :)
 
 ## The advanced way (a.k.a. Visual Studio required)
-All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.simple*. 
+All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.advanced*. 
 
 ### Step 1: Implement the field
 First and foremost let's set up a project that can contain the field implementation:
 
 - If you're running Umbraco as a Web Application project in Visual Studio, you already have a project and you're good to go. 
-- If you're not, create a class library project in Visual Studio and make sure the output DLL (and *only* the output DLL) is copied to the */bin/* folder of the site.
+- If you're not, create a class library project in Visual Studio and make sure the output DLL (and *only* the output DLL) is copied to the */bin/* folder of the site ([here's why](../Docs/extend_field_advanced.md#project-output)).
 
 Add the applicable version of the [Form Editor Binaries](https://www.nuget.org/packages/FormEditor.Binaries/) NuGet package to your project.
 
@@ -199,6 +203,8 @@ That's it! Now we can use the field in our review form:
 - Edit the *Article* page and switch to the *Reviews* tab. 
 - Replace the *Rating* field with the new custom field - and don't forget to enjoy how nice and simple the configuration is, compared to using the Radio button group field :) 
 - Hit save and publish and view the page in frontend. 
+
+**Note:** If the field does appear in the list of available fields, you have probably set up field type groups on the Form Editor data type. In that case you'll have to add the field to a group before you can use it.
 
 ## Closing remarks
 If everything goes as planned, the page shouldn't look any different in frontend. But behind the scenes we've got a better implementation with less risk of configuration errors (especially if you went the Visual Studio way).
