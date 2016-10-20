@@ -1,0 +1,12 @@
+<div class="form-editor-config" ng-controller="FormEditor.Config.TabOrderController">
+  <ul class="tab-order" ui-sortable="sortableOptionsTabs" ng-model="model.value">
+    <li ng-repeat="tab in model.value">
+      <i class="icon {{tab.icon}}"></i>
+      <span class="tab-name">{{tab.name}}</span>
+      <label>
+        <input type="checkbox" ng-model="tab.visible" ng-disabled="isLastVisibleTab(tab)" />
+        Enable this tab
+      </label>
+    </li>
+  </ul>
+</div>

@@ -47,6 +47,12 @@
                view: "~/App_Plugins/FormEditor/config/emailTemplates.html"
             },
             {
+               label: "Tab order and availability",
+               description: "Order the tabs within the editor and choose which tabs should be enabled for use",
+               key: "tabOrder",
+               view: "~/App_Plugins/FormEditor/config/tabOrder.html"
+            },
+            {
                label: "Log IP addresses",
                description: "Log the IP addresses of all form submissions",
                key: "logIp",
@@ -72,7 +78,7 @@
             },
             {
                label: "Don't use validation",
-               description: "Disable cross field validation rules",
+               description: "OBSOLETE - use tab order and disable the validation tab instead",
                key: "disableValidation",
                view: "boolean"
             },
