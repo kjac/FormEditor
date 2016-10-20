@@ -635,6 +635,10 @@ namespace FormEditor
 					return;
 				}				
 			}
+
+			// interpolate submitted values in the email subject 
+			subject = InterpolateSubmittedValues(subject);
+
 			// send emails to the recipients
 			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles);
 		}
@@ -775,23 +779,28 @@ namespace FormEditor
 
 		public IHtmlString GetEmailConfirmationBodyText(bool forHtmlEmail = true)
 		{
-			if(string.IsNullOrWhiteSpace(EmailConfirmationBody))
+			var emailBody = InterpolateSubmittedValues(EmailConfirmationBody);
+
+			// replace newlines with <br/> in email body for HTML mails
+			return new HtmlString(forHtmlEmail ? Regex.Replace(emailBody, @"\n\r?", @"<br />") : emailBody);
+		}
+
+		private string InterpolateSubmittedValues(string template)
+		{
+			if (string.IsNullOrEmpty(template))
 			{
-				return new HtmlString(string.Empty);
+				return string.Empty;
 			}
 
 			// interpolate submitted field values
 			var valueFields = AllValueFields();
-			var emailBody = Regex.Replace(EmailConfirmationBody, @"\[.*?\]", match =>
+			return Regex.Replace(template, @"\[.*?\]", match =>
 			{
 				var field = valueFields.FirstOrDefault(f => string.Format("[{0}]", f.Name).Equals(match.Value, StringComparison.InvariantCultureIgnoreCase));
-				return field != null && field.HasSubmittedValue 
-					? field.SubmittedValueForEmail() 
+				return field != null && field.HasSubmittedValue
+					? field.SubmittedValueForEmail()
 					: string.Empty;
 			});
-
-			// replace newlines with <br/> in email body for HTML mails
-			return new HtmlString(forHtmlEmail ? Regex.Replace(emailBody, @"\n\r?", @"<br />") : emailBody);
 		}
 
 		private void SetFormSubmittedCookie(IPublishedContent content)

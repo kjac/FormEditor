@@ -57,12 +57,13 @@
   "validation.text": "Her kan du sætte valideringer op, der går på tværs af de enkelte felter i formularen - f.eks. \"formularen er ugyldig hvis felt A er tomt og felt B ikke er tomt\". En validering består af et sæt regler samt den fejlbesked, der skal vises, hvis alle reglerne er opfyldt.",
   "validation.text.noFields": "Du skal tilføje felter til formularen, før du kan sætte validering op.",
 
+  "email.submittedValues.helpText": "Du kan inkludere værdierne af felterne i den indsendte formular. Hvis du for eksempel har en tekstboks med navnet \"Navn\", kan du inkludere dennes indsendte værdi ved at tilføje \"[Navn]\".",
+
   "emailConfirmation.header": "E-mailbekræftelse",
   "emailConfirmation.text": "Hvis du vil sende en e-mailbekræftelse til brugerne, når de har udfyldt formularen, skal du vælge det felt, der underholder modtagerens e-mailadresse og indtaste e-mailens emnetekst og afsenderens e-mailadresse.",
   "emailConfirmation.recipientsField": "E-mailadresse-felt",
   "emailConfirmation.subject": "Emnetekst",
   "emailConfirmation.body": "Indhold",
-  "emailConfirmation.body.helpText": "Tip! Du kan inkludere værdierne af felterne i den indsendte formular. Hvis du for eksempel har en tekstboks med navnet \"Navn\", kan du inkludere dennes indsendte værdi ved at tilføje \"[Navn]\".",
   "emailConfirmation.sender": "Afsenderens e-mailadresse",
 
   "emailNotification.attachments": "Vedhæft uploadede filer til mailen",
