@@ -253,7 +253,7 @@ You should probably consider adding spam protecting to the review form, to ensur
 ## Alright... so what now?
 This tutorial outlines a fully functional review system that could be put to use as-is. However, it could be improved on a few points.
 
-The editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. Of course we could set up an article template page with the correct form layout, and have the editors make a copy this template whenever they need to write a new article (or have them copy an existing article - Form Editor won't copy the submissions).
+The editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. 
 
 Also, the rendering of the *Rating* field feels a little off, since it messes with the default radio button group rendering and involves hard coding the rating field name. 
 
