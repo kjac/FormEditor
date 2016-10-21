@@ -8,9 +8,11 @@ In this part we'll create a custom field for the rating stars, which will improv
 
 ![Custom rating field](img/RatingsPartTwo/review form property.png)
 
-A custom field can be [created](../Docs/extend_field.md) in two ways: The simple and the advanced. In the following we'll go through both ways. As we do, keep in mind that we're rendering for synchronous form postback, as this will be reflected in the partial views.
+A custom field can be [created](../Docs/extend_field.md) in two ways: The simple (by configuration) and the advanced (by code). In the following we'll go through both ways. As we do, keep in mind that we're rendering for synchronous form postback, as this will be reflected in the partial views.
 
-## The simple way (a.k.a. Visual Studio not required)
+If you're not interrested in the simple way of creating fields, [click here](#the-advanced-way-by-code-visual-studio-required) to skip to the advanced way.
+
+## The simple way (by configuration, Visual Studio not required)
 All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.simple*. As we move through the implementation of the field, notice how we use the field type for naming the field assets.
 
 ### Step 1: Register the field
@@ -69,9 +71,9 @@ That's it! Now we can use the field in our review form:
 - Restart the site to make Umbraco pick up the configuration changes.
 - Add the field to a field type group (if you have set up field type groups on the Form Editor data type).
 
-If you're not interrested in the Visual Studio way of creating fields, scroll down to the bottom now :)
+If you're not interrested in the Visual Studio way of creating fields, [scroll down to the bottom](#closing-remarks) now :)
 
-## The advanced way (a.k.a. Visual Studio required)
+## The advanced way (by code, Visual Studio required)
 All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.advanced*. As we move through the implementation of the field, notice how we use the field type for naming the field assets.
 
 ### Step 1: Implement the field
