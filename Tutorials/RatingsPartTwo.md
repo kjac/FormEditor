@@ -1,4 +1,4 @@
-# User ratings with Form Editor - part two: Custom rating field
+# User ratings - part two: Custom rating field
 *This is a follow-up to the tutorial [User ratings with Form Editor](Ratings.md).*
 
 In this part we'll create a custom field for the rating stars, which will improve the implementation of the rating system in two ways:
@@ -11,7 +11,7 @@ In this part we'll create a custom field for the rating stars, which will improv
 A custom field can be [created](../Docs/extend_field.md) in two ways: The simple and the advanced. In the following we'll go through both ways. As we do, keep in mind that we're rendering for synchronous form postback, as this will be reflected in the partial views.
 
 ## The simple way (a.k.a. Visual Studio not required)
-All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.simple*. 
+All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.simple*. As we move through the implementation of the field, notice how we use the field type for naming the field assets.
 
 ### Step 1: Register the field
 Start by registering the field in `FormEditor.config`. It needs to support multiple field values and field value statistics, both of which the *fixedValues* option will give us:
@@ -29,12 +29,12 @@ Start by registering the field in `FormEditor.config`. It needs to support multi
 ```
 
 ### Step 2: Add the field icon
-Download the icon below and save it to */App_Plugins/FormEditor/editor/fields/* (notice it's named after our field type).
+Download the icon below and save it to */App_Plugins/FormEditor/editor/fields/*.
 
 ![Simple field icon](img/RatingsPartTwo/my.rating.simple.png)
 
 ### Step 3: Add the field partial view
-Create the following partial view as */Views/Partials/FormEditor/FieldsSync/my.rating.simple.cshtml* (notice it's named after our field type):
+Create the following partial view as */Views/Partials/FormEditor/FieldsSync/my.rating.simple.cshtml*:
 
 ```xml
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CustomFieldFixedValues>
@@ -72,13 +72,13 @@ That's it! Now we can use the field in our review form:
 If you're not interrested in the Visual Studio way of creating fields, scroll down to the bottom now :)
 
 ## The advanced way (a.k.a. Visual Studio required)
-All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.advanced*. 
+All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.advanced*. As we move through the implementation of the field, notice how we use the field type for naming the field assets.
 
 ### Step 1: Implement the field
 First and foremost let's set up a project that can contain the field implementation:
 
 - If you're running Umbraco as a Web Application project in Visual Studio, you already have a project and you're good to go. 
-- If you're not, create a class library project in Visual Studio and make sure the output DLL (and *only* the output DLL) is copied to the */bin/* folder of the site ([here's why](../Docs/extend_field_advanced.md#project-output)).
+- If you're not, create a class library project in Visual Studio and make sure the output DLL (and *only* the output DLL - [here's why](../Docs/extend_field_advanced.md#project-output)) is copied to the */bin/* folder of the site.
 
 Add the applicable version of the [Form Editor Binaries](https://www.nuget.org/packages/FormEditor.Binaries/) NuGet package to your project.
 
@@ -118,10 +118,10 @@ A few things are worth noticing here:
 - The field inherits `FieldWithFieldValues`, which gives us both multiple field values and field value statistics.
 - The constructor initializes the field values with the values required to render the five stars ("5", "4", "3", "2" and "1").
 - The `Type` property must return the field type - in this case *my.rating.advanced*.
-- `MultipleValuesPerEntry` is set to `false` to tell the form submission statistics that each submission of the field can only yield one value in the statistics.
+- `MultipleValuesPerEntry` is set to `false` to tell the form submission statistics that each submission of the field can only yield one value in the statistics. This is primarily used when displaying the form submission statistics in backend.
 
 ### Step 2: Add the field icon
-Download the icon below and save it to */App_Plugins/FormEditor/editor/fields/* (notice it's named after our field type).
+Download the icon below and save it to */App_Plugins/FormEditor/editor/fields/*.
 
 ![Advanced field icon](img/RatingsPartTwo/my.rating.advanced.png)
 
@@ -144,7 +144,7 @@ With these limitations in mind, the final field editor looks like this:
 
         <div class="umb-pane">
           <!--
-            the label and help text editing was extracted from the <form-editor-field-basics> directive.
+            the label and help text editing were extracted from the <form-editor-field-basics> directive.
             if you're curious, the directive is implemented in /App_Plugins/FormEditor/editor/form.html.
           -->
           <label class="control-label" for="label">
@@ -169,10 +169,10 @@ With these limitations in mind, the final field editor looks like this:
 </div>
 ```
 
-Save this field editor to */App_Plugins/FormEditor/editor/fields/my.rating.advanced.html* (notice it's named after our field type).
+Save this field editor to */App_Plugins/FormEditor/editor/fields/my.rating.advanced.html*.
 
 ### Step 4: Add the field rendering
-Create the following partial view as */Views/Partials/FormEditor/FieldsSync/my.rating.advanced.cshtml* (notice it's named after our field type):
+Create the following partial view as */Views/Partials/FormEditor/FieldsSync/my.rating.advanced.cshtml*:
 
 ```xml
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<My.Fields.RatingField>
@@ -201,7 +201,7 @@ This view is identical with the one created for the simple field, with the excep
 That's it! Now we can use the field in our review form: 
 
 - Edit the *Article* page and switch to the *Reviews* tab. 
-- Replace the *Rating* field with the new custom field - and don't forget to enjoy how nice and simple the configuration is, compared to using the Radio button group field :) 
+- Replace the *Rating* field with the new custom field (take a moment to enjoy how nice and simple the configuration is, compared to using the Radio button group field). 
 - Hit save and publish and view the page in frontend. 
 
 **Note:** If the field does appear in the list of available fields, you have probably set up field type groups on the Form Editor data type. In that case you'll have to add the field to a group before you can use it.

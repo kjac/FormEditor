@@ -36,7 +36,7 @@ Some highlights include:
     * Topics covered: Forms within the grid, form submission statistics, asynchronous form postback, multiple forms per page.
 * [User ratings with Form Editor](Tutorials/Ratings.md) - build an article rating system with Form Editor.
     * Topics covered: Form submission rendering and statistics, customized field rendering.
-    * [Part two: Custom rating field](Tutorials/RatingsPartTwo.md) - create a custom field for star ratings.
+    * [User ratings - part two: Custom rating field](Tutorials/RatingsPartTwo.md) - create a custom field for star ratings.
         * Topics covered: Custom field creation both by configuration and by code.
 
 ## Credits
