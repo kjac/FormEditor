@@ -255,6 +255,8 @@ This tutorial outlines a fully functional review system that could be put to use
 
 The editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. Of course we could set up an article template page with the correct form layout, and have the editors make a copy this template whenever they need to write a new article (or have them copy an existing article - Form Editor won't copy the submissions).
 
-Also, the rendering of the *Rating* field feels a little off, since it involves hard the field name into the default radio button group rendering. 
+Also, the rendering of the *Rating* field feels a little off, since it messes with the default radio button group rendering and involves hard coding the rating field name. 
 
-In the upcoming parts two and three of this tutorial we'll address both of these issues, and we'll also have a look at some other cool things we can do with the Form Editor extension points.
+In [Part two](RatingsPartTwo.md) of this tutorial we'll create a custom rating field to handle the rendering issue.
+
+In the upcoming parts of this tutorial we'll address the editorial experience, and we'll also have a look at some other cool things we can do with the Form Editor extension points.
