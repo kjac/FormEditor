@@ -27,7 +27,7 @@ Create an *Article* page in the Content section and add some content to it. Now 
 ![Rating and review](img/Ratings/review form property.png)
 
 ## Rendering the article 
-When rendering the article we need to calculate its average rating based on all the submitted ratings. We can that by using [form submission statistics](../Docs/submissions.md#how-about-statistics), since the *Radio button group* field type supports statistics out of the box.
+When rendering the article we need to calculate its average rating based on all the submitted ratings. We can do that by using [form submission statistics](../Docs/submissions.md#how-about-statistics), since the *Radio button group* field type supports statistics out of the box.
 
 We also need to fetch and render the latest reviews. Ideally we'd implement some pagination through all the submitted reviews, but that's for another tutorial.
 
@@ -253,7 +253,7 @@ You should probably consider adding spam protecting to the review form, to ensur
 ## Alright... so what now?
 This tutorial outlines a fully functional review system that could be put to use as-is. However, it could be improved on a few points.
 
-The editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. Of course we could set up an article template page with the correct form layout, and have the editors make a copy this template whenever they need to write a new article (or have them copy an existing article - Form Editor won't copy the submissions).
+The editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. Of course we could set up an article template page with the correct form layout, and have the editors make a copy of this template whenever they need to write a new article (or have them copy an existing article - Form Editor won't copy the submissions).
 
 Also, the rendering of the *Rating* field feels a little off, since it messes with the default radio button group rendering and involves hard coding the rating field name. 
 
