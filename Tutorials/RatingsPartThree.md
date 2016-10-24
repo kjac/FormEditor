@@ -154,6 +154,6 @@ Since the rating field supports statistics, your editors can hit the *Statistics
 ![Submission statistics](img/RatingsPartThree/review form property statistics.png)
 
 ## Closing remarks
-This part of the tutorial should give you an idea of how you can help your editors, both in terms of automation and the editorial experience. We've ended up with a rating system that "just works" without troubling the editors at all with the details of how and why. 
+This part of the tutorial should give you an idea of how you can help your editors in terms of automation and simplified editorial experience. We've ended up with a rating system that "just works" without troubling the editors with the details of how and why. 
 
 In the upcoming (probably last) part of this tutorial we'll have a look at how you can reuse the ratings when listing articles. Until then, happy coding!
