@@ -27,7 +27,7 @@ Create an *Article* page in the Content section and add some content to it. Now 
 ![Rating and review](img/Ratings/review form property.png)
 
 ## Rendering the article 
-When rendering the article we need to calculate its average rating based on all the submitted ratings. We can that by using [form submission statistics](../Docs/submissions.md#how-about-statistics), since the *Radio button group* field type supports statistics out of the box.
+When rendering the article we need to calculate its average rating based on all the submitted ratings. We can do that by using [form submission statistics](../Docs/submissions.md#how-about-statistics), since the *Radio button group* field type supports statistics out of the box.
 
 We also need to fetch and render the latest reviews. Ideally we'd implement some pagination through all the submitted reviews, but that's for another tutorial.
 

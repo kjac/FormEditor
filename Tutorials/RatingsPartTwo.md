@@ -64,14 +64,14 @@ That's it! Now we can use the field in our review form:
 
 - Edit the *Article* page and switch to the *Reviews* tab. 
 - Replace the *Rating* field with the new custom field and add the same option values as before ("5", "4", "3", "2" and "1"). 
-- Hit save and publish and view the page in frontend. 
+- Hit *Save and publish* and view the page in frontend. 
 
-**Note:** If the field does appear in the list of available fields, you probably have to either:
+**Note:** If the field doesn't appear in the list of available fields, you probably have to either:
 
 - Restart the site to make Umbraco pick up the configuration changes.
 - Add the field to a field type group (if you have set up field type groups on the Form Editor data type).
 
-If you're not interrested in the Visual Studio way of creating fields, [scroll down to the bottom](#closing-remarks) now :)
+If you're not interested in the Visual Studio way of creating fields, [scroll down to the bottom](#closing-remarks) now :)
 
 ## The advanced way (by code, Visual Studio required)
 All fields have a *type*, which is key to how Form Editor works with the different fields. Our custom field will have the type *my.rating.advanced*. As we move through the implementation of the field, notice how we use the field type for naming the field assets.
@@ -204,9 +204,9 @@ That's it! Now we can use the field in our review form:
 
 - Edit the *Article* page and switch to the *Reviews* tab. 
 - Replace the *Rating* field with the new custom field (take a moment to enjoy how nice and simple the configuration is, compared to using the Radio button group field). 
-- Hit save and publish and view the page in frontend. 
+- Hit *Save and publish* and view the page in frontend. 
 
-**Note:** If the field does appear in the list of available fields, you have probably set up field type groups on the Form Editor data type. In that case you'll have to add the field to a group before you can use it.
+**Note:** If the field doesn't appear in the list of available fields, you have probably set up field type groups on the Form Editor data type. In that case you'll have to add the field to a group before you can use it.
 
 ## Closing remarks
 If everything goes as planned, the page shouldn't look any different in frontend. But behind the scenes we've got a better implementation with less risk of configuration errors (especially if you went the Visual Studio way).
