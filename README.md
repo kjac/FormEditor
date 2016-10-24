@@ -38,6 +38,8 @@ Some highlights include:
     * Topics covered: Form submission rendering and statistics, customized field rendering.
     * [User ratings - part two: Custom rating field](Tutorials/RatingsPartTwo.md) - create a custom field for star ratings.
         * Topics covered: Custom field creation both by configuration and by code.
+    * [User ratings - part three: Automatically creating the form](Tutorials/RatingsPartThree.md) - create the rating form automatically.
+        * Topics covered: Creating default forms, customizing the property editor.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!

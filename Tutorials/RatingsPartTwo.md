@@ -214,3 +214,5 @@ If everything goes as planned, the page shouldn't look any different in frontend
 Since our custom field is set up with the same field values as we did the radio buttons in part one, the field value statistics that we already gathered for our article are automatically adapted by the custom field.
 
 You can go ahead and undo the changes made to the *Radio button group* rendering - if you didn't make a backup you can find the original [here](../Source/Umbraco/Views/Partials/FormEditor/FieldsSync/core.radiobuttongroup.cshtml).
+
+Are you up for more? The go to [part three](RatingsPartThree.md) of this tutorial and have a look at how we can automate some of the editor workload.
