@@ -145,11 +145,15 @@ Disable all tabs except the "Submissions" tab in the "Tab order and availability
 
 ![Tab order and availability](img/RatingsPartThree/tab order and availability.png)
 
-And while you're at it, tick "Hide label". Now open your *Article* page and switch to the *Reviews* tab. Much better! 
+And while you're at it, tick "Hide label". Now open your *Article* page and switch to the *Reviews* tab... much better! 
 
 ![Submissions tab](img/RatingsPartThree/review form property.png)
 
-(in case you're wondering... the statistics are shown when you hit the *Statistics* button just below the submissions)
+Since the rating field supports statistics, your editors can hit the *Statistics* button just below the submissions and view the spread between the actual rating values (1 through 5). Pretty sweet, isn't it?
+
+![Submission statistics](img/RatingsPartThree/review form property statistics.png)
 
 ## Closing remarks
-TODO
+This part of the tutorial should give you an idea of how you can help your editors, both in terms of automation and the editorial experience. We've ended up with a rating system that "just works" without troubling the editors at all with the details of how and why. 
+
+In the upcoming (probably last) part of this tutorial we'll have a look at how you can reuse the ratings when listing articles. Until then, happy coding!
