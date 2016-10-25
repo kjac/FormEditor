@@ -257,4 +257,4 @@ The rendering of the *Rating* field feels a little off, since it messes with the
 
 Also, the editorial experience is not exactly ideal, since the editors have to create the review form each time they create an article. This is mended in [part three](RatingsPartThree.md), where we'll have a look at how we can  create the form layout automatically.
 
-Finally, in the upcoming part four we'll have a look at some other cool things we can do with the Form Editor extension points.
+Finally, in [part four](RatingsPartFour.md) we'll have a look at some other cool things we can do with the Form Editor extension points.

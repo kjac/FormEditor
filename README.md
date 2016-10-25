@@ -40,6 +40,8 @@ Some highlights include:
         * Topics covered: Custom field creation both by configuration and by code.
     * [User ratings - part three: Automatically creating the form](Tutorials/RatingsPartThree.md) - create the rating form automatically.
         * Topics covered: Creating default forms, customizing the property editor.
+    * [User ratings - part four: Listing the articles](Tutorials/RatingsPartFour.md) - extract ratings for a list view.
+        * Topics covered: Form Editor submission events, custom data layer for statistics data.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
