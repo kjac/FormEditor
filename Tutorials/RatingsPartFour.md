@@ -4,9 +4,9 @@
 In this part we'll have a look at how we can use the article ratings in a list view, without having to query the form submission statistics for each article. 
 
 ## But why?
-The form submission statistics are quite fast to retrieve, and they certainly work well when rendering a single article. But when it comes to listing a bunch of articles at a time, it's simply too expensive on the performance side of things to retrieve the form submission statistics for each and every article in the list. 
+The form submission statistics are quite fast to retrieve, and they certainly work well when rendering a single article. But when it comes to listing a bunch of articles at a time, it simply won't perform well if we have to retrieve the form submission statistics for each and every article in the list. 
 
-Fortunately we have [events](../Docs/extend.md#form-submission-events) on Form Editor that allows us to react to form submissions. We'll use these to build a database cache of the article ratings.
+Fortunately we have [events](../Docs/extend.md#form-submission-events) on Form Editor that allow us to react to form submissions. We'll use these to build a database cache of the article ratings.
 
 ## First thing's first
 Before we do anything, we need to add an *Article list* content type to our site. This content type should allow children of type *Article* and should be allowed at the root of the site. 
@@ -14,7 +14,9 @@ Before we do anything, we need to add an *Article list* content type to our site
 Once it's set up, create an *Article list* page in the Umbraco content tree and move all your articles below this page.
 
 ## The data layer and some plumbing
-We'll build the data layer for our rating cache upon Umbraco's database abstraction `UmbracoDatabase`. Per article we need to store the article ID, the average rating and the number of ratings submitted, so the data model looks like this:
+We'll build the data layer for our rating cache upon Umbraco's database abstraction `UmbracoDatabase`. 
+
+For each article we need to store the article ID, the average rating and the number of ratings submitted, so the data model looks like this:
 
 ```cs
 using Umbraco.Core.Persistence;
@@ -79,7 +81,7 @@ namespace My.Extensions
 }
 ```
 
-...and to provide easy access to our rating cache from our views, we'll add a couple of extension methods to `UmbracoHelper` as well:
+...and to provide easy access to the rating cache from our views, we'll add a couple of extension methods to `UmbracoHelper` as well:
 
 ```cs
 using System.Collections.Generic;
@@ -125,8 +127,8 @@ namespace My.Events
 			{
 				db.CreateTable<ArticleRating>(false);
 			}
-      
-      // ...more to come here...
+
+			// ...more to come here...
 		}
 	}
 }
@@ -268,7 +270,6 @@ Here's the full *Article list* template.
 
     var articles = Model.Content.Children.Where(c => c.DocumentTypeAlias == "article").ToArray();
     var ratings = Umbraco.GetArticleRatings(articles);
-
 }
 
 <!DOCTYPE html>
