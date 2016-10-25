@@ -125,6 +125,7 @@ namespace FormEditor.Storage
 			{
 				RemoveFiles(rowId);
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
+				writer.Optimize();
 			}
 		}
 
