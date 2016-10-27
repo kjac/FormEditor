@@ -353,6 +353,8 @@ if(articleRating != null && articleRating.AverageRating > 0) {
 The rest of the *Article* template shouldn't need any updating, as we're reusing the old variable names for the rating data.
 
 ## Conclusion
-At long last we're done with our rating system! Hooray!!
+At long last we're done with our rating system! Hooray!! You may still need to clean up and refactor a few bits for reuse here and there, but you have a solid foundation rolling your out own rating system.
 
-Hopefully this tutorial has given you an idea of just how versatile Form Editor really is, despite it being just another property editor. 
+This tutorial should give you an idea of just how versatile Form Editor really is, despite it being just another property editor. Hopefully it will serve as an inspiration to use Form Editor for more than just contact forms :)
+
+Happy coding!
