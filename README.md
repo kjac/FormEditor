@@ -32,6 +32,7 @@ Some highlights include:
 
 ## Tutorials
 * [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
+    * Topics covered: Getting started, form reuse.
 * [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
     * Topics covered: Forms within the grid, form submission statistics, asynchronous form postback, multiple forms per page.
 * [User ratings with Form Editor](Tutorials/Ratings.md) - build an article rating system with Form Editor.
