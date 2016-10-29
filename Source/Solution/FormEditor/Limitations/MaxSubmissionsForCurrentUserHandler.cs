@@ -16,7 +16,7 @@ namespace FormEditor.Limitations
 				return true;
 			}
 			var cookie = Request.Cookies[FormSubmittedCookieKey];
-			return cookie != null && cookie.Value.Contains(FormSubmittedCookieValue(content));
+			return cookie == null || cookie.Value.Contains(FormSubmittedCookieValue(content)) == false;
 		}
 
 		public virtual void HandleSubmission(FormModel model, IPublishedContent content)
