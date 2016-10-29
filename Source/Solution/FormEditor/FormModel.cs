@@ -371,7 +371,7 @@ namespace FormEditor
 			}
 		}
 
-		private IMaxSubmissionsForCurrentUserHandler MaxSubmissionsForCurrentUserHandler
+		public IMaxSubmissionsForCurrentUserHandler MaxSubmissionsForCurrentUserHandler
 		{
 			get
 			{

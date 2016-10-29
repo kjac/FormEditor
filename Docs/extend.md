@@ -16,3 +16,6 @@ The cross field validation system can be extended with your own custom condition
 
 ## Replacing the default storage 
 The storage for form submissions can be replaced by your own custom implementation (or with one of the [sample implementations)(../Samples/)). Read more [here](storage.md).
+
+## Custom handling of submission limitations
+Form Editor supports limiting the submissions made to a specific form per user. The default implementation uses a cookie to track which forms the users have submitted. If this doesn't work for you, you can create your own handler (or extend the default one). You can replace the handling globally in `FormEditor.config`, or per instance by setting `FormModel.MaxSubmissionsForCurrentUserHandler`.
