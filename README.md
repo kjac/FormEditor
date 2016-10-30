@@ -32,6 +32,7 @@ Some highlights include:
 
 ## Tutorials
 * [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
+    * Topics covered: Getting started, form reuse.
 * [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
     * Topics covered: Forms within the grid, form submission statistics, asynchronous form postback, multiple forms per page.
 * [User ratings with Form Editor](Tutorials/Ratings.md) - build an article rating system with Form Editor.
@@ -40,6 +41,8 @@ Some highlights include:
         * Topics covered: Custom field creation both by configuration and by code.
     * [User ratings - part three: Automatically creating the form](Tutorials/RatingsPartThree.md) - create the rating form automatically.
         * Topics covered: Creating default forms, customizing the property editor.
+    * [User ratings - part four: Listing the articles](Tutorials/RatingsPartFour.md) - extract ratings for a list view.
+        * Topics covered: Form Editor submission events, custom data layer for statistics data.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
