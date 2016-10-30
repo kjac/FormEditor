@@ -29,12 +29,6 @@
                view: "~/App_Plugins/FormEditor/config/fieldTypeGroups.html"
             },
             {
-               label: "Disallowed field types",
-               description: "Select all fields types that should not be allowed to use",
-               key: "disallowedFieldTypes",
-               view: "~/App_Plugins/FormEditor/config/disallowedFieldTypes.html"
-            },
-            {
                label: "Notification email template",
                description: "Leave empty to disable notification emails",
                key: "notificationEmailTemplate",

@@ -259,15 +259,6 @@
         else {
           // display all fields in one group
           var fieldTypes = $scope.model.config.fieldTypes;
-
-          // TODO: remove this once the obsoleted "disallowed field types" prevalue is removed entirely
-          if ($scope.model.config.disallowedFieldTypes && $scope.model.config.disallowedFieldTypes.length > 0) {
-            // filter out any disallowed field types (as per data type config)
-            fieldTypes = $filter("filter")(fieldTypes, function (value, index, array) {
-              return $scope.model.config.disallowedFieldTypes.indexOf(value.type) < 0;
-            });
-          }
-
           var fieldTypeGroup = {
             name: null,
             fieldTypes: []
