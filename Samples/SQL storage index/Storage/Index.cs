@@ -104,11 +104,10 @@ namespace FormEditor.SqlIndex.Storage
 		{
 			try
 			{
-				byte[] bytes = null;
-				using (var binaryReader = new BinaryReader(file.InputStream))
-				{
-					bytes = binaryReader.ReadBytes(file.ContentLength);
-				}
+				var bytes = new byte[file.ContentLength];
+				file.InputStream.Read(bytes, 0, file.ContentLength);
+				// #86 - make sure we reset the stream position to the beginning of the file
+				file.InputStream.Seek(0, SeekOrigin.Begin);
 
 				Database.Insert(
 					new File

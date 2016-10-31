@@ -682,6 +682,8 @@ namespace FormEditor
 					ContentType = file.ContentType,
 					Bytes = new byte[file.ContentLength]
 				};
+				// #86 - make sure we start reading files at their origin (in case a custom index has been tampering with them)
+				file.InputStream.Seek(0, SeekOrigin.Begin);
 				file.InputStream.Read(attachment.Bytes, 0, file.ContentLength);
 				attachments.Add(attachment);
 			}
