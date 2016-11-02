@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.TextAreaField>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <textarea class="form-control" rows="4" id="@Model.FormSafeName" name="@Model.FormSafeName" placeholder="@Model.Placeholder" maxlength="@(Model.MaxLength > 0 ? Model.MaxLength.ToString() : null)" @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' oninput="setCustomValidity('')">@Model.SubmittedValue</textarea>
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>

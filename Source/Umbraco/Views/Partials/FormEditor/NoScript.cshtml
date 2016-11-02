@@ -1,0 +1,92 @@
+﻿@using FormEditor;
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+  // get the content that contains the form model (defaults to the current page)
+  var formContent = ViewBag.FormContent as IPublishedContent ?? Model;
+
+  // get the name of the form model property on the content type (defaults to "form")
+  var formPropertyName = ViewBag.FormName as string ?? "form";
+ 
+  // get the form model
+  var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
+
+  // attempt to load an existing submission if ViewBag.FormRowId is defined
+  if(ViewBag.FormRowId is string)
+  {
+    Guid rowId;
+    if(Guid.TryParse((string)ViewBag.FormRowId, out rowId))
+    {
+      form.LoadValues(formContent, rowId);
+    }
+  }
+  
+  // handle form submission if this is a postback
+  // - this will also take care of redirecting to the success page (if configured)
+  var formWasSubmitted = form.CollectSubmittedValues(formContent);
+
+  // show the receipt if the form was submitted and we have a receipt message
+  var showReceiptMessage = formWasSubmitted && string.IsNullOrWhiteSpace(form.ReceiptHeader) == false;
+
+  //  show the max number of submissions exceeded for current user message if applicable (and if the form was not submitted just now)
+  var showMaxSubmissionsExceededForCurrentUserMessage = formWasSubmitted == false && form.MaxSubmissionsExceededForCurrentUser(formContent);
+
+  // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now) (no need to check if max submissions are exceeded for the current user)
+  var showMaxSubmissionsExceededMessage = showMaxSubmissionsExceededForCurrentUserMessage == false && formWasSubmitted == false && form.MaxSubmissionsExceeded(formContent);
+}
+
+@if (showReceiptMessage)
+{
+  @* form was submitted and we have a receipt message - show message *@
+  <div class="container form-receipt">
+    <h2>@form.ReceiptHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.ReceiptBody ?? string.Empty))
+    </p>
+  </div>
+}
+else if (showMaxSubmissionsExceededForCurrentUserMessage)
+{
+  @* max number of form submissions for the current user exceeded - show message *@
+  <div class="container form-max-submissions-exceeded">
+    <h2>@form.MaxSubmissionsForCurrentUserExceededHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsForCurrentUserExceededText ?? string.Empty))
+    </p>
+  </div>
+}
+else if (showMaxSubmissionsExceededMessage)
+{
+  @* max number of form submissions exceeded - show message *@
+  <div class="container form-max-submissions-exceeded">
+    <h2>@form.MaxSubmissionsExceededHeader</h2>
+    <p>
+      @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(form.MaxSubmissionsExceededText ?? string.Empty))
+    </p>
+  </div>
+}
+else
+{
+  @* render the form *@
+  <form method="POST" enctype="multipart/form-data">
+    @* add hidden _id to support multiple forms submitting to the same page *@
+    <input type="hidden" name="_id" value="@formContent.Id" />
+    <div class="container form-data">
+      @foreach (var row in form.Rows)
+      {
+        <div class="row @row.Alias">
+          @foreach (var cell in row.Cells)
+          {
+            <div class="cell @cell.Alias">
+              @foreach (var field in cell.Fields)
+              {
+                // render the form field with a partial view
+                // - the view is expected to be located at /Views/Partials/FormEditor/FieldsNoScript/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsNoScript/core.checkbox.cshtml
+                @Html.Partial(string.Format(@"FormEditor/FieldsNoScript/{0}", field.Type), field)
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </form>
+}

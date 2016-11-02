@@ -1,0 +1,7 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.IFieldWithValidation>
+@if (Model.Invalid)
+{
+  <div class="text-danger validation-error">
+    @Model.ErrorMessage
+  </div>
+}
