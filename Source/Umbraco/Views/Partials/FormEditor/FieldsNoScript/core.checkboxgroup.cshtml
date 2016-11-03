@@ -10,10 +10,6 @@
       </label>
     </div>
   }
-  @if (Model.Mandatory)
-  {
-    <i style="color: red">Mandatory validation is not supported for Checkbox Group fields</i>
-  }
 
   @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
