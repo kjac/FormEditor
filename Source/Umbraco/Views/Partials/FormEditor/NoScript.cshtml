@@ -71,22 +71,54 @@ else
     @* add hidden _id to support multiple forms submitting to the same page *@
     <input type="hidden" name="_id" value="@formContent.Id" />
     <div class="container form-data">
-      @foreach (var row in form.Rows)
+      @foreach(var page in form.Pages)
       {
-        <div class="row @row.Alias">
-          @foreach (var cell in row.Cells)
+        @*
+          there's no client side support for form pages in the NoScript rendering, but the page containers
+          are rendered anyway, in case you want to write you own pagination script 
+        *@
+        <div class="form-page">
+          @foreach(var row in page.Rows)
           {
-            <div class="cell @cell.Alias">
-              @foreach (var field in cell.Fields)
+            <div class="row @row.Alias">
+              @foreach(var cell in row.Cells)
               {
-                // render the form field with a partial view
-                // - the view is expected to be located at /Views/Partials/FormEditor/FieldsNoScript/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsNoScript/core.checkbox.cshtml
-                @Html.Partial(string.Format(@"FormEditor/FieldsNoScript/{0}", field.Type), field)
+                <div class="cell @cell.Alias">
+                  @foreach(var field in cell.Fields)
+                  {
+                    // render the form field with a partial view
+                    // - the view is expected to be located at /Views/Partials/FormEditor/FieldsNoScript/[field type].cshtml, e.g. /Views/Partials/FormEditor/FieldsNoScript/core.checkbox.cshtml
+                    @Html.Partial(string.Format(@"FormEditor/FieldsNoScript/{0}", field.Type), field)
+                  }
+                </div>
               }
             </div>
           }
         </div>
       }
     </div>
+    @*
+      cross field validation errors - even if cross field validation is not supported client side 
+      by the NoScript rendering, they are still handled server side
+      TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+    *@
+    @if(form.Validations.Any(f => f.Invalid))
+    {
+      <div class="row form-validation-errors">
+        <div class="cell">
+          <div class="form-group alert alert-danger">
+            <h4>
+              @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
+            </h4>
+            <ul>
+              @foreach(var invalidValidation in form.Validations.Where(v => v.Invalid))
+              {
+                <li>@invalidValidation.ErrorMessage</li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    }
   </form>
 }
