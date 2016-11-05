@@ -17,7 +17,7 @@ Now add a content picker to the page content type and select *My Reusable Form* 
 ## Tweaking the templates
 Once you've got the content all set up, you'll need to tell the Form Editor to use selected content (*My Reusable Form*) instead of the currently requested content. This is done by assigning the selected content to ```ViewBag.FormContent``` before calling the partial view that renders the form.
 
-The sample templates for [synchronous](../Source/Umbraco/Views/FormEditorSync.cshtml) and [asynchronous](../Source/Umbraco/Views/FormEditorAsync.cshtml) form postback have already been prepared for this. 
+The [sample templates](Render.md) have already been prepared for this. 
 
 ```cs
 // get the selected content that contains the form model 
