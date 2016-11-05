@@ -1,0 +1,34 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+  Layout = null;
+  
+  @* if the content being rendered does not contain the form property, pass the applicable content like this *@
+  // ViewBag.FormContent = myInstanceOfIPublishedContent;
+
+  @* if your form property is not called "form" on the content type, pass the property name like this *@
+  // ViewBag.FormName = "myForm";
+
+  @* if you want to load submission data for an existing form submission, specify the row ID (GUID) like this *@
+  // ViewBag.FormRowId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>@Model.Content.Name</title>
+  <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css"/>
+  @* add some styles for Form Editor *@
+  <style>
+    /* required field indicator on the field labels */
+    div.form-group.required > label:after {
+      content: ' *';
+      color: #a94442;
+    }
+  </style>
+</head>
+<body>
+  
+  @* render the form with the NoScript partial *@
+  @Html.Partial("FormEditor/NoScript", Umbraco.AssignedContentItem)
+
+</body>
+</html>
