@@ -20,17 +20,10 @@ Note: It's highly recommended to create a tab dedicated to the form property, as
 In your page template, add the following line where you want the form property rendered:
 
 ```cs
-@Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem)
+@Html.Partial("FormEditor/NoScript", Umbraco.AssignedContentItem)
 ```
 
-To support client side validation, add jQuery (if it's not there already) and the Form Editor validation script:
-
-```xml
-<script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-<script src="/JS/FormEditor/FormEditorSync.js" type="text/javascript"></script>
-```
-
-...and add a bit of styling for validation as well:
+...and add a bit of styling for required fields:
 
 ```xml
 <style>
@@ -53,6 +46,9 @@ Of course you'll need to style the form elements too, but that's out of scope fo
 Now go build a form on one of your pages and publish it. If everything goes according to plan, you should now have a fully functional form on your page.
 
 **TODO: picture**
+
+## About the form rendering
+Form Editor ships with several rendering options out of the box, and you can also build your own from scratch. In this tutorial we have used the simplest one, the *NoScript* rendering. You can read more about the different rendering options [here](../Docs/render.md).
 
 ## Sample template
 Just in case you need it, here's a complete template that includes all of the above mentioned rendering.
@@ -97,11 +93,7 @@ Just in case you need it, here's a complete template that includes all of the ab
     <h1>@Model.Content.GetPropertyValue("title")</h1>
 
     @* render the "form" property *@
-    @Html.Partial("FormEditor/Sync", Umbraco.AssignedContentItem)
-
-    @* include jQuery and the Form Editor script to make the client side validation work *@
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-    <script src="/JS/FormEditor/FormEditorSync.js" type="text/javascript"></script>
+    @Html.Partial("FormEditor/NoScript", Umbraco.AssignedContentItem)
 </body>
 </html>
 ```
