@@ -1,6 +1,6 @@
 # Quick start tutorial
 
-Are you all new to Form Editor? No worries, this tutorial was made specifically for you. Just follow these steps and you'll be up and running in no time!
+Are you new to Form Editor? No worries, this tutorial was made specifically for you. Just follow these steps and you'll be up and running in no time!
 
 ## Step 1: Install and set up Form Editor
 Go grab the latest version of the Form Editor Umbraco package from the [releases section](https://github.com/kjac/FormEditor/releases) (it's the zip file attached to the release) and install it in the Developer section of Umbraco. 

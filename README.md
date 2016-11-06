@@ -33,7 +33,7 @@ Some highlights include:
 * [Building and contributing](Docs/build.md)
 
 ## Tutorials
-* [Quick start tutorial](Tutorials/QuickStart.md) - start here if you're all new to Form Editor.
+* [Quick start tutorial](Tutorials/QuickStart.md) - start here if you're new to Form Editor.
     * Topics covered: Getting started.
 * [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
     * Topics covered: Getting started, form reuse.
