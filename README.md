@@ -4,6 +4,8 @@ Form Editor is a free and open source package for [Umbraco](http://umbraco.com/)
 
 ![Form Editor UI](Docs/img/form layout.png)
 
+If you're new to Form Editor and want to get it up and running quickly, check out the [Quick start tutorial](Tutorials/QuickStart.md).
+
 Some highlights include:
 * Grid based form editing.
 * Ships with (almost) all HTML5 input types.
@@ -31,6 +33,8 @@ Some highlights include:
 * [Building and contributing](Docs/build.md)
 
 ## Tutorials
+* [Quick start tutorial](Tutorials/QuickStart.md) - start here if you're new to Form Editor.
+    * Topics covered: Getting started.
 * [Hello Form Editor](Tutorials/HelloFormEditor.md) - add Form Editor to the Fanoe starter kit in just 15 minutes.
     * Topics covered: Getting started, form reuse.
 * [Creating a poll with Form Editor](Tutorials/Poll.md) - use Form Editor to create polls within the Fanoe starter kit.
