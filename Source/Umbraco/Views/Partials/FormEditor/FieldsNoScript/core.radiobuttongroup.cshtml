@@ -5,7 +5,7 @@
   {
     <div class="radio">
       <label>
-        <input type="radio" name="@Model.FormSafeName" value="@fieldValue.Value" @(fieldValue.Selected ? "checked" : "") @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange="form.elements['@Model.FormSafeName'].forEach(function (e) { e.setCustomValidity(''); })" />
+        <input type="radio" name="@Model.FormSafeName" value="@fieldValue.Value" @(fieldValue.Selected ? "checked" : "") @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange="[].forEach.call(form.elements['@Model.FormSafeName'], function (e) { e.setCustomValidity(''); })" />
         @fieldValue.Value
       </label>
     </div>
