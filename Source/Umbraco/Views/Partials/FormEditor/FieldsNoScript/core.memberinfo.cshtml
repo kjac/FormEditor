@@ -1,0 +1,5 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.MemberInfoField>
+@*
+  render a hidden field to indicate whether or not a member is logged in, so we can use client side validations based on member login status
+*@
+<input type="hidden" name="@Model.FormSafeName" value="@(Model.IsMemberLoggedIn ? "true" : null)"/>

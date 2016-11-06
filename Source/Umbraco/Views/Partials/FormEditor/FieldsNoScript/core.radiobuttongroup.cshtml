@@ -1,0 +1,16 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.RadioButtonGroupField>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+  <label>@Model.Label</label>
+  @foreach (var fieldValue in Model.FieldValues)
+  {
+    <div class="radio">
+      <label>
+        <input type="radio" name="@Model.FormSafeName" value="@fieldValue.Value" @(fieldValue.Selected ? "checked" : "") @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange="[].forEach.call(form.elements['@Model.FormSafeName'], function (e) { e.setCustomValidity(''); })" />
+        @fieldValue.Value
+      </label>
+    </div>
+  }
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>

@@ -1,0 +1,13 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.SelectBoxField>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <select class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.MultiSelect ? "multiple" : "") size="@(Model.Size ?? Model.FieldValues.Count())" @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange="setCustomValidity('')">
+    @foreach (var fieldValue in Model.FieldValues)
+    {
+      <option value="@fieldValue.Value" @(fieldValue.Selected ? "selected" : "")>@fieldValue.Value</option>
+    }
+  </select>
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>

@@ -1,0 +1,10 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CheckboxField>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid? "has-error" : null) checkbox">
+  <label>
+    <input type="checkbox" name="@Model.FormSafeName" value="true" @(Model.Selected ? "checked" : null) @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange='setCustomValidity("")' />
+    @Model.Label
+  </label>
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>

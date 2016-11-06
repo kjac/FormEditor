@@ -1,5 +1,5 @@
 # Multiple forms per page
-Although you can only have one Form Editor property on an Umbraco document type, you can still render multiple forms per page using the technique described in [reusable forms](reuse.md). The premade partial views for  [synchronous](../Source/Umbraco/Views/Partials/FormEditor/Sync.cshtml) and [asynchronous](../Source/Umbraco/Views/Partials/FormEditor/Async.cshtml) form postback both support this scenario out of the box. 
+Although you can only have one Form Editor property on an Umbraco document type, you can still render multiple forms per page using the technique described in [reusable forms](reuse.md). The [premade partial views](Render.md) all support this scenario out of the box. 
 
 But... If you're using asynchronous form postback, you'll need to add a small tweak to make AngularJS play nice.
 

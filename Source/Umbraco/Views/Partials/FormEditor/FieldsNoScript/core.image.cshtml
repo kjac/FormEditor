@@ -1,0 +1,13 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.ImageField>
+@if (Model.Media != null)
+{
+  <div class="form-group">
+    <img src="@Model.Media.Url" class="img-rounded" />
+    @if (string.IsNullOrEmpty(Model.Text) == false)
+    {
+      <p class="text-muted">
+        @Model.Text
+      </p>
+    }
+  </div>
+}

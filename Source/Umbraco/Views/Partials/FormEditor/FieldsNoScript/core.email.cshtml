@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.EmailField>
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+  <label for="@Model.FormSafeName">@Model.Label</label>
+  <input type="email" class="form-control" id="@Model.FormSafeName" name="@Model.FormSafeName" placeholder="@Model.Placeholder" value="@Model.SubmittedValue" multiple="@Model.Multiple" @(Model.Mandatory ? "required" : null) oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' oninput="setCustomValidity('')" />
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.helptext")
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>
