@@ -69,7 +69,7 @@ Just in case you need it, here's a complete template that includes all of the ab
             color: #a94442;
         }
 
-        /* a little bit of form element styling to make it look a nicer */
+        /* some basic form element styling to make it look a little bit nicer */
         div.form-group {
             margin-bottom: 1em;
         }
