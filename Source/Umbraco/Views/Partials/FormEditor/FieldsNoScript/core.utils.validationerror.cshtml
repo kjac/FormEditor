@@ -1,0 +1,8 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.IFieldWithValidation>
+@* for the NoScript rendering, this is solely rendered server side *@
+@if (Model.Invalid)
+{
+  <div class="text-danger validation-error">
+    @Model.ErrorMessage
+  </div>
+}
