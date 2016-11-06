@@ -1,6 +1,6 @@
 # Quick start tutorial
 
-**TODO: intro text**
+Are you all new to Form Editor? No worries, this tutorial was made specifically for you. Just follow these steps and you'll be up and running in no time!
 
 ## Step 1: Install and set up Form Editor
 Go grab the latest version of the Form Editor Umbraco package from the [releases section](https://github.com/kjac/FormEditor/releases) (it's the zip file attached to the release) and install it in the Developer section of Umbraco. 
@@ -32,20 +32,19 @@ In your page template, add the following line where you want the form property r
         content: ' *';
         color: #a94442;
     }
-
-    /* hidden stuff, e.g validation errors */
-    div.hide {
-        display: none;
-    }
 </style>
 ```
 
 Of course you'll need to style the form elements too, but that's out of scope for this quick start tutorial.
 
 ## Step 4: Profit :)
-Now go build a form on one of your pages and publish it. If everything goes according to plan, you should now have a fully functional form on your page.
+Now go build a form on one of your pages and publish it. 
 
-**TODO: picture**
+![Form property](img/QuickStart/form property.png)
+
+If everything goes according to plan, you should now have a fully functional form on your page.
+
+![Form](img/QuickStart/form.png)
 
 ## About the form rendering
 Form Editor ships with several rendering options out of the box, and you can also build your own from scratch. In this tutorial we have used the simplest one, the *NoScript* rendering. You can read more about the different rendering options [here](../Docs/render.md).
@@ -68,11 +67,6 @@ Just in case you need it, here's a complete template that includes all of the ab
         div.form-group.required > label:after {
             content: ' *';
             color: #a94442;
-        }
-
-        /* hidden stuff, e.g validation errors */
-        div.hide {
-            display: none;
         }
 
         /* a little bit of form element styling to make it look a nicer */
