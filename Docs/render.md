@@ -36,7 +36,12 @@ Have a look at the sample templates to see actual implementations of this.
 **Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
 
 ### Limitations in the *NoScript* rendering
-The *NoScript* rendering does not support cross field validation on the client side (of course it's supported server side no matter your choice of rendering). You might want to consider [disabling the validation tab](install.md#tab-order-and-availiability) if you're using *NoScript*.
+The *NoScript* rendering provides client side validation solely by means of HTML5 validation and a bit of inline scripting to ensure that the correct error messages are shown for invalid fields. This means that the client side validation lacks support for a few things, namely:
+
+- Cross field validation
+- Required validation for *Checkbox group* fields
+
+Of course the server side validation still works for all of the above, regardless of your choice of rendering. However, you still might want to consider [disabling the validation tab](install.md#tab-order-and-availiability) and [omitting the *Checkbox group* field type](install.md#field-type-groups) if you're using *NoScript*.
 
 ## Creating your own rendering
 If you want to create your own renderings, the sample templates and partial views should always be your starting point for inspiration. They are fairly well documented and will not be discussed in detail here. However, a few things are worth mentioning.
