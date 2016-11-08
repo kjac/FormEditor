@@ -171,14 +171,14 @@ namespace FormEditor
 			}
 
 			// before add to index event handling did not cancel - add to index
-			var rowId = AddSubmittedValuesToIndex(content, valueFields);
-			if(rowId == Guid.Empty)
+			RowId = AddSubmittedValuesToIndex(content, valueFields);
+			if(RowId == Guid.Empty)
 			{
 				return false;
 			}
 
 			// tell everyone that something was added
-			RaiseAfterAddToIndex(rowId, content);
+			RaiseAfterAddToIndex(content);
 
 			MaxSubmissionsForCurrentUserHandler.HandleSubmission(this, content);
 
@@ -547,13 +547,13 @@ namespace FormEditor
 			return null;
 		}
 
-		private void RaiseAfterAddToIndex(Guid rowId, IPublishedContent content)
+		private void RaiseAfterAddToIndex(IPublishedContent content)
 		{
 			if(AfterAddToIndex != null)
 			{
 				try
 				{
-					AfterAddToIndex.Invoke(this, new FormEditorEventArgs(rowId, content));
+					AfterAddToIndex.Invoke(this, new FormEditorEventArgs(RowId, content));
 				}
 				catch(Exception ex)
 				{

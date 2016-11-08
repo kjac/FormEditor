@@ -80,7 +80,7 @@ namespace FormEditor.Api
 				return ValidationErrorResponse(errorData);
 			}
 
-			var successData = new SubmissionSuccessData();
+			var successData = new SubmissionSuccessData(formModel.RowId);
 			if (formModel.SuccessPageId <= 0)
 			{
 				return SubmissionSuccessResponse(successData);
@@ -127,11 +127,19 @@ namespace FormEditor.Api
 
 		public class SubmissionSuccessData
 		{
+			public SubmissionSuccessData(Guid rowId)
+			{
+				RowId = rowId;
+			}
+
 			[JsonProperty("redirectUrl")]
 			public string RedirectUrl { get; set; }
 
 			[JsonProperty("redirectUrlWithDomain")]
 			public string RedirectUrlWithDomain { get; set; }
+
+			[JsonProperty("rowId")]
+			public Guid RowId { get; set; }
 		}
 	}
 }
