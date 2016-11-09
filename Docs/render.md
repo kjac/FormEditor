@@ -97,6 +97,28 @@ var form = Model.Content.GetPropertyValue<FormModel>("form");
 form.CollectSubmittedValues();
 ```
 
+If you need to work with the submitted values after the postback, you can retrieve the ID of the submission from the `RowId` property on the form model:
+
+```cs
+// get the form model (named "form" on the content type)
+var form = Model.Content.GetPropertyValue<FormModel>("form");
+// collect submitted values but do not redirect
+if (form.CollectSubmittedValues(redirect: false))
+{
+  // get the ID of the submission
+  var id = form.RowId;
+  // do something with the ID - for example redirect to the recipt page with the ID in the query string
+  if (form.SuccessPageId > 0)
+  {
+    var successPage = Umbraco.TypedContent(form.SuccessPageId);
+    if (successPage != null)
+    {
+      HttpContext.Current.Response.Redirect(successPage.Url + "?id=" + id);
+    }
+  }
+}
+```
+
 ### Submitting form data using asynchronous postback
 When using asynchronous postback for form submission you'll need to create a `FormData` object, populate it with the form data you want to submit and POST it to the Form Editor `SubmitEntry` endpoint at */umbraco/FormEditorApi/Public/SubmitEntry/* - like this: 
 
@@ -110,6 +132,8 @@ $http.post("/umbraco/FormEditorApi/Public/SubmitEntry/", data, { headers: { "Con
 ```
 
 Please remember the `"Content-Type": undefined` header, otherwise stuff won't work.
+
+The response from the endpoint contains the receipt page URL (if a receipt page is configured) and the ID of the submission.
 
 ## Next step
 Onwards to [Email templates](emails.md).
