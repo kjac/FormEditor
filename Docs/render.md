@@ -13,7 +13,6 @@ The package also installs sample templates that demonstrate how to use the parti
 - [Asynchronous form postback](../Source/Umbraco/Views/FormEditorAsync.cshtml) using AngularJS.
 - [Synchronous form postback](../Source/Umbraco/Views/FormEditorNoScript.cshtml) without external script dependencies.
 
-
 ## 1-2-3-done!
 By completing these steps you'll have your first form rendered in no time:
 
@@ -34,6 +33,42 @@ Have a look at the sample templates to see actual implementations of this.
 **Note:** If your Form Editor property does not reside on the currently requested content element, you can specify the applicable content element like this: ```ViewBag.FormContent = myInstanceOfIPublishedContent;``` (see also [this page](reuse.md))
 
 **Note:** If you have named your Form Editor property something else than "form" (see [Installing and setting up Form Editor](install.md)), you can specify the property name like this: ```ViewBag.FormName = "myForm";```
+
+### Performing asynchronous postback with the *NoScript* rendering
+If you want to do asynchronous postback with the *NoScript* rendering, you can post the form data to the Form Editor endpoint at */umbraco/FormEditorApi/Public/SubmitEntry/*. This could be done using the `XMLHttpRequest` - something like this:
+
+```js
+document.addEventListener("DOMContentLoaded",
+    function () {
+        if (!document.forms.length) {
+            return;
+        }
+        // add a submit event listener to the first form on the page (you might need to be smarter about this)
+        document.forms[0].addEventListener("submit",
+            function (e) {
+                e.preventDefault();
+
+                var data = new FormData(e.target);
+                var request = new XMLHttpRequest();
+
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4 && request.status === 200) {
+                        var response = JSON.parse(request.responseText);
+                        // is the form set up with a redirect to a thank-you page?
+                        if (response.redirectUrlWithDomain) {
+                            window.location = response.redirectUrlWithDomain;
+                        } else {
+                            // nope, do your thing - show a thank-you message or whatnot
+                            alert("Thank you!");
+                        }
+                    }
+                }
+
+                request.open("POST", "/umbraco/FormEditorApi/Public/SubmitEntry/", true);
+                request.send(data);
+            });
+    });
+```
 
 ### Limitations in the *NoScript* rendering
 The *NoScript* rendering provides client side validation solely by means of HTML5 validation and a bit of inline scripting to ensure that the correct error messages are shown for invalid fields. This means that the client side validation lacks support for a few things, namely:
