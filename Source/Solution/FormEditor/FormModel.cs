@@ -697,8 +697,10 @@ namespace FormEditor
 				}
 				try
 				{
-					var client = new SmtpClient();
-					client.Send(mail);
+					using(var client = new SmtpClient())
+					{
+						client.Send(mail);
+					}
 				}
 				catch(Exception ex)
 				{
