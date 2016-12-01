@@ -29,12 +29,13 @@
                   <tr>
                     <td class="form-cell" ng-class="cell.alias" width="{{cellWidth(row, cell)}}%" ng-repeat="cell in row.cells">
                       <div ui-sortable="sortableOptionsField" ng-model="cell.fields" class="form-fields">
-                        <div class="form-field" ng-repeat="field in cell.fields">
+                        <div class="form-field" ng-class="{'form-field-cloneable': model.enableFieldCloning}" ng-repeat="field in cell.fields">
                           <span class="form-field-content" ng-class="{'form-field-invalid': isInvalidField(field)}">
                             <span class="form-field-icon-and-name" ng-click="editField(field)">
                               <i class="field-icon" ng-class="{'field-mandatory': field.mandatory}" style="background-image: url('{{pathToFieldFile(field.icon)}}')"></i>
                               <span class="form-field-name">{{getFieldName(field)}}</span>
                             </span>
+                            <i ng-if="model.enableFieldCloning" class="icon icon-documents dimmed" ng-click="cloneField(field, cell)"></i>
                             <i class="icon icon-delete dimmed" ng-click="removeField(field, cell)"></i>
                           </span>
                         </div>

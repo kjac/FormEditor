@@ -149,10 +149,18 @@
 
         span.form-field-name {
           display: inline-block;
-          max-width: 75%;
+          max-width: 65%;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+        }
+
+        &.form-field-cloneable {
+          span.form-field-content {
+            span.form-field-name {
+              max-width: 55%;
+            }
+          }
         }
       }
     }
