@@ -263,6 +263,8 @@
     <Compile Include="Events\FormEditorCancelEventHandler.cs" />
     <Compile Include="Events\FormEditorEventArgs.cs" />
     <Compile Include="Events\FormEditorEventHandler.cs" />
+    <Compile Include="Events\FormEditorMailCancelEventArgs.cs" />
+    <Compile Include="Events\FormEditorMailCancelEventHandler.cs" />
     <Compile Include="Fields\CustomFieldFixedValues.cs" />
     <Compile Include="Fields\Statistics\FieldExtensions.cs" />
     <Compile Include="Fields\Statistics\IValueFrequencyStatisticsField.cs" />
