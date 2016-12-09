@@ -581,7 +581,7 @@ namespace FormEditor
 						.Where(f => f != null && f.ContentLength > 0)
 						.ToArray()
 					: null;
-				SendEmailType(EmailNotificationSubject, EmailNotificationFromAddress, EmailNotificationRecipients, content, EmailNotificationTemplate, "Notification", uploadedFiles, ref emailBody);
+				SendEmailType(EmailNotificationSubject, EmailNotificationFromAddress, EmailNotificationRecipients, content, EmailNotificationTemplate, "Notification", uploadedFiles, ref emailBody, valueFields);
 			}
 
 			if(string.IsNullOrWhiteSpace(EmailConfirmationRecipientsField))
@@ -607,11 +607,11 @@ namespace FormEditor
 					// nope
 					emailBody = null;
 				}
-				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientAddresses, content, EmailConfirmationTemplate, "Confirmation", null, ref emailBody);
+				SendEmailType(EmailConfirmationSubject, EmailConfirmationFromAddress, recipientAddresses, content, EmailConfirmationTemplate, "Confirmation", null, ref emailBody, valueFields);
 			}
 		}
 
-		private void SendEmailType(string subject, string senderAddress, string recipientAddresses, IPublishedContent currentContent, string template, string emailType, HttpPostedFile[] uploadedFiles, ref string emailBody)
+		private void SendEmailType(string subject, string senderAddress, string recipientAddresses, IPublishedContent currentContent, string template, string emailType, HttpPostedFile[] uploadedFiles, ref string emailBody, IEnumerable<FieldWithValue> valueFields)
 		{
 			if(string.IsNullOrEmpty(template))
 			{
@@ -650,10 +650,10 @@ namespace FormEditor
 			subject = InterpolateSubmittedValues(subject);
 
 			// send emails to the recipients
-			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles, emailType);
+			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles, emailType, valueFields);
 		}
 
-		private void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to, HttpPostedFile[] uploadedFiles, string emailType)
+		private void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to, HttpPostedFile[] uploadedFiles, string emailType, IEnumerable<FieldWithValue> valueFields)
 		{
 			if(string.IsNullOrEmpty(body))
 			{
@@ -694,7 +694,7 @@ namespace FormEditor
 			{
 				try
 				{
-					var cancelEventArgs = new FormEditorMailCancelEventArgs(mail, emailType.ToLowerInvariant());
+					var cancelEventArgs = new FormEditorMailEventArgs(mail, emailType.ToLowerInvariant(), valueFields);
 					BeforeSendMail.Invoke(this, cancelEventArgs);
 					if(cancelEventArgs.Cancel)
 					{
