@@ -90,6 +90,7 @@ namespace FormEditor
 		// events
 		public static event FormEditorCancelEventHandler BeforeAddToIndex;
 		public static event FormEditorEventHandler AfterAddToIndex;
+		public static event FormEditorMailCancelEventHandler BeforeSendMail;
 
 		public bool CollectSubmittedValues(bool redirect = true)
 		{
@@ -649,10 +650,10 @@ namespace FormEditor
 			subject = InterpolateSubmittedValues(subject);
 
 			// send emails to the recipients
-			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles);
+			SendEmails(subject, emailBody, senderEmailAddress, addresses, uploadedFiles, emailType);
 		}
 
-		private static void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to, HttpPostedFile[] uploadedFiles)
+		private void SendEmails(string subject, string body, MailAddress from, IEnumerable<MailAddress> to, HttpPostedFile[] uploadedFiles, string emailType)
 		{
 			if(string.IsNullOrEmpty(body))
 			{
@@ -686,6 +687,26 @@ namespace FormEditor
 				file.InputStream.Seek(0, SeekOrigin.Begin);
 				file.InputStream.Read(attachment.Bytes, 0, file.ContentLength);
 				attachments.Add(attachment);
+			}
+
+			// #23 - raise an event before sending the mail
+			if(BeforeSendMail != null)
+			{
+				try
+				{
+					var cancelEventArgs = new FormEditorMailCancelEventArgs(mail, emailType.ToLowerInvariant());
+					BeforeSendMail.Invoke(this, cancelEventArgs);
+					if(cancelEventArgs.Cancel)
+					{
+						Log.Info("The {0} email was not sent because an event handler for BeforeSendMail cancelled the mail delivery.", emailType);
+						return;
+					}
+				}
+				catch (Exception ex)
+				{
+					// an event handler failed - log error and continue
+					Log.Error(ex, "An event handler for BeforeSendMail threw an exception.");
+				}
 			}
 
 			// send the mail as fire-and-forget (pass the attachments as state)
