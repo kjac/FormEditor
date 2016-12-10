@@ -47,6 +47,8 @@ Some highlights include:
         * Topics covered: Creating default forms, customizing the property editor.
     * [User ratings - part four: Listing the articles](Tutorials/RatingsPartFour.md) - extract ratings for a list view.
         * Topics covered: Form Editor submission events, custom data layer for statistics data.
+* [Integrating with email marketing](Tutorials/EmailMarketing.md) - integrate Form Editor submissions with your email marketing platform.
+    * Topics covered: Submission event handling, integration, Campaign Monitor.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
