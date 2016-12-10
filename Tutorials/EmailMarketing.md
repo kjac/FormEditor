@@ -20,9 +20,9 @@ Start by adding the Campaign Monitor .NET wrapper to your project. If you're on 
 
 ![Extracting NuGet package with 7zip](img/EmailMarketing/7zip nuget.png)
 
-Next add the Umbraco `ApplicationEventHandler` implementation from the code listing below. You can just dump it in the */App_Code* folder if your site if you're not into Visual Studio. 
+Next add the event handler implementation from the code listing below to your project (or you can dump it in the */App_Code* folder of your site if you're not into Visual Studio). 
 
-You'll need to update the Campaign Monitor API key and mailing list ID in the top of the code listing to match your own Campaign Monitor account and list. If you need help finding these, have a look at the *Integrations and API* category in the *Help* section of your Campaign Monitor dashboard.
+You'll need to update the Campaign Monitor API key and mailing list ID in the top of the event handler to match your own Campaign Monitor account and list. If you need help finding these, have a look at the *Integrations and API* category in the *Help* section of your Campaign Monitor dashboard.
 
 ![Campaign Monitor settings](img/EmailMarketing/campaign monitor settings.png)
 
@@ -142,7 +142,7 @@ To test the integration, create a form which contains:
 
 Make sure you tick the "Subscribe" box when you submit the form. Once submitted, hopefully you'll find your email added to your Campaign Monitor list, along with any other information you filled out (if not, check the Umbraco log for any log errors).
 
-![Campaign Monitor subscription](img/EmailMarketing/campaign monitor settings.png)
+![Campaign Monitor subscription](img/EmailMarketing/campaign monitor subscription.png)
 
 ## But wait, I have several mailing lists!
 
