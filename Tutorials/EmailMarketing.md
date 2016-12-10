@@ -45,7 +45,7 @@ namespace MySite
 	{
 		// Campaign Monitor configuration - you should probably put this in web.config instead
 		private const string CampaignMonitorApiKey = "YOUR API KEY GOES HERE";
-		private const string CampaignMonitorListId = "YOUR MAILING LIST ID GOES HERE";
+		private const string CampaignMonitorListId = "YOUR LIST ID GOES HERE";
 
 		protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
 		{
