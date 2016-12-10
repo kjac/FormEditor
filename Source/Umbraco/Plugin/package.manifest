@@ -89,6 +89,12 @@
                view: "boolean"
             },
             {
+               label: "Enable field cloning",
+               description: "Make it possible to clone the fields in the form",
+               key: "enableFieldCloning",
+               view: "boolean"
+            },
+            {
                label: "Custom CSS",
                description: "Path to custom CSS to include in the property editor (e.g. /my/custom.css)",
                key: "customCss",
