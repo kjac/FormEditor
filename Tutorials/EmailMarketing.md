@@ -146,6 +146,11 @@ Make sure you tick the "Subscribe" box when you submit the form. Once submitted,
 
 ## But wait, I have several mailing lists!
 
-The event handler above uses one hard coded mailing list ID, which may not scale to your needs. Fortunately the `FormEditorEventArgs` exposes the Umbraco page that contains our form (as `IPublishedContent`). With this in mind you can add a picker to the document type, to let the editors pick the relevant mailing list, and access that property in the event handler. Or maybe you can figure out the correct mailing list based on the location of the Umbraco page in the content tree (by site, country etc).
+The event handler above uses one hard coded mailing list ID, which may not scale to your needs. Fortunately the `FormEditorEventArgs` exposes the Umbraco page that contains our form (as `IPublishedContent`). With this in mind you could figure out the correct mailing list, for example based on:
+
+- The document type of the Umbraco page.
+- The location of the Umbraco page in the content tree (by site, country etc).
+- A picker on the document type, that'd let the editors pick the relevant mailing list themselves.
+- ...
 
 Happy coding!
