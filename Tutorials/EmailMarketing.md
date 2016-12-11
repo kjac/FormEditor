@@ -16,17 +16,15 @@ The form submission events are described in the [documentation](../Docs/extend.m
 
 When our event handler is invoked, we'll attempt to dig out the relevant form fields by guessing their "form safe names" (basically their IDs). This means our editors need to know how to name the fields we're looking for - e.g. always name the "subscribe to newsletter" checkbox "Newsletter" or "Subscribe".
 
-Start by adding the Campaign Monitor .NET wrapper to your project. If you're on the Visual Studio side of things, use the [NuGet](https://www.nuget.org/packages/campaignmonitor-api/) package. If you're not, you can download the NuGet package, extract *createsend-dotnet.dll* (7zip can extract NuGet packages), and dump the DLL in the */bin* folder of your site.
+Start by adding the Campaign Monitor .NET wrapper to your project. If you're on the Visual Studio side of things, use the [NuGet](https://www.nuget.org/packages/campaignmonitor-api/) package. If you're not, you can download the NuGet package, extract *createsend-dotnet.dll* ([7zip](http://www.7-zip.org/) can extract NuGet packages), and dump the DLL in the */bin* folder of your site.
 
 ![Extracting NuGet package with 7zip](img/EmailMarketing/7zip nuget.png)
 
-Next add the event handler implementation from the code listing below to your project (or you can put it in the */App_Code* folder of your site if you're not into Visual Studio). 
-
-You'll need to update the Campaign Monitor API key and mailing list ID in the top of the event handler to match your own Campaign Monitor account and list. If you need help finding these, have a look at the *Integrations and API* category in the *Help* section of your Campaign Monitor dashboard.
+Next add the event handler implementation from the code listing below (you can put it in the */App_Code* folder of your site if you're not into Visual Studio). You'll need to update the Campaign Monitor API key and mailing list ID in the top of the event handler to match your own Campaign Monitor account and list. If you need help finding these, have a look at the *Integrations and API* category in the *Help* section of your Campaign Monitor dashboard.
 
 ![Campaign Monitor settings](img/EmailMarketing/campaign monitor settings.png)
 
-Here's the full code for the event handler.
+Here's the full implementation of the event handler.
 
 ```CS
 ﻿using System;
