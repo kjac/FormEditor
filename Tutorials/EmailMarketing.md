@@ -6,21 +6,21 @@ In this tutorial we'll integrate Form Editor with an email marketing platform, s
 
 ## What to do
 
-We'll hook into the Form Editor submission events and handle the subscription there, so our editors don't have to do anything besides adding fields to their forms. This has the (in this case) added benefit of working across all forms.
+The objective is simple: When a form is submitted, we'll look for a checked "subscribe to newsletter" checkbox and a valid email field. If we can find those, we'll subscribe the email address to our mailing list. Furthermore we'll attempt to dig out additional information about the user (name, gender and zip code) and pass it along with the subscription, for use within Campaign Monitor. 
 
-The objective is simple: If we can find a checked "subscribe to newsletter" checkbox and a valid email field on a submitted form, we'll subscribe the email address to our mailing list. Furthermore we'll attempt to dig out additional information about the end user (name, gender and zip code) and pass this along with the subscription for use within Campaign Monitor. 
+We'll hook into the Form Editor submission events and handle the subscription there. This approach ensures that our editors won't have to do anything besides adding fields to their forms. It also has the (in our case) added benefit of working across all forms.
 
 ## How to do it
 
 The form submission events are described in the [documentation](../Docs/extend.md#form-submission-events). We'll add our newsletter subscription handling to the `AfterAddToIndex` event, so we only use valid form data in the newsletter subscription.
 
-When our event handler is invoked, we'll attempt to dig out the relevant form fields by qualified quesses on their "form safe names" (basically their IDs). This means our editors need to know how to name the fields we're looking for - e.g. always name the "subscribe to newsletter" checkbox "Newsletter" or "Subscribe".
+When our event handler is invoked, we'll attempt to dig out the relevant form fields by guessing their "form safe names" (basically their IDs). This means our editors need to know how to name the fields we're looking for - e.g. always name the "subscribe to newsletter" checkbox "Newsletter" or "Subscribe".
 
 Start by adding the Campaign Monitor .NET wrapper to your project. If you're on the Visual Studio side of things, use the [NuGet](https://www.nuget.org/packages/campaignmonitor-api/) package. If you're not, you can download the NuGet package, extract *createsend-dotnet.dll* (7zip can extract NuGet packages), and dump the DLL in the */bin* folder of your site.
 
 ![Extracting NuGet package with 7zip](img/EmailMarketing/7zip nuget.png)
 
-Next add the event handler implementation from the code listing below to your project (or you can dump it in the */App_Code* folder of your site if you're not into Visual Studio). 
+Next add the event handler implementation from the code listing below to your project (or you can put it in the */App_Code* folder of your site if you're not into Visual Studio). 
 
 You'll need to update the Campaign Monitor API key and mailing list ID in the top of the event handler to match your own Campaign Monitor account and list. If you need help finding these, have a look at the *Integrations and API* category in the *Help* section of your Campaign Monitor dashboard.
 
