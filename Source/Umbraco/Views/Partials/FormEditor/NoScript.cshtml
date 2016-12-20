@@ -10,6 +10,13 @@
   // get the form model
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
 
+  // #104 - don't break the site if the form model could not be found
+  if(form == null)
+  {
+    @: <!-- no Form Editor form was found on the page -->
+    return;
+  }
+
   // attempt to load an existing submission if ViewBag.FormRowId is defined
   if(ViewBag.FormRowId is string)
   {
