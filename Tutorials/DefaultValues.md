@@ -14,7 +14,7 @@ You can copy this code to your own template - just remember to copy the `@using`
 
 For simplicity we'll make do with some hard coded default values. In a real life scenario you'd probably do this a bit differently.
 
-```xml
+```cs
 @using FormEditor
 @using FormEditor.Rendering
 @inherits Umbraco.Web.Mvc.UmbracoTemplatePage
