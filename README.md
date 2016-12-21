@@ -49,6 +49,8 @@ Some highlights include:
         * Topics covered: Form Editor submission events, custom data layer for statistics data.
 * [Integrating with email marketing](Tutorials/EmailMarketing.md) - integrate Form Editor submissions with your email marketing platform.
     * Topics covered: Submission event handling, integration, Campaign Monitor.
+* [Default field values](Tutorials/DefaultValues.md) - prefill your form with default values.
+    * Topics covered: Rendering, default values
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
