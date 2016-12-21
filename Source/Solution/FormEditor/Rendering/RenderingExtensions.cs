@@ -6,6 +6,8 @@ using FormEditor.Fields;
 using FormEditor.Validation.Conditions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Umbraco.Core.Models;
+using Umbraco.Web;
 
 namespace FormEditor.Rendering
 {
@@ -92,6 +94,11 @@ namespace FormEditor.Rendering
 					? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(defaultValues.First().Value))
 					: "undefined"
 			);
+		}
+
+		public static void SetSubmittedValue(this FieldWithValue field, string value, IPublishedContent content)
+		{
+			field.CollectSubmittedValue(new Dictionary<string, string> { { field.FormSafeName, value } }, content);
 		}
 
 		private static FieldData ToFieldData(FieldWithValue f)
