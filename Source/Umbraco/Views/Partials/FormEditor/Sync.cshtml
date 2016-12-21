@@ -7,12 +7,12 @@
 
   // get the name of the form model property on the content type (defaults to "form")
   var formPropertyName = ViewBag.FormName as string ?? "form";
- 
+
   // get the form model
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
 
-  // #104 - don't break the site if the form model could not be found
-  if(form == null)
+  // #104 - don't attempt to render the form if the form model does not exist on the page or if it is empty 
+  if(form == null || form.IsEmpty())
   {
     @: <!-- no Form Editor form was found on the page -->
     return;
@@ -27,7 +27,7 @@
       form.LoadValues(formContent, rowId);
     }
   }
-  
+
   // handle form submission if this is a postback
   // - this will also take care of redirecting to the success page (if configured)
   var formWasSubmitted = form.CollectSubmittedValues(formContent);

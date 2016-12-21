@@ -345,6 +345,11 @@ namespace FormEditor
 			return result;
 		}
 
+		public bool IsEmpty()
+		{
+			return Pages == null;
+		}
+
 		private HttpRequest Request
 		{
 			get { return HttpContext.Current.Request; }

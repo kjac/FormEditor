@@ -13,8 +13,8 @@
   // get the form model
   var form = formContent.GetPropertyValue<FormModel>(formPropertyName);
 
-  // #104 - don't break the site if the form model could not be found
-  if(form == null)
+  // #104 - don't attempt to render the form if the form model does not exist on the page or if it is empty
+  if(form == null || form.IsEmpty())
   {
     @: <!-- no Form Editor form was found on the page -->
     return;
@@ -24,9 +24,9 @@
   if(ViewBag.FormRowId is string)
   {
     Guid rowId;
-    if(Guid.TryParse((string) ViewBag.FormRowId, out rowId))
+    if(Guid.TryParse((string)ViewBag.FormRowId, out rowId))
     {
-      form.LoadValues(formContent, rowId);      
+      form.LoadValues(formContent, rowId);
     }
   }
 
