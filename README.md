@@ -2,9 +2,9 @@
 
 Form Editor is a free and open source form builder for [Umbraco](http://umbraco.com/) 7.3+ that lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
 
-![Form Editor UI](Docs/img/form layout.png)
-
 If you're new to Form Editor, you should probably start by checking out the [Quick start tutorial](Tutorials/QuickStart.md).
+
+![Form Editor UI](Docs/img/form layout.png)
 
 Some highlights include:
 * Grid based form editing.
