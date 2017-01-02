@@ -39,8 +39,8 @@
           }
 
           th {
-            font-weight: bold;
-            text-transform: uppercase;
+            font-weight: normal;
+            text-transform: none;
             padding-left: 2px;
           }
         }
@@ -51,7 +51,11 @@
 
         td.form-validation-rules {
           border: 1px dashed @cellBorderColor;
-          padding: 5px 5px 0px 5px;
+          padding: 5px 5px 10px 5px;
+
+          h5:first-of-type {
+            margin-top: 5px;
+          }
 
           tr.form-validation-rule {
             vertical-align: top;
@@ -76,9 +80,12 @@
               }
             }
           }
+        }
 
-          div.form-validation-error-message {
-            margin: 0px 4px 10px 4px;
+        div.form-action-task {
+          span {
+            padding-top: 5px;
+            display: inline-block;
           }
         }
       }

@@ -82,14 +82,15 @@
   <div id="tabFormEditorValidation" ng-if="isVisibleTab('validation')" class="tab-pane" ng-class="{active: isActiveTab('validation')}">
     <div ng-show="allValueFields().length > 0">
       <p form-editor-localize key="validation.text">
-        Here you can set up validations that span across the individual form fields - for example "the form is invalid if field A is empty and field B is not empty". A validation consists of a set of rules to test, and an error message to display if all the rules are fulfilled.
+        Here you can set up validations that span across the individual form fields - for example "the form is invalid if field A is empty and field B is not empty".
       </p>
       <ul class="form-validations">
         <li class="form-validation" ng-repeat="validation in model.value.validations">
           <table>
             <tr>
               <td class="form-validation-rules">
-                <table>
+                <h5 form-editor-localize key="validation.rules.header">If these rules are fulfilled...</h5>
+                <table ng-show="validation.rules.length">
                   <thead>
                     <tr>
                       <th form-editor-localize key="validation.rules.fieldHeader">Field</th>
@@ -123,12 +124,8 @@
                 <i class="icon icon-add dimmed" ng-click="editRule(null, validation)">
                   <small form-editor-localize key="validation.rules.add">Add a rule</small>
                 </i>
-                <div class="form-validation-error-message">
-                  <label for="validationError{{$index}}" class="control-label" form-editor-localize key="validation.errorMessage">Error message</label>
-                  <div class="controls controls-row">
-                    <input id="validationError{{$index}}" class="umb-editor" type="text" ng-model="validation.errorMessage" />
-                  </div>
-                </div>
+                <h5 form-editor-localize key="validation.errorMessage.header">...show this error message:</h5>
+                <input class="umb-editor" type="text" ng-model="validation.errorMessage" />
               </td>
               <td class="form-cell-delete">
                 <i class="icon icon-delete dimmed" ng-click="removeValidation(validation)"></i>
@@ -144,6 +141,81 @@
     <div ng-show="allValueFields().length == 0">
       <p form-editor-localize key="validation.text.noFields">
         You must add fields to your form before you set up validation.
+      </p>
+    </div>
+  </div>
+  <!-- ## actions ## -->
+  <div id="tabFormEditorActions" ng-if="isVisibleTab('actions')" class="tab-pane" ng-class="{active: isActiveTab('actions')}">
+    <div ng-show="allValueFields().length > 0">
+      <p form-editor-localize key="actions.text">
+        Actions allow you to show or hide fields based on the value of other fields - for example "only show field A if field B is not empty". 
+      </p>
+      <ul class="form-validations">
+        <li class="form-validation" ng-repeat="action in model.value.actions">
+          <table>
+            <tr>
+              <td class="form-validation-rules">
+                <h5 form-editor-localize key="validation.rules.header">If these rules are fulfilled...</h5>
+                <table ng-show="action.rules.length">
+                  <thead>
+                    <tr>
+                      <th form-editor-localize key="validation.rules.fieldHeader">Field</th>
+                      <th form-editor-localize key="validation.rules.conditionHeader">Condition</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-validation-rule" ng-repeat="rule in action.rules">
+                      <td class="form-validation-rule-field">
+                        <div class="form-field" ng-if="rule.field != null" ng-click="editRule(rule, action)">
+                          <i class="field-icon" style="background-image: url('{{pathToFieldFile(rule.field.icon)}}')"></i>
+                          <span class="form-field-name">{{getFieldName(rule.field)}}</span>
+                        </div>
+                      </td>
+                      <td class="form-validation-rule-condition">
+                        <div ng-if="rule.condition != null">
+                          <i class="field-icon" style="background-image: url('{{pathToConditionFile(rule.condition.icon)}}')"></i>
+                          <span form-editor-localize key="validation.condition.{{rule.condition.type}}">{{rule.condition.prettyName}}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <form-editor-condition type="{{rule.condition.type}}"></form-editor-condition>
+                      </td>
+                      <td>
+                        <i class="icon icon-delete dimmed" ng-click="removeRule(rule, action)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <i class="icon icon-add dimmed" ng-click="editRule(null, action)">
+                  <small form-editor-localize key="validation.rules.add">Add a rule</small>
+                </i>
+                <h5 form-editor-localize key="action.task.header">...perform this action:</h5>
+                <div class="form-action-task">
+                  <select ng-model="action.task">
+                    <option value="show">Show</option>
+                    <option value="hide">Hide</option>
+                  </select>
+                  <span>the field</span>
+                  <select ng-model="action.field" ng-options="field.name for field in allValueFields()">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </td>
+              <td class="form-cell-delete">
+                <i class="icon icon-delete dimmed" ng-click="removeAction(action)"></i>
+              </td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+      <i class="icon icon-add dimmed" ng-click="addAction()">
+        <small form-editor-localize key="action.add">Add an action</small>
+      </i>
+    </div>
+    <div ng-show="allValueFields().length == 0">
+      <p form-editor-localize key="action.text.noFields">
+        You must add fields to your form before you set up actions.
       </p>
     </div>
   </div>

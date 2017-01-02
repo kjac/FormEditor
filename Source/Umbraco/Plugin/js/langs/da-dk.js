@@ -45,7 +45,7 @@
   "validation.condition.core.fieldvalueisnot": "Værdien er ikke",
   "validation.condition.core.fieldvaluesdonotmatch": "Værdien matcher ikke et andet felt",
   "validation.condition.core.fieldvaluesmatch": "Værdien matcher et andet felt",
-  "validation.errorMessage": "Fejlbesked",
+  "validation.errorMessage.header": "...skal denne fejlbesked vises:",
   "validation.header": "Validering",
   "validation.pick.field": "Vælg et felt:",
   "validation.pick.condition": "Vælg en betingelse:",
@@ -54,8 +54,15 @@
   "validation.rules.add": "Tilføj en regel",
   "validation.rules.add.header": "Tilføj en regel",
   "validation.rules.add.text": "En regel består af et felt og en betingelse. Hvis feltets værdi opfylder betingelsen, er reglen opfyldt.",
-  "validation.text": "Her kan du sætte valideringer op, der går på tværs af de enkelte felter i formularen - f.eks. \"formularen er ugyldig hvis felt A er tomt og felt B ikke er tomt\". En validering består af et sæt regler samt den fejlbesked, der skal vises, hvis alle reglerne er opfyldt.",
+  "validation.rules.header": "Hvis disse regler er opfyldt...",
+  "validation.text": "Her kan du sætte valideringer op, der går på tværs af de enkelte felter i formularen - f.eks. \"formularen er ugyldig hvis felt A er tomt og felt B ikke er tomt\".",
   "validation.text.noFields": "Du skal tilføje felter til formularen, før du kan sætte validering op.",
+
+  "actions.header": "Handlinger",
+  "actions.text": "Her kan du oprette handlinger, der viser eller skjuler felter baseret på andre felters værdi - f.eks. \"vis kun felt A hvis felt B ikke er tomt\".",
+  "action.task.header": "...skal denne handling udføres:",
+  "action.add": "Tilføj en handling",
+  "action.text.noFields": "Du skal tilføje felter til formularen, før du kan oprette handlinger.",
 
   "email.submittedValues.helpText": "Du kan inkludere værdierne af felterne i den indsendte formular. Hvis du for eksempel har en tekstboks med navnet \"Navn\", kan du inkludere dennes indsendte værdi ved at tilføje \"[Navn]\".",
 

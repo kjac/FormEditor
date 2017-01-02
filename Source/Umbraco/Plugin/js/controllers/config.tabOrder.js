@@ -2,14 +2,27 @@
   function ($scope, $filter, assetsService, angularHelper) {
     assetsService.loadCss("/App_Plugins/FormEditor/css/form.css");
 
-    $scope.model.value = $scope.model.value || [
+    var tabs = [
       { name: "Form layout", icon: "icon-layout", id: "layout", visible: true },
       { name: "Validation", icon: "icon-check", id: "validation", visible: true },
+      { name: "Actions", icon: "icon-wand", id: "actions", visible: true },
       { name: "Emails", icon: "icon-message", id: "emails", visible: true },
       { name: "Receipt", icon: "icon-document", id: "receipt", visible: true },
       { name: "Limitations", icon: "icon-filter", id: "limitations", visible: true },
       { name: "Submissions", icon: "icon-list", id: "submissions", visible: true }
     ];
+
+    if (!$scope.model.value) {
+      $scope.model.value = tabs;
+    }
+    else {
+      _.each(tabs, function (tab) {
+        if (_.find($scope.model.value, function (t) { return t.id == tab.id; }) == null) {
+          tab.visible = false;
+          $scope.model.value.push(tab);
+        }
+      });
+    }
 
     $scope.sortableOptionsTabs = {
       axis: "y",
