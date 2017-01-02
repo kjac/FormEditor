@@ -181,9 +181,9 @@
         $(inputs).each(function (i, input) {
           var formGroup = $(input).closest(".form-group");
           switch (action.task) {
-            case "show":
-            case "hide":
-              var show = action.task == "show";
+            case "core.showfield":
+            case "core.hidefield":
+              var show = action.task == "core.showfield";
               if (show == allRulesFulfilled) {
                 formGroup.show();
               }

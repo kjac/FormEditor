@@ -574,7 +574,7 @@
       $scope.setDirty();
     }
     $scope.addAction = function () {
-      $scope.model.value.actions.push({ rules: [], task: "show", field: null });
+      $scope.model.value.actions.push({ rules: [], task: "core.showfield", field: null });
       $scope.setDirty();
     }
     $scope.editRule = function (rule, ruleContainer) {

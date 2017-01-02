@@ -200,9 +200,9 @@
       angular.forEach($scope.formState.actions, function (action) {
         var allRulesFulfilled = $scope.validateRules(action.rules);
         switch (action.task) {
-          case "show":
-          case "hide":
-            var show = action.task == "show";
+          case "core.showfield":
+          case "core.hidefield":
+            var show = action.task == "core.showfield";
             $scope.formAction[action.field.formSafeName] = (show == allRulesFulfilled);
             break;
         }
