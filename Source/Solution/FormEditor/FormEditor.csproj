@@ -314,6 +314,7 @@
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormValueConverter.cs" />
+    <Compile Include="Rendering\ActionData.cs" />
     <Compile Include="Rendering\ConditionData.cs" />
     <Compile Include="Rendering\FieldData.cs" />
     <Compile Include="Rendering\RenderingExtensions.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="Storage\Result.cs" />
     <Compile Include="Umbraco\ApplicationEvents.cs" />
     <Compile Include="Umbraco\ContentHelper.cs" />
+    <Compile Include="Validation\Action.cs" />
     <Compile Include="Validation\Conditions\Condition.cs">
       <SubType>Code</SubType>
     </Compile>

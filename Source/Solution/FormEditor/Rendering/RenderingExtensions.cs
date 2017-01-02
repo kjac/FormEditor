@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using FormEditor.Fields;
-using FormEditor.Validation.Conditions;
+using FormEditor.Validation;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Umbraco.Core.Models;
-using Umbraco.Web;
 
 namespace FormEditor.Rendering
 {
@@ -15,22 +12,57 @@ namespace FormEditor.Rendering
 	{
 		public static List<ValidationData> ForFrontEnd(this IEnumerable<Validation.Validation> validations)
 		{
+			if(validations == null)
+			{
+				return new List<ValidationData>();
+			}
 			return validations.Select(v => new ValidationData
 			{
-				Rules = (v.Rules ?? new List<Validation.Rule>()).Select(r => new RuleData
-				{
-					Field = ToFieldData(r.Field),
-					Condition = r.Condition.ForFrontEnd()
-				}).ToList(),
+				Rules = v.Rules.ForFrontEnd(),
 				Invalid = v.Invalid,
 				ErrorMessage = v.ErrorMessage
 			}).ToList();
 		}
 
+		private static List<RuleData> ForFrontEnd(this IEnumerable<Rule> rules)
+		{
+			if(rules == null)
+			{
+				return new List<RuleData>();
+			}
+			return rules.Select(r => new RuleData
+			{
+				Field = ToFieldData(r.Field),
+				Condition = r.Condition.ForFrontEnd()
+			}).ToList();
+		}
+
+		private static List<ActionData> ForFrontEnd(this IEnumerable<Action> actions)
+		{
+			if(actions == null)
+			{
+				return new List<ActionData>();
+			}
+			return actions.Select(a => new ActionData
+			{
+				Rules = a.Rules.ForFrontEnd(),
+				Field = ToFieldData(a.Field),
+				Task = a.Task
+			}).ToList();
+		} 
+
 		public static IHtmlString Render(this IEnumerable<Validation.Validation> validations)
 		{
 			return new HtmlString(
 				JsonConvert.SerializeObject(validations.ForFrontEnd(), SerializerSettings)
+			);
+		}
+
+		public static IHtmlString Render(this IEnumerable<Validation.Action> actions)
+		{
+
+			return new HtmlString(
+				JsonConvert.SerializeObject(actions.ForFrontEnd(), SerializerSettings)
 			);
 		}
 

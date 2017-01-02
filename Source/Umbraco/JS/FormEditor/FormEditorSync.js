@@ -54,6 +54,7 @@
         var input = event.target;
         var isValid = validateField(input, $form);
         $.fn.formEditor.showHideValidationErrorForField(input, isValid);
+        executeActions($form);
       });
 
       // form paging
@@ -74,6 +75,7 @@
       });
 
       showActivePagingButtons($form);
+      executeActions($form);
     });
 
     return this;
@@ -114,8 +116,14 @@
       // edge case: validation contains no rules. must be valid.
       return true;
     }
-    var isValid = false;
-    $(validation.rules).each(function (index, rule) {
+    // a validation fails if all rules are fulfilled
+    return validateRules(validation.rules, $form) == false;
+  }
+
+  // validate a set of rules
+  function validateRules(rules, $form) {
+    var allRulesFulfilled = true;
+    $(rules).each(function (index, rule) {
       // get all fields that matches the rule field name (in case of a group of fields with the same name, e.g. checkbox group)
       var group = $("[name=" + rule.field.formSafeName + "]", $form);
 
@@ -156,14 +164,37 @@
         }
       }
 
-      // all rules must be fulfilled for a validation to fail
       if (ruleIsFulfilled == false) {
+        allRulesFulfilled = false;
         // no need to continue the loop
-        isValid = true;
         return false;
       }
     });
-    return isValid;
+
+    return allRulesFulfilled;
+  }
+  function executeActions($form) {
+    $($form.formState.actions).each(function (index, action) {
+      var inputs = $("[name='" + action.field.formSafeName + "']", $form);
+      if (inputs && inputs.length) {
+        var allRulesFulfilled = validateRules(action.rules, $form);
+        $(inputs).each(function (i, input) {
+          var formGroup = $(input).closest(".form-group");
+          switch (action.task) {
+            case "show":
+            case "hide":
+              var show = action.task == "show";
+              if (show == allRulesFulfilled) {
+                formGroup.show();
+              }
+              else {
+                formGroup.hide();
+              }
+              break;
+          }
+        });
+      }
+    });
   }
 
   function formTotalPages($form) {
@@ -199,6 +230,7 @@
       $(".form-btn-next", $form).show();
     }
   }
+
 }(jQuery));
 
 $(function () {
@@ -236,7 +268,7 @@ addFormEditorCondition("core.fieldvalueis", function (rule, fieldValue, $form) {
 addFormEditorCondition("core.fieldvaluesdonotmatch", function (rule, fieldValue, $form) {
   var otherField = $("[name='" + rule.condition.otherFieldName + "']", $form);
   var otherFieldValue = otherField != null ? otherField.val() : null;
-  ruleIsFulfilled = (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
+  return (fieldValue || "").toLowerCase() != (otherFieldValue || "").toLowerCase();
 });
 // - "field value matches other field value" condition (negation of "field value does not other field value" condition):
 addFormEditorCondition("core.fieldvaluesmatch", function (rule, fieldValue, $form) {

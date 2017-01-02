@@ -154,6 +154,9 @@ else
     @* form validations as an array of JSON objects *@
     _fe[@formContent.Id].validations = @form.Validations.Render();
 
+    @* form actions as an array of JSON objects *@
+    _fe[@formContent.Id].actions = @form.Actions.Render();
+
     @* the total number of form pages *@
     _fe[@formContent.Id].totalPages = @form.Pages.Count();
   </script>
