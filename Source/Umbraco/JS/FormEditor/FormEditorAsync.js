@@ -24,7 +24,7 @@
       }
 
       if ($scope.formState.actions && $scope.formState.actions.length) {
-        $scope.formAction = {};
+        $scope.fieldVisibility = {};
         $scope.$watch("formData", function (newValue, oldValue, scope) {
           $scope.formDataChanged();
         }, true);
@@ -203,7 +203,7 @@
           case "core.showfield":
           case "core.hidefield":
             var show = action.task == "core.showfield";
-            $scope.formAction[action.field.formSafeName] = (show == allRulesFulfilled);
+            $scope.fieldVisibility[action.field.formSafeName] = (show == allRulesFulfilled);
             break;
         }
       });
@@ -284,8 +284,21 @@
         controller.$parsers.splice(0, 0, ensureHttpPrefix);
       }
     };
+  })
+  .directive("actionField", function () {
+    return {
+      restrict: "A",
+      scope: false,
+      link: function (scope, element, attr) {
+        scope.$watch("fieldVisibility." + attr.actionField, function (value) {
+          if (value == undefined) {
+            return;
+          }
+          element[value ? "removeClass" : "addClass"]("ng-hide");
+        }, true);
+      }
+    };
   });
-
 
 // global container and functions for handling cross field validation conditions
 // - makes it easier to extend the validation conditions

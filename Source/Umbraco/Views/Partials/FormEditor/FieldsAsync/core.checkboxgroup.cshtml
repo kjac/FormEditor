@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CheckboxGroupField>
-<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)" name="@Model.FormSafeName" ng-model="@Model.FormSafeName">
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)" name="@Model.FormSafeName" ng-model="@Model.FormSafeName" action-field="@Model.FormSafeName">
   <label>@Model.Label</label>
-  @foreach (var fieldValue in Model.FieldValues)
+  @foreach(var fieldValue in Model.FieldValues)
   {
     <div class="checkbox">
       <label>
@@ -15,3 +15,4 @@
   @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
 
 </div>
+

@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.RadioButtonGroupField>
-<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)">
+<div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)" action-field="@Model.FormSafeName">
   <label>@Model.Label</label>
-  @foreach (var fieldValue in Model.FieldValues)
+  @foreach(var fieldValue in Model.FieldValues)
   {
     <div class="radio">
       <label>
