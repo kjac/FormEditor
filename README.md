@@ -10,6 +10,7 @@ Some highlights include:
 * Grid based form editing.
 * Ships with (almost) all HTML5 input types.
 * Cross field validation.
+* Conditional fields.
 * Support for multi-page forms (optional).
 * Full control over the frontend rendering.
 * Full support for asynchronous postback, e.g. for AngularJS.
