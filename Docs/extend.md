@@ -14,7 +14,7 @@ There's an example of how to use the form submission events in the [samples](../
 ## Email sending events
 Before any form submission emails are sent (notification and confirmation emails), the `BeforeSendMail` event is invoked so you can manipulate the `MailMessage` as you please. This event is cancelable. If it is cancelled, the email will not be sent.
 
-## Creating a custom condition for actions and cross field validations
+## Creating a custom condition
 You can create your own custom conditions for actions and cross field validations. Read more [here](extend_condition.md).
 
 ## Replacing the default storage 

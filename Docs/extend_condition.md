@@ -1,9 +1,9 @@
-# Creating a custom condition for actions and cross field validations
+# Creating a custom condition
 Conditions are used for both actions and cross field validations:
-* Actions let the editors set up rules that ares evaluated against the field values - e.g. to show/hide a field if another field has a certain value. 
-* Cross field validations let the editors invalidate the entire form submission based on a set of rules that span across multiple fields. 
+* Actions let the editors set up rules that are evaluated against the field values - e.g. to show/hide a field if another field has a certain value. 
+* Cross field validations let the editors invalidate the form based on a set of rules that span across multiple fields. 
 
-A rule consists of:
+In both cases, a rule consists of:
 * A field.
 * A condition to match the field value against.
 
@@ -11,6 +11,7 @@ This document describes how to extend Form Editor with a custom condition.
 
 ## Steps
 An custom condition is created by completing these steps:
+
 1. Create your icon.
 2. Implement your condition.
 3. Create the editor to configure your condition.
@@ -21,7 +22,7 @@ Just as is the case with custom fields, Form Editor matches everything up by the
 Deployment wise, all you need to do is copy your DLL and the rest of your condition assets to your site. Form Editor will automatically detect your condition when the site restarts.
 
 ### Sample project structure and assets
-A sample implementation of a custom condition for validating the length of a field value can be found under [Samples](../Samples/Custom validation condition/).
+A sample implementation of a custom condition for evaluating the length of a field value can be found under [Samples](../Samples/Custom validation condition/).
 
 The condition assets (icon and editor) are included in the sample project. The directory structure in which they are placed mirrors the structure of your site. If you copy the *App_Plugins* folder directly to your site, the assets will be placed correctly under */App_Plugins/FormEditor/editor/conditions/*.
 
@@ -36,6 +37,7 @@ Form Editor invokes this when performing cross field validation on the server si
 
 ### Rendering for frontend
 If your condition has configuration properties that should be passed to the frontend JS, you need to:
+
 1. Create a class that inherits `ConditionData` to hold your configuration properties.
 2. Override `ForFrontEnd()` and return the necessary properties in an instance of this class.
 
