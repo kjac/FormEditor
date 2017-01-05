@@ -134,7 +134,12 @@
           </table>
         </li>
       </ul>
-      <i class="icon icon-add dimmed" ng-click="addValidation()">
+      <div ng-hide="model.value.validations.length" class="no-validations">
+        <i class="icon icon-add dimmed" ng-click="addValidation()">
+          <small form-editor-localize key="validation.add">Add a validation</small>
+        </i>
+      </div>
+      <i ng-show="model.value.validations.length" class="icon icon-add dimmed" ng-click="addValidation()">
         <small form-editor-localize key="validation.add">Add a validation</small>
       </i>
     </div>
@@ -209,7 +214,12 @@
           </table>
         </li>
       </ul>
-      <i class="icon icon-add dimmed" ng-click="addAction()">
+      <div ng-hide="model.value.actions.length" class="no-validations">
+        <i class="icon icon-add dimmed" ng-click="addAction()">
+          <small form-editor-localize key="action.add">Add an action</small>
+        </i>
+      </div>
+      <i ng-show="model.value.actions.length" class="icon icon-add dimmed" ng-click="addAction()">
         <small form-editor-localize key="action.add">Add an action</small>
       </i>
     </div>
