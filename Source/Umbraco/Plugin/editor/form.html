@@ -84,6 +84,13 @@
       <p form-editor-localize key="validation.text">
         Here you can set up validations that span across the individual form fields - for example "the form is invalid if field A is empty and field B is not empty".
       </p>
+      <label class="control-label" for="validationsHeader" form-editor-localize key="validation.header">
+        Heading
+      </label>
+      <div class="controls controls-row">
+        <input type="text" class="umb-editor" id="validationsHeader" ng-model="model.value.validationsHeader" />
+        <small class="help-text" form-editor-localize key="validation.header.helpText">This heading is shown above the validation error messages if the form is invalid.</small>
+      </div>
       <ul class="form-validations">
         <li class="form-validation" ng-repeat="validation in model.value.validations">
           <table>

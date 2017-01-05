@@ -54,6 +54,7 @@ namespace FormEditor
 		}
 
 		public IEnumerable<Validation.Validation> Validations { get; set; }
+		public string ValidationsHeader { get; set; }
 		public IEnumerable<Validation.Action> Actions { get; set; }
 		public Guid RowId { get; set; }
 		public string EmailNotificationRecipients { get; set; }
