@@ -51,7 +51,9 @@ Some highlights include:
 * [Integrating with email marketing](Tutorials/EmailMarketing.md) - integrate Form Editor submissions with your email marketing platform.
     * Topics covered: Submission event handling, integration, Campaign Monitor.
 * [Default field values](Tutorials/DefaultValues.md) - prefill your form with default values.
-    * Topics covered: Rendering, default values
+    * Topics covered: Rendering, default values.
+* [Configuring a conditional field](Tutorials/ConditionalField.md) - use *Actions* to conditionally show a field.
+    * Topics covered: Actions, cross field validation.
 
 ## Credits
 A huge thank-you goes out to the talented [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/) for creating the Fugue Icons that are used heavily in this project. H5YR!
