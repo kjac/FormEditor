@@ -339,6 +339,7 @@
     <Compile Include="Validation\Conditions\Condition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Validation\Conditions\CustomCondition.cs" />
     <Compile Include="Validation\Conditions\FieldIsEmptyCondition.cs">
       <SubType>Code</SubType>
     </Compile>

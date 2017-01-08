@@ -2,7 +2,7 @@
   function ($http, $compile, formEditorPropertyEditorResource) {
     var linker = function (scope, element, attrs) {
       attrs.$observe("type", function () {
-        $http.get(formEditorPropertyEditorResource.pathToConditionFile(scope.rule.condition.type + ".html")).then(function (result) {
+        $http.get(formEditorPropertyEditorResource.pathToConditionFile(scope.rule.condition.view + ".html")).then(function (result) {
           element.html(result.data);
           $compile(element.contents())(scope);
         });

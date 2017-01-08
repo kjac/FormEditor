@@ -10,6 +10,15 @@ namespace FormEditor.Validation
 		public FieldWithValue Field { get; set; }
 		public Condition Condition { get; set; }
 
+		public bool IsApplicable
+		{
+			get
+			{
+				// do not attempt to validate this rule server side if it's condition is by configuration
+				return Condition.GetType() != typeof(CustomCondition);				
+			}
+		}
+
 		public bool IsFulfilledBy(IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
 			return Condition.IsMetBy(Field, allCollectedFieldValues, content);

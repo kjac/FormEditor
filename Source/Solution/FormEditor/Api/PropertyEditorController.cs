@@ -83,7 +83,18 @@ namespace FormEditor.Api
 			{
 				if (_conditionTypes == null)
 				{
-					_conditionTypes = GetInstancesOf<Condition>();
+					_conditionTypes = GetInstancesOf<Condition>(typeof(CustomCondition));
+
+					// add any defined custom fields
+					if(FormEditor.Configuration.Instance.CustomConditions.Any())
+					{
+						_conditionTypes.AddRange(
+							FormEditor.Configuration.Instance.CustomConditions.Select(c =>
+								new CustomCondition(c.Type, c.Name)
+							)
+						);
+					}
+
 				}
 
 				var json = JsonConvert.SerializeObject(_conditionTypes, SerializationHelper.SerializerSettings);
