@@ -383,6 +383,14 @@
           return fields.indexOf(rule.field) < 0;
         });
       });
+      _.each($scope.model.value.actions, function (action) {
+        action.rules = $filter("filter")(action.rules, function (rule, index, array) {
+          return fields.indexOf(rule.field) < 0;
+        });
+        if (fields.indexOf(action.field) >= 0) {
+          action.field = null;
+        }
+      });
 
       $scope.clearFieldCache();
       formEditorPropertyEditorFieldValidator.registerFields($scope.allFields());
@@ -509,13 +517,18 @@
       angularHelper.getCurrentForm($scope).$setDirty();
     }
 
-    //watch for changes
+    // watch for changes
     $scope.$watch("model.value", function (v) {
       $scope.newlyAddedFields = [];
-      // wire up the rule fields so any field changes are reflected on the validation rule fields
+      // wire up the rule fields so any field changes are reflected on the rule fields
       $scope.clearFieldCache();
-      _.each($scope.model.value.validations, function (validation) {
-        _.each(validation.rules, function (rule) {
+      wireUpFields($scope.model.value.validations);
+      wireUpFields($scope.model.value.actions);
+    });
+
+    function wireUpFields(ruleContainers) {
+      _.each(ruleContainers, function (ruleContainer) {
+        _.each(ruleContainer.rules, function (rule) {
           var field = _.find($scope.allFields(), function (f) {
             return f.name == rule.field.name;
           });
@@ -523,8 +536,13 @@
             rule.field = field;
           }
         });
+        if(ruleContainer.field) {
+          ruleContainer.field = _.find($scope.allValueFields(), function (f) {
+            return f.name == ruleContainer.field.name;
+          });
+        }
       });
-    });
+    }
 
     // validate all fields when the form submits
     $scope.$on("formSubmitting", function (ev, args) {
@@ -539,11 +557,12 @@
       formEditorPropertyEditorFieldValidator.registerFields([]);
     });
 
-    // ####################################################
-    // ################# validation stuff #################
-    // ####################################################
+    // ###############################################################
+    // ################# validation and action stuff #################
+    // ###############################################################
 
     $scope.model.value.validations = $scope.model.value.validations || [];
+    $scope.model.value.actions = $scope.model.value.actions || [];
     function getConditionType(conditionType) {
       return _.find($scope.model.config.conditionTypes, function (r) {
         return r.type === conditionType;
@@ -551,15 +570,17 @@
     }
 
     $scope.addValidation = function () {
-      $scope.pickRule(null, function (rule) {
-        $scope.model.value.validations.push({ rules: [rule], errorMessage: "" });
-        $scope.setDirty();
-      });
+      $scope.model.value.validations.push({ rules: [], errorMessage: "" });
+      $scope.setDirty();
     }
-    $scope.editRule = function (rule, validation) {
+    $scope.addAction = function () {
+      $scope.model.value.actions.push({ rules: [], task: "core.showfield", field: null });
+      $scope.setDirty();
+    }
+    $scope.editRule = function (rule, ruleContainer) {
       $scope.pickRule(rule, function (r) {
         if (rule == null) {
-          validation.rules.push(r);
+          ruleContainer.rules.push(r);
         }
         $scope.setDirty();
       });
@@ -608,16 +629,16 @@
         }
       });
     }
-    $scope.removeRule = function (rule, validation) {
+    $scope.removeRule = function (rule, ruleContainer) {
       if ($scope.model.confirmDelete) {
         formEditorLocalizationService.localize("validation.condition.deleteRule", "Are you sure you want to delete this rule?").then(function (value) {
           if (confirm(value)) {
-            deleteRule(rule, validation);
+            deleteRule(rule, ruleContainer);
           }
         });
       }
       else {
-        deleteRule(rule, validation);
+        deleteRule(rule, ruleContainer);
       }
     }
     $scope.removeValidation = function (validation) {
@@ -632,14 +653,31 @@
         deleteValidation(validation);
       }
     }
-    function deleteRule(rule, validation) {
-      var index = validation.rules.indexOf(rule);
-      validation.rules.splice(index, 1);
+    $scope.removeAction = function (action) {
+      if ($scope.model.confirmDelete) {
+        formEditorLocalizationService.localize("action.deleteConfirmation", "Are you sure you want to delete this action?").then(function (value) {
+          if (confirm(value)) {
+            deleteAction(action);
+          }
+        });
+      }
+      else {
+        deleteAction(action);
+      }
+    }
+    function deleteRule(rule, ruleContainer) {
+      var index = ruleContainer.rules.indexOf(rule);
+      ruleContainer.rules.splice(index, 1);
       $scope.setDirty();
     }
     function deleteValidation(validation) {
       var index = $scope.model.value.validations.indexOf(validation);
       $scope.model.value.validations.splice(index, 1);
+      $scope.setDirty();
+    }
+    function deleteAction(action) {
+      var index = $scope.model.value.actions.indexOf(action);
+      $scope.model.value.actions.splice(index, 1);
       $scope.setDirty();
     }
 
@@ -656,16 +694,18 @@
       var tabs = [
         { title: "Form layout", localizationKey: "composition.header", icon: "icon-layout", id: "layout", anchor: "tabFormEditorLayout", visible: true, sortOrder: 0 },
         { title: "Validation", localizationKey: "validation.header", icon: "icon-check", id: "validation", anchor: "tabFormEditorValidation", visible: true, sortOrder: 1 },
-        { title: "Emails", localizationKey: "emails.header", icon: "icon-message", id: "emails", anchor: "tabFormEditorEmails", visible: true, sortOrder: 2 },
-        { title: "Receipt", localizationKey: "receipt.header", icon: "icon-document", id: "receipt", anchor: "tabFormEditorReceipt", visible: true, sortOrder: 3 },
-        { title: "Limitations", localizationKey: "limitations.header", icon: "icon-filter", id: "limitations", anchor: "tabFormEditorLimitations", visible: true, sortOrder: 4 },
-        { title: "Submissions", localizationKey: "data.header", icon: "icon-list", id: "submissions", anchor: "tabFormEditorData", visible: true, sortOrder: 5 }
+        { title: "Actions", localizationKey: "actions.header", icon: "icon-wand", id: "actions", anchor: "tabFormEditorActions", visible: true, sortOrder: 2 },
+        { title: "Emails", localizationKey: "emails.header", icon: "icon-message", id: "emails", anchor: "tabFormEditorEmails", visible: true, sortOrder: 3 },
+        { title: "Receipt", localizationKey: "receipt.header", icon: "icon-document", id: "receipt", anchor: "tabFormEditorReceipt", visible: true, sortOrder: 4 },
+        { title: "Limitations", localizationKey: "limitations.header", icon: "icon-filter", id: "limitations", anchor: "tabFormEditorLimitations", visible: true, sortOrder: 5 },
+        { title: "Submissions", localizationKey: "data.header", icon: "icon-list", id: "submissions", anchor: "tabFormEditorData", visible: true, sortOrder: 6 }
       ];
 
       if (!$scope.model.config.tabOrder) {
         // for backwards compability with the old "disable validation" config - will be removed eventually
         tabs[1].visible = $scope.model.config.disableValidation != 1;
-        tabs[2].visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
+        tabs[2].visible = false;
+        tabs[3].visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
       } else {
         _.each($scope.model.config.tabOrder, function (tabOrder, index) {
           var tab = _.find(tabs, function (t) { return t.id == tabOrder.id; });

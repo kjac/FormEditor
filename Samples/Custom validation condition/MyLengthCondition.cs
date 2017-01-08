@@ -7,7 +7,7 @@ using Umbraco.Core.Models;
 namespace My.Conditions
 {
 	public class MyLengthCondition : Condition
-    {
+	{
 		// IMPORTANT: the condition must have a default constructor (or no constructor at all).
 		public MyLengthCondition()
 		{
@@ -17,22 +17,22 @@ namespace My.Conditions
 
 		// this is the condition identifier towards Form Editor. it must be unique.
 		public override string Type
-	    {
-		    get { return "my.length"; }
-	    }
+		{
+			get { return "my.length"; }
+		}
 
 		// this is the default condition name used in the validation UI (can be overridden by localization).
 		public override string PrettyName
-	    {
-		    get { return "Text length is less than"; }
-	    }
+		{
+			get { return "Text length is less than"; }
+		}
 
 		// these are the custom properties for our condition configuration. they must have public getters and setters.
 		public int LessThan { get; set; }
 
 		// test if the condition is met by a submitted field value
-	    public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
-	    {
+		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
+		{
 			if(fieldValue == null || fieldValue.HasSubmittedValue == false)
 			{
 				// no such field or no submitted field value - the condition is met (LessThan will always be >= 1)
@@ -40,8 +40,8 @@ namespace My.Conditions
 			}
 
 			// the condition is met if the length of the submitted value is less than the value defined for LessThan
-		    return fieldValue.SubmittedValue.Length < LessThan;
-	    }
+			return fieldValue.SubmittedValue.Length < LessThan;
+		}
 
 		// override this to pass our custom condition configuration parameters etc. to the frontend rendering.
 		// you can skip this if you do not need to pass anything (condition type is handled by the base class implementation).
@@ -65,5 +65,5 @@ namespace My.Conditions
 			// these properties are passed to the frontend rendering
 			public int LessThan { get; private set; }
 		}
-    }
+	}
 }

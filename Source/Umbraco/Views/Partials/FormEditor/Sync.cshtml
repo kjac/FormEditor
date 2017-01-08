@@ -123,14 +123,14 @@ else
       }
       @*
         form validation errors container (for cross field validations)
-        TIP: you can localize the header text by adding "form.validationerrors.header" to the Umbraco dictionary
+        TIP: you can localize the default header text by adding "form.validationerrors.header" to the Umbraco dictionary
       *@
       <div id="validationErrors" class="row form-validation-errors @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
         <div class="cell">
           <div class="form-group">
             <div class="alert alert-danger">
               <h4>
-                @Umbraco.Coalesce(Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
+                @Umbraco.Coalesce(form.ValidationsHeader, Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
               </h4>
               <ul id="validationErrorsList">
                 @foreach (var invalidValidation in form.Validations.Where(v => v.Invalid))
@@ -153,6 +153,9 @@ else
 
     @* form validations as an array of JSON objects *@
     _fe[@formContent.Id].validations = @form.Validations.Render();
+
+    @* form actions as an array of JSON objects *@
+    _fe[@formContent.Id].actions = @form.Actions.Render();
 
     @* the total number of form pages *@
     _fe[@formContent.Id].totalPages = @form.Pages.Count();

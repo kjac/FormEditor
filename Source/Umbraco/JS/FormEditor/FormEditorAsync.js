@@ -1,5 +1,5 @@
 ﻿angular.module("formEditor", [])
-  .controller("FormController", ["$scope", "$filter", "$http", "$window", function ($scope, $filter, $http, $window) {
+  .controller("FormController", ["$scope", "$filter", "$http", "$window", "$timeout", function ($scope, $filter, $http, $window, $timeout) {
     $scope.formData = {};
     $scope.fileData = {};
 
@@ -21,6 +21,13 @@
       $scope.formState.formId = formId;
       for (var key in $scope.formState.defaultValues) {
         $scope.formData[key] = $scope.formState.defaultValues[key];
+      }
+
+      if ($scope.formState.actions && $scope.formState.actions.length) {
+        $scope.fieldVisibility = {};
+        $scope.$watch("formData", function (newValue, oldValue, scope) {
+          $scope.formDataChanged();
+        }, true);
       }
     }
 
@@ -125,8 +132,15 @@
         // edge case: validation contains no rules. must be valid.
         return true;
       }
-      var isValid = false;
-      angular.forEach(validation.rules, function (rule) {
+
+      // a validation fails if all rules are fulfilled
+      return $scope.validateRules(validation.rules) == false;
+    };
+
+    // validate a set of rules
+    $scope.validateRules = function (rules) {
+      var allRulesFulfilled = true;
+      angular.forEach(rules, function (rule) {
         // get the field value from form data
         var fieldValue = $scope.formData[rule.field.formSafeName];
         // treat empty and undefined values as null values for a cleaner validation below
@@ -153,12 +167,12 @@
 
         // all rules must be fulfilled for a validation to fail
         if (ruleIsFulfilled == false) {
+          allRulesFulfilled = false;
           // no need to continue the loop
-          isValid = true;
           return false;
         }
       });
-      return isValid;
+      return allRulesFulfilled;
     };
 
     $scope.$on("filesSelected", function (event, args) {
@@ -180,6 +194,19 @@
         return false;
       }
       return formPage.$invalid && formPage.showValidationErrors;
+    }
+
+    $scope.formDataChanged = function() {
+      angular.forEach($scope.formState.actions, function (action) {
+        var allRulesFulfilled = $scope.validateRules(action.rules);
+        switch (action.task) {
+          case "core.showfield":
+          case "core.hidefield":
+            var show = action.task == "core.showfield";
+            $scope.fieldVisibility[action.field.formSafeName] = (show == allRulesFulfilled);
+            break;
+        }
+      });
     }
 
     // form paging
@@ -257,8 +284,21 @@
         controller.$parsers.splice(0, 0, ensureHttpPrefix);
       }
     };
+  })
+  .directive("actionField", function () {
+    return {
+      restrict: "A",
+      scope: false,
+      link: function (scope, element, attr) {
+        scope.$watch("fieldVisibility." + attr.actionField, function (value) {
+          if (value == undefined) {
+            return;
+          }
+          element[value ? "removeClass" : "addClass"]("ng-hide");
+        }, true);
+      }
+    };
   });
-
 
 // global container and functions for handling cross field validation conditions
 // - makes it easier to extend the validation conditions
