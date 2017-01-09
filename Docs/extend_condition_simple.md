@@ -24,7 +24,7 @@ Open */Config/FormEditor.config* and add the condition to the <CustomConditions/
 
 **Note**: You may have to restart the site to make Form Editor pick up the new configuration.
 
-## Step 2: Create the field icon
+## Step 2: Create the condition icon
 If you want an icon that looks like the ones used by Form Editor, pick one from  the Fugue Icons set at http://p.yusukekamiyamane.com/. Or use this one:
 
 ![Number icon](img/my.length.png)
