@@ -120,9 +120,9 @@
 
       &.form-cell-tools {
         margin-bottom: 2px;
-        padding-left: 5px;
         border: 1px dashed @cellBorderColor;
         border-top: none;
+        text-align: center;
       }
 
       div.form-fields {
@@ -180,6 +180,14 @@
     }
   }
 
+  .form-row-tools, .form-page-tools, .validation-tools, .action-tools {
+    text-align: center;
+  }
+
+  .form-row-tools, .form-page-tools, .validation-tools {
+    margin-right: 2%;
+  }
+
   .umb-editor {
     min-width: 80%;
   }
@@ -219,7 +227,6 @@
   }
 
   .no-form-pages, .no-form-rows, .no-validations {
-    text-align: center;
     padding: 10px;
     i {
       display: block;
@@ -433,7 +440,7 @@
     small {
       font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
       display: inline-block;
-      vertical-align: bottom;
+      vertical-align: top;
     }
   }
 
