@@ -28,5 +28,10 @@ namespace FormEditor.Validation.Conditions
 		{
 			return string.Format("{0}.png", type.ToLowerInvariant());
 		}
+
+		public virtual string View
+		{
+			get { return Type; }
+		}
 	}
 }

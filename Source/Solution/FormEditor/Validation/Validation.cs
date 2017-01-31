@@ -32,7 +32,7 @@ namespace FormEditor.Validation
 			}
 
 			// the validation fails if all rules are fulfilled
-			Invalid = Rules.All(r => r.IsFulfilledBy(allCollectedFieldValues, content));
+			Invalid = Rules.Where(r => r.IsApplicable).All(r => r.IsFulfilledBy(allCollectedFieldValues, content));
 			return Invalid == false;
 		}
 	}

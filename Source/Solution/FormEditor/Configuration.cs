@@ -18,6 +18,7 @@ namespace FormEditor
 		private Configuration()
 		{
 			CustomFields = new List<CustomField>();
+			CustomConditions = new List<CustomCondition>();
 			Load();
 		}
 
@@ -58,6 +59,19 @@ namespace FormEditor
 							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
 							Type = e.Attribute("type").Value,
 							FixedValues = e.Attribute("fixedValues") != null && e.Attribute("fixedValues").Value == "true"
+						}
+					)
+				);
+			}
+			var customConditions = configXml.Root.Element("CustomConditions");
+			if(customConditions != null)
+			{
+				CustomConditions.AddRange(
+					customConditions.Elements("Condition").Where(e => e.Attribute("type") != null).Select(e =>
+						new CustomCondition
+						{
+							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
+							Type = e.Attribute("type").Value
 						}
 					)
 				);
@@ -124,12 +138,7 @@ namespace FormEditor
 
 		public List<CustomField> CustomFields { get; private set; }
 
-		public class CustomField
-		{
-			public string Type { get; set; }
-			public string Name { get; set; }
-			public bool FixedValues { get; set; }
-		}
+		public List<CustomCondition> CustomConditions { get; private set; }
 
 		public Type IndexType { get; private set; }
 
@@ -165,6 +174,19 @@ namespace FormEditor
 				}
 			}
 			return null;
+		}
+
+		public class CustomField
+		{
+			public string Type { get; set; }
+			public string Name { get; set; }
+			public bool FixedValues { get; set; }
+		}
+
+		public class CustomCondition
+		{
+			public string Type { get; set; }
+			public string Name { get; set; }
 		}
 	}
 }

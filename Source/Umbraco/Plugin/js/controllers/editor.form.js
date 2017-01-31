@@ -563,6 +563,22 @@
 
     $scope.model.value.validations = $scope.model.value.validations || [];
     $scope.model.value.actions = $scope.model.value.actions || [];
+
+    // backwards compability for before configurable conditions
+    function ensureConditionView(ruleContainers) {
+      _.each(ruleContainers, function (c) {
+        _.each(c.rules, function(r) {
+          if (!r.condition || r.condition.view) {
+            return;
+          }
+          r.condition.view = r.condition.type;
+        });
+      });
+    }
+
+    ensureConditionView($scope.model.value.validations);
+    ensureConditionView($scope.model.value.actions);
+
     function getConditionType(conditionType) {
       return _.find($scope.model.config.conditionTypes, function (r) {
         return r.type === conditionType;
