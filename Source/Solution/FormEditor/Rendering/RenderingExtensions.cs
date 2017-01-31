@@ -108,7 +108,15 @@ namespace FormEditor.Rendering
 				}
 				if(fieldWithFieldValues != null)
 				{
-					return new HtmlString(string.Format("[{0}]", string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))));
+					if (fieldWithFieldValues.IsMultiSelectEnabled)
+					{
+						return new HtmlString(string.Format("[{0}]", string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))));
+					}
+					return new HtmlString(
+						fieldWithFieldValues.SubmittedValues.Any()
+							? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(fieldWithFieldValues.SubmittedValues.First()))
+							: "undefined"
+					);
 				}
 				return new HtmlString(string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
 			}
