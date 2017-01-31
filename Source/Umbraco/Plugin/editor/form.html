@@ -55,7 +55,7 @@
                 </table>
               </div>
             </li>
-            <li ng-hide="page.rows.length" class="no-form-rows">
+            <li ng-hide="page.rows.length" class="form-row-tools no-form-rows">
               <i class="icon icon-add dimmed" ng-click="pickRow(page)">
                 <small class="dimmed dimmed-hover" form-editor-localize key="composition.rows.empty">Click here to add a row</small>
               </i>
@@ -69,14 +69,16 @@
         </div>
       </div>
     </div>
-    <div ng-show="model.enablePages && !model.value.pages.length" class="no-form-pages">
+    <div ng-show="model.enablePages && !model.value.pages.length" class="form-page-tools no-form-pages">
       <i class="icon icon-add dimmed" ng-click="addPage()">
         <small form-editor-localize key="composition.pages.empty">Click here to add a page</small>
       </i>
     </div>
-    <i class="icon icon-add dimmed" ng-click="addPage()" ng-show="model.enablePages && model.value.pages.length">
-      <small form-editor-localize key="composition.pages.add">Add a page</small>
-    </i>
+    <div ng-show="model.enablePages && model.value.pages.length" class="form-page-tools">
+      <i class="icon icon-add dimmed" ng-click="addPage()">
+        <small form-editor-localize key="composition.pages.add">Add a page</small>
+      </i>
+    </div>
   </div>
   <!-- ## validation ## -->
   <div id="tabFormEditorValidation" ng-if="isVisibleTab('validation')" class="tab-pane" ng-class="{active: isActiveTab('validation')}">
@@ -128,9 +130,11 @@
                     </tr>
                   </tbody>
                 </table>
-                <i class="icon icon-add dimmed" ng-click="editRule(null, validation)">
-                  <small form-editor-localize key="validation.rules.add">Add a rule</small>
-                </i>
+                <div class="action-tools">
+                  <i class="icon icon-add dimmed" ng-click="editRule(null, validation)">
+                    <small form-editor-localize key="validation.rules.add">Add a rule</small>
+                  </i>                  
+                </div>
                 <h5 form-editor-localize key="validation.errorMessage.header">...show this error message:</h5>
                 <input class="umb-editor" type="text" ng-model="validation.errorMessage" />
               </td>
@@ -141,14 +145,16 @@
           </table>
         </li>
       </ul>
-      <div ng-hide="model.value.validations.length" class="no-validations">
+      <div ng-hide="model.value.validations.length" class="validation-tools no-validations">
         <i class="icon icon-add dimmed" ng-click="addValidation()">
           <small form-editor-localize key="validation.add">Add a validation</small>
         </i>
       </div>
-      <i ng-show="model.value.validations.length" class="icon icon-add dimmed" ng-click="addValidation()">
-        <small form-editor-localize key="validation.add">Add a validation</small>
-      </i>
+      <div ng-show="model.value.validations.length" class="validation-tools">
+        <i class="icon icon-add dimmed" ng-click="addValidation()">
+          <small form-editor-localize key="validation.add">Add a validation</small>
+        </i>
+      </div>
     </div>
     <div ng-show="allValueFields().length == 0">
       <p form-editor-localize key="validation.text.noFields">
@@ -199,9 +205,11 @@
                     </tr>
                   </tbody>
                 </table>
-                <i class="icon icon-add dimmed" ng-click="editRule(null, action)">
-                  <small form-editor-localize key="validation.rules.add">Add a rule</small>
-                </i>
+                <div class="action-tools">
+                  <i class="icon icon-add dimmed" ng-click="editRule(null, action)">
+                    <small form-editor-localize key="validation.rules.add">Add a rule</small>
+                  </i>
+                </div>
                 <h5 form-editor-localize key="action.task.header">...perform this action:</h5>
                 <div class="form-action-task">
                   <select ng-model="action.task">
@@ -221,14 +229,16 @@
           </table>
         </li>
       </ul>
-      <div ng-hide="model.value.actions.length" class="no-validations">
+      <div ng-hide="model.value.actions.length" class="validation-tools no-validations">
         <i class="icon icon-add dimmed" ng-click="addAction()">
           <small form-editor-localize key="action.add">Add an action</small>
         </i>
       </div>
-      <i ng-show="model.value.actions.length" class="icon icon-add dimmed" ng-click="addAction()">
-        <small form-editor-localize key="action.add">Add an action</small>
-      </i>
+      <div ng-show="model.value.actions.length" class="validation-tools">
+        <i class="icon icon-add dimmed" ng-click="addAction()">
+          <small form-editor-localize key="action.add">Add an action</small>
+        </i>
+      </div>
     </div>
     <div ng-show="allValueFields().length == 0">
       <p form-editor-localize key="action.text.noFields">
