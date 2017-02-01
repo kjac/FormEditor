@@ -40,6 +40,9 @@
 
   // show the max number of submissions exceeded message if applicable (and if the form was not submitted just now) (no need to check if max submissions are exceeded for the current user)
   var showMaxSubmissionsExceededMessage = showMaxSubmissionsExceededForCurrentUserMessage == false && formWasSubmitted == false && form.MaxSubmissionsExceeded(formContent);
+
+  // skip rendering the form paging links (when applicable)?
+  var skipPagingLinks = ViewBag.FormSkipPagingLinks == true;
 }
 
 @if (showReceiptMessage)
@@ -104,7 +107,7 @@ else
         paging links
         TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
       *@
-      @if (form.Pages.Count() > 1)
+      @if (form.Pages.Count() > 1 && skipPagingLinks == false)
       {
         <nav>
           <ul class="pager">

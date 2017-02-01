@@ -35,6 +35,9 @@
 
   // max submissions exceeded in total? (no need to check if max submissions are exceeded for the current user)
   var maxSubmissionsExceeded = maxSubmissionsExceededForCurrentUser == false && form.MaxSubmissionsExceeded(formContent);
+  
+  // skip rendering the form paging links (when applicable)?
+  var skipPagingLinks = ViewBag.FormSkipPagingLinks == true;
 }
 <div ng-app="@(ViewBag.FormAppDeclared == true ? null : "formEditor")" ng-controller="FormController" ng-cloak>
   @* only render the form if we can actually submit to it *@
@@ -78,7 +81,7 @@
         paging links
         TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
       *@
-      @if (form.Pages.Count() > 1)
+      @if (form.Pages.Count() > 1 && skipPagingLinks == false)
       {
         <nav>
           <ul class="pager">
