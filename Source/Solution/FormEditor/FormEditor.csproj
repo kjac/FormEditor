@@ -311,6 +311,8 @@
     <Compile Include="Limitations\LimitationsHelper.cs" />
     <Compile Include="Limitations\MaxSubmissionsForCurrentUserHandler.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="NewsletterSubscription\CampaignMonitorApi.cs" />
+    <Compile Include="NewsletterSubscription\MailChimpApi.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormValueConverter.cs" />
