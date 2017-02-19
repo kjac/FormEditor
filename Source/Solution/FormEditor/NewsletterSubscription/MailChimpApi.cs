@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace FormEditor.NewsletterSubscription
 {
 	public class MailChimpApi
 	{
-		public bool Subscribe(string listId, string email, string apiKey)
+		public bool Subscribe(string listId, MailAddress email, string apiKey)
 		{
 			var apiKeyParts = apiKey.Split('-');
 			if(apiKeyParts.Length != 2)
@@ -20,9 +21,11 @@ namespace FormEditor.NewsletterSubscription
 				return false;
 			}
 
+			var emailAddress = email.Address;
+
 			var key = apiKeyParts.First();
 			var dc = apiKeyParts.Last();
-			var hash = GetMd5Hash(email.ToLowerInvariant());
+			var hash = GetMd5Hash(emailAddress.ToLowerInvariant());
 			var uri = new Uri(string.Format("https://{0}.api.mailchimp.com/3.0/lists/{1}/members/{2}", dc, listId, hash));
 
 			var client = new WebClient();
@@ -38,26 +41,26 @@ namespace FormEditor.NewsletterSubscription
 			{
 				var data = Serialize(new SubscriptionData
 				{
-					Email_Address = email,
+					Email_Address = emailAddress,
 					Status = "subscribed"
 				});
 
 				var response = client.UploadString(uri, "PUT", data);
 				var result = Deserialize<SubscriptionData>(response);
-				return "subscribed".Equals(result.Status, StringComparison.OrdinalIgnoreCase) && email.Equals(result.Email_Address, StringComparison.OrdinalIgnoreCase);
+				return "subscribed".Equals(result.Status, StringComparison.OrdinalIgnoreCase) && emailAddress.Equals(result.Email_Address, StringComparison.OrdinalIgnoreCase);
 			}
 			catch(WebException wex)
 			{
 				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
 				{
 					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", email, response));
+					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response));
 				}
 				return false;
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", email));
+				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", emailAddress));
 				return false;
 			}
 		}
