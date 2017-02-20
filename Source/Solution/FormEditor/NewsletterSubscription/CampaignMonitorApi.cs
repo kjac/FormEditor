@@ -10,7 +10,7 @@ namespace FormEditor.NewsletterSubscription
 {
 	public class CampaignMonitorApi
 	{
-		public bool Subscribe(string listId, MailAddress email, string name, string apiKey)
+		public bool Subscribe(string listId, MailAddress email, string name, CustomField[] customFields, string apiKey)
 		{
 			var emailAddress = email.Address;
 
@@ -30,7 +30,8 @@ namespace FormEditor.NewsletterSubscription
 				var data = Serialize(new SubscriptionData
 				{
 					EmailAddress = emailAddress,
-					Name = string.IsNullOrWhiteSpace(name) ? emailAddress : name
+					Name = string.IsNullOrWhiteSpace(name) ? emailAddress : name,
+					CustomFields = customFields ?? new CustomField[0]
 				});
 
 				var response = client.UploadString(uri, "POST", data);
@@ -74,9 +75,18 @@ namespace FormEditor.NewsletterSubscription
 
 			public string Name { get; set; }
 
+			public CustomField[] CustomFields { get; set; }
+
 			public bool Resubscribe { get { return true; } }
 
 			public bool RestartSubscriptionBasedAutoresponders { get { return true; } }
+		}
+
+		public class CustomField
+		{
+			public string Key { get; set; }
+
+			public string Value { get; set; }
 		}
 	}
 }

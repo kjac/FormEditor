@@ -33,10 +33,20 @@ namespace FormEditor.Fields
 
 		protected override void HandleSubscription(MailAddress mailAddress, IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{
-			var nameField = allCollectedValues.OfType<FieldWithValue>().FirstOrDefault(f => f.Name.Equals(NameField, StringComparison.OrdinalIgnoreCase));
+			var valueFields = allCollectedValues.OfType<FieldWithValue>().ToArray();
+			var nameField = valueFields.FirstOrDefault(f => f.Name.Equals(NameField, StringComparison.OrdinalIgnoreCase));
+
+			var customFields = valueFields
+				.Except(new[] {this, nameField}.Where(f => f != null))
+				.Select(f => new CampaignMonitorApi.CustomField
+				{
+					Key = f.Name,
+					Value = f.SubmittedValue
+				})
+				.ToArray();
 
 			var api = new CampaignMonitorApi();
-			api.Subscribe(ListId, mailAddress, nameField != null ? nameField.SubmittedValue : null, ApiKey);
+			api.Subscribe(ListId, mailAddress, nameField != null ? nameField.SubmittedValue : null, customFields, ApiKey);
 		}
 	}
 }
