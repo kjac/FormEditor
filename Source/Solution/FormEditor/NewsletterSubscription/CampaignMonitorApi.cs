@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -9,8 +10,10 @@ namespace FormEditor.NewsletterSubscription
 {
 	public class CampaignMonitorApi
 	{
-		public bool Subscribe(string listId, string email, string name, string apiKey)
+		public bool Subscribe(string listId, MailAddress email, string name, string apiKey)
 		{
+			var emailAddress = email.Address;
+
 			var uri = new Uri(string.Format("https://api.createsend.com/api/v3.1/subscribers/{0}.json", listId));
 
 			var client = new WebClient();
@@ -26,25 +29,25 @@ namespace FormEditor.NewsletterSubscription
 			{
 				var data = Serialize(new SubscriptionData
 				{
-					EmailAddress = email,
-					Name = string.IsNullOrWhiteSpace(name) ? email : name
+					EmailAddress = emailAddress,
+					Name = string.IsNullOrWhiteSpace(name) ? emailAddress : name
 				});
 
 				var response = client.UploadString(uri, "POST", data);
-				return email.Equals(response, StringComparison.OrdinalIgnoreCase);
+				return emailAddress.Equals(response, StringComparison.OrdinalIgnoreCase);
 			}
 			catch(WebException wex)
 			{
 				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
 				{
 					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", email, response));
+					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response));
 				}
 				return false;
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", email));
+				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", emailAddress));
 				return false;
 			}
 		}

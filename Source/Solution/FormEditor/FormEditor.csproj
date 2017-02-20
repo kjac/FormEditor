@@ -265,8 +265,10 @@
     <Compile Include="Events\FormEditorEventHandler.cs" />
     <Compile Include="Events\FormEditorMailCancelEventArgs.cs" />
     <Compile Include="Events\FormEditorMailCancelEventHandler.cs" />
+    <Compile Include="Fields\CampaignMonitorSubscriptionField.cs" />
     <Compile Include="Fields\MailChimpSubscriptionField.cs" />
     <Compile Include="Fields\CustomFieldFixedValues.cs" />
+    <Compile Include="Fields\NewsletterSubscriptionField.cs" />
     <Compile Include="Fields\Statistics\FieldExtensions.cs" />
     <Compile Include="Fields\Statistics\IValueFrequencyStatisticsField.cs" />
     <Compile Include="Fields\Statistics\IStatisticsField.cs" />
