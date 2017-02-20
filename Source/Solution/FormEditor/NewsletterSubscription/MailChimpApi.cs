@@ -41,20 +41,20 @@ namespace FormEditor.NewsletterSubscription
 			{
 				var data = Serialize(new SubscriptionData
 				{
-					Email_Address = emailAddress,
-					Status = "subscribed"
+					email_address = emailAddress,
+					status = "subscribed"
 				});
 
 				var response = client.UploadString(uri, "PUT", data);
 				var result = Deserialize<SubscriptionData>(response);
-				return "subscribed".Equals(result.Status, StringComparison.OrdinalIgnoreCase) && emailAddress.Equals(result.Email_Address, StringComparison.OrdinalIgnoreCase);
+				return "subscribed".Equals(result.status, StringComparison.OrdinalIgnoreCase) && emailAddress.Equals(result.email_address, StringComparison.OrdinalIgnoreCase);
 			}
 			catch(WebException wex)
 			{
 				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
 				{
 					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response));
+					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response), null);
 				}
 				return false;
 			}
@@ -91,15 +91,15 @@ namespace FormEditor.NewsletterSubscription
 
 		private static JsonSerializerSettings SerializerSettings()
 		{
-			// make sure we're serializing with camel casing
-			return new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+			// make sure we're serializing with the default contract resolver
+			return new JsonSerializerSettings { ContractResolver = new DefaultContractResolver() };
 		}
 
 		private class SubscriptionData
 		{
-			public string Email_Address { get; set; }
+			public string email_address { get; set; }
 
-			public string Status { get; set; }
+			public string status { get; set; }
 		}
 	}
 }

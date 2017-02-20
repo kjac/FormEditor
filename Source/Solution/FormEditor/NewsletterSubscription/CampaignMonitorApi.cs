@@ -61,7 +61,7 @@ namespace FormEditor.NewsletterSubscription
 
 		private static JsonSerializerSettings SerializerSettings()
 		{
-			// make sure we're serializing with pascal casing
+			// make sure we're serializing with the default contract resolver
 			return new JsonSerializerSettings { ContractResolver = new DefaultContractResolver() };
 		}
 
