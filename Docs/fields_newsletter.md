@@ -36,4 +36,26 @@ To enable the integration (and thus the *Newsletter subscription* field), you mu
 **Note: ** Remember to include the *data center* part of your MailChimp API key (in the sample above it's `-us15`).
 
 ## Using multiple newsletter lists
-TODO
+If your site uses multiple newsletter lists (e.g. one per country), you can specify the correct list ID runtime by setting the `ListId` of the *Newsletter subscription* field. One way to do this is by hooking into the `BeforeAddToIndex` event on `FormModel`:
+
+```cs
+FormModel.BeforeAddToIndex += (sender, args) =>
+{
+  // find the newsletter subscription field (it's base class for both 
+  // the Campaign Monitor and the MailChimp newsletter subscription fields)
+  var newsletterSubscriptionField = sender.AllValueFields()
+    .OfType<NewsletterSubscriptionField>()
+    .FirstOrDefault();
+  if(newsletterSubscriptionField == null)
+  {
+    // no field found
+    return;
+  }
+
+  // set the correct list ID to use for newsletter subscription
+  newsletterSubscriptionField.ListId = "xxxxxxxx";
+};
+```
+
+Event handling is described more in detail [here](extend.md#form-submission-events).
+
