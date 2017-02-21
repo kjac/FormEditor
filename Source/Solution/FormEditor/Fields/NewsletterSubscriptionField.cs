@@ -8,7 +8,7 @@ using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
 {
-	public abstract class NewsletterSubscriptionField : FieldWithLabel
+	public abstract class NewsletterSubscriptionField : FieldWithLabel, IDefaultSelectableField
 	{
 		protected abstract string ApiKeyAppSettingsKey { get; }
 
@@ -47,19 +47,18 @@ namespace FormEditor.Fields
 			Selected = string.IsNullOrEmpty(SubmittedValue) == false;
 		}
 
-		// NOTE: we're not going to fail the form validation just because the newsletter signup didn't succeed
-		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
+		protected internal override void AfterAddToIndex(IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{
 			if(Selected == false)
 			{
-				return true;
+				return;
 			}
 
 			var emailField = allCollectedValues.OfType<EmailField>().FirstOrDefault();
 			var mailAddress = emailField != null ? emailField.GetSubmittedMailAddresses().FirstOrDefault() : null;
 			if(mailAddress == null)
 			{
-				return true;
+				return;
 			}
 
 			try
@@ -68,10 +67,9 @@ namespace FormEditor.Fields
 			}
 			catch(Exception ex)
 			{
+				// swallow and log any exception that occurred during subscription
 				Log.Error(ex, "An error occurred while trying to subscribe {0} to the {1} list.", mailAddress.Address, ServiceName);
 			}
-
-			return true;
 		}
 
 		public override bool CanBeAddedToForm

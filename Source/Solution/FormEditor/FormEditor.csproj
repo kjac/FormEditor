@@ -266,6 +266,7 @@
     <Compile Include="Events\FormEditorMailCancelEventArgs.cs" />
     <Compile Include="Events\FormEditorMailCancelEventHandler.cs" />
     <Compile Include="Fields\CampaignMonitorSubscriptionField.cs" />
+    <Compile Include="Fields\IDefaultSelectableField.cs" />
     <Compile Include="Fields\MailChimpSubscriptionField.cs" />
     <Compile Include="Fields\CustomFieldFixedValues.cs" />
     <Compile Include="Fields\NewsletterSubscriptionField.cs" />
