@@ -38,12 +38,7 @@ namespace FormEditor.Fields
 
 			var customFields = valueFields
 				.Except(new[] {this, nameField}.Where(f => f != null))
-				.Select(f => new CampaignMonitorApi.CustomField
-				{
-					Key = f.Name,
-					Value = f.SubmittedValue
-				})
-				.ToArray();
+				.ToDictionary(f => f.Name, f => f.SubmittedValue);
 
 			var api = new CampaignMonitorApi();
 			api.Subscribe(ListId, mailAddress, nameField != null ? nameField.SubmittedValue : null, customFields, ApiKey);

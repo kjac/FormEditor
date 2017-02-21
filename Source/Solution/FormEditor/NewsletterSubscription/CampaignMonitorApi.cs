@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -10,7 +12,7 @@ namespace FormEditor.NewsletterSubscription
 {
 	public class CampaignMonitorApi
 	{
-		public bool Subscribe(string listId, MailAddress email, string name, CustomField[] customFields, string apiKey)
+		public bool Subscribe(string listId, MailAddress email, string name, Dictionary<string, string> customFields, string apiKey)
 		{
 			var emailAddress = email.Address;
 
@@ -25,13 +27,21 @@ namespace FormEditor.NewsletterSubscription
 			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", apiKey, "-")));
 			client.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
 
+			var customFieldsData = customFields == null
+				? new CustomField[0]
+				: customFields.Select(kvp => new CustomField
+				{
+					Key = kvp.Key,
+					Value = kvp.Value
+				}).ToArray();
+
 			try
 			{
 				var data = Serialize(new SubscriptionData
 				{
 					EmailAddress = emailAddress,
 					Name = string.IsNullOrWhiteSpace(name) ? emailAddress : name,
-					CustomFields = customFields ?? new CustomField[0]
+					CustomFields = customFieldsData
 				});
 
 				var response = client.UploadString(uri, "POST", data);

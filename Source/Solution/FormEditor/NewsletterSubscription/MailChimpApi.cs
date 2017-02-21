@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,12 +8,13 @@ using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Umbraco.Web.Media.EmbedProviders.Settings;
 
 namespace FormEditor.NewsletterSubscription
 {
 	public class MailChimpApi
 	{
-		public bool Subscribe(string listId, MailAddress email, string apiKey)
+		public bool Subscribe(string listId, MailAddress email, Dictionary<string, string> mergeFields, string apiKey)
 		{
 			var apiKeyParts = apiKey.Split('-');
 			if(apiKeyParts.Length != 2)
@@ -42,7 +44,10 @@ namespace FormEditor.NewsletterSubscription
 				var data = Serialize(new SubscriptionData
 				{
 					email_address = emailAddress,
-					status = "subscribed"
+					status = "subscribed",
+					merge_fields = mergeFields == null
+						? new Dictionary<string, string>()
+						: mergeFields.ToDictionary(kvp => kvp.Key.ToUpperInvariant(), kvp => kvp.Value)
 				});
 
 				var response = client.UploadString(uri, "PUT", data);
@@ -100,6 +105,8 @@ namespace FormEditor.NewsletterSubscription
 			public string email_address { get; set; }
 
 			public string status { get; set; }
+
+			public Dictionary<string, string> merge_fields { get; set; }
 		}
 	}
 }
