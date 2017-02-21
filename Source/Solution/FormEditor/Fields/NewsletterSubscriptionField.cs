@@ -10,6 +10,8 @@ namespace FormEditor.Fields
 {
 	public abstract class NewsletterSubscriptionField : FieldWithLabel, IDefaultSelectableField
 	{
+		private string _listId;
+
 		protected abstract string ApiKeyAppSettingsKey { get; }
 
 		protected abstract string ListIdAppSettingsKey { get; }
@@ -94,11 +96,20 @@ namespace FormEditor.Fields
 			}
 		}
 
+		// we're using a backing property here to allow custom code to set a different list ID
 		public string ListId
 		{
 			get
 			{
-				return ConfigurationManager.AppSettings[ListIdAppSettingsKey];
+				if(_listId == null)
+				{
+					_listId = ConfigurationManager.AppSettings[ListIdAppSettingsKey];
+				}
+				return _listId;
+			}
+			set
+			{
+				_listId = value;
 			}
 		}
 	}

@@ -28,5 +28,8 @@ When added to the form, this field automatically stores the name and email of th
 
 The field can be used in cross field validations - for example if there is no logged in member (the field is empty), an email field could be made mandatory.
 
+## The Campaign Monitor and MailChimp subscription fields
+Form Editor has built-in support for newsletter subcription via [Campaign Monitor](https://www.campaignmonitor.com/) and [MailChimp](https://mailchimp.com/). This is described in detail [here](fields_newsletter.md).
+
 ## Next step
 Onwards to [reusable forms](reuse.md).
