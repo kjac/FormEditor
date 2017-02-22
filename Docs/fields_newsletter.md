@@ -1,4 +1,4 @@
-# Campaign Monitor and MailChimp integration
+# Campaign Monitor and MailChimp fields
 Form Editor has built-in support for newsletter subcription via [Campaign Monitor](https://www.campaignmonitor.com/) and [MailChimp](https://mailchimp.com/). The following describes this integration in detail.
 
 ## How it works
@@ -11,7 +11,7 @@ Both Campaign Monitor and MailChimp have support for passing additional subscrib
 
 When Form Editor subscribes an email to the newsletter list, the submitted values all fields (except the *Email* field) are sent along as Custom/Merge Fields, using the field names as keys. 
 
-Specifically for MailChimp, the keys are uppercased since MailChimp expects the keys to be in uppercase.
+Specifically for MailChimp the keys are uppercased, since this is what MailChimp expects the keys to be.
 
 ## Configuration
 To enable the integration (and thus the *Newsletter subscription* field), you must tell Form Editor which newsletter list ID and API key to use when adding newsletter subscribers. This is done in the `<appSettings/>` of your site like this:
