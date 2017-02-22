@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
-using FormEditor.NewsletterSubscription;
+using Newtonsoft.Json;
 using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
@@ -88,6 +88,7 @@ namespace FormEditor.Fields
 				   && string.IsNullOrEmpty(ListId) == false;
 		}
 
+		[JsonIgnore]
 		public string ApiKey
 		{
 			get
@@ -96,6 +97,7 @@ namespace FormEditor.Fields
 			}
 		}
 
+		[JsonIgnore]
 		// we're using a backing property here to allow custom code to set a different list ID
 		public string ListId
 		{
