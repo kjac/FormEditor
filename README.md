@@ -11,7 +11,8 @@ Some highlights include:
 * Ships with (almost) all HTML5 input types.
 * Cross field validation.
 * Conditional fields.
-* Support for multi-page forms (optional).
+* Integration with [Campaign Monitor](https://www.campaignmonitor.com/) and [MailChimp](https://mailchimp.com/).
+* Support for multi-page forms.
 * Full control over the frontend rendering.
 * Full support for asynchronous postback, e.g. for AngularJS.
 * Easily extendable with custom fields.
