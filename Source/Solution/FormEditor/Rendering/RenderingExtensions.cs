@@ -80,7 +80,7 @@ namespace FormEditor.Rendering
 
 		public static bool HasDefaultValue(this FieldWithValue field)
 		{
-			if(field is CheckboxField)
+			if(field is IDefaultSelectableField)
 			{
 				return true;
 			}
@@ -94,10 +94,10 @@ namespace FormEditor.Rendering
 
 		public static IHtmlString DefaultValue(this FieldWithValue field)
 		{
-			var checkboxField = field as CheckboxField;
-			if(checkboxField != null)
+			var defaultSelectableField = field as IDefaultSelectableField;
+			if(defaultSelectableField != null)
 			{
-				return new HtmlString(checkboxField.Selected ? "true" : "undefined");
+				return new HtmlString(defaultSelectableField.Selected ? "true" : "undefined");
 			}
 			var fieldWithFieldValues = field as FieldWithFieldValues;
 			if(field.HasSubmittedValue)

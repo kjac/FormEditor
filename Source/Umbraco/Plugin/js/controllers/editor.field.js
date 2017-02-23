@@ -1,5 +1,5 @@
-﻿angular.module("umbraco").controller("FormEditor.Editor.FieldController", ["$scope", "formEditorPropertyEditorFieldValidator", "formEditorPropertyEditorResource", "dialogService", "contentResource", 
-  function ($scope, formEditorPropertyEditorFieldValidator, formEditorPropertyEditorResource, dialogService, contentResource) {
+﻿angular.module("umbraco").controller("FormEditor.Editor.FieldController", ["$scope", "$filter", "formEditorPropertyEditorFieldValidator", "formEditorPropertyEditorResource", "dialogService", "contentResource", 
+  function ($scope, $filter, formEditorPropertyEditorFieldValidator, formEditorPropertyEditorResource, dialogService, contentResource) {
     $scope.originalFieldName = $scope.dialogData.field.name;
     $scope.addFieldValue = function () {
       $scope.dialogData.field.fieldValues.push({});
@@ -71,6 +71,9 @@
       if ($scope.dialogData.warnWhenRenaming) {
         $scope.showRenameWarning = $scope.dialogData.field.name != $scope.originalFieldName;
       }
+    }
+    $scope.allValueFields = function () {
+      return $filter("filter")(formEditorPropertyEditorFieldValidator.fields, { isValueField: true });
     }
     if ($scope.dialogData.field.mediaId) {
       $scope.loadMediaUrl();

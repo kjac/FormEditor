@@ -4,6 +4,8 @@ In this tutorial we'll integrate Form Editor with an email marketing platform, s
 
 [Campaign Monitor](https://www.campaignmonitor.com/) offers an official [.NET wrapper](http://campaignmonitor.github.io/createsend-dotnet/) for their API, which makes it an obvious choice for this tutorial. If you're more of a MailChimp kind of person, there are similar 3rd party .NET wrappers for MailChimp, and it should be pretty straight forward to apply those to the code in this tutorial.
 
+*Note: Since version 0.18, Form Editor features built-in integration with both Campaign Monitor and MailChimp on a per-form basis ([read more](../Docs/fields_newsletter.md)). However, this tutorial still makes sense if you want to add a global handling of newsletter subscription, or if you simply want to learn more about some of the runtime extension points in Form Editor.*
+
 ## What to do
 
 The objective is simple: When a form is submitted, we'll look for a checked "subscribe to newsletter" checkbox and a valid email field. If we can find those, we'll subscribe the email address to our mailing list. Furthermore we'll attempt to dig out additional information about the user (name, gender and zip code) and pass it along with the subscription, for use within Campaign Monitor. 

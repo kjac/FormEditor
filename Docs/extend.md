@@ -18,7 +18,7 @@ Before any form submission emails are sent (notification and confirmation emails
 You can create your own custom conditions for actions and cross field validations. Read more [here](extend_condition.md).
 
 ## Replacing the default storage 
-The storage for form submissions can be replaced by your own custom implementation (or with one of the [sample implementations)(../Samples/)). Read more [here](storage.md).
+The storage for form submissions can be replaced by your own custom implementation (or with one of the [sample implementations](../Samples/)). Read more [here](storage.md).
 
 ## Custom handling of submission limitations
 Form Editor supports limiting the submissions made to a specific form per user. The default implementation uses a cookie to track which forms the users have submitted. If this doesn't work for you, you can create your own handler (or extend the default one).

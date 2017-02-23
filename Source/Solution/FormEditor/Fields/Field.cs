@@ -47,5 +47,10 @@ namespace FormEditor.Fields
 		protected internal virtual void CollectSubmittedValue(Dictionary<string, string> allSubmittedValues, IPublishedContent content)
 		{
 		}
+
+		// this is called after a form submission has successfully been added to the index
+		protected internal virtual void AfterAddToIndex(IEnumerable<Field> allCollectedValues, IPublishedContent content)
+		{
+		}
 	}
 }

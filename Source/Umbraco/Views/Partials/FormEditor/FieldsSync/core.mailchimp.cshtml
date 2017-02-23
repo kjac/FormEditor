@@ -1,0 +1,9 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.MailChimpSubscriptionField>
+<div class="form-group @(Model.Invalid? "has-error" : null) checkbox">
+  <label>
+    <input type="checkbox" name="@Model.FormSafeName" value="true" @(Model.Selected ? "checked" : null) />
+    @Model.Label
+  </label>
+
+  @Html.Partial("FormEditor/FieldsSync/core.utils.helptext")
+</div>

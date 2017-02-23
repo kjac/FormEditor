@@ -40,5 +40,22 @@ namespace FormEditor.Fields
 			}
 			return true;
 		}
+
+		public IEnumerable<MailAddress> GetSubmittedMailAddresses()
+		{
+			var mailAddresses = new List<MailAddress>();
+			foreach(var email in SubmittedValue.Split(','))
+			{
+				try
+				{
+					mailAddresses.Add(new MailAddress(email));
+				}
+				catch
+				{
+					// silently fail for invalid email addresses
+				}
+			}
+			return mailAddresses;
+		} 
 	}
 }

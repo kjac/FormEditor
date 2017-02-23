@@ -265,7 +265,11 @@
     <Compile Include="Events\FormEditorEventHandler.cs" />
     <Compile Include="Events\FormEditorMailCancelEventArgs.cs" />
     <Compile Include="Events\FormEditorMailCancelEventHandler.cs" />
+    <Compile Include="Fields\CampaignMonitorSubscriptionField.cs" />
+    <Compile Include="Fields\IDefaultSelectableField.cs" />
+    <Compile Include="Fields\MailChimpSubscriptionField.cs" />
     <Compile Include="Fields\CustomFieldFixedValues.cs" />
+    <Compile Include="Fields\NewsletterSubscriptionField.cs" />
     <Compile Include="Fields\Statistics\FieldExtensions.cs" />
     <Compile Include="Fields\Statistics\IValueFrequencyStatisticsField.cs" />
     <Compile Include="Fields\Statistics\IStatisticsField.cs" />
@@ -311,6 +315,8 @@
     <Compile Include="Limitations\LimitationsHelper.cs" />
     <Compile Include="Limitations\MaxSubmissionsForCurrentUserHandler.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="NewsletterSubscription\CampaignMonitorApi.cs" />
+    <Compile Include="NewsletterSubscription\MailChimpApi.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormValueConverter.cs" />

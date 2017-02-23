@@ -181,7 +181,7 @@ namespace FormEditor
 			}
 
 			// tell everyone that something was added
-			RaiseAfterAddToIndex(content);
+			RaiseAfterAddToIndex(content, fields);
 
 			MaxSubmissionsForCurrentUserHandler.HandleSubmission(this, content);
 
@@ -519,7 +519,7 @@ namespace FormEditor
 
 			return index.Add(indexFields, indexRowId);			
 		}
-		
+
 		private string FormatForIndexAndSanitize(FieldWithValue field, IPublishedContent content, Guid rowId)
 		{
 			var value = field.FormatSubmittedValueForIndex(content, rowId);
@@ -555,8 +555,13 @@ namespace FormEditor
 			return null;
 		}
 
-		private void RaiseAfterAddToIndex(IPublishedContent content)
+		private void RaiseAfterAddToIndex(IPublishedContent content, List<Field> fields)
 		{
+			foreach(var field in fields)
+			{
+				field.AfterAddToIndex(fields, content);
+			}
+
 			if(AfterAddToIndex != null)
 			{
 				try

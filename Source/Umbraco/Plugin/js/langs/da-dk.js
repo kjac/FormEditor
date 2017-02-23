@@ -1,6 +1,7 @@
 ﻿{
   "composition.field.add": "Tilføj et felt",
   "composition.field.deleteConfirmation": "Er du sikker på, at du vil slette dette felt?",
+  "composition.field.core.campaignmonitor": "Nyhedsbrevs-tilmelding",
   "composition.field.core.checkbox": "Checkbox",
   "composition.field.core.checkboxgroup": "Checkbox-gruppe",
   "composition.field.core.date": "Dato-vælger",
@@ -9,6 +10,7 @@
   "composition.field.core.heading": "Overskrift",
   "composition.field.core.image": "Billede",
   "composition.field.core.link": "Link",
+  "composition.field.core.mailchimp": "Nyhedsbrevs-tilmelding",
   "composition.field.core.memberinfo": "Medlems-information",
   "composition.field.core.number": "Heltal",
   "composition.field.core.radiobuttongroup": "Radioknapper",
@@ -123,6 +125,8 @@
   "data.maxSubmissionsPerUser.message.heading": "Overskrift",
   "data.maxSubmissionsPerUser.message.body": "Tekst",
   
+  "edit.campaignMonitor.nameField": "Felt til navn",  
+  "edit.campaignMonitor.nameField.helpText": "Hvilket felt indeholder den tilmeldtes navn?",  
   "edit.checkbox.checked.helpText": "Sæt kryds her hvis feltet skal være valgt som standard",  
   "edit.checked": "Valgt",  
   "edit.close": "Luk",

@@ -1,0 +1,22 @@
+<div class="umb-panel form-editor-edit-field" ng-controller="FormEditor.Editor.FieldController">
+  <div class="umb-panel-body no-header with-footer umb-scrollable">
+    <div class="umb-control-group">
+      <div class="tab-content form umb-el-wrap">
+        <form-editor-field-header></form-editor-field-header>
+
+        <div class="umb-pane">
+          <form-editor-field-basics></form-editor-field-basics>
+
+          <label class="control-label" for="selected">
+            <input type="checkbox" id="selected" ng-model="dialogData.field.selected" />
+            <form-editor-localize key="edit.checked">Checked</form-editor-localize>
+            <small form-editor-localize key="edit.checkbox.checked.helpText">Tick this box if the field should be checked by default</small>
+          </label>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form-editor-field-footer></form-editor-field-footer>
+</div>

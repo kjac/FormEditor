@@ -4,7 +4,7 @@ using Umbraco.Core.Models;
 
 namespace FormEditor.Fields
 {
-	public class CheckboxField : FieldWithMandatoryValidation
+	public class CheckboxField : FieldWithMandatoryValidation, IDefaultSelectableField
 	{
 		public override string PrettyName
 		{
