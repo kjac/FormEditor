@@ -869,12 +869,13 @@ namespace FormEditor
 
 		private static Data.Field ToDataField(Func<FieldWithValue, string, Storage.Row, string> valueFormatter, FieldWithValue field, Storage.Row row)
 		{
+			var fieldValue = FieldHelper.GetSubmittedValue(field, row.Fields);
 			return new Data.Field
 			{
 				Name = field.Name,
 				FormSafeName = field.FormSafeName,
 				Type = field.Type,
-				Value = valueFormatter != null ? valueFormatter(field, row.Fields.ContainsKey(field.FormSafeName) ? row.Fields[field.FormSafeName] : null, row) : null
+				Value = valueFormatter != null ? valueFormatter(field, fieldValue, row) : null
 			};
 		}
 

@@ -44,9 +44,7 @@ namespace FormEditor.Fields
 
 		protected internal override void CollectSubmittedValue(Dictionary<string, string> allSubmittedValues, IPublishedContent content)
 		{
-			SubmittedValue = allSubmittedValues.ContainsKey(FormSafeName)
-				? allSubmittedValues[FormSafeName]
-				: null;
+			SubmittedValue = FieldHelper.GetSubmittedValue(this, allSubmittedValues);
 		}
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
