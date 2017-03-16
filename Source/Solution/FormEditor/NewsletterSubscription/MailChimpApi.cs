@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Umbraco.Web.Media.EmbedProviders.Settings;
 
 namespace FormEditor.NewsletterSubscription
 {
