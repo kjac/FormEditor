@@ -30,7 +30,10 @@ namespace FormEditor.NewsletterSubscription
 			var hash = GetMd5Hash(emailAddress.ToLowerInvariant());
 			var uri = new Uri(string.Format("https://{0}.api.mailchimp.com/3.0/lists/{1}/members/{2}", dc, listId, hash));
 
-			var client = new WebClient();
+			var client = new WebClient
+			{
+				Encoding = Encoding.UTF8
+			};
 
 			// set JSON content type
 			client.Headers[HttpRequestHeader.ContentType] = "application/json";

@@ -18,7 +18,10 @@ namespace FormEditor.NewsletterSubscription
 
 			var uri = new Uri(string.Format("https://api.createsend.com/api/v3.1/subscribers/{0}.json", listId));
 
-			var client = new WebClient();
+			var client = new WebClient
+			{
+				Encoding = Encoding.UTF8
+			};
 
 			// set JSON content type
 			client.Headers[HttpRequestHeader.ContentType] = "application/json";
