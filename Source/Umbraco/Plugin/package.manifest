@@ -95,6 +95,12 @@
                view: "boolean"
             },
             {
+               label: "Web service integration",
+               description: "Configure integration with an external web service",
+               key: "webService",
+               view: "~/App_Plugins/FormEditor/config/webService.html"
+            },
+            {
                label: "Custom CSS",
                description: "Path to custom CSS to include in the property editor (e.g. /my/custom.css)",
                key: "customCss",
