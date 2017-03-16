@@ -4,6 +4,10 @@ namespace FormEditor.Rendering
 {
 	public class ConditionData
 	{
+		internal ConditionData()
+		{
+		}
+
 		public ConditionData(Condition condition)
 		{
 			Type = condition.Type;
