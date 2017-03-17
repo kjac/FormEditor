@@ -54,38 +54,38 @@ using System.Web.Http;
 
 namespace MySite.Controllers.Api
 {
-	public class FormEditorSubmissionController : ApiController
-	{
-		[HttpPost]
-		public IHttpActionResult Post(WebServiceData data)
-		{
-			// do stuff with the submitted data here
+  public class FormEditorSubmissionController : ApiController
+  {
+    [HttpPost]
+    public IHttpActionResult Post(WebServiceData data)
+    {
+      // do stuff with the submitted data here
 
-			return Ok();
-		}
-	}
+      return Ok();
+    }
+  }
 
-	public class WebServiceData
-	{
-		public string UmbracoContentName { get; set; }
+  public class WebServiceData
+  {
+    public string UmbracoContentName { get; set; }
 
-		public int UmbracoContentId { get; set; }
+    public int UmbracoContentId { get; set; }
 
-		public string IndexRowId { get; set; }
+    public string IndexRowId { get; set; }
 
-		public FormFieldData[] FormData { get; set; }
-	}
+    public FormFieldData[] FormData { get; set; }
+  }
 
-	public class FormFieldData
-	{
-		public string Name { get; set; }
+  public class FormFieldData
+  {
+    public string Name { get; set; }
 
-		public string FormSafeName { get; set; }
+    public string FormSafeName { get; set; }
 
-		public string Type { get; set; }
+    public string Type { get; set; }
 
-		public string SubmittedValue { get; set; }
-	}
+    public string SubmittedValue { get; set; }
+  }
 }
 ```
 
