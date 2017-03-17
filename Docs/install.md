@@ -40,7 +40,7 @@ You can choose separate email templates for notification and confirmation emails
 ##### Tab order and availiability
 There are a lot of options with Form Editor, some of which you might not use or want your editors to be concerned with. These options are grouped in tabs within the property editor. You can decide the order of these tabs as well as disable the tabs you don't want available to your editors.
 
-#### Web service integration
+##### Web service integration
 Form Editor can send form data automatically to an external web service upon a successful form submission. Read more about this [here](install_web_service.md).
 
 ##### Custom CSS
