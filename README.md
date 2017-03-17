@@ -24,7 +24,7 @@ Some highlights include:
 
 ## Table of contents
 * [Installing and setting up Form Editor](Docs/install.md)
-   * [Setting up web service integration](Docs/install_web_service.md.md)
+   * [Setting up web service integration](Docs/install_web_service.md)
 * [Rendering the form](Docs/render.md)
 * [Email templates](Docs/emails.md)
 * [Special form fields](Docs/fields.md)
