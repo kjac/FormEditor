@@ -40,7 +40,7 @@ Of course you'll need to style the form elements too, but that's out of scope fo
 ## Step 4: Profit :)
 Now go build a form on one of your pages and publish it. 
 
-![Form property](img/QuickStart/form property.png)
+![Form property](img/QuickStart/form-property.png)
 
 If everything goes according to plan, you should now have a fully functional form on your page.
 

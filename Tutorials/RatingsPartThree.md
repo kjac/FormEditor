@@ -143,15 +143,15 @@ Now that we've gone through the trouble of creating the rating form automaticall
 
 Disable all tabs except the "Submissions" tab in the "Tab order and availability" section on the Form Editor data type:
 
-![Tab order and availability](img/RatingsPartThree/tab order and availability.png)
+![Tab order and availability](img/RatingsPartThree/tab-order-and-availability.png)
 
 And while you're at it, tick "Hide label". Now open your *Article* page and switch to the *Reviews* tab... much better! 
 
-![Submissions tab](img/RatingsPartThree/review form property.png)
+![Submissions tab](img/RatingsPartThree/review-form-property.png)
 
 Since the rating field supports statistics, your editors can hit the *Statistics* button just below the submissions and view the spread between the actual rating values (1 through 5). Pretty sweet, isn't it?
 
-![Submission statistics](img/RatingsPartThree/review form property statistics.png)
+![Submission statistics](img/RatingsPartThree/review-form-property-statistics.png)
 
 ## Closing remarks
 This part of the tutorial should give you an idea of how you can help your editors in terms of automation and simplified editorial experience. We've ended up with a rating system that "just works" without troubling the editors with the details of how and why. 

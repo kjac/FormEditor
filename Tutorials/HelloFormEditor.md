@@ -1,7 +1,7 @@
 # Tutorial: Hello Form Editor
 In this tutorial we'll add Form Editor to the Fanoe starter kit and create a contact form in the site footer.
 
-![Contact form](img/HelloFormEditor/contact form.png)
+![Contact form](img/HelloFormEditor/contact-form.png)
 
 ## Preparation
 Start by setting up a fresh Umbraco installation with the Fanoe starter kit installed. Once Umbraco is up and running, download the Umbraco package from [latest Form Editor release](https://github.com/kjac/FormEditor/releases) (it's the zip file attached to the release) and install it in the Umbraco Developer section.
@@ -23,11 +23,11 @@ In the Umbraco Content section, edit the front page (*Home*) and open the *Conta
 2. Add a two column row with a *Text box* field for the user's name in the left column and an *Email address* field for the user's email in the right column. Make both fields mandatory and add suitable error messages to them.
 3. Add a one column row with a *Text area* field for the user's message (optionally make it mandatory) and a *Submit button* field so the user can send the message.
 
-![Form layout](img/HelloFormEditor/form layout.png)
+![Form layout](img/HelloFormEditor/form-layout.png)
 
 When the form layout is done, switch to the *Receipt* tab of the Form Editor property and enter a thank-you message to show when the users submit the form.
 
-![Form receipt](img/HelloFormEditor/form receipt.png)
+![Form receipt](img/HelloFormEditor/form-receipt.png)
 
 ## Step 3: Render the contact form
 As described in the [documentation for rendering](../Docs/render.md), Form Editor supports both synchronous form postback (using [jQuery](https://jquery.com/)) and asynchronous form postback (using [AngularJS](https://angularjs.org/)). Since the contact form is going in the footer of the site, asynchronous form postback is preferable to avoid a full page reload on form submission.
@@ -77,7 +77,7 @@ In the bottom of the master template, include the Form Editor JS for asynchronou
 ## Step 4: Finishing touches
 If you view the site now and scroll down to the footer, the contact form should be visible, fully functional and look something like this:
 
-![Unstyled form](img/HelloFormEditor/form unstyled.png)
+![Unstyled form](img/HelloFormEditor/form-unstyled.png)
 
 However, some styling would help a lot. Try adding these styles:
 
@@ -148,5 +148,5 @@ div.form-editor div.form-validation-errors div.alert.alert-danger {
 
 If you reload the site, the contact form should look a little better:
 
-![Styled form](img/HelloFormEditor/form styled.png)
+![Styled form](img/HelloFormEditor/form-styled.png)
 

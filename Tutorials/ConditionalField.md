@@ -23,7 +23,7 @@ On the *Form layout* tab, add:
 - A *Text box* field.
 - A *Submit button* field.
 
-![Form layout](img/ConditionalField/form layout.png)
+![Form layout](img/ConditionalField/form-layout.png)
 
 ## Step 2: Use *Actions* to show the text box
 Switch to the *Actions* tab, add an action and set it up as follows:
@@ -32,7 +32,7 @@ Switch to the *Actions* tab, add an action and set it up as follows:
 
 ...and that's all it takes to make the text box field appear when "Other" is selected in the radio button group!
 
-![Form action](img/ConditionalField/form action.png)
+![Form action](img/ConditionalField/form-action.png)
 
 **Note**: Since the radio button group is a field with predefined values, Form Editor knows on beforehand which values are available to test for (clever, isn't it?) and presents these in a nice drop-down. If it had been another field type (text box, for example), the value to test for would have to be entered manually in a text box instead.
 
@@ -46,7 +46,7 @@ Switch to the *Validation* tab and add a validation. Then add the following two 
 1. A rule with a *Value is* condition on the radio button group that tests for the value "Other" (exactly the same rule as we just defined on the action).
 2. A rule with a *Field is empty* condition on the text box.
 
-![Form validation](img/ConditionalField/form validation.png)
+![Form validation](img/ConditionalField/form-validation.png)
 
 If both these rules are fulfilled it means that "Other" was selected in the radio button group and nothing was entered in the text box. The validation will then invalidate the form and show the error message you specify when the end user attempts to submit the form.
 
