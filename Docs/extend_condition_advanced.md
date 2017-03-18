@@ -33,7 +33,7 @@ If your condition has configuration properties that should be passed to the fron
 The sample implementation shows an example of how to do this.
 
 ## Create the editor to configure your condition
-![Condition editor](img/condition editor.png)
+![Condition editor](img/condition-editor.png)
 
 You'll need to create an editor to configure the properties of your condition. Check the [editor in the sample implementation](../Samples/Custom validation condition/App_Plugins/FormEditor/editor/conditions/my.length.html) for details on how to do this.
 

@@ -6,7 +6,7 @@ In this part we'll create a custom field for the rating stars, which will improv
 - The editors will have an easier time creating the review form with a dedicated field for the rating stars.
 - We'll get our own partial view for rendering the stars, and thus we can undo the changes we made to the *Radio button group* partial view in the previous part.
 
-![Custom rating field](img/RatingsPartTwo/review form property.png)
+![Custom rating field](img/RatingsPartTwo/review-form-property.png)
 
 A custom field can be [created](../Docs/extend_field.md) in two ways: The simple (by configuration) and the advanced (by code). In the following we'll go through both ways. As we do, keep in mind that we're rendering for synchronous form postback, as this will be reflected in the partial views.
 

@@ -1,7 +1,7 @@
 # Setting up web service integration
 Form Editor can send form data automatically to an external web service upon a successful form submission. This is configured per Form Editor data type in the **Web service** section of the data type configuration:
 
-![Form Editor web service integration](img/web service integration.png)
+![Form Editor web service integration](img/web-service-integration.png)
 
 Whenever a form is submitted to a page that contains this data type, Form Editor will attempt to perform a POST request to this URL with the submitted data and a few other bits of useful information (see below). 
 

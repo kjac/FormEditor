@@ -21,7 +21,7 @@ Start by creating a new Form Editor data type and name it *Form Editor - Poll*. 
 - Check *Hide label* to give the form as much space as possible when editing.
 - Remove the two column row layout - we only want a single column for the polls.
 - Create a field type group containing the field types *Heading*, *Text paragraph*, *Radio button group* and *Submit button*. 
-![Set up the field type group](img/Poll/field type group.png)
+![Set up the field type group](img/Poll/field-type-group.png)
 - Disable the *Validation* and *Emails* tabs - we don't need them for polls, so the editors don't need to be concerned with them.
 - Check *Don't use validation* - cross field validation makes no sense for polls, so the editors don't need to be concerned with it.
 - Check *Use form statistics* so we can generate a bar chart of the poll results.
@@ -50,7 +50,7 @@ Now add a *Poll* document to the folder. You can layout the poll any way you wan
 - Add a *Radio button group* for the answer. You should leave it blank (no option checked) by default and add a required validation with a suitable error message.
 - Add a *Submit button* so the users can submit their answer.
 
-![Poll layout](img/Poll/poll layout.png)
+![Poll layout](img/Poll/poll-layout.png)
 
 When you're done layouting the poll, switch to the *Receipt* tab and enter a thank-you message to show when the users answer the poll.
 
@@ -61,7 +61,7 @@ Finally hit save and publish.
 ## Rendering the poll in the grid
 It's time to get some rendering done. Edit one of the text pages in the content tree and add an *Article* row to the grid. Now add a *Poll* macro to the left hand cell and select the poll you just created as value for the *pollPicker* macro parameter. 
 
-![Add the poll to the grid](img/Poll/select poll.png)
+![Add the poll to the grid](img/Poll/select-poll.png)
 
 Once you've selected the poll, the *Poll* macro should render the dummy markup we added previously, both within the grid editor and in frontend. We'll improve on that later, but first....
 
@@ -226,8 +226,8 @@ ul.formStatistics li div.formStatisticsItem {
 
 If everything went well, the *Poll* macro should now render the name of the selected poll in the grid editor:
 
-![Poll within the grid editor](img/Poll/grid editor with poll.png)
+![Poll within the grid editor](img/Poll/grid-editor-with-poll.png)
 
 ...and the frontend poll rendering should look something like this:
 
-![Poll score](img/Poll/poll score.png)
+![Poll score](img/Poll/poll-score.png)

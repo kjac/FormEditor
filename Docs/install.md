@@ -9,7 +9,7 @@ Or, if you're using NuGet, you can install the [Form Editor](https://www.nuget.o
 ## Setting up the data types
 Once the package is installed, go ahead and create a Form Editor data type. 
 
-![Form Editor data types](img/data types.png)
+![Form Editor data types](img/data-types.png)
 
 ### Configuring the Form Editor data type
 
@@ -21,7 +21,7 @@ In the "Row layouts" section of the configuration you'll set up the row layouts 
     * An **alias**, so you can identify the cell when rendering the form. 
     * The **width** of the cell (in percent of the total row width) when rendered in the Form Editor. Within a row layout, the sum of all cell widths must equal 100.
 
-![Form Editor row layouts](img/row layouts.png)
+![Form Editor row layouts](img/row-layouts.png)
 
 Form Editor ships with a bunch of row icons, but if you run out of icons you can add more simply by dumping them in */App_Plugins/FormEditor/editor/rows/*.
 

@@ -334,7 +334,7 @@ Here's the full *Article list* template.
 
 If everything went according to plan, you should end up with something like this:
 
-![Article list](img/RatingsPartFour/article list.png)
+![Article list](img/RatingsPartFour/article-list.png)
 
 ## Updating the article rendering
 Remember how we copied the rating calculation from the *Article* template into our rating cache event handler? We really don't want that code floating around in the template too, and besides we might as well utilize our cache when rendering the article itself. So let's replace the whole rating calculation the *Article* template with this:
