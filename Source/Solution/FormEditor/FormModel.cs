@@ -11,9 +11,11 @@ using FormEditor.Data;
 using FormEditor.Events;
 using FormEditor.Fields;
 using FormEditor.Fields.Statistics;
+using FormEditor.Integrations;
 using FormEditor.Limitations;
 using FormEditor.Storage;
 using FormEditor.Storage.Statistics;
+using Newtonsoft.Json;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 using Field = FormEditor.Fields.Field;
@@ -86,6 +88,7 @@ namespace FormEditor
 		// TODO: remove this in an upcoming release (obsolete)
 		private bool DisableValidation { get; set; }
 		private bool UseStatistics { get; set; }
+		private WebServiceConfiguration WebServiceConfiguration { get; set; }
 
 		#endregion
 
@@ -179,6 +182,8 @@ namespace FormEditor
 			{
 				return false;
 			}
+
+			SubmitToWebService(content);
 
 			// tell everyone that something was added
 			RaiseAfterAddToIndex(content, fields);
@@ -787,6 +792,7 @@ namespace FormEditor
 				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
 				DisableValidation = GetPreValueAsBoolean("disableValidation", preValueDictionary);
 				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
+				WebServiceConfiguration = GetPreValueFromJson<WebServiceConfiguration>("webService", preValueDictionary);
 			}
 			catch(Exception ex)
 			{
@@ -804,6 +810,16 @@ namespace FormEditor
 		private static bool GetPreValueAsBoolean(string key, IDictionary<string, PreValue> preValueDictionary)
 		{
 			return GetPreValue(key, preValueDictionary) == "1";
+		}
+
+		private static T GetPreValueFromJson<T>(string key, IDictionary<string, PreValue> preValueDictionary) where T : class
+		{
+			var value = GetPreValue(key, preValueDictionary);
+			if(string.IsNullOrEmpty(value))
+			{
+				return null;
+			}
+			return JsonConvert.DeserializeObject<T>(value);
 		}
 
 		private void RedirectToSuccesPage()
@@ -847,6 +863,22 @@ namespace FormEditor
 					? field.SubmittedValueForEmail()
 					: string.Empty;
 			});
+		}
+
+		private void SubmitToWebService(IPublishedContent content)
+		{
+			if(WebServiceConfiguration != null)
+			{
+				try
+				{
+					var webService = new WebService(WebServiceConfiguration);
+					webService.Submit(this, content);
+				}
+				catch(Exception ex)
+				{
+					Log.Error(ex, "Could not submit form data to the web service - see exception for details.");
+				}
+			}
 		}
 
 		#endregion

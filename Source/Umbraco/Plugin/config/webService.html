@@ -1,0 +1,26 @@
+<div class="form-editor-config" ng-controller="FormEditor.Config.WebServiceController">
+  <div class="umb-property-editor web-service-configuration">
+    <label for="webServiceUrl">
+      Web service URL
+    </label>
+    <input id="webServiceUrl" type="url" ng-model="model.value.url" class="umb-editor umb-textstring" />
+    <small>
+      Form data will be sent to this URL as a POST request upon a successful form submission.
+    </small>
+  </div>
+  <div class="umb-property-editor web-service-configuration">
+    <label for="webServiceUserName">
+      User name
+    </label>
+    <input id="webServiceUserName" type="text" ng-model="model.value.userName" class="umb-editor umb-textstring" />
+  </div>
+  <div class="umb-property-editor web-service-configuration">
+    <label for="webServicePassword">
+      Password
+    </label>
+    <input id="webServicePassword" type="text" ng-model="model.value.password" class="umb-editor umb-textstring" />
+    <small>
+      The web service will be called using basic authentication. Leave the user name and password blank if you don't want to use authentication.
+    </small>
+  </div>
+</div>

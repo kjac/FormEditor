@@ -311,6 +311,8 @@
     <Compile Include="Api\PropertyEditorController.cs" />
     <Compile Include="Fields\Field.cs" />
     <Compile Include="FormModel.cs" />
+    <Compile Include="Integrations\WebService.cs" />
+    <Compile Include="Integrations\WebServiceConfiguration.cs" />
     <Compile Include="Limitations\IMaxSubmissionsForCurrentUserHandler.cs" />
     <Compile Include="Limitations\LimitationsHelper.cs" />
     <Compile Include="Limitations\MaxSubmissionsForCurrentUserHandler.cs" />
