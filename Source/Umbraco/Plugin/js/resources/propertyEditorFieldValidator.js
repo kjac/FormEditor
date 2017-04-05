@@ -5,7 +5,7 @@
       this.indexSafeFieldName = function (field) {
         // lower case comparison and remove white spaces and other stuff
         // - this must match the corresponding method for index safe field names in the C# code!
-        return field.name.replace(/^\d*|[^a-zA-Z0-9_]/gi, "");
+        return "_" + field.name.replace(/[^a-zA-Z0-9_]/gi, "");
       }
       this.registerFields = function (allFields) {
         this.fields = allFields;
