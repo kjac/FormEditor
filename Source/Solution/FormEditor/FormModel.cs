@@ -85,10 +85,9 @@ namespace FormEditor
 		private string EmailConfirmationTemplate { get; set; }
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
-		// TODO: remove this in an upcoming release (obsolete)
-		private bool DisableValidation { get; set; }
 		private bool UseStatistics { get; set; }
 		private WebServiceConfiguration WebServiceConfiguration { get; set; }
+		private string[] VisibleTabs { get; set; }
 
 		#endregion
 
@@ -154,7 +153,7 @@ namespace FormEditor
 			var valueFields = AllValueFields().ToList();
 
 			// next execute all validations (if validation is enabled)
-			if(DisableValidation == false && ExecuteValidations(content, valueFields) == false)
+			if(IsVisibleTab(TabOrder.Ids.Validation) && ExecuteValidations(content, valueFields) == false)
 			{
 				return false;
 			}
@@ -767,61 +766,6 @@ namespace FormEditor
 			return addresses;
 		}
 
-		private void LoadPreValues(IPublishedContent content)
-		{
-			try
-			{
-				if(content == null)
-				{
-					return;
-				}
-				var property = content.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == PropertyEditorAlias);
-				if(property == null)
-				{
-					return;
-				}
-				var preValues = Context.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeId);
-				if(preValues == null)
-				{
-					return;
-				}
-				var preValueDictionary = preValues.PreValuesAsDictionary;
-				EmailNotificationTemplate = GetPreValue("notificationEmailTemplate", preValueDictionary);
-				EmailConfirmationTemplate = GetPreValue("confirmationEmailTemplate", preValueDictionary);
-				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
-				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
-				DisableValidation = GetPreValueAsBoolean("disableValidation", preValueDictionary);
-				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
-				WebServiceConfiguration = GetPreValueFromJson<WebServiceConfiguration>("webService", preValueDictionary);
-			}
-			catch(Exception ex)
-			{
-				Log.Error(ex, "Could not load prevalues for property editor, see exception for details.");
-			}
-		}
-
-		private static string GetPreValue(string key, IDictionary<string, PreValue> preValueDictionary)
-		{
-			return preValueDictionary.ContainsKey(key) && preValueDictionary[key] != null
-				? preValueDictionary[key].Value
-				: null;
-		}
-
-		private static bool GetPreValueAsBoolean(string key, IDictionary<string, PreValue> preValueDictionary)
-		{
-			return GetPreValue(key, preValueDictionary) == "1";
-		}
-
-		private static T GetPreValueFromJson<T>(string key, IDictionary<string, PreValue> preValueDictionary) where T : class
-		{
-			var value = GetPreValue(key, preValueDictionary);
-			if(string.IsNullOrEmpty(value))
-			{
-				return null;
-			}
-			return JsonConvert.DeserializeObject<T>(value);
-		}
-
 		private void RedirectToSuccesPage()
 		{
 			var helper = new UmbracoHelper(Context);
@@ -879,6 +823,83 @@ namespace FormEditor
 					Log.Error(ex, "Could not submit form data to the web service - see exception for details.");
 				}
 			}
+		}
+
+		#endregion
+
+		#region PreValue handling
+
+		private void LoadPreValues(IPublishedContent content)
+		{
+			try
+			{
+				if(content == null)
+				{
+					return;
+				}
+				var property = content.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == PropertyEditorAlias);
+				if(property == null)
+				{
+					return;
+				}
+				var preValues = Context.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeId);
+				if(preValues == null)
+				{
+					return;
+				}
+				var preValueDictionary = preValues.PreValuesAsDictionary;
+				EmailNotificationTemplate = GetPreValue("notificationEmailTemplate", preValueDictionary);
+				EmailConfirmationTemplate = GetPreValue("confirmationEmailTemplate", preValueDictionary);
+				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
+				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
+				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
+				WebServiceConfiguration = GetPreValueFromJson<WebServiceConfiguration>("webService", preValueDictionary);
+				VisibleTabs = (GetPreValueFromJson<TabOrder[]>("tabOrder", preValueDictionary) ?? new TabOrder[0])
+					.Where(t => t.Visible).Select(t => t.Id).ToArray();
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not load prevalues for property editor, see exception for details.");
+			}
+		}
+
+		private static string GetPreValue(string key, IDictionary<string, PreValue> preValueDictionary)
+		{
+			return preValueDictionary.ContainsKey(key) && preValueDictionary[key] != null
+				? preValueDictionary[key].Value
+				: null;
+		}
+
+		private static bool GetPreValueAsBoolean(string key, IDictionary<string, PreValue> preValueDictionary)
+		{
+			return GetPreValue(key, preValueDictionary) == "1";
+		}
+
+		private static T GetPreValueFromJson<T>(string key, IDictionary<string, PreValue> preValueDictionary) where T : class
+		{
+			var value = GetPreValue(key, preValueDictionary);
+			if(string.IsNullOrEmpty(value))
+			{
+				return null;
+			}
+			return JsonConvert.DeserializeObject<T>(value);
+		}
+
+		private class TabOrder
+		{
+			public static class Ids
+			{
+				public const string Validation = "validation";
+			}
+
+			public string Id { get; set; }
+
+			public bool Visible { get; set; }
+		}
+
+		private bool IsVisibleTab(string id)
+		{
+			return VisibleTabs != null && VisibleTabs.Contains(id, StringComparer.OrdinalIgnoreCase);
 		}
 
 		#endregion
