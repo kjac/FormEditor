@@ -70,7 +70,8 @@ namespace FormEditor.Fields
 			}
 
 			// validate file size
-			if (MaxSize > 0 && file.ContentLength > MaxSize)
+			var maxSize = MaxSize*1024;
+			if(maxSize > 0 && file.ContentLength > maxSize)
 			{
 				return false;
 			}
