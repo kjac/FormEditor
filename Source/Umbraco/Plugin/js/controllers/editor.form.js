@@ -9,8 +9,6 @@
     $scope.model.hideLabel = $scope.model.config.hideLabel == 1;
     // confirm row and field deletes?
     $scope.model.confirmDelete = $scope.model.config.confirmDelete == 1;
-    // is validation enabled?
-    $scope.model.enableValidation = $scope.model.config.disableValidation != 1;
     // are multiple form pages enabled?
     $scope.model.enablePages = $scope.model.config.enablePages == 1;
     // is field cloning enabled?
@@ -717,21 +715,14 @@
         { title: "Submissions", localizationKey: "data.header", icon: "icon-list", id: "submissions", anchor: "tabFormEditorData", visible: true, sortOrder: 6 }
       ];
 
-      if (!$scope.model.config.tabOrder) {
-        // for backwards compability with the old "disable validation" config - will be removed eventually
-        tabs[1].visible = $scope.model.config.disableValidation != 1;
-        tabs[2].visible = false;
-        tabs[3].visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
-      } else {
-        _.each($scope.model.config.tabOrder, function (tabOrder, index) {
-          var tab = _.find(tabs, function (t) { return t.id == tabOrder.id; });
-          tab.sortOrder = index;
-          tab.visible = tabOrder.visible;
-          if (tab.id == "emails" && tab.visible) {
-            tab.visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
-          }
-        });
-      }
+      _.each($scope.model.config.tabOrder, function (tabOrder, index) {
+        var tab = _.find(tabs, function (t) { return t.id == tabOrder.id; });
+        tab.sortOrder = index;
+        tab.visible = tabOrder.visible;
+        if (tab.id == "emails" && tab.visible) {
+          tab.visible = ($scope.emailTemplates.notification || $scope.emailTemplates.confirmation) != null;
+        }
+      });
 
       var orderedTabs = $filter("orderBy")(_.where(tabs, { visible: true }), "sortOrder");
       orderedTabs[0].active = true;

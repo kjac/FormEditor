@@ -263,7 +263,7 @@
         background: none;
         color: @fontColor;
         i {
-          vertical-align: text-top;
+          vertical-align: bottom;
         }
       }
       &:hover {
@@ -294,7 +294,8 @@
         margin: 4px 0 0 4px;
 
         input[type=checkbox] {
-          vertical-align: text-top;
+          vertical-align: middle;
+          margin-top: -1px;
         }
 
         label {
@@ -305,7 +306,8 @@
   }
 
   label input[type=checkbox] {
-    vertical-align: text-top;
+    vertical-align: middle;
+    margin-top: -1px;
   }
 
   input.invalid {
@@ -362,7 +364,7 @@
       cursor: pointer;
 
       i {
-        vertical-align: text-top;
+        vertical-align: bottom;
 
         &.icon-delete {
           float: right;
@@ -414,7 +416,7 @@
 
     &.field-icon {
       background-repeat: no-repeat;
-      background-position: center center;
+      background-position: center 2px;
       width: 20px;
       height: 20px;
       display: inline-block;
@@ -446,7 +448,7 @@
 
   .umb-actions {
     .menu-label {
-      padding-left: 0;
+      padding-left: 5px;
     }
   }
 
@@ -466,8 +468,7 @@
     &.help-text {
       text-transform: none;
       padding: 0px 0 4px 0;
-      font-size: 11px;
-      line-height: 13px;
+      line-height: 14px;
       color: #b3b3b3;
       display: block;
       max-width: 80%;

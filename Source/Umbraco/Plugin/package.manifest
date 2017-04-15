@@ -71,12 +71,6 @@
                view: "boolean"
             },
             {
-               label: "Don't use validation",
-               description: "OBSOLETE - use tab order and disable the validation tab instead",
-               key: "disableValidation",
-               view: "boolean"
-            },
-            {
                label: "Use form pages",
                description: "Enable creation of multiple form page",
                key: "enablePages",
