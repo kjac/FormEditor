@@ -2,7 +2,7 @@
 Form Editor works just like any other property editor for Umbraco, so installation is pretty straight forward. 
 
 ## Installing the package
-First and foremost grab the [latest Form Editor package](https://github.com/kjac/FormEditor/releases) and install it in your Umbraco site.
+First and foremost grab the [Form Editor package](https://github.com/kjac/FormEditor/releases/latest) from the latest release (it's the zip file attached to the release) and install it in the Developer section of your Umbraco site.
 
 Or, if you're using NuGet, you can install the [Form Editor](https://www.nuget.org/packages/FormEditor/) NuGet package. 
 

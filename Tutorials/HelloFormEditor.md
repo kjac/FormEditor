@@ -4,7 +4,7 @@ In this tutorial we'll add Form Editor to the Fanoe starter kit and create a con
 ![Contact form](img/HelloFormEditor/contact-form.png)
 
 ## Preparation
-Start by setting up a fresh Umbraco installation with the Fanoe starter kit installed. Once Umbraco is up and running, download the Umbraco package from [latest Form Editor release](https://github.com/kjac/FormEditor/releases) (it's the zip file attached to the release) and install it in the Umbraco Developer section.
+Start by setting up a fresh Umbraco installation with the Fanoe starter kit installed. Once Umbraco is up and running, download the Umbraco package from [latest Form Editor release](https://github.com/kjac/FormEditor/releases/latest) (it's the zip file attached to the release) and install it in the Umbraco Developer section.
 
 ## Step 1: Add Form Editor to Home
 The contact form should be shown in the footer section of the site. Therefore we'll add the Form Editor property to the document type *Home*, because this document type contains all the site wide content.
