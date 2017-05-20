@@ -5,6 +5,7 @@
 
     $scope.formState = {};
     $scope.invalidValidations = [];
+    $scope.invalidFields = [];
 
     $scope.submitStatus = "none";
     $scope.showReceipt = false;
@@ -54,6 +55,7 @@
     };
 
     $scope.submit = function () {
+      $scope.invalidFields = [];
       for (var i = 0; i < $scope.formState.totalPages; i++) {
         $scope.getFormPage(i).showValidationErrors = true;
       }
@@ -114,9 +116,15 @@
             if (response.data.invalidFields && response.data.invalidFields.length > 0) {
               angular.forEach(response.data.invalidFields, function (f) {
                 for (var i = 0; i < $scope.formState.totalPages; i++) {
-                  $scope.getFormPage(i)[f.formSafeName].$setValidity("required", false);
+                  var field = $scope.getFormPage(i)[f.formSafeName];
+                  if (field != null) {
+                    field.$setValidity("required", false);
+                  }
                 }
               });
+            }
+            if (response.data.invalidFields && response.data.invalidFields.length > 0) {
+              $scope.invalidFields = response.data.invalidFields;
             }
             if (response.data.failedValidations && response.data.failedValidations.length > 0) {
               $scope.invalidValidations = response.data.failedValidations;
@@ -188,9 +196,9 @@
       var formPage = $scope.getFormPage(pageNumber);
       var field = formPage[fieldName];
       if (field == null) {
-        console.warn("could not find field", fieldName);
+        return formPage.showValidationErrors && $scope.invalidFields.length && $filter('filter')($scope.invalidFields, { formSafeName: fieldName }).length;
       }
-      if (field == null || field.$invalid == false) {
+      if (field.$invalid == false) {
         return false;
       }
       return formPage.$invalid && formPage.showValidationErrors;

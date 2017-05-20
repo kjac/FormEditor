@@ -74,7 +74,7 @@ namespace FormEditor.Api
 			{
 				var errorData = new ValidationErrorData
 				{
-					InvalidFields = formModel.AllValueFields().Where(f => f.Invalid).ForFrontEnd(),
+					InvalidFields = formModel.AllFields().Where(f => f.Invalid).ForFrontEnd(),
 					FailedValidations = formModel.Validations.Where(v => v.Invalid).ForFrontEnd()
 				};
 				return ValidationErrorResponse(errorData);

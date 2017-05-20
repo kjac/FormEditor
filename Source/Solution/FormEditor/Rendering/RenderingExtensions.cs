@@ -75,6 +75,13 @@ namespace FormEditor.Rendering
 				: new List<FieldData>();
 		}
 
+		public static List<FieldData> ForFrontEnd(this IEnumerable<Field> fields)
+		{
+			return fields != null
+				? fields.Select(ToFieldData).ToList()
+				: new List<FieldData>();
+		}
+
 		public static IHtmlString Render(this IEnumerable<FieldWithValue> fields)
 		{
 			return new HtmlString(
@@ -154,6 +161,25 @@ namespace FormEditor.Rendering
 					FormSafeName = f.FormSafeName,
 					SubmittedValue = f.SubmittedValue,
 					Invalid = f.Invalid
+				}
+				: new FieldData();
+		}
+
+		private static FieldData ToFieldData(Field f)
+		{
+			var fieldWithValue = f as FieldWithValue;
+			if(fieldWithValue != null)
+			{
+				return ToFieldData(fieldWithValue);
+			}
+			var fieldWithValidation = f as IFieldWithValidation;
+			return fieldWithValidation != null
+				? new FieldData
+				{
+					Name = fieldWithValidation.Name,
+					FormSafeName = fieldWithValidation.FormSafeName,
+					SubmittedValue = null,
+					Invalid = fieldWithValidation.Invalid
 				}
 				: new FieldData();
 		}
