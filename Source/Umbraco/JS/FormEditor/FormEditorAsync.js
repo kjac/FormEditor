@@ -1,5 +1,5 @@
 ﻿angular.module("formEditor", [])
-  .controller("FormController", ["$scope", "$filter", "$http", "$window", "$timeout", function ($scope, $filter, $http, $window, $timeout) {
+  .controller("FormController", ["$scope", "$filter", "$http", "$window", "$timeout", "$q", function ($scope, $filter, $http, $window, $timeout, $q) {
     $scope.formData = {};
     $scope.fileData = {};
 
@@ -30,6 +30,13 @@
           $scope.formDataChanged();
         }, true);
       }
+
+      // create a global scope access to form validation and submission
+      $window.feGlobal = $window.feGlobal || [];
+      $window.feGlobal[formId] = {
+        submit: $scope.globalSubmitForm,
+        validate: $scope.globalValidateForm
+      };
     }
 
     $scope.toggleMultiSelectValue = function (fieldName, pageNumber, value, required) {
@@ -54,20 +61,58 @@
       return values.indexOf(value) >= 0;
     };
 
-    $scope.submit = function () {
+    // this exposes the form validation to a global scope
+    $scope.globalValidateForm = function () {
+      var deferred = $q.defer();
+      $timeout(
+        function () {
+          var valid = $scope.validateOnSubmit();
+          deferred.resolve(valid);
+        },
+        50
+      );
+      return deferred.promise;
+    }
+
+    // this exposes the form submission to a global scope
+    $scope.globalSubmitForm = function () {
+      var deferred = $q.defer();
+      $timeout(
+        function () {
+          deferred.resolve($scope.submit());
+        },
+        50
+      );
+      return deferred.promise;
+    }
+
+    $scope.validateOnSubmit = function () {
       $scope.invalidFields = [];
       for (var i = 0; i < $scope.formState.totalPages; i++) {
         $scope.getFormPage(i).showValidationErrors = true;
       }
 
       if ($scope.form.$invalid) {
-        return;
+        return false;
       }
 
       $scope.invalidValidations = $filter("filter")($scope.formState.validations, function (validation, index, array) {
         return $scope.validate(validation) == false;
       });
       if ($scope.invalidValidations.length > 0) {
+        return false;
+      }
+
+      return true;
+    }
+
+    $scope.submit = function () {
+      console.log("submit called for", $scope.formState)
+      var deferred = $q.defer();
+
+      var valid = $scope.validateOnSubmit();
+      if (valid == false) {
+        deferred.resolve(false, null);
         return;
       }
 
@@ -110,6 +155,7 @@
           }
           $scope.showReceipt = $scope.formState.hasReceipt;
           // add your own success handling here
+          deferred.resolve(true, response.data);
         }, function errorCallback(response) {
           $scope.submitStatus = "failure";
           if (response.data) {
@@ -131,7 +177,10 @@
             }
           }
           // add your own error handling here
+          deferred.resolve(false, response.data);
         });
+
+      return deferred.promise;
     };
 
     // validate a validation (usually cross field validation)
