@@ -19,32 +19,8 @@
 
       // validate all named fields and all validations on submit
       $form.submit(function (event) {
-        var hasError = false;
-
-        // validate all named fields
-        $("[name]", $form).each(function (index, input) {
-          var isValid = validateField(input, $form);
-          $.fn.formEditor.showHideValidationErrorForField(input, isValid);
-          if (isValid == false) {
-            hasError = true;
-          }
-        });
-
-        // validate all validations
-        var validationErrors = $("#validationErrors", $form);
-        var validationErrorsList = $("#validationErrorsList", $form);
-        validationErrors.addClass("hide");
-        validationErrorsList.empty();
-        // traverse the validations
-        $($form.formState.validations).each(function (index, validation) {
-          if (validateValidation(validation, $form) == false) {
-            hasError = true;
-            validationErrors.removeClass("hide");
-            validationErrorsList.append("<li>" + validation.errorMessage + "</li>");
-          }
-        });
-
-        if (hasError == true) {
+        var isValid = validateForm($form);
+        if (isValid == false) {
           event.preventDefault();
         }
       });
@@ -76,6 +52,14 @@
 
       showActivePagingButtons($form);
       executeActions($form);
+
+      // create a global scope access to form validation and submission
+      // (this may seem a bit strange and un-jQuery like, but we're doing it this way to use the same pattern in both Async and Sync )
+      window.feGlobal = window.feGlobal || [];
+      window.feGlobal[formId] = {
+        submit: function () { $form.submit(); },
+        validate: function() { return validateForm($form); }
+      };
     });
 
     return this;
@@ -92,6 +76,35 @@
     }
   }
 
+  function validateForm($form) {
+    var hasError = false;
+
+    // validate all named fields
+    $("[name]", $form).each(function (index, input) {
+      var isValid = validateField(input, $form);
+      $.fn.formEditor.showHideValidationErrorForField(input, isValid);
+      if (isValid == false) {
+        hasError = true;
+      }
+    });
+
+    // validate all validations
+    var validationErrors = $("#validationErrors", $form);
+    var validationErrorsList = $("#validationErrorsList", $form);
+    validationErrors.addClass("hide");
+    validationErrorsList.empty();
+    // traverse the validations
+    $($form.formState.validations).each(function (index, validation) {
+      if (validateValidation(validation, $form) == false) {
+        hasError = true;
+        validationErrors.removeClass("hide");
+        validationErrorsList.append("<li>" + validation.errorMessage + "</li>");
+      }
+    });
+
+    return hasError == false;
+  }
+
   // validate a single input field
   function validateField(input, $form) {
     var isValid = false;
@@ -100,7 +113,7 @@
     var group = $("[name='" + input.name + "']", $form);
     group.each(function (index, input) {
       // group is valid if one or more inputs in the group are valid
-      if (input.validity.valid) {
+      if (input.validity == null || input.validity.valid) {
         isValid = true;
         // no need to continue the loop
         return false;

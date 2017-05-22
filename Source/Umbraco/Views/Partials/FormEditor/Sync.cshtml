@@ -5,6 +5,9 @@
   // get the content that contains the form model (defaults to the current page)
   var formContent = ViewBag.FormContent as IPublishedContent ?? Model;
 
+  // ensure that ViewBag.FormContent is available for the field renderings
+  ViewBag.FormContent = formContent;
+  
   // get the name of the form model property on the content type (defaults to "form")
   var formPropertyName = ViewBag.FormName as string ?? "form";
 
@@ -78,7 +81,7 @@ else if (showMaxSubmissionsExceededMessage)
 else
 {
   @* render the form *@
-  <form method="POST" enctype="multipart/form-data" data-form-editor="@formContent.Id" novalidate>
+  <form method="POST" enctype="multipart/form-data" data-form-editor="@formContent.Id" id="fe_@(formContent.Id)" novalidate>
     @* add hidden _id to support multiple forms submitting to the same page *@
     <input type="hidden" name="_id" value="@formContent.Id" />
     <div class="container form-data">
