@@ -1,0 +1,42 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.InvisibleReCaptchaField>
+@{
+  // get current web site language so the reCAPTCHA renders in the correct language
+  var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
+  // get the content on which the form resides (assigned by the partial form rendering)
+  var formContent = ViewBag.FormContent as IPublishedContent;
+}
+<div class="form-group">
+  <script>
+    @* get the form by ID and attach a submit handler *@
+    var form_@(formContent.Id) = document.getElementById("fe_@(formContent.Id)");
+    form_@(formContent.Id).onsubmit = function () {
+      if (form_@(formContent.Id).checkValidity()) {
+        @* the form is valid - execute the reCAPTCHA *@
+        grecaptcha.execute(captchaWidget_@(formContent.Id));
+      }
+      return false;
+    };
+
+    var captchaWidget_@(formContent.Id);
+    function captchaLoad_@(formContent.Id)() {
+      @* explicitly render the reCAPTCHA widget so we know which widget to validate (in case we have multiple forms) *@
+      captchaWidget_@(formContent.Id) = grecaptcha.render("captcha_@(formContent.Id)", {}, true);
+    }
+
+    function captchaSubmit_@(formContent.Id)(token) {
+      @* submit the form (after clearing the submit handler so it doesn't block) *@
+      form_@(formContent.Id).onsubmit = null;
+      form_@(formContent.Id).submit();
+    }
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?hl=@language&onload=captchaLoad_@(formContent.Id)&render=explicit" async defer></script>
+  <div class="g-recaptcha"
+       data-sitekey="@Model.PublicKey"
+       data-callback="captchaSubmit_@(formContent.Id)"
+       data-size="invisible"
+       id="captcha_@(formContent.Id)">
+  </div>
+  <button class="btn btn-primary">@Model.Text</button>
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")
+</div>
