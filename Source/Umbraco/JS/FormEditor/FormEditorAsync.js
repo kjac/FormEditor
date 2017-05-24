@@ -107,7 +107,6 @@
     }
 
     $scope.submit = function () {
-      console.log("submit called for", $scope.formState)
       var deferred = $q.defer();
 
       var valid = $scope.validateOnSubmit();
@@ -139,8 +138,9 @@
       }
       // special case: add reCAPTCHA response if present
       // - fetch from document.form because it's not an angular model
-      if ($window.document.form["g-recaptcha-response"]) {
-        data.append("g-recaptcha-response", $window.document.form["g-recaptcha-response"].value);
+      var formElement = $window.document.getElementById("fe_" + $scope.formState.formId);
+      if (formElement && formElement["g-recaptcha-response"]) {
+        data.append("g-recaptcha-response", formElement["g-recaptcha-response"].value);
       }
 
       $scope.submitStatus = "submitting";

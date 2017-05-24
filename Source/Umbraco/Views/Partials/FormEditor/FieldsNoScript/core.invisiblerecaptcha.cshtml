@@ -4,6 +4,9 @@
   var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
   // get the content on which the form resides (assigned by the partial form rendering)
   var formContent = ViewBag.FormContent as IPublishedContent;
+
+  var hasReCaptchaInit = ViewContext.HttpContext.Items["feReCaptchaInit"] != null;
+  ViewContext.HttpContext.Items["feReCaptchaInit"] = "true";
 }
 <div class="form-group">
   <script>
@@ -18,18 +21,30 @@
     };
 
     var captchaWidget_@(formContent.Id);
-    function captchaLoad_@(formContent.Id)() {
-      @* explicitly render the reCAPTCHA widget so we know which widget to validate (in case we have multiple forms) *@
-      captchaWidget_@(formContent.Id) = grecaptcha.render("captcha_@(formContent.Id)", {}, true);
-    }
 
     function captchaSubmit_@(formContent.Id)(token) {
       @* submit the form (after clearing the submit handler so it doesn't block) *@
       form_@(formContent.Id).onsubmit = null;
       form_@(formContent.Id).submit();
     }
+
+    @* create a collection of reCAPTCHA loaders (one for each reCAPTCHA in the form) *@
+    var feReCaptchaLoaders = feReCaptchaLoaders || [];
+    feReCaptchaLoaders.push({onLoad: function() {
+      @* explicitly render the reCAPTCHA widget so we know which widget to validate *@
+      captchaWidget_@(formContent.Id) = grecaptcha.render("captcha_@(formContent.Id)", {}, true);
+    }});
+
+    var feReCaptchaOnLoad = feReCaptchaOnLoad || function () {
+      for (var i = 0; i < feReCaptchaLoaders.length; i++) {
+        feReCaptchaLoaders[i].onLoad();
+      }
+    }
   </script>
-  <script src="https://www.google.com/recaptcha/api.js?hl=@language&onload=captchaLoad_@(formContent.Id)&render=explicit" async defer></script>
+  @if(hasReCaptchaInit == false)
+  {
+    <script src="https://www.google.com/recaptcha/api.js?hl=@language&onload=feReCaptchaOnLoad&render=explicit" async defer></script>
+  }
   <div class="g-recaptcha"
        data-sitekey="@Model.PublicKey"
        data-callback="captchaSubmit_@(formContent.Id)"

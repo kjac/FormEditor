@@ -56,7 +56,7 @@
 
     @* render the form *@
     <div class="container form-data" ng-hide="showReceipt" ng-init="init(@formContent.Id)">
-      <form name="form" novalidate>
+      <form name="form" id="fe_@(formContent.Id)" novalidate>
         @foreach (var page in form.Pages)
         {
           ViewBag.FormEditorPageNumber = form.Pages.IndexOf(page);
@@ -80,6 +80,7 @@
           </div>
         }
       </form>
+
       @*
         paging links
         TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
