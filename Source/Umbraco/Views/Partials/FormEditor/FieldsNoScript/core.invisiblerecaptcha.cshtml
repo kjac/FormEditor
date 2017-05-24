@@ -4,11 +4,17 @@
   var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
   // get the content on which the form resides (assigned by the partial form rendering)
   var formContent = ViewBag.FormContent as IPublishedContent;
-
-  var hasReCaptchaInit = ViewContext.HttpContext.Items["feReCaptchaInit"] != null;
-  ViewContext.HttpContext.Items["feReCaptchaInit"] = "true";
 }
-<div class="form-group">
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  @if(string.IsNullOrEmpty(Model.PublicKey) || string.IsNullOrEmpty(Model.PrivateKey))
+  {
+    <b>Invalid reCAPTCHA configuration - missing either public or private key</b>
+    return;
+  }
+  @{
+    var hasReCaptchaInit = ViewContext.HttpContext.Items["feReCaptchaInit"] != null;
+    ViewContext.HttpContext.Items["feReCaptchaInit"] = "true";
+  }
   <script>
     @* get the form by ID and attach a submit handler *@
     var form_@(formContent.Id) = document.getElementById("fe_@(formContent.Id)");
