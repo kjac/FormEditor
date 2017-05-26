@@ -58,7 +58,8 @@
       window.feGlobal = window.feGlobal || [];
       window.feGlobal[formId] = {
         submit: function () { $form.submit(); },
-        validate: function() { return validateForm($form); }
+        validate: function() { return validateForm($form); },
+        setValue: function (input, value) { setFieldValue(input, value, $form); }
       };
     });
 
@@ -74,6 +75,15 @@
     else {
       validationError.removeClass("hide");
     }
+  }
+
+  function setFieldValue(input, value, $form) {
+    if (input == null) {
+      return;
+    }
+    input.value = value;
+    var isValid = validateField(input, $form);
+    $.fn.formEditor.showHideValidationErrorForField(input, isValid);
   }
 
   function validateForm($form) {

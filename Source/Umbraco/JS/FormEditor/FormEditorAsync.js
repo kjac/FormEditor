@@ -35,7 +35,8 @@
       $window.feGlobal = $window.feGlobal || [];
       $window.feGlobal[formId] = {
         submit: $scope.globalSubmitForm,
-        validate: $scope.globalValidateForm
+        validate: $scope.globalValidateForm,
+        setValue: $scope.globalSetFieldValue
       };
     }
 
@@ -84,6 +85,16 @@
         50
       );
       return deferred.promise;
+    }
+
+    // this exposes a way of setting a field value from the global scope
+    $scope.globalSetFieldValue = function(fieldName, value) {
+      $timeout(
+        function () {
+          $scope.formData[fieldName] = value;
+        },
+        50
+      );
     }
 
     $scope.validateOnSubmit = function () {
