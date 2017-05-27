@@ -10,13 +10,13 @@ The editorial fields include:
 * Image - an image from the Umbraco media library.
 * Link - a link to a page in the Umbraco content.
 
-## The reCAPTCHA field
+## The reCAPTCHA fields
 Form Editor supports [reCAPTCHA](https://www.google.com/recaptcha/) out of the box, both the "V2" and the "invisible" versions (read more about the different versions [here](https://developers.google.com/recaptcha/docs/versions)). 
 
-* The "V2" version is added to the form as a seperate field (look for this icon: ![Field icon](../Source/Umbraco/Plugin/editor/fields/core.recaptcha.png)) so the editors can position the reCAPTCHA checkbox where it fits best in their form.
+* The "V2" version is added to the form as a separate field (look for this icon: ![Field icon](../Source/Umbraco/Plugin/editor/fields/core.recaptcha.png)) so the editors can position the reCAPTCHA checkbox where it fits best in their form.
 * The "invisible" version is added to the form as part of a special submit button (look for this icon: ![Field icon](../Source/Umbraco/Plugin/editor/fields/core.invisiblerecaptcha.png)), since it requires no end user interaction on its own. In other words, the editors will be using this special submit button in their forms instead of the normal submit button.
 
-*Hint:* If you don't want the editors to choose which reCAPTCHA version to use, you can use (field type groups)[install.md#field-type-groups] to limit the number of fields available.
+*Hint:* If you don't want the editors to choose which reCAPTCHA version to use, you can use [field type groups](install.md#field-type-groups) to limit the number of fields available.
 
 For reCAPTCHA to work you'll need to add your reCAPTCHA keys to the `<appSettings/>` of your site:
 * The reCAPTCHA "site" key goes in the app setting `FormEditor.reCAPTCHA.SiteKey`
