@@ -75,7 +75,12 @@
   <div class="fieldValues">
     <div ui-sortable="sortableOptionsFieldValues" ng-model="dialogData.field.fieldValues">
       <div class="fieldValue selectable" ng-repeat="fieldValue in dialogData.field.fieldValues">
-        <input type="text" ng-model="fieldValue.value" />
+        <!-- 
+          it looks like ng-attr-* doesn't work in the current AngularJS version (1.1.5 at the time of writing) 
+          - we'll have to apply the form-editor-multi-select-value by hand then
+        -->
+        <input ng-if="multiValueField" type="text" ng-model="fieldValue.value" form-editor-multi-select-value />
+        <input ng-if="!multiValueField" type="text" ng-model="fieldValue.value" />
         <span class="fieldValueTools">
           <label>
             <input type="checkbox" ng-model="fieldValue.selected" ng-click="setSelectedFieldValue($index)" />

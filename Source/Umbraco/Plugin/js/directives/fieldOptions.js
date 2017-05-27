@@ -6,6 +6,7 @@
       link: function (scope, element, attributes) {
         scope.optionSelectedTextKey = attributes["optionSelectedTextKey"] || "edit.options.selected";
         scope.optionSelectedTextDefault = attributes["optionSelectedTextDefault"] || "Selected";
+        scope.multiValueField = attributes["multiValueField"] ? true : false;
       }
     }
   }
