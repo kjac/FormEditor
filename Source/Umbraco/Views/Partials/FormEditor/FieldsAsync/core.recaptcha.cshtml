@@ -2,17 +2,43 @@
 @{
   // get current web site language so the reCAPTCHA renders in the correct language
   var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
+  // get the content on which the form resides (assigned by the partial form rendering)
+  var formContent = ViewBag.FormContent as IPublishedContent;
 }
 <div class="form-group @(Model.Invalid ? "has-error" : null)">
   @if (string.IsNullOrEmpty(Model.PublicKey) || string.IsNullOrEmpty(Model.PrivateKey))
   {
     <b>Invalid reCAPTCHA configuration - missing either public or private key</b>
+    return;
   }
-  else
-  {
-    <script src="https://www.google.com/recaptcha/api.js?hl=@language"></script>
-    <div class="g-recaptcha" data-sitekey="@Model.PublicKey"></div>
+  @{
+    if(ViewContext.HttpContext.Items["feReCaptchaInit"] == null)
+    {
+      ViewContext.HttpContext.Items["feReCaptchaInit"] = "true";
+      <script src="https://www.google.com/recaptcha/api.js?hl=@language&onload=feReCaptchaOnLoad&render=explicit"></script>
+    }
   }
+  <script>
+    function captchaSubmit_@(formContent.Id)(token) {
+      @* get the global access to the form scope and set the field value to something in order to validate the form *@
+      var fe = feGlobal[@(formContent.Id)];
+      fe.setValue("@Model.FormSafeName", "x");
+    }
+
+    @* create a collection of reCAPTCHA loaders (one for each reCAPTCHA in the form) *@
+    var feReCaptchaLoaders = feReCaptchaLoaders || [];
+    feReCaptchaLoaders.push({onLoad: function() {
+      grecaptcha.render("captcha_@(formContent.Id)", {}, true);
+    }});
+
+    var feReCaptchaOnLoad = feReCaptchaOnLoad || function () {
+      for (var i = 0; i < feReCaptchaLoaders.length; i++) {
+        feReCaptchaLoaders[i].onLoad();
+      }
+    }
+  </script>
+  <div class="g-recaptcha" data-sitekey="@Model.PublicKey" data-callback="captchaSubmit_@(formContent.Id)" id="captcha_@(formContent.Id)"></div>
+  <input type="hidden" id="captcha_h_@(formContent.Id)" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" required />
 
   @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
 </div>

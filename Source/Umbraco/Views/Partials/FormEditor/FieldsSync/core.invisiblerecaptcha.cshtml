@@ -1,0 +1,63 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.InvisibleReCaptchaField>
+@{
+  // get current web site language so the reCAPTCHA renders in the correct language
+  var language = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName.ToLowerInvariant();
+  // get the content on which the form resides (assigned by the partial form rendering)
+  var formContent = ViewBag.FormContent as IPublishedContent;
+}
+<div class="form-group @(Model.Invalid ? "has-error" : null)">
+  @if(string.IsNullOrEmpty(Model.PublicKey) || string.IsNullOrEmpty(Model.PrivateKey))
+  {
+    <b>Invalid reCAPTCHA configuration - missing either public or private key</b>
+    return;
+  }
+  @{
+    var hasReCaptchaInit = ViewContext.HttpContext.Items["feReCaptchaInit"] != null;
+    ViewContext.HttpContext.Items["feReCaptchaInit"] = "true";    
+  }
+  <script>
+    var captchaWidget_@(formContent.Id);
+
+    function captchaValidate_@(formContent.Id)() {
+      @* get the global access to the form scope *@
+      var fe = feGlobal[@(formContent.Id)];
+      @* execute the form client side validation *@
+      if (fe.validate()) {
+        @* the form is valid - execute the reCAPTCHA *@
+        grecaptcha.execute(captchaWidget_@(formContent.Id));
+      }
+      return false;
+    }
+
+    function captchaSubmit_@(formContent.Id)(token) {
+      @* get the global access to the form scope *@
+      var fe = feGlobal[@(formContent.Id)];
+      @* submit the form *@
+      fe.submit();
+    }
+
+    @* create a collection of reCAPTCHA loaders (one for each reCAPTCHA in the form) *@
+    var feReCaptchaLoaders = feReCaptchaLoaders || [];
+    feReCaptchaLoaders.push({onLoad: function() {
+      @* explicitly render the reCAPTCHA widget so we know which widget to validate *@
+      captchaWidget_@(formContent.Id) = grecaptcha.render("captcha_@(formContent.Id)", {}, true);
+    }});
+
+    var feReCaptchaOnLoad = feReCaptchaOnLoad || function () {
+      for (var i = 0; i < feReCaptchaLoaders.length; i++) {
+        feReCaptchaLoaders[i].onLoad();
+      }
+    }
+  </script>
+  @if(hasReCaptchaInit == false)
+  {
+    <script src="https://www.google.com/recaptcha/api.js?hl=@language&onload=feReCaptchaOnLoad&render=explicit" async defer></script>
+  }
+  <div class="g-recaptcha"
+       data-sitekey="@Model.PublicKey"
+       data-callback="captchaSubmit_@(formContent.Id)"
+       data-size="invisible"
+       id="captcha_@(formContent.Id)">
+  </div>
+  <button type="submit" onclick="return captchaValidate_@(formContent.Id)()" class="btn btn-primary">@Model.Text</button>
+</div>

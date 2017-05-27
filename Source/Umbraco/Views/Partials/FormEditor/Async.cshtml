@@ -6,6 +6,9 @@
 
   // get the content that contains the form model (defaults to the current page)
   var formContent = ViewBag.FormContent as IPublishedContent ?? Model;
+  
+  // ensure that ViewBag.FormContent is available for the field renderings
+  ViewBag.FormContent = formContent;
 
   // get the name of the form model property on the content type (defaults to "form")
   var formPropertyName = ViewBag.FormName as string ?? "form";
@@ -53,7 +56,7 @@
 
     @* render the form *@
     <div class="container form-data" ng-hide="showReceipt" ng-init="init(@formContent.Id)">
-      <form name="form" novalidate>
+      <form name="form" id="fe_@(formContent.Id)" novalidate>
         @foreach (var page in form.Pages)
         {
           ViewBag.FormEditorPageNumber = form.Pages.IndexOf(page);
@@ -77,6 +80,7 @@
           </div>
         }
       </form>
+
       @*
         paging links
         TIP: you can localize the "Previous" and "Next" texts by adding "form.paging.previous" and "form.paging.next" to the Umbraco dictionary
