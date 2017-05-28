@@ -26,12 +26,12 @@ namespace FormEditor.Fields
 			get { return "core.recaptcha"; }
 		}
 
-		public string Name
+		public virtual string Name
 		{
 			get { return "reCAPTCHA"; }
 		}
 
-		public string FormSafeName
+		public virtual string FormSafeName
 		{
 			get { return Name; }
 		}

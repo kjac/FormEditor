@@ -12,12 +12,12 @@
 			get { return "core.invisiblerecaptcha"; }
 		}
 
-		public string Name
+		public override string Name
 		{
 			get { return "Submit button"; }
 		}
 
-		public string FormSafeName
+		public override string FormSafeName
 		{
 			get { return "invisible_reCAPTCHA"; }
 		}
