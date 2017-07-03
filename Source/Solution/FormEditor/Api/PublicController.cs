@@ -92,8 +92,8 @@ namespace FormEditor.Api
 				return SubmissionSuccessResponse(successData);
 			}
 
-			successData.RedirectUrl = Umbraco.NiceUrl(formModel.SuccessPageId);
-			successData.RedirectUrlWithDomain = Umbraco.NiceUrlWithDomain(formModel.SuccessPageId);
+			successData.RedirectUrl = formModel.AppendReceiptQueryParameters(Umbraco.NiceUrl(formModel.SuccessPageId), content);
+			successData.RedirectUrlWithDomain = formModel.AppendReceiptQueryParameters(Umbraco.NiceUrlWithDomain(formModel.SuccessPageId), content);
 			return SubmissionSuccessResponse(successData);
 		}
 
