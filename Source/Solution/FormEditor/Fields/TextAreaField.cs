@@ -18,10 +18,12 @@ namespace FormEditor.Fields
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
 		{
-			// let's force replace newlines with <br/> tags for multiline text
-			return string.IsNullOrEmpty(value)
-				? value
-				: value.Replace(Environment.NewLine, "<br/>");
+			return ReplaceNewLines(value);
+		}
+
+		public override string SubmittedValueForEmail()
+		{
+			return ReplaceNewLines(SubmittedValue);
 		}
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
@@ -35,6 +37,14 @@ namespace FormEditor.Fields
 				return true;
 			}
 			return string.IsNullOrEmpty(SubmittedValue) || SubmittedValue.Length <= MaxLength;
+		}
+
+		private static string ReplaceNewLines(string value)
+		{
+			// replace newlines with <br/> tags for multiline text
+			return string.IsNullOrEmpty(value)
+				? value
+				: value.Replace(Environment.NewLine, "<br/>");
 		}
 	}
 }
