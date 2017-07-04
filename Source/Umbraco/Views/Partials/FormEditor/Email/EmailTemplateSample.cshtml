@@ -81,7 +81,7 @@
         {
           <tr>
             <th>@field.Name</th>
-            <td>@field.SubmittedValueForEmail()</td>
+            <td>@Html.Raw(field.SubmittedValueForEmail())</td>
           </tr>
         }
       </tbody>

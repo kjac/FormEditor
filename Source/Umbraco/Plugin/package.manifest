@@ -89,6 +89,12 @@
                view: "boolean"
             },
             {
+               label: "Add submission info in the receipt URL",
+               description: "Adds the ID of the submission and the Umbraco content as querystring parameters",
+               key: "addSubmissionInfo",
+               view: "boolean"
+            },
+            {
                label: "Web service integration",
                description: "Configure integration with an external web service",
                key: "webService",

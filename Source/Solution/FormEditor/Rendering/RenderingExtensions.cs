@@ -195,5 +195,11 @@ namespace FormEditor.Rendering
 				};
 			}
 		}
+
+		public static string LabelOrName(this FieldWithValue field)
+		{
+			var fieldWithLabel = field as FieldWithLabel;
+			return fieldWithLabel != null ? fieldWithLabel.Label : field.Name;			
+		}
 	}
 }

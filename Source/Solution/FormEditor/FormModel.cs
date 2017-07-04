@@ -88,6 +88,7 @@ namespace FormEditor
 		private bool UseStatistics { get; set; }
 		private WebServiceConfiguration WebServiceConfiguration { get; set; }
 		private string[] VisibleTabs { get; set; }
+		public bool AddSubmissionInfo { get; set; }
 
 		#endregion
 
@@ -193,7 +194,7 @@ namespace FormEditor
 
 			if (redirect && SuccessPageId > 0)
 			{
-				RedirectToSuccesPage();
+				RedirectToSuccesPage(content);
 			}
 
 			return true;
@@ -766,14 +767,28 @@ namespace FormEditor
 			return addresses;
 		}
 
-		private void RedirectToSuccesPage()
+		private void RedirectToSuccesPage(IPublishedContent content)
 		{
 			var helper = new UmbracoHelper(Context);
 			var redirectTo = helper.TypedContent(SuccessPageId);
-			if(redirectTo != null)
+			if(redirectTo == null)
 			{
-				HttpContext.Current.Response.Redirect(redirectTo.Url);
+				return;
 			}
+			var url = AppendReceiptQueryParameters(redirectTo.Url, content);
+			HttpContext.Current.Response.Redirect(url);
+		}
+
+		internal string AppendReceiptQueryParameters(string receiptUrl, IPublishedContent content)
+		{
+			if(AddSubmissionInfo == false)
+			{
+				return receiptUrl;
+			}
+			var collection = HttpUtility.ParseQueryString(string.Empty);
+			collection["sid"] = RowId.ToString();
+			collection["cid"] = content.Id.ToString();
+			return string.Format("{0}?{1}", receiptUrl, collection);
 		}
 
 		private class FileAttachment
@@ -856,6 +871,7 @@ namespace FormEditor
 				WebServiceConfiguration = GetPreValueFromJson<WebServiceConfiguration>("webService", preValueDictionary);
 				VisibleTabs = (GetPreValueFromJson<TabOrder[]>("tabOrder", preValueDictionary) ?? new TabOrder[0])
 					.Where(t => t.Visible).Select(t => t.Id).ToArray();
+				AddSubmissionInfo = GetPreValueAsBoolean("addSubmissionInfo", preValueDictionary);
 			}
 			catch(Exception ex)
 			{
