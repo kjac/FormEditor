@@ -1,4 +1,4 @@
-Advanced receipts - create receipt pages and emails that allow the users to review and edit their own submissions.
+# Tutorial: Advanced receipts
 
 With Form Editor, the receipt page is whatever Umbraco page you pick on the *Receipt* tab. Therefore we can put all sorts of things into the receipt page rendering.
 
