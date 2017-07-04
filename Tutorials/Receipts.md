@@ -181,6 +181,12 @@ The following code listing contains the full *Form Editor* template with this en
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Get in touch with us!</h1>
+    <p>
+      You'll probably want to add something like an intro text right about here. 
+    </p>
+  </div>
   @* render the Form Editor property with the NoScript rendering *@
   @Html.Partial("FormEditor/NoScript", Umbraco.AssignedContentItem)  
 </body>
