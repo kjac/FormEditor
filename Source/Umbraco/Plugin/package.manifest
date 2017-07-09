@@ -83,6 +83,12 @@
                view: "boolean"
             },
             {
+               label: "Use submission approval",
+               description: "Enable editor approval of form submissions",
+               key: "enableApproval",
+               view: "boolean"
+            },
+            {
                label: "Enable field cloning",
                description: "Make it possible to clone the fields in the form",
                key: "enableFieldCloning",

@@ -184,6 +184,7 @@ namespace FormEditor.Api
 			var preValues = ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
 			var allFields = GetAllFieldsForDisplay(model, document, preValues);
 			var statisticsEnabled = ContentHelper.StatisticsEnabled(preValues);
+			var approvalEnabled = ContentHelper.ApprovalEnabled(preValues);
 
 			var index = IndexHelper.GetIndex(id);
 			var fullTextIndex = index as IFullTextIndex;
@@ -210,6 +211,7 @@ namespace FormEditor.Api
 				{
 					_id = r.Id,
 					_createdDate = r.CreatedDate,
+					_approval = r.ApprovalState.ToString().ToLowerInvariant(),
 					values = r.Fields.Select(f => f.Value)
 				}).ToArray(),
 				currentPage = page,
@@ -217,7 +219,8 @@ namespace FormEditor.Api
 				sortField = result.SortField,
 				sortDescending = result.SortDescending,
 				supportsSearch = fullTextIndex != null,
-				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any()
+				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any(),
+				supportsApproval = approvalEnabled && index is IApprovalIndex
 			};
 		}
 
@@ -278,6 +281,20 @@ namespace FormEditor.Api
 			};
 		}
 
+		[HttpPut]
+		public object SetApprovalState(int id, SetApprovalStateRequest request)
+		{
+			var index = IndexHelper.GetIndex(id) as IApprovalIndex;
+			if(index != null && index.SetApprovalState(request.ApprovalState, request.RowId))
+			{
+				return new
+				{
+					newApprovalState = request.ApprovalState.ToString().ToLowerInvariant()
+				};
+			}
+			return null;
+		}
+
 		internal static List<FieldWithValue> GetAllFieldsForDisplay(FormModel model, IContent document, IDictionary<string, PreValue> preValues = null)
 		{
 			var allFields = model.AllValueFields().ToList();
@@ -291,6 +308,13 @@ namespace FormEditor.Api
 				allFields.Add(new TextBoxField { Name = "IP", FormSafeName = "_ip" });
 			}
 			return allFields;
+		}
+
+		public class SetApprovalStateRequest
+		{
+			public ApprovalState ApprovalState { get; set; }
+
+			public Guid RowId { get; set; }
 		}
 	}
 }

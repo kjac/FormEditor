@@ -19,13 +19,14 @@ using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex, IApprovalIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
 		private const string IdField = "_id";
 		private const string CreatedField = "_created";
 		private const string UpdatedField = "_updated";
+		private const string ApprovalField = "_approval";
 		private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 		public Index(int contentId)
@@ -60,6 +61,7 @@ namespace FormEditor.Storage
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(ApprovalField, ApprovalState.None.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
 			{
@@ -131,20 +133,28 @@ namespace FormEditor.Storage
 
 		public Row Get(Guid rowId)
 		{
+			var doc = GetDocument(rowId);
+			return doc == null 
+				? null 
+				: ParseRow(doc);
+		}
+
+		private Document GetDocument(Guid rowId)
+		{
 			var reader = GetIndexReader();
 			var searcher = GetIndexSearcher(reader);
 
 			var hits = searcher.Search(new TermQuery(new Term(IdField, rowId.ToString())), 1);
-			if(hits.ScoreDocs.Length == 0)
+			Document doc = null;
+			if(hits.ScoreDocs.Length > 0)
 			{
-				return null;
+				doc = searcher.Doc(hits.ScoreDocs.First().doc);
 			}
-			var doc = searcher.Doc(hits.ScoreDocs.First().doc);
 
 			searcher.Close();
 			reader.Close();
 
-			return ParseRow(doc);
+			return doc;
 		}
 
 		private static IndexSearcher GetIndexSearcher(IndexReader reader)
@@ -182,6 +192,11 @@ namespace FormEditor.Storage
 			return GetSearchResults(null, null, sortField, sortDescending, count, skip);
 		}
 
+		public Result Get(string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState)
+		{
+			return GetSearchResults(null, null, sortField, sortDescending, count, skip, approvalState);
+		}
+
 		public Result Search(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
 		{
 			return GetSearchResults(searchQuery, searchFields, sortField, sortDescending, count, skip);
@@ -215,7 +230,7 @@ namespace FormEditor.Storage
 			return result;
 		}
 
-		private Result GetSearchResults(string searchQuery, string [] searchFields, string sortField, bool sortDescending, int count, int skip)
+		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState = ApprovalState.None)
 		{
 			var reader = GetIndexReader();
 			var searcher = GetIndexSearcher(reader);
@@ -252,7 +267,9 @@ namespace FormEditor.Storage
 			}
 			else
 			{
-				query = new MatchAllDocsQuery();
+				query = approvalState == ApprovalState.None 
+					? new MatchAllDocsQuery()
+					: (Query)new TermQuery(new Term(ApprovalField, approvalState.ToString()));
 			}
 
 			var docs = searcher.Search(
@@ -366,6 +383,23 @@ namespace FormEditor.Storage
 			return count;
 		}
 
+		public bool SetApprovalState(ApprovalState approvalState, Guid rowId)
+		{
+			var doc = GetDocument(rowId);
+			if(doc == null)
+			{
+				return false;
+			}
+			doc.RemoveField(ApprovalField);
+			doc.Add(new LuceneField(ApprovalField, approvalState.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+
+			var writer = GetIndexWriter();
+			writer.UpdateDocument(new Term(IdField, rowId.ToString()), doc);
+			writer.Close();
+
+			return true;
+		}
+
 		private LuceneDirectory IndexDirectory
 		{
 			get
@@ -388,12 +422,19 @@ namespace FormEditor.Storage
 		{
 			var id = Guid.Parse(doc.GetField(IdField).StringValue());
 			var createdDate = DateTime.ParseExact(doc.GetField(CreatedField).StringValue(), DateTimeFormat, CultureInfo.InvariantCulture);
+			var approvalStateField = doc.GetField(ApprovalField);
+			var approvalState = ApprovalState.None;
+			if(approvalStateField != null)
+			{
+				Enum.TryParse(approvalStateField.StringValue(), true, out approvalState);				
+			}
+
 			var fields = new Dictionary<string, string>();
 			foreach (var field in doc.GetFields().OfType<LuceneField>().Where(f => f.Name() != IdField && f.Name() != CreatedField))
 			{
 				fields[field.Name()] = field.StringValue();
 			}
-			return new Row(id, createdDate, fields);
+			return new Row(id, createdDate, fields, approvalState);
 		}
 
 		private static string FieldNameForSorting(string fieldName)

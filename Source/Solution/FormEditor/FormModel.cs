@@ -200,19 +200,24 @@ namespace FormEditor
 			return true;
 		}
 
-		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
+		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.None)
 		{
 			if(RequestedContent == null)
 			{
 				return new FormData();
 			}
-			return GetSubmittedValues(RequestedContent, page, perPage, sortField, sortDescending);
+			return GetSubmittedValues(RequestedContent, page, perPage, sortField, sortDescending, approvalState);
 		}
 
-		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false)
+		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.None)
 		{
 			var index = IndexHelper.GetIndex(content.Id);
-			var result = index.Get(sortField, sortDescending, perPage, (page - 1) * perPage) ?? Result.Empty(sortField, sortDescending);
+			var approvalIndex = index as IApprovalIndex;
+			var result = approvalIndex != null
+				? approvalIndex.Get(sortField, sortDescending, perPage, (page - 1) * perPage, approvalState)
+				: index.Get(sortField, sortDescending, perPage, (page - 1) * perPage); 
+			result = result ?? Result.Empty(sortField, sortDescending);
+
 			var fields = AllValueFields();
 
 			var rows = ExtractSubmittedValues(result, fields, (field, value, row) => value == null ? null : field.FormatValueForFrontend(value, content, row.Id));
@@ -929,6 +934,7 @@ namespace FormEditor
 				{
 					Id = r.Id,
 					CreatedDate = r.CreatedDate,
+					ApprovalState = r.ApprovalState,
 					Fields = fields.Select(f =>
 						ToDataField(valueFormatter, f, r)
 					)

@@ -121,6 +121,7 @@
 
         $scope.supportsSearch = data.supportsSearch;
         $scope.supportsStatistics = data.supportsStatistics;
+        $scope.supportsApproval = data.supportsApproval;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;
@@ -180,7 +181,6 @@
         },
         template: "data.selectFields.html",
         callback: function (dialogData) {
-          console.log("callback", dialogData);
           $scope.model.value.visibleFields = _.map(_.where(dialogData.fieldConfigurations, { selected: true }), function(fieldConfiguration) {
             return fieldConfiguration.field.name;
           });
@@ -219,6 +219,20 @@
         dialogData: {},
         template: "data.statistics.html",
         modalClass: "umb-modal stats-modal"
+      });
+    }
+
+    $scope.toggleApproval = function (row) {
+      if (row._actionInProgress) {
+        return;
+      }
+      row._actionInProgress = true;
+      var newApprovalState = row._approval === "none" ? "approved" : "none";
+      formEditorPropertyEditorResource.setApprovalState(editorState.current.id, newApprovalState, row._id).then(function (data) {
+        if (data && data.newApprovalState) {
+          row._approval = data.newApprovalState;
+          row._actionInProgress = false;
+        }
       });
     }
 

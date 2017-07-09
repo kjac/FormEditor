@@ -515,8 +515,8 @@
         white-space: nowrap;
 
         td {
-          &.select {
-            width: 35px;
+          &.select, &.toggle-approval {
+            width: 25px;
           }
         }
       }
@@ -534,6 +534,10 @@
             cursor: pointer;
           }
 
+          &.toggle-approval {
+            cursor: pointer;
+          }
+
           i, i:hover {
             display: inline-block !important;
           }
@@ -544,6 +548,37 @@
             &.form-data-view-entry i {
               color: @dimmedColorActive;
             }
+          }
+        }
+
+        &.approval-none {
+          i.icon {
+            &:before {
+              color: @dimmedColor;
+              content: "\e165"; /* checkmark */
+            }
+            &:hover:before {
+              color: @dimmedColorActive;
+            }
+          }
+        }
+        &.approval-approved {
+          i.icon {
+            &:before {
+              color: #31b379;
+              content: "\e165"; /* checkmark */
+            }
+            &:hover:before {
+              color: #239864;
+            }
+          }
+        }
+
+        &.loading {
+          color:@dimmedColor;
+
+          i.icon:before {
+            content: "\e153"; /* hourglass */
           }
         }
       }

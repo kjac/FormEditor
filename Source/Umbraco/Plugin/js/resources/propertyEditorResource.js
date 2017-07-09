@@ -37,6 +37,11 @@
             $http.post("/umbraco/backoffice/FormEditorApi/PropertyEditor/RemoveData/" + documentId, ids), "Could not delete data"
         );
       },
+      setApprovalState: function (documentId, approvalState, rowId) {
+        return umbRequestHelper.resourcePromise(
+            $http.put("/umbraco/backoffice/FormEditorApi/PropertyEditor/SetApprovalState/" + documentId, { rowId: rowId, approvalState: approvalState }), "Could not set approval state"
+        );
+      },
       getMediaUrl: function (mediaId) {
         return umbRequestHelper.resourcePromise(
             $http.get("/umbraco/backoffice/FormEditorApi/PropertyEditor/GetMediaUrl/" + mediaId), "Could not retrieve media URL"

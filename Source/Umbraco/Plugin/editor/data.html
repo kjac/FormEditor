@@ -20,6 +20,9 @@
             <td class="select">
               <input type="checkbox" ng-click="selectAll()" ng-checked="allSelected()">
             </td>
+            <td ng-if="supportsApproval" class="toggle-approval">
+              <!-- header column for approval -->
+            </td>
             <td>
               <a href ng-click="sort('_created')" form-editor-localize key="data.sortSubmittedDate">
                 Date
@@ -34,9 +37,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="row in model.data.rows track by $index" ng-class="{selected:row.selected}" ng-click="viewEntry($index)">
+          <tr ng-repeat="row in model.data.rows track by $index" class="approval-{{row._approval}}" ng-class="{selected:row.selected, loading: row._actionInProgress}" ng-click="viewEntry($index)">
             <td>
               <input type="checkbox" ng-model="row.selected" no-dirty-check ng-click="$event.stopPropagation();">
+            </td>
+            <td ng-if="supportsApproval" class="toggle-approval" ng-click="toggleApproval(row)">
+              <i class="icon icon-any"></i>
             </td>
             <td class="date" title="{{row._createdDateLong}}">
               {{row._createdDateShort}}
@@ -59,7 +65,7 @@
         </tbody>
         <tfoot ng-show="model.data.totalPages > 1">
           <tr>
-            <th colspan="{{model.data.fields.length + 2}}">
+            <th colspan="{{model.data.fields.length + 3}}">
               <div class="pagination pagination-left">
                 <ul>
                   <li>

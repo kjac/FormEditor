@@ -257,6 +257,7 @@
     <Compile Include="Api\CsvExport.cs" />
     <Compile Include="Api\DownloadController.cs" />
     <Compile Include="Api\PublicController.cs" />
+    <Compile Include="ApprovalState.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Events\FormEditorCancelEventArgs.cs" />
