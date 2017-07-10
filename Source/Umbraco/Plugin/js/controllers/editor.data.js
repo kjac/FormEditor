@@ -227,7 +227,7 @@
         return;
       }
       row._actionInProgress = true;
-      var newApprovalState = row._approval === "none" ? "approved" : "none";
+      var newApprovalState = row._approval === "undecided" ? "approved" : "undecided";
       formEditorPropertyEditorResource.setApprovalState(editorState.current.id, newApprovalState, row._id).then(function (data) {
         if (data && data.newApprovalState) {
           row._approval = data.newApprovalState;

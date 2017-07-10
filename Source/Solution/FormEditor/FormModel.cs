@@ -86,6 +86,7 @@ namespace FormEditor
 		private bool LogIp { get; set; }
 		private bool StripHtml { get; set; }
 		private bool UseStatistics { get; set; }
+		private bool UseApproval { get; set; }
 		private WebServiceConfiguration WebServiceConfiguration { get; set; }
 		private string[] VisibleTabs { get; set; }
 		public bool AddSubmissionInfo { get; set; }
@@ -200,7 +201,7 @@ namespace FormEditor
 			return true;
 		}
 
-		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.None)
+		public FormData GetSubmittedValues(int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.Approved)
 		{
 			if(RequestedContent == null)
 			{
@@ -209,16 +210,19 @@ namespace FormEditor
 			return GetSubmittedValues(RequestedContent, page, perPage, sortField, sortDescending, approvalState);
 		}
 
-		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.None)
+		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.Approved)
 		{
+			LoadPreValues(content);
+
 			var index = IndexHelper.GetIndex(content.Id);
-			var approvalIndex = index as IApprovalIndex;
+			var approvalIndex = UseApproval ? index as IApprovalIndex : null;
+
 			var result = approvalIndex != null
 				? approvalIndex.Get(sortField, sortDescending, perPage, (page - 1) * perPage, approvalState)
 				: index.Get(sortField, sortDescending, perPage, (page - 1) * perPage); 
 			result = result ?? Result.Empty(sortField, sortDescending);
 
-			var fields = AllValueFields();
+			var fields = AllValueFields().ToArray();
 
 			var rows = ExtractSubmittedValues(result, fields, (field, value, row) => value == null ? null : field.FormatValueForFrontend(value, content, row.Id));
 
@@ -227,7 +231,7 @@ namespace FormEditor
 				TotalRows = result.TotalRows,
 				SortDescending = result.SortDescending,
 				SortField = result.SortField,
-				Rows = rows,
+				Rows = rows.ToArray(),
 				Fields = fields.Select(f => ToDataField(null, f, null))
 			};
 		}
@@ -873,6 +877,7 @@ namespace FormEditor
 				LogIp = GetPreValueAsBoolean("logIp", preValueDictionary);
 				StripHtml = GetPreValueAsBoolean("stripHtml", preValueDictionary);
 				UseStatistics = GetPreValueAsBoolean("enableStatistics", preValueDictionary);
+				UseApproval = GetPreValueAsBoolean("enableApproval", preValueDictionary);
 				WebServiceConfiguration = GetPreValueFromJson<WebServiceConfiguration>("webService", preValueDictionary);
 				VisibleTabs = (GetPreValueFromJson<TabOrder[]>("tabOrder", preValueDictionary) ?? new TabOrder[0])
 					.Where(t => t.Visible).Select(t => t.Id).ToArray();
@@ -937,14 +942,16 @@ namespace FormEditor
 					ApprovalState = r.ApprovalState,
 					Fields = fields.Select(f =>
 						ToDataField(valueFormatter, f, r)
-					)
+					).ToArray()
 				}
 			);
 		}
 
 		private static Data.Field ToDataField(Func<FieldWithValue, string, Storage.Row, string> valueFormatter, FieldWithValue field, Storage.Row row)
 		{
-			var fieldValue = FieldHelper.GetSubmittedValue(field, row.Fields);
+			var fieldValue = row != null && field != null 
+				? FieldHelper.GetSubmittedValue(field, row.Fields)
+				: null;
 			return new Data.Field
 			{
 				Name = field.Name,

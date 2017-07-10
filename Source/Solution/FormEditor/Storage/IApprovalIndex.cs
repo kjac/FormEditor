@@ -14,7 +14,7 @@ namespace FormEditor.Storage
 		/// <param name="sortDescending">True to sort the entries descending, false otherwise</param>
 		/// <param name="count">The number of entries to return</param>
 		/// <param name="skip">The number of entries to skip (for pagination)</param>
-		/// <param name="approvalState">The approval state of the entries</param>
+		/// <param name="approvalState">The approval state of the entries - if the value is ApprovalState.Any, no approval filtering is applied</param>
 		/// <returns>The matching entries</returns>
 		Result Get(string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState);
 

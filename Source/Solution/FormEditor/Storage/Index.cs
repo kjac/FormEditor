@@ -61,7 +61,7 @@ namespace FormEditor.Storage
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(ApprovalField, ApprovalState.None.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(ApprovalField, ApprovalState.Undecided.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
 			{
@@ -230,7 +230,7 @@ namespace FormEditor.Storage
 			return result;
 		}
 
-		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState = ApprovalState.None)
+		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState = ApprovalState.Any)
 		{
 			var reader = GetIndexReader();
 			var searcher = GetIndexSearcher(reader);
@@ -267,7 +267,7 @@ namespace FormEditor.Storage
 			}
 			else
 			{
-				query = approvalState == ApprovalState.None 
+				query = approvalState == ApprovalState.Any 
 					? new MatchAllDocsQuery()
 					: (Query)new TermQuery(new Term(ApprovalField, approvalState.ToString()));
 			}
@@ -423,7 +423,7 @@ namespace FormEditor.Storage
 			var id = Guid.Parse(doc.GetField(IdField).StringValue());
 			var createdDate = DateTime.ParseExact(doc.GetField(CreatedField).StringValue(), DateTimeFormat, CultureInfo.InvariantCulture);
 			var approvalStateField = doc.GetField(ApprovalField);
-			var approvalState = ApprovalState.None;
+			var approvalState = ApprovalState.Undecided;
 			if(approvalStateField != null)
 			{
 				Enum.TryParse(approvalStateField.StringValue(), true, out approvalState);				
