@@ -212,10 +212,15 @@ namespace FormEditor
 
 		public FormData GetSubmittedValues(IPublishedContent content, int page = 1, int perPage = 10, string sortField = null, bool sortDescending = false, ApprovalState approvalState = ApprovalState.Approved)
 		{
-			LoadPreValues(content);
-
 			var index = IndexHelper.GetIndex(content.Id);
-			var approvalIndex = UseApproval ? index as IApprovalIndex : null;
+
+			IApprovalIndex approvalIndex = null;
+			if (index is IApprovalIndex)
+			{
+				// we need to load the prevalues to figure out if we're using approval or not
+				LoadPreValues(content);
+				approvalIndex = UseApproval ? index as IApprovalIndex : null;
+			}
 
 			var result = approvalIndex != null
 				? approvalIndex.Get(sortField, sortDescending, perPage, (page - 1) * perPage, approvalState)
