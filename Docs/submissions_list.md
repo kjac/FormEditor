@@ -10,21 +10,23 @@ var form = Model.Content.GetPropertyValue<FormModel>("form");
 
 The form model exposes its form submissions through the method `GetSubmittedValues()`. It can be used with a bunch of different parameters, all of which are optional:
 
+- `IPublishedContent content`: The content that holds the form. Default is current page.
 - `int page`: The page number to retrieve. 1-based, default is 1.
 - `int perPage`: The page size. Default is 10.
 - `string sortField`: The "form safe name" of the field to use for sorting. Default is the date of submission.
-- `bool sortDescending`: Determines the sort order. Default is `false`.
-- `IPublishedContent content`: The content that holds the form. Default is current page.
+- `bool sortDescending`: Determines the sort order. Only applicable if `sortField` is specified. Default is `false`.
+- `ApprovalState approvalState`: The approval state of the submissions. Only applicable if "Use submission approval" is enabled on the Form Editor datatype. Default is `ApprovalState.Approved`.
 
 `GetSubmittedValues()` returns a [`FormData`](../Source/Solution/FormEditor/Data/FormData.cs) object, which contains the form submissions.  
 
 ```cs
 var formData = form.GetSubmittedValues(
+  content: Model.Content,
   page: 1, 
   perPage: 10, 
   sortField: "myField", 
   sortDescending: true, 
-  content: Model.Content
+  approvalState: ApprovalState.Any
 );
 ```
 
