@@ -37,11 +37,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="row in model.data.rows track by $index" class="approval-{{row._approval}}" ng-class="{selected:row.selected, loading: row._actionInProgress}" ng-click="viewEntry($index)">
+          <tr ng-repeat="row in model.data.rows track by $index" ng-class="{selected:row.selected, loading: row._actionInProgress}" ng-click="viewEntry($index)">
             <td>
               <input type="checkbox" ng-model="row.selected" no-dirty-check ng-click="$event.stopPropagation();">
             </td>
-            <td ng-if="supportsApproval" class="toggle-approval" ng-click="toggleApproval(row)">
+            <td ng-if="supportsApproval" class="approval-{{row._approval}} toggle-approval" ng-click="toggleApproval(row, $event)">
               <i class="icon icon-any"></i>
             </td>
             <td class="date" title="{{row._createdDateLong}}">

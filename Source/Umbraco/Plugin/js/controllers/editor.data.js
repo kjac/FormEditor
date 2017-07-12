@@ -222,7 +222,8 @@
       });
     }
 
-    $scope.toggleApproval = function (row) {
+    $scope.toggleApproval = function (row, $event) {
+      $event.stopPropagation();
       if (row._actionInProgress) {
         return;
       }
