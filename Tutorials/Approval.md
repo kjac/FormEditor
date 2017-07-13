@@ -1,6 +1,10 @@
 # Tutorial: Introduction to approval
 
-This tutorial demonstrates how you can put the approval system in Form Editor to use. We'll create a comment section for an article and use the approval system to let the editors moderate the comments.
+This tutorial demonstrates how you can put the approval system in Form Editor to use. 
+
+We'll create a comment section for an article, and use the approval system to let the editors moderate the comments. Since it's all built into Form Editor, you won't have to write a single line of custom code to make this happen.
+
+Let's get to it, shall we?
 
 ## Setting up
 
@@ -121,7 +125,8 @@ Now go back and view the article. It should show the approved comments between t
 
 ![Article with comments](img/Approval/article-with-comments.png)
 
-## Improving TODO TODO
+## Wrapping up
 
-TODO TODO TODO something about automatically creating the comments form (link to another tutorial)
+This was just a quick introduction to the approval system. Hopefully it sparks some ideas on how to put it to use. 
 
+The solution that's outlined here relies on having the editors add specific fields to the comments form. If you're looking for ways to improve this, you could take a look at [this](Ratings.md) tutoral, or more specifically [part three](RatingsPartThree.md) of it.
