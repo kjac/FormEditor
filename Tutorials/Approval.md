@@ -1,4 +1,4 @@
-# Tutorial: Something something with approval
+# Tutorial: Introduction to approval
 
 This tutorial demonstrates how you can put the approval system in Form Editor to use. We'll create a comment section for an article and use the approval system to let the editors moderate the comments.
 
@@ -39,9 +39,9 @@ We're going to render the pieces of the article page in the following order:
 2. The article comments (if there are any).
 3. The comments form.
 
-We don't want a page reload and subsequent scroll-to-top when the comments form is submitted, so we'll use the [Async rendering](TODO) to render the form. This way the comments form will be replaced by the receipt message you just entered when the form is submitted.
+We don't want a page reload and subsequent scroll-to-top when the comments form is submitted, so we'll use the [Async rendering](../Docs/render.md) to render the form. This way the comments form will be replaced by the receipt message you just entered when the form is submitted.
 
-The following code listing contains the entire template for the *Article* page. Have a look at the [documentation](TODO) for working with form submissions if you want to know more about fetching and rendering the form submissions.
+The following code listing contains the entire template for the *Article* page. Have a look at the [documentation](../Docs/submissions_list.md) for working with form submissions if you want to learn more about fetching and rendering the form submissions.
 
 ```html
 @using FormEditor;
@@ -107,8 +107,6 @@ The following code listing contains the entire template for the *Article* page. 
   @Html.Partial("FormEditor/Async", Umbraco.AssignedContentItem)
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
   <script src="/JS/FormEditor/FormEditorAsync.js" type="text/javascript"></script>
-  
-
 </body>
 </html>
 ```
