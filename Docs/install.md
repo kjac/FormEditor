@@ -42,6 +42,9 @@ Form Editor uses the mail settings configured in the `<mailSettings>` section of
 ##### Tab order and availiability
 There are a lot of options with Form Editor, some of which you might not use or want your editors to be concerned with. These options are grouped in tabs within the property editor. You can decide the order of these tabs as well as disable the tabs you don't want available to your editors.
 
+##### Use submission approval
+If your editors need to approve form submissions (e.g. for moderating comments), you can enable submission approval. This adds a little checkmark next to each submission, which the editors can click to approve the submission.
+
 ##### Web service integration
 Form Editor can send form data automatically to an external web service upon a successful form submission. Read more about this [here](install_web_service.md).
 

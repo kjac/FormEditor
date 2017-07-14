@@ -515,8 +515,8 @@
         white-space: nowrap;
 
         td {
-          &.select {
-            width: 35px;
+          &.select, &.toggle-approval {
+            width: 25px;
           }
         }
       }
@@ -534,6 +534,34 @@
             cursor: pointer;
           }
 
+          &.toggle-approval {
+            cursor: pointer;
+          }
+
+          &.approval-undecided {
+            i.icon {
+              &:before {
+                color: @dimmedColor;
+                content: "\e165"; /* checkmark */
+              }
+              &:hover:before {
+                color: @dimmedColorActive;
+              }
+            }
+          }
+
+          &.approval-approved {
+            i.icon {
+              &:before {
+                color: #1cb973;
+                content: "\e165"; /* checkmark */
+              }
+              &:hover:before {
+                color: #239864;
+              }
+            }
+          }
+
           i, i:hover {
             display: inline-block !important;
           }
@@ -544,6 +572,14 @@
             &.form-data-view-entry i {
               color: @dimmedColorActive;
             }
+          }
+        }
+
+        &.loading {
+          color:@dimmedColor;
+
+          .toggle-approval i.icon:before {
+            content: "\e153"; /* hourglass */
           }
         }
       }

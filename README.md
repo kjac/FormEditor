@@ -20,6 +20,7 @@ Some highlights include:
 * Built-in statistics for form submissions.
 * Editors can add texts and images alongside the form fields.
 * [reCAPTCHA](https://www.google.com/recaptcha/) support (both "V2" and "invisible" reCAPTCHA).
+* Approval system for moderation of form submissions.
 * Fully localizable.
 
 ## Table of contents

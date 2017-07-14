@@ -7,6 +7,7 @@ namespace FormEditor.Data
 	{
 		public Guid Id { get; set; }
 		public DateTime CreatedDate { get; set; }
+		public ApprovalState ApprovalState { get; set; }
 		public IEnumerable<Field> Fields { get; set; }
 	}
 }

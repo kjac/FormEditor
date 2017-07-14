@@ -53,6 +53,11 @@ namespace FormEditor.Umbraco
 			return PreValueEnabled(preValues, "enableStatistics");
 		}
 
+		public static bool ApprovalEnabled(IDictionary<string, PreValue> preValues)
+		{
+			return PreValueEnabled(preValues, "enableApproval");
+		}
+
 		public static IDictionary<string, PreValue> GetPreValues(IContent document, string propertyEditorAlias)
 		{
 			if (document == null)
