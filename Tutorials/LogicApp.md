@@ -1,6 +1,6 @@
 # Integrating with Azure Logic Apps
 
-In this tutorial we're going to use [Azure Logic Apps](https://azure.microsoft.com/en-us/services/logic-apps/) to integrate Form Editor with [Salesforce](https://www.salesforce.com/) CRM, all without writing a single line of code. This is accomplished by using the built-in [web service integration](../Docs/install_web_service.md) to pass each form submission to a Logic App, which in turn creates a lead in Salesforce.
+In this tutorial we're going to use [Azure Logic Apps](https://azure.microsoft.com/en-us/services/logic-apps/) to integrate Form Editor with [Salesforce CRM](https://www.salesforce.com/), all without writing a single line of code. This is accomplished by using the built-in [web service integration](../Docs/install_web_service.md) to pass each form submission to a Logic App, which in turn creates a lead in Salesforce.
 
 **Note:** We could just as easily integrate to Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
 
@@ -22,7 +22,7 @@ We'll start off with a *Blank Logic App* template and add the trigger as the ver
 
 The trigger for our Logic App will be a *Request / Response* trigger. This trigger exposes an endpoint that runs the app when we post JSON data to it.
 
-![Creating the trigger](img/LogicApp/LogicApp/creating-the-trigger.png)
+![Creating the trigger](img/LogicApp/creating-the-trigger.png)
 
 When setting up the trigger we can choose to specify a JSON schema for the data that's sent to it. Having a schema makes it a lot simpler to work with the data, but obviously it only works when the data conforms to a schema. In our case that means knowing part of the form layout up front, namely the form fields that we want to work with in our Logic App. 
 
@@ -49,17 +49,17 @@ As you'll see in a bit, a lead in Salesforce requires a last name and a company.
 
 To create the JSON schema for trigger, simply copy the form data above to the *sample JSON payload* field in trigger and it'll generate the schema for us. 
 
-![Adding the sample JSON payload](img/LogicApp/LogicApp/sample-json-payload.png)
+![Adding the sample JSON payload](img/LogicApp/sample-json-payload.png)
 
 ## Adding the Salesforce action
 
 Now let's put our form data to use. Add a *Salesforce - create record* action to the Logic App and connect it to your Salesforce account: 
 
-![Creating the action](img/LogicApp/LogicApp/creating-the-action.png)
+![Creating the action](img/LogicApp/creating-the-action.png)
 
 Once connected we can use the variables defined by our JSON schema to configure the Salesforce action: 
 
-![Configuring the action](img/LogicApp/LogicApp/configuring-the-action.png)
+![Configuring the action](img/LogicApp/configuring-the-action.png)
 
 ...and that's it. Our Logic App is now ready to create leads in Salesforce whenever we pass form data to it. 
 
