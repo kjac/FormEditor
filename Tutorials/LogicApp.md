@@ -36,7 +36,6 @@ As you'll see in a bit, a lead in Salesforce requires a last name and a company.
 
 ```json
 {
-  // ...
   "submittedValues": {
     "_First_name": "Test",
     "_Last_name": "Testersen",
