@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Umbraco.Core.Models;
+using Umbraco.Web.Media.EmbedProviders.Settings;
 
 namespace FormEditor.Integrations
 {
@@ -54,7 +56,11 @@ namespace FormEditor.Integrations
 						FormSafeName = field.FormSafeName,
 						Type = field.Type,
 						SubmittedValue = field.SubmittedValue
-					}).ToArray()
+					}).ToArray(),
+					SubmittedValues = formModel.AllValueFields().ToDictionary(
+							field => field.FormSafeName,
+							field => field.SubmittedValue
+						)
 				};
 
 				// serialize to JSON using camel casing
@@ -96,6 +102,8 @@ namespace FormEditor.Integrations
 			public string IndexRowId { get; set; }
 
 			public FormFieldData[] FormData { get; set; }
+
+			public Dictionary<string, string> SubmittedValues { get; set; }
 		}
 
 		public class FormFieldData
