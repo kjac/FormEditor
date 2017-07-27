@@ -28,14 +28,15 @@ When setting up the trigger we can choose to specify a JSON schema for the data 
 
 There are [several ways](../Tutorials/RatingsPartThree.md#creating-the-form) to ensure that we have a known form layout, but for now let's just assume that we do. 
 
-When Form Editor passes a form submission to a web service, the form data is offered in [two different formats](../Docs/install_web_service.md#the-data-format). Of these two, the ```submittedValues``` object is by far the easiest way to work with the form data within a Logic App; the properties of ```submittedValues``` are simply converted into corresponding variables by the trigger and made available throughout the app. 
+When Form Editor passes a form submission to a web service, the form data is offered in [two different formats](../Docs/install_web_service.md#the-data-format). Of these two, the `submittedValues` object is by far the easiest way to work with the form data within a Logic App; the properties of `submittedValues` are simply converted into corresponding variables by the trigger and made available throughout the app. 
 
-(diagram?) 
+![Logic App variables](img/LogicApp/logic-app-variables.png)
 
 As you'll see in a bit, a lead in Salesforce requires a last name and a company. On top of that we'll include a first name and an email. Therefore these fields make up the known part of our form layout, and thus the (minimal) expected form data that's passed to the trigger looks like this: 
 
 ```json
 {
+  // ...
   "submittedValues": {
     "_First_name": "Test",
     "_Last_name": "Testersen",
@@ -45,7 +46,11 @@ As you'll see in a bit, a lead in Salesforce requires a last name and a company.
 }
 ```
 
-*Note that the "form safe" names are used in the ```submittedValues``` object. If you're in doubt what that might be for a specific form field, you can always find it by inspecting the form field name in the rendered form.*
+*Note: `umbracoContentName`, `formData` and other fields are left out for brevity as we don't need them.*
+
+*Note: The "form safe" names are used in the `submittedValues` object. If you're in doubt what that might be for a specific form field, you can always find it by inspecting the form field name in the rendered form.*
+
+*Note that the "form safe" names are used in the `submittedValues` object. If you're in doubt what that might be for a specific form field, you can always find it by inspecting the form field name in the rendered form.*
 
 To create the JSON schema for trigger, simply copy the form data above to the *sample JSON payload* field in trigger and it'll generate the schema for us. 
 
