@@ -16,9 +16,11 @@ A Logic App consists of:
 
 Logic Apps are built using a visual designer directly in the browser (or by code). As with most other things, the look and feel of the designer changes over time, so the screenshots in this tutorial might not be exactly what you see in the designer. 
 
-## The Logic App trigger
+## Creating the Logic App trigger
 
-We'll start off with a *Blank Logic App* template and add the trigger as the very first thing.
+Start off by creating a Logic App using the *Blank Logic App* template.
+
+![Blank Logic App](img/LogicApp/blank-logic-app.png)
 
 The trigger for our Logic App will be a *Request / Response* trigger. This trigger exposes an endpoint that runs the app when we post JSON data to it.
 
