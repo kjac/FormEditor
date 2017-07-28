@@ -4,6 +4,12 @@ In this tutorial we're going to use [Azure Logic Apps](https://azure.microsoft.c
 
 **Note:** We could just as easily integrate to Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
 
+## Before you start
+
+Make sure you have Form Editor (version 1.2.1.0 or above) installed and set up. See the [quick start tutorial](QuickStart.md) or the [installation documentation](../Docs/install.md) for details. 
+
+You'll also need accounts for Azure and Salesforce.
+
 ## What's a Logic App? 
 
 Logic Apps are part of the Azure App Service offering from Microsoft. They are used to integrate systems in ways that would otherwise require custom development. 
