@@ -2,7 +2,7 @@
 
 In this tutorial we're going to use [Azure Logic Apps](https://azure.microsoft.com/en-us/services/logic-apps/) to integrate Form Editor with [Salesforce CRM](https://www.salesforce.com/), all without writing a single line of code. This is accomplished by using the built-in [web service integration](../Docs/install_web_service.md) to pass each form submission to a Logic App, which in turn creates a lead in Salesforce.
 
-We could just as easily integrate to Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
+We could just as easily integrate with Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
 
 ## Before you start
 
