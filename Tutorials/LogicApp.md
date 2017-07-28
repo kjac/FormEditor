@@ -2,7 +2,7 @@
 
 In this tutorial we're going to use [Azure Logic Apps](https://azure.microsoft.com/en-us/services/logic-apps/) to integrate Form Editor with [Salesforce CRM](https://www.salesforce.com/), all without writing a single line of code. This is accomplished by using the built-in [web service integration](../Docs/install_web_service.md) to pass each form submission to a Logic App, which in turn creates a lead in Salesforce.
 
-**Note:** We could just as easily integrate to Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
+We could just as easily integrate to Dynamics CRM and a [whole bunch](https://docs.microsoft.com/en-us/azure/connectors/apis-list) of other systems using Logic Apps, but since Salesforce offers a developer account for testing things like this, we'll use Salesforce in this tutorial.
 
 ## Before you start
 
@@ -56,8 +56,6 @@ As you'll see in a bit, a lead in Salesforce requires a last name and a company.
 *Note: `umbracoContentName`, `formData` and other fields are left out for brevity as we don't need them.*
 
 *Note: The "form safe" names are used in the `submittedValues` object. If you're in doubt what that might be for a specific form field, you can always find it by inspecting the form field name in the rendered form.*
-
-*Note that the "form safe" names are used in the `submittedValues` object. If you're in doubt what that might be for a specific form field, you can always find it by inspecting the form field name in the rendered form.*
 
 To create the JSON schema for trigger, simply copy the form data above to the *sample JSON payload* field in trigger and it'll generate the schema for us. 
 
