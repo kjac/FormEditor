@@ -7,7 +7,6 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Umbraco.Core.Models;
-using Umbraco.Web.Media.EmbedProviders.Settings;
 
 namespace FormEditor.Integrations
 {
