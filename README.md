@@ -66,6 +66,8 @@ Some highlights include:
     * Topics covered: Actions, cross field validation.
 * [Advanced receipts](Tutorials/Receipts.md) - create receipt pages and emails that allow the users to review and edit their own submissions.
     * Topics covered: Receipt pages and emails, displaying submitted data, editing existing submissions
+* [Integrating with Azure Logic Apps](Tutorials/LogicApp.md) - use Logic Apps to create integrations with CRM.
+    * Topics covered: Web service integration, Logic Apps
 
 ## Articles
 * ["Can we add a poll?"](http://24days.in/umbraco-cms/2016/polls-in-umbraco/) - an entry in the 2016 version of 24 Days.
