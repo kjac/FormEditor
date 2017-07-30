@@ -59,3 +59,22 @@ FormModel.BeforeAddToIndex += (sender, args) =>
 
 Event handling is described more in detail [here](extend.md#form-submission-events).
 
+## Troubleshooting
+If your newsletter subscriptions aren't coming through to Campaign Monitor or MailChimp, check the Umbraco log for any errors logged by Form Editor. 
+
+A common problem is that you're not supplying the Custom/Merge Fields that are required by the newsletter list. In this case you'll find something like the following in the Umbraco log: 
+
+```json
+{
+	"type": "http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/",
+	"title": "Invalid Resource",
+	"status": 400,
+	"detail": "Your merge fields were invalid.",
+	"instance": "",
+	"errors": [{
+			"field": "FNAME",
+			"message": "Please enter a value"
+		}
+	]
+}
+```
