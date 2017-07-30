@@ -66,15 +66,15 @@ A common problem is that you're not supplying the Custom/Merge Fields that are r
 
 ```json
 {
-	"type": "http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/",
-	"title": "Invalid Resource",
-	"status": 400,
-	"detail": "Your merge fields were invalid.",
-	"instance": "",
-	"errors": [{
-			"field": "FNAME",
-			"message": "Please enter a value"
-		}
-	]
+  "type": "http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/",
+  "title": "Invalid Resource",
+  "status": 400,
+  "detail": "Your merge fields were invalid.",
+  "instance": "",
+  "errors": [{
+      "field": "FNAME",
+      "message": "Please enter a value"
+    }
+  ]
 }
 ```
