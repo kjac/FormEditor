@@ -61,5 +61,7 @@ Since the Form Editor data type takes up a lot of space in the UI, you should co
 
 **Please note:** You can only have *one* Form Editor property per content type.
 
+**Please also note:** Due to backwards compatibility issues, you *cannot* put the Form Editor property in a content type composition. At least not for the time being.
+
 ## Next step
 Onwards to [Rendering the form](render.md).
