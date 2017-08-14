@@ -1,4 +1,4 @@
-# Using Zapier to integrate to other systems
+# Integrating with Zapier
 
 In the following we're going to write form submissions to Google Sheets using [Zapier](https://zapier.com/). While this might seem a little pointless, it'll demonstrate how Zapier and Form Editor can work together to provide integration with a [wide range](https://zapier.com/zapbook/) of systems. We'll use Google Sheets here because it is one of the integration points that's available in the free version of Zapier.
 
@@ -21,11 +21,11 @@ In Zapier you create *Zaps* to connect systems. In its most rudimentary form, a 
 
 ### Form data vs. Zapier
 
-With the built-in [web service integration](../Docs/install_web_service.md), Form Editor can send the form data to an external web service whenever a form is submitted. We'll use this to connect our form to Zapier. 
+Form Editor can pass the form data to an external web service whenever a form is submitted, by means of the built-in [web service integration](../Docs/install_web_service.md). We'll use this to connect our form data to Zapier. 
 
-Zapier needs to know the data format up front to make the data available throughout a Zap. This means we need to assume that the form fields we want to use within our Zap will be part of our form layout - in this case the contact information for our Google Sheet.
+For Zapier to work we need to know the data format up front. This means we have to assume that the form fields we want to use within our Zap will always be part of the form layout. In this case we'll expect the contact information for our Google Sheet.
 
-When Form Editor passes the form data to a web service, all the submitted values are wrapped in an object aptly named `submittedValues` ([read more](../Docs/install_web_service.md#the-data-format)). This object is perfect for our Zapier integration, because Zapier can create variables directly from it. With the expected contact information form fields, the `submittedValues` will contain at least the following data:
+When Form Editor passes the form data to a web service, all the submitted values are wrapped in an object that's aptly named `submittedValues` ([read more](../Docs/install_web_service.md#the-data-format)). This object is perfect for our Zapier integration, because Zapier can create variables directly from it. Given the expected contact information form fields, the `submittedValues` will contain at least the following data:
 
 ```json
 {
