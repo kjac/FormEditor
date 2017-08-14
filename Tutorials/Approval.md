@@ -129,4 +129,4 @@ Now go back and view the article. It should show the approved comments between t
 
 This was just a quick introduction to the approval system. Hopefully it sparks some ideas on how to put it to use. 
 
-The solution that's outlined here relies on having the editors add specific fields to the comments form. If you're looking for ways to improve this, you could take a look at [this](Ratings.md) tutoral, or more specifically [part three](RatingsPartThree.md) of it.
+The solution that's outlined here relies on having the editors add specific fields to the comments form. If you're looking for ways to improve this, you could take a look at [this](Ratings.md) tutorial, or more specifically [part three](RatingsPartThree.md) of it.
