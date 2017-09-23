@@ -34,7 +34,7 @@ The trigger for our Logic App will be a *Request / Response* trigger. This trigg
 
 When setting up the trigger we can choose to specify a JSON schema for the data that's sent to it. Having a schema makes it a lot simpler to work with the data, but obviously it only works when the data conforms to a schema. In our case that means knowing part of the form layout up front, namely the form fields that we want to work with in our Logic App. 
 
-There are [several ways](../Tutorials/RatingsPartThree.md#creating-the-form) to ensure that we have a known form layout, but for now let's just assume that we do. 
+There are [several ways](initialize.md) to ensure that we have a known form layout, but for now let's just assume that we do. 
 
 When Form Editor passes a form submission to a web service, the form data is offered in [two different formats](../Docs/install_web_service.md#the-data-format). Of these two, the `submittedValues` object is by far the easiest way to work with the form data within a Logic App; the properties of `submittedValues` are simply converted into corresponding variables by the trigger and made available throughout the app. 
 
