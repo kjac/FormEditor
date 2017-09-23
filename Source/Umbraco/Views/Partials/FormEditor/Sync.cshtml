@@ -131,7 +131,7 @@ else
         form validation errors container (for cross field validations)
         TIP: you can localize the default header text by adding "form.validationerrors.header" to the Umbraco dictionary
       *@
-      <div id="validationErrors" class="row form-validation-errors @(form.Validations.Any(v => v.Invalid) ? null : "hide")">
+      <div id="validationErrors" class="row form-validation-errors @(form.Validations.Any(v => v.Invalid) ? null : "hide d-none")">
         <div class="cell">
           <div class="form-group">
             <div class="alert alert-danger">

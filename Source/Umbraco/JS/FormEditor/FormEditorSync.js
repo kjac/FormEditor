@@ -70,10 +70,10 @@
   $.fn.formEditor.showHideValidationErrorForField = function (input, isValid) {
     var validationError = $(".validation-error", $(input).closest(".form-group"));
     if (isValid) {
-      validationError.addClass("hide");
+      validationError.addClass("hide d-none");
     }
     else {
-      validationError.removeClass("hide");
+      validationError.removeClass("hide d-none");
     }
   }
 
@@ -101,13 +101,13 @@
     // validate all validations
     var validationErrors = $("#validationErrors", $form);
     var validationErrorsList = $("#validationErrorsList", $form);
-    validationErrors.addClass("hide");
+    validationErrors.addClass("hide d-none");
     validationErrorsList.empty();
     // traverse the validations
     $($form.formState.validations).each(function (index, validation) {
       if (validateValidation(validation, $form) == false) {
         hasError = true;
-        validationErrors.removeClass("hide");
+        validationErrors.removeClass("hide d-none");
         validationErrorsList.append("<li>" + validation.errorMessage + "</li>");
       }
     });
