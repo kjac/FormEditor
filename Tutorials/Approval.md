@@ -1,14 +1,16 @@
-# Tutorial: Introduction to approval
+# Tutorial: Comments with moderation
 
-This tutorial demonstrates how you can put the approval system in Form Editor to use. 
+In this tutorial we'll create a comment section for an article, and use the approval system in Form Editor to let the editors moderate the comments. Since it's all built into Form Editor, you won't have to write a single line of custom code to make this happen.
 
-We'll create a comment section for an article, and use the approval system to let the editors moderate the comments. Since it's all built into Form Editor, you won't have to write a single line of custom code to make this happen.
+We'll also utilize the *Content Templates* feature introduced in Umbraco 7.7 to create a hassle-free workflow for the editors.
 
 Let's get to it, shall we?
 
 ## Setting up
 
-Before we start, you need to install Form Editor and create a Form Editor data type (check the [quick start tutorial](QuickStart.md) or the [installation documentation](../Docs/install.md) for details). When you create the data type, enable the option "Use submission approval" - this activates the approval system.
+Before we start, you need to install Form Editor and create a Form Editor data type (check the [quick start tutorial](QuickStart.md) or the [installation documentation](../Docs/install.md) for details). 
+
+### Creating the document type
 
 Create a document type called *Article* and add:
 
@@ -16,24 +18,52 @@ Create a document type called *Article* and add:
 2. A property named *Heading* of type *Textstring* on the *Content* tab.
 3. A property named *Body text* of type *Richtext editor* on the *Content* tab.
 4. A tab named *Comments*. This tab will contain the comments form.
-5. A property named *Form* on the *Comments* tab.
+5. A property named *Form* of type *Form Editor* on the *Comments* tab.
+
+The final result should look something like this:
 
 ![The Article document type](img/Approval/article-document-type.png)
 
-## Creating the first article
+### Creating the content template
 
-Now go to the content section and create an *Article* page. Fill out the article content on the *Content* and then switch to the *Comments* tab. 
+Once the document type is done, create a content template for it and name it *Article with comments*. We'll use this to ensure that all our *Article* pages are created with a correctly configured comments form.
 
-Create your comments form on the *Layout* tab of the *Form* property. You can add all the rows and fields you want, but for the sake of this tutorial, make sure you at least add:
+On the *Comments* tab of the content template, create the form layout you'd like for the comments form. You can add all the rows and fields you want, but for the sake of this tutorial, make sure you at least add:
 
 * A *Name* field (of type Textbox).
 * A *Comment* field (of type Text area).
 
-![The comments form layout](img/Approval/comments-form-layout.png)
+![The comments form layout](img/Approval/article-content-template-form-layout.png)
 
-Finally go to the *Receipt* tab of the *Form* property and enter a suitable receipt message.
+Now go to the *Receipt* tab of the *Form* property and enter a suitable receipt message.
 
-![The comments form receipt](img/Approval/comments-form-receipt.png)
+![The comments form receipt](img/Approval/article-content-template-form-receipt.png)
+
+### Configuring and locking down Form Editor
+
+We need to make a few changes to the Form Editor data type. First and foremost we need to enable the option "Use submission approval" - this activates the approval system:
+
+![Enable submission approval](img/Approval/data-type-submission-approval.png)
+
+Using the content template we'll have a correctly configured comments form with each new article that's created. We don't really want the editors messing around with it - they should only be concerned with moderating the submitted comments. Fortunately we can lock down Form Editor to only show the *Submissions* to the editors by configuring the *Tab order and availability*:
+
+![Tab order and availability](img/Approval/data-type-tab-availability.png)
+
+*Note: This also influences the tabs available when editing the content template. If you need to change the form configuration in the content template later on, you'll have to enable the tabs temporarily until you're done changing things.*
+
+## Creating an article
+
+Go to the content section and create an *Article* page using the *Article with comments* content template: 
+
+![Using the content template](img/Approval/using-the-content-template.png)
+
+Fill out the article content on the *Content* tab and then switch to the *Comments* tab. As expected, only the *Submissions* tab is visible:
+
+![Creating an article](img/Approval/creating-an-article.png)
+
+Behind the scenes, the content template has created the correct form layout and configuration for us. In other words: *The editors don't have to do a thing!* When they create an article, they need only focus on the content, and of course the subsequent comments moderation. 
+
+That's awesome! Content templates rock!
 
 ## Rendering the article
 
@@ -115,18 +145,24 @@ The following code listing contains the entire template for the *Article* page. 
 </html>
 ```
 
+Paste this code into your *Article* template, and then go have a look at the article you created. 
+
 ## Approving the comments
 
-When you have submitted comments to the article, they'll need approving before they're shown on the site. You do this on the *Submissions* tab of the *Form* property by clicking the checkmarks. When they turn green, the submission is approved. 
+When you have submitted some comments to the article, they'll need approving before they're shown alongside the article. 
 
-![Approving the submissions form receipt](img/Approval/approve-submissions.png)
+Go back to the *Comments* tab and approve the submissions by clicking the checkmarks. When they turn green, the submission is approved. 
 
-Now go back and view the article. It should show the approved comments between the article content and the comments form.
+![Approving the submissions](img/Approval/approve-submissions.png)
+
+Now go back and view the article. The approved comments should appear between the article content and the comments form.
 
 ![Article with comments](img/Approval/article-with-comments.png)
 
 ## Wrapping up
 
-This was just a quick introduction to the approval system. Hopefully it sparks some ideas on how to put it to use. 
+This tutorial has shown one way of using the approval system in Form Editor. Hopefully you'll find other clever ways to put it to good use. 
 
-The solution that's outlined here relies on having the editors add specific fields to the comments form. If you're looking for ways to improve this, you could take a look at [this](Ratings.md) tutorial, or more specifically [part three](RatingsPartThree.md) of it.
+By now you should also have an idea of just how awesome content templates are, and how they introduce a whole new way of utilizing forms. 
+
+Happy coding!
