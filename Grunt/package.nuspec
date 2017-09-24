@@ -8,7 +8,8 @@
     <owners>Kenn Jacobsen</owners>
     <projectUrl>http://github.com/kjac/FormEditor</projectUrl>
     <description><![CDATA[Form builder editor for Umbraco 7]]></description>
-    <tags>umbraco form builder editor package</tags>
+    <summary><![CDATA[Form builder editor for Umbraco 7]]></summary>
+    <tags>umbraco form builder editor package plugin</tags>
     <iconUrl>https://raw.githubusercontent.com/kjac/FormEditor/master/Docs/img/logo.png</iconUrl>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <dependencies>
