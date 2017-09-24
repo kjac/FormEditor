@@ -30,8 +30,8 @@ Once the document type is done, create a content template for it and name it *Ar
 
 On the *Comments* tab of the content template, create the form layout you'd like for the comments form. You can add all the rows and fields you want, but for the sake of this tutorial, make sure you at least add:
 
-* A *Name* field (of type Textbox).
-* A *Comment* field (of type Text area).
+* A *Name* field (of type *Textbox*).
+* A *Comment* field (of type *Text area*).
 
 ![The comments form layout](img/Approval/article-content-template-form-layout.png)
 
@@ -41,11 +41,11 @@ Now go to the *Receipt* tab of the *Form* property and enter a suitable receipt 
 
 ### Configuring and locking down Form Editor
 
-We need to make a few changes to the Form Editor data type. First and foremost we need to enable the option "Use submission approval" - this activates the approval system:
+We need to make a few changes to the Form Editor data type. First and foremost we need to enable the option *Use submission approval* - this activates the approval system:
 
 ![Enable submission approval](img/Approval/data-type-submission-approval.png)
 
-Using the content template we'll have a correctly configured comments form with each new article that's created. We don't really want the editors messing around with it - they should only be concerned with moderating the submitted comments. Fortunately we can lock down Form Editor to only show the *Submissions* to the editors by configuring the *Tab order and availability*:
+Using the content template we'll have a correctly configured comments form with each new article that's created. We really don't want the editors messing around with it - they should only be concerned with writing articles and moderating the submitted comments. Fortunately we can lock down Form Editor, so only the *Submissions* tab is shown to the editors. This is done by configuring the *Tab order and availability* on the data type:
 
 ![Tab order and availability](img/Approval/data-type-tab-availability.png)
 
@@ -151,11 +151,11 @@ Paste this code into your *Article* template, and then go have a look at the art
 
 When you have submitted some comments to the article, they'll need approving before they're shown alongside the article. 
 
-Go back to the *Comments* tab and approve the submissions by clicking the checkmarks. When they turn green, the submission is approved. 
+Go back to the *Comments* tab and approve the submissions by clicking the checkmarks. When they turn green, the submissions are approved. 
 
 ![Approving the submissions](img/Approval/approve-submissions.png)
 
-Now go back and view the article. The approved comments should appear between the article content and the comments form.
+Now go back and view the article. The approved comments should appear between the article content and the comments form:
 
 ![Article with comments](img/Approval/article-with-comments.png)
 
