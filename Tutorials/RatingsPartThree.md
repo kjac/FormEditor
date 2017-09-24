@@ -6,7 +6,9 @@ In this part we'll make sure the rating form is created automatically whenever a
 - Ease the workload on the editors when they're writing new articles, since they won't have to create the rating form.
 - Ensure that the rating forms are always set up correctly.
 
-In version 4 and 6 of Umbraco we had the [Standard values package](https://our.umbraco.org/projects/developer-tools/standard-values-in-umbraco/) which could initialize property values whenever new pages were created. Sadly no such option exists for version 7 (yet), so we have to initialize our property values by code using the Umbraco event system.
+Umbraco 7.7 introduced *Content Templates*, which is exactly what we want ([read more](../Docs/initialize.md) here). If your site runs 7.7 or later, you should create a Content Template for the *Article* document type with a default form layout that matches the one from the previous part of this tutorial, and then jump straight to [Locking down the Form Editor data type](#locking-down-the-form-editor-data-type).
+
+If you don't have the luxury of Content Templates, you'll have to initialize the form by code using the Umbraco event system. Read on.
 
 If you're no fan of Visual Studio, there's an [alternative option](#alternatives-to-code) later in this tutorial.
 

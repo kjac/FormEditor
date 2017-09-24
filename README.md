@@ -1,6 +1,6 @@
 # Form Editor for Umbraco
 
-Form Editor is a free and open source form builder for [Umbraco](http://umbraco.com/) 7.3+ that lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
+Form Editor is a free and open source form builder plugin for [Umbraco](http://umbraco.com/) 7.3+. It lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
 
 If you're new to Form Editor, you should probably start by checking out the [Quick start tutorial](Tutorials/QuickStart.md).
 
@@ -66,6 +66,10 @@ Some highlights include:
     * Topics covered: Actions, cross field validation.
 * [Advanced receipts](Tutorials/Receipts.md) - create receipt pages and emails that allow the users to review and edit their own submissions.
     * Topics covered: Receipt pages and emails, displaying submitted data, editing existing submissions
+* [Integrating with Azure Logic Apps](Tutorials/LogicApp.md) - use Logic Apps to create integrations with CRM.
+    * Topics covered: Web service integration, Logic Apps
+* [Integrating with Zapier](Tutorials/Zapier.md) - use Zapier to create integrations with other systems.
+    * Topics covered: Web service integration, Zapier
 
 ## Articles
 * ["Can we add a poll?"](http://24days.in/umbraco-cms/2016/polls-in-umbraco/) - an entry in the 2016 version of 24 Days.

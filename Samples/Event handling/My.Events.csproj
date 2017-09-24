@@ -57,8 +57,8 @@
     <Reference Include="Examine">
       <HintPath>..\packages\Examine.0.1.68.0\lib\Examine.dll</HintPath>
     </Reference>
-    <Reference Include="FormEditor, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FormEditor.Binaries.1.1.1.0\lib\net40\FormEditor.dll</HintPath>
+    <Reference Include="FormEditor">
+      <HintPath>..\packages\FormEditor.Binaries.1.2.1.0\lib\net40\FormEditor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack">

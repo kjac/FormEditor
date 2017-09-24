@@ -38,13 +38,19 @@ The data is sent to the web service as a JSON object structured as follows:
       "type": "core.email",
       "submittedValue": "its@my.email"
     }
-  ]
+  ],
+  "submittedValues": {
+    "_Name": "It's my name",
+    "_Date": "2017-04-15",
+    "_Email": "its@my.email"
+  }
 }
 ```
 
 * `umbracoContentName` and `umbracoContentId` contain the name and ID of the page that the form was submitted to.
 * `indexRowId` is the ID of the form submission in the storage index.
 * `formData` is an array of the submitted form data fields. Each entry contains the name and "form safe name" of the field, the field type and of course the submitted field value.
+* `submittedValues` is an object that contains the "form safe name" and the submitted value of the submitted data fields as key-value pairs. This object supplements the `formData` array by representing the same data in a different (and in some cases more useful) structure.
 
 ## A sample web service
 The following code listing contains a sample web service that can receive form data from Form Editor. It's written for ASP.NET Web API 2. Although it has no authentication setup, it should be a good starting point for you to create your own web service.
@@ -74,6 +80,8 @@ namespace MySite.Controllers.Api
     public string IndexRowId { get; set; }
 
     public FormFieldData[] FormData { get; set; }
+
+    public Dictionary<string, string> SubmittedValues { get; set; }
   }
 
   public class FormFieldData

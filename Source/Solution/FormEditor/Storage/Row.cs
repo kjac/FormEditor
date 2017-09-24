@@ -5,7 +5,7 @@ namespace FormEditor.Storage
 {
 	public class Row
 	{
-		public Row(Guid id, DateTime createdDate, Dictionary<string, string> fields, ApprovalState approvalState)
+		public Row(Guid id, DateTime createdDate, Dictionary<string, string> fields, ApprovalState approvalState = ApprovalState.Undecided)
 		{
 			Id = id;
 			Fields = fields;
