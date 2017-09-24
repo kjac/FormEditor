@@ -22,7 +22,7 @@ Create a document type called *Article* and add:
 
 The final result should look something like this:
 
-![The Article document type](img/Approval/article-document-type.png)
+![The Article document type](img/Comments/article-document-type.png)
 
 ### Creating the content template
 
@@ -33,21 +33,21 @@ On the *Comments* tab of the content template, create the form layout you'd like
 * A *Name* field (of type *Textbox*).
 * A *Comment* field (of type *Text area*).
 
-![The comments form layout](img/Approval/article-content-template-form-layout.png)
+![The comments form layout](img/Comments/article-content-template-form-layout.png)
 
 Now go to the *Receipt* tab of the *Form* property and enter a suitable receipt message.
 
-![The comments form receipt](img/Approval/article-content-template-form-receipt.png)
+![The comments form receipt](img/Comments/article-content-template-form-receipt.png)
 
 ### Configuring and locking down Form Editor
 
 We need to make a few changes to the Form Editor data type. First and foremost we need to enable the option *Use submission approval* - this activates the approval system:
 
-![Enable submission approval](img/Approval/data-type-submission-approval.png)
+![Enable submission approval](img/Comments/data-type-submission-approval.png)
 
 Using the content template we'll have a correctly configured comments form with each new article that's created. We really don't want the editors messing around with it - they should only be concerned with writing articles and moderating the submitted comments. Fortunately we can lock down Form Editor, so only the *Submissions* tab is shown to the editors. This is done by configuring the *Tab order and availability* on the data type:
 
-![Tab order and availability](img/Approval/data-type-tab-availability.png)
+![Tab order and availability](img/Comments/data-type-tab-availability.png)
 
 *Note: This also influences the tabs available when editing the content template. If you need to change the form configuration in the content template later on, you'll have to enable the tabs temporarily until you're done changing things.*
 
@@ -55,11 +55,11 @@ Using the content template we'll have a correctly configured comments form with 
 
 Go to the content section and create an *Article* page using the *Article with comments* content template: 
 
-![Using the content template](img/Approval/using-the-content-template.png)
+![Using the content template](img/Comments/using-the-content-template.png)
 
 Fill out the article content on the *Content* tab and then switch to the *Comments* tab. As expected, only the *Submissions* tab is visible:
 
-![Creating an article](img/Approval/creating-an-article.png)
+![Creating an article](img/Comments/creating-an-article.png)
 
 Behind the scenes, the content template has created the correct form layout and configuration for us. In other words: *The editors don't have to do a thing!* When they create an article, they need only focus on the content, and of course the subsequent comments moderation. 
 
@@ -153,11 +153,11 @@ When you have submitted some comments to the article, they'll need approving bef
 
 Go back to the *Comments* tab and approve the submissions by clicking the checkmarks. When they turn green, the submissions are approved. 
 
-![Approving the submissions](img/Approval/approve-submissions.png)
+![Approving the submissions](img/Comments/approve-submissions.png)
 
 Now go back and view the article. The approved comments should appear between the article content and the comments form:
 
-![Article with comments](img/Approval/article-with-comments.png)
+![Article with comments](img/Comments/article-with-comments.png)
 
 ## Wrapping up
 
