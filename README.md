@@ -70,6 +70,8 @@ Some highlights include:
     * Topics covered: Web service integration, Logic Apps
 * [Integrating with Zapier](Tutorials/Zapier.md) - use Zapier to create integrations with other systems.
     * Topics covered: Web service integration, Zapier
+* [Comments with moderation](Tutorials/Comments.md) - create a comment section for articles and use content templates to improve the workflow.
+    * Topics covered: Approval system, form submission rendering, content templates.
 
 ## Articles
 * ["Can we add a poll?"](http://24days.in/umbraco-cms/2016/polls-in-umbraco/) - an entry in the 2016 version of 24 Days.
