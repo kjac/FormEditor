@@ -109,6 +109,13 @@ namespace FormEditor
 
 		public bool CollectSubmittedValues(IPublishedContent content, bool redirect = true)
 		{
+			AntiForgeryHelper.ValidateAntiForgery(HttpContext.Current.Request.Form["_antiForgeryToken"]);
+
+			return CollectSubmittedValuesWithoutAntiForgeryValidation(content, redirect);
+		}
+
+		internal bool CollectSubmittedValuesWithoutAntiForgeryValidation(IPublishedContent content, bool redirect)
+		{
 			if(content == null)
 			{
 				return false;

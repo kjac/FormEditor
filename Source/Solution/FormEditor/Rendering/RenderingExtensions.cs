@@ -5,6 +5,7 @@ using FormEditor.Fields;
 using FormEditor.Validation;
 using Newtonsoft.Json;
 using Umbraco.Core.Models;
+using System.Web.Helpers;
 
 namespace FormEditor.Rendering
 {
@@ -200,6 +201,13 @@ namespace FormEditor.Rendering
 		{
 			var fieldWithLabel = field as FieldWithLabel;
 			return fieldWithLabel != null ? fieldWithLabel.Label : field.Name;			
+		}
+
+		public static string AntiForgeryToken(this FormModel model)
+		{
+			string cookieToken, formToken;
+			AntiForgery.GetTokens(null, out cookieToken, out formToken);
+			return string.Format("{0}:{1}", cookieToken, formToken);
 		}
 	}
 }

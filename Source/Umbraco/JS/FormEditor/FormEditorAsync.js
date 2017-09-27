@@ -158,7 +158,7 @@
 
       // post the form data to the public SubmitEntry endpoint
       $http
-        .post("/umbraco/FormEditorApi/Public/SubmitEntry/", data, { headers: { "Content-Type": undefined } })
+        .post("/umbraco/FormEditorApi/Public/SubmitEntry/", data, { headers: { "Content-Type": undefined, "AntiForgeryToken": $scope.formState.antiForgeryToken } })
         .then(function successCallback(response) {
           $scope.submitStatus = "success";
           if (response.data && response.data.redirectUrl) {
