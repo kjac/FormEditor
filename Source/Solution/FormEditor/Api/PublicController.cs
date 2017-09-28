@@ -101,7 +101,10 @@ namespace FormEditor.Api
 
 		private static void ValidateAntiForgery()
 		{
-			AntiForgeryHelper.ValidateAntiForgery(HttpContext.Current.Request.Headers["AntiForgeryToken"]);
+			// first look for the anti forgery token in the request header, then look in the form 
+			// (custom submit handling scripts with might POST it from the rendered form)
+			var tokenValue = HttpContext.Current.Request.Headers["AntiForgeryToken"] ?? HttpContext.Current.Request.Form["_antiForgeryToken"];
+			AntiForgeryHelper.ValidateAntiForgery(tokenValue);
 		}
 
 		private HttpResponseMessage SubmissionSuccessResponse(SubmissionSuccessData successData)
