@@ -109,6 +109,12 @@ namespace FormEditor
 
 		public bool CollectSubmittedValues(IPublishedContent content, bool redirect = true)
 		{
+			// currently not supporting GET forms ... will require some limitation on fields and stuff
+			if (Request.HttpMethod != "POST")
+			{
+				return false;
+			}
+
 			AntiForgeryHelper.ValidateAntiForgery(HttpContext.Current.Request.Form["_antiForgeryToken"]);
 
 			return CollectSubmittedValuesWithoutAntiForgeryValidation(content, redirect);
@@ -121,12 +127,6 @@ namespace FormEditor
 				return false;
 			}
 			
-			// currently not supporting GET forms ... will require some limitation on fields and stuff
-			if(Request.HttpMethod != "POST")
-			{
-				return false;
-			}
-
 			// does the form contain an "_id" and if so, does it match the supplied content?
 			int id;
 			if(int.TryParse(HttpContext.Current.Request.Form["_id"], out id) && id != content.Id)
