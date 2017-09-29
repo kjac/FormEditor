@@ -22,6 +22,8 @@ namespace FormEditor.Api
 		[HttpPost]
 		public HttpResponseMessage SubmitEntry()
 		{
+			ValidateAntiForgery();
+
 			int id;
 			if (int.TryParse(HttpContext.Current.Request.Form["_id"], out id) == false)
 			{
@@ -69,7 +71,7 @@ namespace FormEditor.Api
 			{
 				formModel.LoadValues(content, rowId);
 			}
-			var result = formModel.CollectSubmittedValues(content, false);
+			var result = formModel.CollectSubmittedValuesWithoutAntiForgeryValidation(content, false);
 			if (result == false)
 			{
 				var errorData = new ValidationErrorData
@@ -95,6 +97,14 @@ namespace FormEditor.Api
 			successData.RedirectUrl = formModel.AppendReceiptQueryParameters(Umbraco.NiceUrl(formModel.SuccessPageId), content);
 			successData.RedirectUrlWithDomain = formModel.AppendReceiptQueryParameters(Umbraco.NiceUrlWithDomain(formModel.SuccessPageId), content);
 			return SubmissionSuccessResponse(successData);
+		}
+
+		private static void ValidateAntiForgery()
+		{
+			// first look for the anti forgery token in the request header, then look in the form 
+			// (custom submit handling scripts with might POST it from the rendered form)
+			var tokenValue = HttpContext.Current.Request.Headers["AntiForgeryToken"] ?? HttpContext.Current.Request.Form["_antiForgeryToken"];
+			AntiForgeryHelper.ValidateAntiForgery(tokenValue);
 		}
 
 		private HttpResponseMessage SubmissionSuccessResponse(SubmissionSuccessData successData)

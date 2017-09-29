@@ -82,6 +82,8 @@ else
 {
   @* render the form *@
   <form method="POST" enctype="multipart/form-data" data-form-editor="@formContent.Id" id="fe_@(formContent.Id)" novalidate>
+    @* add anti forgery token *@
+    <input type="hidden" name="_antiForgeryToken" value="@form.AntiForgeryToken()" />
     @* add hidden _id to support multiple forms submitting to the same page *@
     <input type="hidden" name="_id" value="@formContent.Id" />
     <div class="container form-data">

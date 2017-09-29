@@ -254,6 +254,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AntiForgeryHelper.cs" />
     <Compile Include="Api\CsvExport.cs" />
     <Compile Include="Api\DownloadController.cs" />
     <Compile Include="Api\PublicController.cs" />

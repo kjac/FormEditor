@@ -1,4 +1,5 @@
 ﻿@using FormEditor;
+@using FormEditor.Rendering
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
 @{
   // get the content that contains the form model (defaults to the current page)
@@ -78,6 +79,8 @@ else
 {
   @* render the form *@
   <form method="POST" enctype="multipart/form-data" id="fe_@(formContent.Id)">
+    @* add anti forgery token *@
+    <input type="hidden" name="_antiForgeryToken" value="@form.AntiForgeryToken()" />
     @* add hidden _id to support multiple forms submitting to the same page *@
     <input type="hidden" name="_id" value="@formContent.Id" />
     <div class="container form-data">

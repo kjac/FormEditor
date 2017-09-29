@@ -150,6 +150,9 @@
 
       @* determine whether a receipt message is available *@
       _fe[@formContent.Id].hasReceipt = @(string.IsNullOrWhiteSpace(form.ReceiptHeader) ? "false" : "true");
+
+      @* add anti forgery token *@
+      _fe[@formContent.Id].antiForgeryToken = "@form.AntiForgeryToken()";
     </script>
   }
   else if (maxSubmissionsExceededForCurrentUser)
