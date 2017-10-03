@@ -13,9 +13,12 @@ namespace FormEditor.Storage
 			ApprovalState = approvalState;
 		}
 
-		public Guid Id { get; private set; }
-		public DateTime CreatedDate { get; private set; }
-		public ApprovalState ApprovalState { get; private set; }
-		public Dictionary<string, string> Fields { get; private set; }
+		public Guid Id { get; }
+
+		public DateTime CreatedDate { get; }
+
+		public ApprovalState ApprovalState { get; }
+
+		public Dictionary<string, string> Fields { get; }
 	}
 }

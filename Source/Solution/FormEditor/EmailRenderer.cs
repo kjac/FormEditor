@@ -5,12 +5,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Umbraco.Core;
-using Umbraco.Core.Configuration;
 using Umbraco.Core.Models;
-using Umbraco.Web;
-using Umbraco.Web.Routing;
-using Umbraco.Web.Security;
 
 namespace FormEditor
 {

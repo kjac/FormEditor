@@ -6,14 +6,10 @@ namespace FormEditor.Fields
 {
 	public class EmailField : FieldWithPlaceholder
 	{
-		public override string PrettyName
-		{
-			get { return "Email address"; }
-		}
-		public override string Type
-		{
-			get { return "core.email"; }
-		}
+		public override string PrettyName => "Email address";
+
+		public override string Type => "core.email";
+
 		public bool Multiple { get; set; }
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)

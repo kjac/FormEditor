@@ -6,14 +6,10 @@ namespace FormEditor.Fields
 {
 	public class TextAreaField : FieldWithPlaceholder
 	{
-		public override string PrettyName
-		{
-			get { return "Text area"; }
-		}
-		public override string Type
-		{
-			get { return "core.textarea"; }
-		}
+		public override string PrettyName => "Text area";
+
+		public override string Type => "core.textarea";
+
 		public int MaxLength { get; set; }
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)

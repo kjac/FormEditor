@@ -33,17 +33,17 @@ namespace FormEditor.Api
 		/// <summary>
 		/// To keep the ordered list of column names
 		/// </summary>
-		private List<string> _fields = new List<string>();
+		private readonly List<string> _fields = new List<string>();
 
 		/// <summary>
 		/// The list of rows
 		/// </summary>
-		private List<Dictionary<string, object>> _rows = new List<Dictionary<string, object>>();
+		private readonly List<Dictionary<string, object>> _rows = new List<Dictionary<string, object>>();
 
 		/// <summary>
 		/// The current row
 		/// </summary>
-		private Dictionary<string, object> CurrentRow { get { return _rows[_rows.Count - 1]; } }
+		private Dictionary<string, object> CurrentRow => _rows[_rows.Count - 1];
 
 		/// <summary>
 		/// Set a value on this column
@@ -95,7 +95,7 @@ namespace FormEditor.Api
 				return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss");
 			}
 			string output = value.ToString();
-			if (output.IndexOfAny(new char[] { '"', ',', ';', '\n', '\r' }) != -1)
+			if (output.IndexOfAny(new[] { '"', ',', ';', '\n', '\r' }) != -1)
 			{
 				output = '"' + output.Replace("\"", "\"\"") + '"';
 			}

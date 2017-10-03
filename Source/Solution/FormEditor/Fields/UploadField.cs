@@ -10,14 +10,10 @@ namespace FormEditor.Fields
 {
 	public class UploadField : FieldWithMandatoryValidation
 	{
-		public override string PrettyName
-		{
-			get { return "File upload"; }
-		}
-		public override string Type
-		{
-			get { return "core.upload"; }
-		}
+		public override string PrettyName => "File upload";
+
+		public override string Type => "core.upload";
+
 		public int MaxSize { get; set; }
 
 		// comma separated list of file types
@@ -27,7 +23,7 @@ namespace FormEditor.Fields
 		{
 			var validExtensions = ParseAllowedFileTypes();
 			return validExtensions.Any()
-				? string.Format(".{0}", string.Join(", .", validExtensions))
+				? $".{string.Join(", .", validExtensions)}"
 				: null;
 		}
 
@@ -54,10 +50,10 @@ namespace FormEditor.Fields
 
 			var contentLength = file.ContentLength;
 			var originalFilename = file.FileName;
-			var newFilename = string.Format("{0}.upload", Guid.NewGuid());
+			var newFilename = $"{Guid.NewGuid()}.upload";
 
 			// index value will be "[original filename]|[filename on disk]|[file size in bytes]"
-			SubmittedValue = string.Format("{0}|{1}|{2}", originalFilename, newFilename, contentLength);
+			SubmittedValue = $"{originalFilename}|{newFilename}|{contentLength}";
 		}
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
@@ -95,7 +91,7 @@ namespace FormEditor.Fields
 				return null;
 			}
 			var file = HttpContext.Current.Request.Files[FormSafeName];
-			if (file.ContentLength == 0)
+			if (file == null || file.ContentLength == 0)
 			{
 				return null;
 			}
@@ -136,22 +132,17 @@ namespace FormEditor.Fields
 				return base.FormatValueForDataView(value, content, rowId);
 			}
 
-			return string.Format(
-@"<a href=""/umbraco/backoffice/FormEditorApi/Download/DownloadFile/{0}?rowId={1}&fieldName={2}"" onclick=""event.cancelBubble=true;"" class=""downloadFile"">
-	<i class=""icon icon-download-alt""></i><small>{3}</small>
-</a>",
-				content.Id,
-				rowId,
-				FormSafeName,
-				string.Format(@"{0}",
-					// larger than one MB?
-					fileData.FileSize >= 1048576
-						// yes, list as MB
-						? string.Format("{0:0.0} MB", (((double)fileData.FileSize) / 1048576))
-						// no, list as KB
-						: string.Format("{0:0.0} KB", (((double)fileData.FileSize) / 1024))
-				)
-			);
+			// larger than one MB?
+			var fileSize = fileData.FileSize >= 1048576
+				// yes, list as MB
+				? $"{(((double) fileData.FileSize) / 1048576):0.0} MB"
+				// no, list as KB
+				: $"{(((double) fileData.FileSize) / 1024):0.0} KB";
+
+			return 
+$@"<a href=""/umbraco/backoffice/FormEditorApi/Download/DownloadFile/{content.Id}?rowId={rowId}&fieldName={FormSafeName}"" onclick=""event.cancelBubble=true;"" class=""downloadFile"">
+	<i class=""icon icon-download-alt""></i><small>{fileSize}</small>
+</a>";
 		}
 
 		protected internal override string FormatValueForCsvExport(string value, IContent content, Guid rowId)
@@ -191,10 +182,7 @@ namespace FormEditor.Fields
 		}
 
 		// let's just make sure the upload field is never sanitized
-		public override bool SupportsStripHtml
-		{
-			get { return false; }
-		}
+		public override bool SupportsStripHtml => false;
 
 		public static FileData ParseIndexValue(string value)
 		{

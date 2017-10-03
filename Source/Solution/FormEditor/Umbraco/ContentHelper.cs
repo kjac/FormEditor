@@ -60,21 +60,13 @@ namespace FormEditor.Umbraco
 
 		public static IDictionary<string, PreValue> GetPreValues(IContent document, string propertyEditorAlias)
 		{
-			if (document == null)
-			{
-				return null;
-			}
-			var property = document.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == propertyEditorAlias);
+			var property = document?.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == propertyEditorAlias);
 			if (property == null)
 			{
 				return null;
 			}
 			var preValues = UmbracoContext.Current.Application.Services.DataTypeService.GetPreValuesCollectionByDataTypeId(property.DataTypeDefinitionId);
-			if (preValues == null)
-			{
-				return null;
-			}
-			return preValues.PreValuesAsDictionary;
+			return preValues?.PreValuesAsDictionary;
 		}
 
 		private static bool PreValueEnabled(IDictionary<string, PreValue> preValues, string preValueKey)

@@ -27,7 +27,7 @@ namespace FormEditor.NewsletterSubscription
 			var key = apiKeyParts.First();
 			var dc = apiKeyParts.Last();
 			var hash = GetMd5Hash(emailAddress.ToLowerInvariant());
-			var uri = new Uri(string.Format("https://{0}.api.mailchimp.com/3.0/lists/{1}/members/{2}", dc, listId, hash));
+			var uri = new Uri($"https://{dc}.api.mailchimp.com/3.0/lists/{listId}/members/{hash}");
 
 			var client = new WebClient
 			{
@@ -38,8 +38,8 @@ namespace FormEditor.NewsletterSubscription
 			client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
 			// basic auth, base64 encode of username:password
-			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", "-", key)));
-			client.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
+			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"-:{key}"));
+			client.Headers[HttpRequestHeader.Authorization] = $"Basic {credentials}";
 
 			try
 			{
@@ -58,16 +58,20 @@ namespace FormEditor.NewsletterSubscription
 			}
 			catch(WebException wex)
 			{
-				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
+				var responseStream = wex.Response?.GetResponseStream();
+				if(responseStream != null)
 				{
-					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response), null);
+					using(var reader = new StreamReader(responseStream))
+					{
+						var response = reader.ReadToEnd();
+						Log.Error(wex, $"An error occurred while trying to subscribe the email: {emailAddress}. Error details: {response}", null);
+					}
 				}
 				return false;
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", emailAddress));
+				Log.Error(ex, $"An error occurred while trying to subscribe the email: {emailAddress}.");
 				return false;
 			}
 		}

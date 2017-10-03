@@ -14,7 +14,7 @@ namespace FormEditor.Limitations
 					var handler = Activator.CreateInstance(Configuration.Instance.MaxSubmissionsForCurrentUserHandlerType) as IMaxSubmissionsForCurrentUserHandler;
 					if(handler == null)
 					{
-						throw new ConfigurationErrorsException(string.Format("Activator was unable to instantiate the custom MaxSubmissionsForCurrentUserHandler type \"{0}\"", Configuration.Instance.MaxSubmissionsForCurrentUserHandlerType.AssemblyQualifiedName));
+						throw new ConfigurationErrorsException($"Activator was unable to instantiate the custom MaxSubmissionsForCurrentUserHandler type \"{Configuration.Instance.MaxSubmissionsForCurrentUserHandlerType.AssemblyQualifiedName}\"");
 					}
 					return handler;
 				}

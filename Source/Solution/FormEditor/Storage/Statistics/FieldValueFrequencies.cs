@@ -10,8 +10,8 @@ namespace FormEditor.Storage.Statistics
 			Frequencies = frequencies;
 		}
 
-		public T Field { get; private set; }
+		public T Field { get; }
 
-		public IEnumerable<FieldValueFrequency> Frequencies { get; private set; }
+		public IEnumerable<FieldValueFrequency> Frequencies { get; }
 	}
 }

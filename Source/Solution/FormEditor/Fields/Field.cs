@@ -15,29 +15,11 @@ namespace FormEditor.Fields
 		public virtual bool Invalid { get; set; }
 
 		[JsonIgnore]
-		public virtual bool CanBeAddedToForm
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public virtual bool CanBeAddedToForm => true;
 
-		public virtual string View
-		{
-			get
-			{
-				return string.Format("{0}.html", Type.ToLowerInvariant());
-			}
-		}
+		public virtual string View => $"{Type.ToLowerInvariant()}.html";
 
-		public virtual string Icon
-		{
-			get
-			{
-				return string.Format("{0}.png", Type.ToLowerInvariant());
-			}
-		}
+		public virtual string Icon => $"{Type.ToLowerInvariant()}.png";
 
 		protected internal virtual bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{

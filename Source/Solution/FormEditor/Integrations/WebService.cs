@@ -38,8 +38,8 @@ namespace FormEditor.Integrations
 			if(string.IsNullOrEmpty(_configuration.UserName) == false && string.IsNullOrEmpty(_configuration.Password) == false)
 			{
 				// basic auth, base64 encode of username:password
-				var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", _configuration.UserName, _configuration.Password)));
-				client.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
+				var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_configuration.UserName}:{_configuration.Password}"));
+				client.Headers[HttpRequestHeader.Authorization] = $"Basic {credentials}";
 			}
 
 			try
@@ -70,22 +70,26 @@ namespace FormEditor.Integrations
 
 				// POST the JSON and log the response
 				var response = client.UploadString(_configuration.Url, "POST", data);
-				Log.Info(string.Format("Form data was submitted to endpoint: {0} - response received was: {1}", _configuration.Url, string.IsNullOrEmpty(response) ? "(none)" : response));
+				Log.Info($"Form data was submitted to endpoint: {_configuration.Url} - response received was: {(string.IsNullOrEmpty(response) ? "(none)" : response)}");
 
 				return true;
 			}
 			catch(WebException wex)
 			{
-				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
+				var responseStream = wex.Response?.GetResponseStream();
+				if(responseStream != null)
 				{
-					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to submit form data to: {0}. Error details: {1}", _configuration.Url, response), null);
+					using(var reader = new StreamReader(responseStream))
+					{
+						var response = reader.ReadToEnd();
+						Log.Error(wex, $"An error occurred while trying to submit form data to: {_configuration.Url}. Error details: {response}", null);
+					}
 				}
 				return false;
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, string.Format("An error occurred while trying to submit form data to: {0}.", _configuration.Url));
+				Log.Error(ex, $"An error occurred while trying to submit form data to: {_configuration.Url}.");
 				return false;
 			}
 

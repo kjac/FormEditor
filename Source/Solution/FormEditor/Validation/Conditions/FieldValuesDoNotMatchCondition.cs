@@ -11,21 +11,9 @@ namespace FormEditor.Validation.Conditions
 	{
 		public string OtherFieldName { get; set; }
 
-		public override string PrettyName
-		{
-			get
-			{
-				return "Value is not equal to another field";
-			}
-		}
+		public override string PrettyName => "Value is not equal to another field";
 
-		public override string Type
-		{
-			get
-			{
-				return "core.fieldvaluesdonotmatch";
-			}
-		}
+		public override string Type => "core.fieldvaluesdonotmatch";
 
 		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
@@ -50,7 +38,7 @@ namespace FormEditor.Validation.Conditions
 				OtherFieldName = FieldHelper.FormSafeName(condition.OtherFieldName);
 			}
 
-			public string OtherFieldName { get; private set; }
+			public string OtherFieldName { get; }
 		}
 	}
 }

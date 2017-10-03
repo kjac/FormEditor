@@ -16,7 +16,7 @@ namespace FormEditor.NewsletterSubscription
 		{
 			var emailAddress = email.Address;
 
-			var uri = new Uri(string.Format("https://api.createsend.com/api/v3.1/subscribers/{0}.json", listId));
+			var uri = new Uri($"https://api.createsend.com/api/v3.1/subscribers/{listId}.json");
 
 			var client = new WebClient
 			{
@@ -27,8 +27,8 @@ namespace FormEditor.NewsletterSubscription
 			client.Headers[HttpRequestHeader.ContentType] = "application/json";
 
 			// basic auth, base64 encode of username:password
-			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", apiKey, "-")));
-			client.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", credentials);
+			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{apiKey}:-"));
+			client.Headers[HttpRequestHeader.Authorization] = $"Basic {credentials}";
 
 			var customFieldsData = customFields == null
 				? new CustomField[0]
@@ -52,16 +52,20 @@ namespace FormEditor.NewsletterSubscription
 			}
 			catch(WebException wex)
 			{
-				using(var reader = new StreamReader(wex.Response.GetResponseStream()))
+				var responseStream = wex.Response?.GetResponseStream();
+				if(responseStream != null)
 				{
-					var response = reader.ReadToEnd();
-					Log.Error(wex, string.Format("An error occurred while trying to subscribe the email: {0}. Error details: {1}", emailAddress, response));
+					using(var reader = new StreamReader(responseStream))
+					{
+						var response = reader.ReadToEnd();
+						Log.Error(wex, $"An error occurred while trying to subscribe the email: {emailAddress}. Error details: {response}");
+					}
 				}
 				return false;
 			}
 			catch(Exception ex)
 			{
-				Log.Error(ex, string.Format("An error occurred while trying to subscribe the email: {0}.", emailAddress));
+				Log.Error(ex, $"An error occurred while trying to subscribe the email: {emailAddress}.");
 				return false;
 			}
 		}
@@ -90,9 +94,9 @@ namespace FormEditor.NewsletterSubscription
 
 			public CustomField[] CustomFields { get; set; }
 
-			public bool Resubscribe { get { return true; } }
+			public bool Resubscribe => true;
 
-			public bool RestartSubscriptionBasedAutoresponders { get { return true; } }
+			public bool RestartSubscriptionBasedAutoresponders => true;
 		}
 
 		public class CustomField

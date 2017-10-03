@@ -25,9 +25,9 @@ namespace FormEditor.Api
 	public class PropertyEditorController : UmbracoAuthorizedJsonController
 	{
 		// cache the known field types in memory
-		private static List<Field> _fieldTypes = null;
+		private static List<Field> _fieldTypes;
 		// cache the known condition types in memory
-		private static List<Condition> _conditionTypes = null;
+		private static List<Condition> _conditionTypes;
 
 		public object GetAllFieldTypes()
 		{

@@ -2,15 +2,9 @@
 {
 	public class SubmitButtonField : Field
 	{
-		public override string Type
-		{
-			get { return "core.submitbutton"; }
-		}
+		public override string Type => "core.submitbutton";
 
-		public override string PrettyName
-		{
-			get { return "Submit button"; }
-		}
+		public override string PrettyName => "Submit button";
 
 		public string Text { get; set; }
 	}

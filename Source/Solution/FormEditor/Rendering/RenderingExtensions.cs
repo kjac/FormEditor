@@ -71,16 +71,12 @@ namespace FormEditor.Rendering
 
 		public static List<FieldData> ForFrontEnd(this IEnumerable<FieldWithValue> fields)
 		{
-			return fields != null 
-				? fields.Select(ToFieldData).ToList()
-				: new List<FieldData>();
+			return fields?.Select(ToFieldData).ToList() ?? new List<FieldData>();
 		}
 
 		public static List<FieldData> ForFrontEnd(this IEnumerable<Field> fields)
 		{
-			return fields != null
-				? fields.Select(ToFieldData).ToList()
-				: new List<FieldData>();
+			return fields?.Select(ToFieldData).ToList() ?? new List<FieldData>();
 		}
 
 		public static IHtmlString Render(this IEnumerable<FieldWithValue> fields)
@@ -116,21 +112,21 @@ namespace FormEditor.Rendering
 			{
 				if(field is DateField)
 				{
-					return new HtmlString(string.Format("new Date(\"{0}\")", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
+					return new HtmlString($"new Date(\"{HttpUtility.JavaScriptStringEncode(field.SubmittedValue)}\")");
 				}
 				if(fieldWithFieldValues != null)
 				{
 					if (fieldWithFieldValues.IsMultiSelectEnabled)
 					{
-						return new HtmlString(string.Format("[{0}]", string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))));
+						return new HtmlString($"[{string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))}]");
 					}
 					return new HtmlString(
 						fieldWithFieldValues.SubmittedValues.Any()
-							? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(fieldWithFieldValues.SubmittedValues.First()))
+							? $"\"{HttpUtility.JavaScriptStringEncode(fieldWithFieldValues.SubmittedValues.First())}\""
 							: "undefined"
 					);
 				}
-				return new HtmlString(string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
+				return new HtmlString($"\"{HttpUtility.JavaScriptStringEncode(field.SubmittedValue)}\"");
 			}
 			if (fieldWithFieldValues == null)
 			{
@@ -139,11 +135,11 @@ namespace FormEditor.Rendering
 			var defaultValues = fieldWithFieldValues.FieldValues.Where(f => f.Selected).ToArray();
 			if (fieldWithFieldValues.IsMultiSelectEnabled)
 			{
-				return new HtmlString(string.Format("[{0}]", string.Join(",", defaultValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v.Value) + "\""))));
+				return new HtmlString($"[{string.Join(",", defaultValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v.Value) + "\""))}]");
 			}
 			return new HtmlString(
 				defaultValues.Any()
-					? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(defaultValues.First().Value))
+					? $"\"{HttpUtility.JavaScriptStringEncode(defaultValues.First().Value)}\""
 					: "undefined"
 			);
 		}
@@ -185,17 +181,11 @@ namespace FormEditor.Rendering
 				: new FieldData();
 		}
 
-		public static JsonSerializerSettings SerializerSettings
+		public static JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
 		{
-			get
-			{
-				return new JsonSerializerSettings
-				{
-					TypeNameHandling = TypeNameHandling.None,
-					ContractResolver = SerializationHelper.ContractResolver
-				};
-			}
-		}
+			TypeNameHandling = TypeNameHandling.None,
+			ContractResolver = SerializationHelper.ContractResolver
+		};
 
 		public static string LabelOrName(this FieldWithValue field)
 		{
@@ -207,7 +197,7 @@ namespace FormEditor.Rendering
 		{
 			string cookieToken, formToken;
 			AntiForgery.GetTokens(null, out cookieToken, out formToken);
-			return string.Format("{0}:{1}", cookieToken, formToken);
+			return $"{cookieToken}:{formToken}";
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace FormEditor.Fields
 {
 	public abstract class FieldWithValue : Field
 	{
-		private string _formSafeName = null;
+		private string _formSafeName;
 
 		public virtual string Name { get; set; }
 
@@ -23,19 +23,13 @@ namespace FormEditor.Fields
 				}
 				return _formSafeName;
 			}
-			internal set { _formSafeName = value; }
+			internal set => _formSafeName = value;
 		}
 
 		[JsonIgnore]
 		public virtual string SubmittedValue { get; protected set; }
 
-		public virtual bool HasSubmittedValue
-		{
-			get
-			{
-				return string.IsNullOrEmpty(SubmittedValue) == false;
-			}
-		}
+		public virtual bool HasSubmittedValue => string.IsNullOrEmpty(SubmittedValue) == false;
 
 		protected virtual string GetFormSafeName()
 		{
@@ -77,9 +71,6 @@ namespace FormEditor.Fields
 			return SubmittedValue;
 		}
 
-		public virtual bool SupportsStripHtml
-		{
-			get { return true; }
-		}
+		public virtual bool SupportsStripHtml => true;
 	}
 }

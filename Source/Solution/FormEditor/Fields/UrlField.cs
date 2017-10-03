@@ -6,14 +6,9 @@ namespace FormEditor.Fields
 {
 	public class UrlField : FieldWithPlaceholder
 	{
-		public override string PrettyName
-		{
-			get { return "Web address"; }
-		}
-		public override string Type
-		{
-			get { return "core.url"; }
-		}
+		public override string PrettyName => "Web address";
+
+		public override string Type => "core.url";
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
 		{
@@ -45,7 +40,7 @@ namespace FormEditor.Fields
 		{
 			return string.IsNullOrEmpty(value)
 				? value
-				: string.Format(@"<a href=""{0}"" target=""_blank"">{0}</a>", value);
+				: $@"<a href=""{value}"" target=""_blank"">{value}</a>";
 		}
 
 		public override string SubmittedValueForEmail()

@@ -10,39 +10,21 @@ namespace FormEditor.Fields
 {
 	public class ReCaptchaField : Field, IFieldWithValidation
 	{
-		private string _userResponse = null;
+		private string _userResponse;
 
 		public const string ResponseFieldName = "g-recaptcha-response";
 
 		public string ErrorMessage { get; set; }
 
-		public override string PrettyName
-		{
-			get { return "Spam protection (reCAPTCHA)"; }
-		}
+		public override string PrettyName => "Spam protection (reCAPTCHA)";
 
-		public override string Type
-		{
-			get { return "core.recaptcha"; }
-		}
+		public override string Type => "core.recaptcha";
 
-		public virtual string Name
-		{
-			get { return "reCAPTCHA"; }
-		}
+		public virtual string Name => "reCAPTCHA";
 
-		public virtual string FormSafeName
-		{
-			get { return Name; }
-		}
+		public virtual string FormSafeName => Name;
 
-		public override bool CanBeAddedToForm
-		{
-			get
-			{
-				return HasValidConfiguration();
-			}
-		}
+		public override bool CanBeAddedToForm => HasValidConfiguration();
 
 		private bool HasValidConfiguration()
 		{
@@ -50,21 +32,9 @@ namespace FormEditor.Fields
 			       && string.IsNullOrEmpty(PrivateKey) == false;
 		}
 
-		public string PublicKey
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings["FormEditor.reCAPTCHA.SiteKey"];
-			}
-		}
+		public string PublicKey => ConfigurationManager.AppSettings["FormEditor.reCAPTCHA.SiteKey"];
 
-		public string PrivateKey
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings["FormEditor.reCAPTCHA.SecretKey"];
-			}
-		}
+		public string PrivateKey => ConfigurationManager.AppSettings["FormEditor.reCAPTCHA.SecretKey"];
 
 		private class ReCapthcaResponse
 		{
@@ -104,7 +74,7 @@ namespace FormEditor.Fields
 				BaseAddress = new Uri(@"https://www.google.com/recaptcha/api/siteverify")
 			};
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			var response = client.GetAsync(string.Format("?secret={0}&response={1}&remoteip={2}", PrivateKey, _userResponse, remoteIp)).Result;
+			var response = client.GetAsync($"?secret={PrivateKey}&response={_userResponse}&remoteip={remoteIp}").Result;
 			if (response.IsSuccessStatusCode)
 			{
 				var result = response.Content.ReadAsAsync<ReCapthcaResponse>().Result;

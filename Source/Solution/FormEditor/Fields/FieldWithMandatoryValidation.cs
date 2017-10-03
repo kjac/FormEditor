@@ -6,6 +6,7 @@ namespace FormEditor.Fields
 	public abstract class FieldWithMandatoryValidation : FieldWithLabel, IFieldWithValidation
 	{
 		public bool Mandatory { get; set; }
+
 		public string ErrorMessage { get; set; }
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)

@@ -34,7 +34,7 @@ namespace FormEditor
 			{
 				return;
 			}
-			XDocument configXml = null;
+			XDocument configXml;
 			try
 			{
 				configXml = XDocument.Load(configFile.FullName);
@@ -56,9 +56,9 @@ namespace FormEditor
 					customFields.Elements("Field").Where(e => e.Attribute("type") != null).Select(e =>
 						new CustomField
 						{
-							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
+							Name = e.Attribute("name")?.Value ?? "No name",
 							Type = e.Attribute("type").Value,
-							FixedValues = e.Attribute("fixedValues") != null && e.Attribute("fixedValues").Value == "true"
+							FixedValues = e.Attribute("fixedValues")?.Value == "true"
 						}
 					)
 				);
@@ -70,50 +70,42 @@ namespace FormEditor
 					customConditions.Elements("Condition").Where(e => e.Attribute("type") != null).Select(e =>
 						new CustomCondition
 						{
-							Name = e.Attribute("name") != null ? e.Attribute("name").Value : "No name",
+							Name = e.Attribute("name")?.Value ?? "No name",
 							Type = e.Attribute("type").Value
 						}
 					)
 				);
 			}
-			var storage = configXml.Root.Element("Storage");
-			if (storage != null)
+			var index = configXml.Root.Element("Storage")?.Element("Index");
+			if (index != null)
 			{
-				var index = storage.Element("Index");
-				if (index != null)
-				{
-					var type = ParseType(index, typeof(IIndex),
-						t => t.GetConstructors().Any(c =>
-							{
-								var parameters = c.GetParameters();
-								return parameters.Count() == 1 && parameters.First().ParameterType == typeof(int);
-							})
-							? null
-							: string.Format("Custom Index type \"{0}\" does not contain a constructor that takes an integer (content ID) as it's only parameter", t)
-						);
-					if(type != null)
+				var type = ParseType(index, typeof(IIndex),
+					t => t.GetConstructors().Any(c =>
 					{
-						IndexType = type;
-					}
+						var parameters = c.GetParameters();
+						return parameters.Length == 1 && parameters.First().ParameterType == typeof(int);
+					})
+						? null
+						: $"Custom Index type \"{t}\" does not contain a constructor that takes an integer (content ID) as it's only parameter"
+				);
+				if(type != null)
+				{
+					IndexType = type;
 				}
 			}
 
-			var limitations = configXml.Root.Element("Limitations");
-			if(limitations != null)
+			var maxSubmissionsForCurrentUserHandler = configXml.Root.Element("Limitations")?.Element("MaxSubmissionsForCurrentUserHandler");
+			if(maxSubmissionsForCurrentUserHandler != null)
 			{
-				var maxSubmissionsForCurrentUserHandler = limitations.Element("MaxSubmissionsForCurrentUserHandler");
-				if(maxSubmissionsForCurrentUserHandler != null)
-				{
-					var type = ParseType(maxSubmissionsForCurrentUserHandler, typeof(IMaxSubmissionsForCurrentUserHandler),
-						t => t.GetConstructors().Any(c => c.GetParameters().Any() == false) 
-							? null
-							: string.Format("Custom MaxSubmissionsForCurrentUserHandler type \"{0}\" does not contain a parameterless constructor", t)
-						);
+				var type = ParseType(maxSubmissionsForCurrentUserHandler, typeof(IMaxSubmissionsForCurrentUserHandler),
+					t => t.GetConstructors().Any(c => c.GetParameters().Any() == false) 
+						? null
+						: $"Custom MaxSubmissionsForCurrentUserHandler type \"{t}\" does not contain a parameterless constructor"
+				);
 
-					if(type != null)
-					{
-						MaxSubmissionsForCurrentUserHandlerType = type;
-					}
+				if(type != null)
+				{
+					MaxSubmissionsForCurrentUserHandlerType = type;
 				}
 			}
 		}
@@ -136,9 +128,9 @@ namespace FormEditor
 			}
 		}
 
-		public List<CustomField> CustomFields { get; private set; }
+		public List<CustomField> CustomFields { get; }
 
-		public List<CustomCondition> CustomConditions { get; private set; }
+		public List<CustomCondition> CustomConditions { get; }
 
 		public Type IndexType { get; private set; }
 
@@ -155,11 +147,11 @@ namespace FormEditor
 					var type = Type.GetType(typeAttribute.Value);
 					if(type == null)
 					{
-						throw new ConfigurationErrorsException(string.Format("Custom {1} type \"{0}\" could not be found", typeAttribute.Value, name));
+						throw new ConfigurationErrorsException($"Custom {name} type \"{typeAttribute.Value}\" could not be found");
 					}
 					if(type.GetInterfaces().Contains(declaration) == false)
 					{
-						throw new ConfigurationErrorsException(string.Format("Custom {1} type \"{0}\" does not implement the {2} interface", typeAttribute.Value, name, declaration.Name));
+						throw new ConfigurationErrorsException($"Custom {name} type \"{typeAttribute.Value}\" does not implement the {declaration.Name} interface");
 					}
 					var validationError = validateType(type);
 					if(string.IsNullOrEmpty(validationError) == false)
@@ -170,7 +162,7 @@ namespace FormEditor
 				}
 				catch(Exception ex)
 				{
-					Log.Error(ex, string.Format("Could not load custom {0} type", name));
+					Log.Error(ex, $"Could not load custom {name} type");
 				}
 			}
 			return null;

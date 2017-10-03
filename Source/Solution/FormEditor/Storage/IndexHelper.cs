@@ -9,13 +9,12 @@ namespace FormEditor.Storage
 		{
 			if (Configuration.Instance.IndexType != null)
 			{
-				// Ninject, go home :-)
 				try
 				{
 					var index = Activator.CreateInstance(Configuration.Instance.IndexType, contentId) as IIndex;
 					if (index == null)
 					{
-						throw new ConfigurationErrorsException(string.Format("Activator was unable to instantiate the custom Index type \"{0}\"", Configuration.Instance.IndexType.AssemblyQualifiedName));
+						throw new ConfigurationErrorsException($"Activator was unable to instantiate the custom Index type \"{Configuration.Instance.IndexType.AssemblyQualifiedName}\"");
 					}
 					return index;
 				}

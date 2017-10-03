@@ -14,7 +14,7 @@ namespace FormEditor
 
 		public override object ConvertDataToSource(PublishedPropertyType propertyType, object source, bool preview)
 		{
-			if (source == null || string.IsNullOrWhiteSpace(source.ToString()))
+			if (string.IsNullOrWhiteSpace(source?.ToString()))
 			{
 				return new FormModel();
 			}

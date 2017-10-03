@@ -58,7 +58,7 @@ namespace FormEditor.Api
 				return ValidationErrorResponse("Could not find any form property on content with id {0}", id);
 			}
 
-			FormModel formModel = null;
+			FormModel formModel;
 			try
 			{
 				formModel = content.GetPropertyValue<FormModel>(property.PropertyTypeAlias);
