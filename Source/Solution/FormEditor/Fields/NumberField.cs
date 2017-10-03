@@ -29,12 +29,11 @@ namespace FormEditor.Fields
 			{
 				return true;
 			}
-			int temp;
-			if (int.TryParse(SubmittedValue, out temp) == false)
+			if (int.TryParse(SubmittedValue, out var toValidate) == false)
 			{
 				return false;
 			}
-			return temp >= Min && temp <= Max;
+			return toValidate >= Min && toValidate <= Max;
 		}
 	}
 }

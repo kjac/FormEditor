@@ -51,8 +51,7 @@ namespace FormEditor.Fields
 			{
 				return null;
 			}
-			DateTime date;
-			return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out date)
+			return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var date)
 				? date.ToUniversalTime().ToString("yyyy-MM-dd")
 				: null;
 		}
@@ -71,8 +70,7 @@ namespace FormEditor.Fields
 				return value;
 			}
 
-			DateTime date;
-			if(DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out date) == false)
+			if(DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var date) == false)
 			{
 				return null;
 			}

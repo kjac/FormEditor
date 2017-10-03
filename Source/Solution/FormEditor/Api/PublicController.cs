@@ -24,13 +24,11 @@ namespace FormEditor.Api
 		{
 			ValidateAntiForgery();
 
-			int id;
-			if (int.TryParse(HttpContext.Current.Request.Form["_id"], out id) == false)
+			if (int.TryParse(HttpContext.Current.Request.Form["_id"], out var id) == false)
 			{
 				return ValidationErrorResponse("Could not find _id in the request data");
 			}
-			var rowId = Guid.Empty;
-			Guid.TryParse(HttpContext.Current.Request.Form["_rowId"], out rowId);
+			Guid.TryParse(HttpContext.Current.Request.Form["_rowId"], out var rowId);
 
 			var content = Umbraco.TypedContent(id);
 			if (content == null)

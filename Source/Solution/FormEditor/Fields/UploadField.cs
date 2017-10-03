@@ -195,8 +195,7 @@ $@"<a href=""/umbraco/backoffice/FormEditorApi/Download/DownloadFile/{content.Id
 			{
 				return null;
 			}
-			int fileSize;
-			if (int.TryParse(tokens[2], out fileSize) == false)
+			if (int.TryParse(tokens[2], out var fileSize) == false)
 			{
 				return null;
 			}

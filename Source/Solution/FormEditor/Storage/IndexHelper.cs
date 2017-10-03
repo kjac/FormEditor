@@ -11,8 +11,7 @@ namespace FormEditor.Storage
 			{
 				try
 				{
-					var index = Activator.CreateInstance(Configuration.Instance.IndexType, contentId) as IIndex;
-					if (index == null)
+					if (!(Activator.CreateInstance(Configuration.Instance.IndexType, contentId) is IIndex index))
 					{
 						throw new ConfigurationErrorsException($"Activator was unable to instantiate the custom Index type \"{Configuration.Instance.IndexType.AssemblyQualifiedName}\"");
 					}

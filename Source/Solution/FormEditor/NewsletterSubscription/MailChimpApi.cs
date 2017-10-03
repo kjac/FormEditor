@@ -47,9 +47,7 @@ namespace FormEditor.NewsletterSubscription
 				{
 					email_address = emailAddress,
 					status = "subscribed",
-					merge_fields = mergeFields == null
-						? new Dictionary<string, string>()
-						: mergeFields.ToDictionary(kvp => kvp.Key.ToUpperInvariant(), kvp => kvp.Value)
+					merge_fields = mergeFields?.ToDictionary(kvp => kvp.Key.ToUpperInvariant(), kvp => kvp.Value) ?? new Dictionary<string, string>()
 				});
 
 				var response = client.UploadString(uri, "PUT", data);

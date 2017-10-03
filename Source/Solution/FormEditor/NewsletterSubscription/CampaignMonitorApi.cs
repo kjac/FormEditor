@@ -30,13 +30,11 @@ namespace FormEditor.NewsletterSubscription
 			var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{apiKey}:-"));
 			client.Headers[HttpRequestHeader.Authorization] = $"Basic {credentials}";
 
-			var customFieldsData = customFields == null
-				? new CustomField[0]
-				: customFields.Select(kvp => new CustomField
-				{
-					Key = kvp.Key,
-					Value = kvp.Value
-				}).ToArray();
+			var customFieldsData = customFields?.Select(kvp => new CustomField
+			{
+				Key = kvp.Key,
+				Value = kvp.Value
+			}).ToArray() ?? new CustomField[0];
 
 			try
 			{

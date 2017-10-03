@@ -96,14 +96,12 @@ namespace FormEditor.Rendering
 			{
 				return true;
 			}
-			var fieldWithFieldValues = field as FieldWithFieldValues;
-			return fieldWithFieldValues != null && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
+			return field is FieldWithFieldValues fieldWithFieldValues && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
 		}
 
 		public static IHtmlString DefaultValue(this FieldWithValue field)
 		{
-			var defaultSelectableField = field as IDefaultSelectableField;
-			if(defaultSelectableField != null)
+			if(field is IDefaultSelectableField defaultSelectableField)
 			{
 				return new HtmlString(defaultSelectableField.Selected ? "true" : "undefined");
 			}
@@ -164,13 +162,11 @@ namespace FormEditor.Rendering
 
 		private static FieldData ToFieldData(Field f)
 		{
-			var fieldWithValue = f as FieldWithValue;
-			if(fieldWithValue != null)
+			if(f is FieldWithValue fieldWithValue)
 			{
 				return ToFieldData(fieldWithValue);
 			}
-			var fieldWithValidation = f as IFieldWithValidation;
-			return fieldWithValidation != null
+			return f is IFieldWithValidation fieldWithValidation
 				? new FieldData
 				{
 					Name = fieldWithValidation.Name,
@@ -189,14 +185,12 @@ namespace FormEditor.Rendering
 
 		public static string LabelOrName(this FieldWithValue field)
 		{
-			var fieldWithLabel = field as FieldWithLabel;
-			return fieldWithLabel != null ? fieldWithLabel.Label : field.Name;			
+			return field is FieldWithLabel fieldWithLabel ? fieldWithLabel.Label : field.Name;			
 		}
 
 		public static string AntiForgeryToken(this FormModel model)
 		{
-			string cookieToken, formToken;
-			AntiForgery.GetTokens(null, out cookieToken, out formToken);
+			AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
 			return $"{cookieToken}:{formToken}";
 		}
 	}

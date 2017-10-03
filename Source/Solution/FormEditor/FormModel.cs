@@ -125,8 +125,7 @@ namespace FormEditor
 			}
 			
 			// does the form contain an "_id" and if so, does it match the supplied content?
-			int id;
-			if(int.TryParse(HttpContext.Current.Request.Form["_id"], out id) && id != content.Id)
+			if(int.TryParse(HttpContext.Current.Request.Form["_id"], out var id) && id != content.Id)
 			{
 				return false;
 			}
@@ -339,22 +338,21 @@ namespace FormEditor
 			var fields = AllValueFields().StatisticsFields();
 			if(fieldNames != null)
 			{
-				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase);
+				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase).ToArray();
 			}
 			else
 			{
-				fieldNames = fields.StatisticsFieldNames();
+				fieldNames = fields.StatisticsFieldNames().ToArray();
 			}
 			if(fieldNames.Any() == false)
 			{
 				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
 			}
-			var index = IndexHelper.GetIndex(content.Id) as IStatisticsIndex;
-			if(index == null)
+			if(!(IndexHelper.GetIndex(content.Id) is IStatisticsIndex statisticsIndex))
 			{
 				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
 			}
-			var statistics = index.GetFieldValueFrequencyStatistics(fieldNames);
+			var statistics = statisticsIndex.GetFieldValueFrequencyStatistics(fieldNames);
 			// the statistics are indexed by field.FormSafeName - we need to reindex them by 
 			// the fields themselves to support the frontend rendering 
 			var result = new FieldValueFrequencyStatistics<IStatisticsField>(statistics.TotalRows);
@@ -612,8 +610,7 @@ namespace FormEditor
 			}
 			else
 			{
-				var emailField = recipientsField as IEmailField;
-				var recipientAddresses = emailField != null
+				var recipientAddresses = recipientsField is IEmailField emailField
 					? string.Join(",", emailField.EmailAddresses ?? new string[0])
 					: recipientsField.SubmittedValue;
 

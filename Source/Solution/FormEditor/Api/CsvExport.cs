@@ -78,23 +78,20 @@ namespace FormEditor.Api
 		/// </summary>
 		string MakeValueCsvFriendly(object value)
 		{
-			if (value == null)
+			switch(value)
 			{
-				return string.Empty;
+				case null:
+					return string.Empty;
+				case INullable nullable when nullable.IsNull:
+					return string.Empty;
+				case DateTime dateTime:
+					if (dateTime.TimeOfDay.TotalSeconds == 0)
+					{
+						return dateTime.ToString("yyyy-MM-dd");
+					}
+					return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
 			}
-			if (value is INullable && ((INullable)value).IsNull)
-			{
-				return string.Empty;
-			}
-			if (value is DateTime)
-			{
-				if (((DateTime)value).TimeOfDay.TotalSeconds == 0)
-				{
-					return ((DateTime)value).ToString("yyyy-MM-dd");
-				}
-				return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss");
-			}
-			string output = value.ToString();
+			var output = value.ToString();
 			if (output.IndexOfAny(new[] { '"', ',', ';', '\n', '\r' }) != -1)
 			{
 				output = '"' + output.Replace("\"", "\"\"") + '"';
