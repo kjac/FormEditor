@@ -49,6 +49,10 @@ namespace FormEditor
 				Log.Error(ex, "Could not parse the configuration file.");
 				return;
 			}
+
+			var jobs = configXml.Root.Element("Jobs");
+			Jobs = new JobsConfiguration(jobs?.Attribute("authToken")?.Value);
+
 			var customFields = configXml.Root.Element("CustomFields");
 			if (customFields != null)
 			{
@@ -63,6 +67,7 @@ namespace FormEditor
 					)
 				);
 			}
+
 			var customConditions = configXml.Root.Element("CustomConditions");
 			if(customConditions != null)
 			{
@@ -76,6 +81,7 @@ namespace FormEditor
 					)
 				);
 			}
+
 			var index = configXml.Root.Element("Storage")?.Element("Index");
 			if (index != null)
 			{
@@ -128,6 +134,8 @@ namespace FormEditor
 			}
 		}
 
+		public JobsConfiguration Jobs { get; private set; }
+
 		public List<CustomField> CustomFields { get; }
 
 		public List<CustomCondition> CustomConditions { get; }
@@ -179,6 +187,21 @@ namespace FormEditor
 		{
 			public string Type { get; set; }
 			public string Name { get; set; }
+		}
+
+		public class JobsConfiguration
+		{
+			private readonly string _authToken;
+
+			public JobsConfiguration(string authToken)
+			{
+				_authToken = authToken;
+			}
+
+			public bool IsValidAuthToken(string authToken)
+			{
+				return string.IsNullOrEmpty(_authToken) == false && _authToken == authToken;
+			}
 		}
 	}
 }

@@ -59,8 +59,8 @@ namespace FormEditor.Storage
 			var doc = new Document();
 
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(CreatedField, FormatDate(created), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(UpdatedField, FormatDate(updated), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(ApprovalField, ApprovalState.Undecided.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
@@ -228,6 +228,24 @@ namespace FormEditor.Storage
 			reader.Close();
 
 			return result;
+		}
+
+		// TODO: change this to DeleteOlderThan and add it to the index interface
+		private void GetOlderThan(DateTime date)
+		{
+			var reader = GetIndexReader();
+			var searcher = GetIndexSearcher(reader);
+			var query = new TermRangeQuery(UpdatedField, null, FormatDate(date), true, false);
+
+			var docs = searcher.Search(
+				query,
+				null, reader.MaxDoc()
+			);
+
+			var rows = docs.ScoreDocs.Select(s => reader.IsDeleted(s.doc) ? null : ParseRow(searcher.Doc(s.doc))).ToArray();
+
+			searcher.Close();
+			reader.Close();
 		}
 
 		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState = ApprovalState.Any)
@@ -496,6 +514,11 @@ namespace FormEditor.Storage
 			{
 				Log.Error(ex, "Could not delete file upload directory: {0}", filesPath);
 			}
+		}
+
+		private string FormatDate(DateTime date)
+		{
+			return date.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
 		}
 	}
 }
