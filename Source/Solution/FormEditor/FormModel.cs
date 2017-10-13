@@ -73,6 +73,7 @@ namespace FormEditor
 		public bool DisallowMultipleSubmissionsPerUser { get; set; }
 		public string MaxSubmissionsForCurrentUserExceededHeader { get; set; }
 		public string MaxSubmissionsForCurrentUserExceededText { get; set; }
+		public int? DaysBeforeSubmissionExpiry { get; set; }
 
 		#endregion
 

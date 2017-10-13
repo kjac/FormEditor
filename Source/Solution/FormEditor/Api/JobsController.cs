@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FormEditor.Storage;
 using FormEditor.Umbraco;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
@@ -32,12 +33,13 @@ namespace FormEditor.Api
 					foreach (var content in contentOfContentType)
 					{
 						var formModel = ContentHelper.GetFormModel(content);
-						// TODO: also test for expiry days on submissions
-						if (formModel == null)
+						if (formModel == null || formModel.DaysBeforeSubmissionExpiry.HasValue == false)
 						{
 							continue;
 						}
-						// TODO: purge
+						var olderThan = DateTime.UtcNow.AddDays(-1 * formModel.DaysBeforeSubmissionExpiry.Value);
+						var index = IndexHelper.GetIndex(content.Id);
+						index.RemoveOlderThan(olderThan);
 					}
 				}
 				return Request.CreateResponse(HttpStatusCode.OK);

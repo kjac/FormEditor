@@ -131,6 +131,16 @@ namespace FormEditor.Storage
 			}
 		}
 
+		public void RemoveOlderThan(DateTime date)
+		{
+			var writer = GetIndexWriter();
+			var query = new TermRangeQuery(UpdatedField, null, FormatDate(date), includeLower:false, includeUpper:false);
+
+			writer.DeleteDocuments(query);
+			writer.Optimize();
+			writer.Close();
+		}
+
 		public Row Get(Guid rowId)
 		{
 			var doc = GetDocument(rowId);
@@ -228,24 +238,6 @@ namespace FormEditor.Storage
 			reader.Close();
 
 			return result;
-		}
-
-		// TODO: change this to DeleteOlderThan and add it to the index interface
-		private void GetOlderThan(DateTime date)
-		{
-			var reader = GetIndexReader();
-			var searcher = GetIndexSearcher(reader);
-			var query = new TermRangeQuery(UpdatedField, null, FormatDate(date), true, false);
-
-			var docs = searcher.Search(
-				query,
-				null, reader.MaxDoc()
-			);
-
-			var rows = docs.ScoreDocs.Select(s => reader.IsDeleted(s.doc) ? null : ParseRow(searcher.Doc(s.doc))).ToArray();
-
-			searcher.Close();
-			reader.Close();
 		}
 
 		private Result GetSearchResults(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip, ApprovalState approvalState = ApprovalState.Any)

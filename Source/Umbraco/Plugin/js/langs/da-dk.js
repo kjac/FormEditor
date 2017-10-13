@@ -124,6 +124,8 @@
   "data.disallowMultipleSubmissionsPerUser": "Kun én indsendelse per bruger",
   "data.maxSubmissionsPerUser.message.heading": "Overskrift",
   "data.maxSubmissionsPerUser.message.body": "Tekst",
+  "data.daysBeforeExpiry": "Antal dage før sletning",
+  "data.daysBeforeExpiry.helpText": "Indtast det antal dage, de indsendte data skal beholdes, før de slettes automatisk. Lad feltet være tomt hvis indsendelserne ikke skal slettes automatisk.",
   
   "edit.campaignMonitor.nameField": "Felt til navn",  
   "edit.campaignMonitor.nameField.helpText": "Hvilket felt indeholder den tilmeldtes navn?",  
