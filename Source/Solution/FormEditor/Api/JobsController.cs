@@ -33,7 +33,7 @@ namespace FormEditor.Api
 					foreach (var content in contentOfContentType)
 					{
 						var formModel = ContentHelper.GetFormModel(content);
-						if (formModel == null || formModel.DaysBeforeSubmissionExpiry.HasValue == false)
+						if (formModel == null || formModel.DaysBeforeSubmissionExpiry.HasValue == false || formModel.DaysBeforeSubmissionExpiry.Value <= 0)
 						{
 							continue;
 						}

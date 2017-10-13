@@ -122,7 +122,7 @@
         Days to keep submissions
       </label>
       <div class="controls controls-row">
-        <input type="number" class="umb-editor" id="daysBeforeExpiry" ng-model="model.value.daysBeforeSubmissionExpiry">
+        <input type="number" class="umb-editor" id="daysBeforeExpiry" ng-model="model.value.daysBeforeSubmissionExpiry" min="1">
         <small class="help-text" form-editor-localize key="data.daysBeforeExpiry.helpText">Enter the number of days to keep form submissions before they're automatically deleted. Leave empty to disable automatic deletion.</small>
       </div>
     </div>
