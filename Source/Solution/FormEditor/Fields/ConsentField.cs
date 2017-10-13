@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Umbraco.Core.Models;
+using Umbraco.Web;
 
 namespace FormEditor.Fields
 {
 	public class ConsentField : FieldWithLabel, IFieldWithValidation
 	{
+		// local cache for multiple in-request access to the Page propery
+		private IPublishedContent _page;
+
 		public override string PrettyName => "Submission consent";
 
 		public override string Type => "core.consent";
@@ -43,6 +47,23 @@ namespace FormEditor.Fields
 
 			// this field is ONLY EVER VALID if it's been checked
 			return Selected;
+		}
+
+		public IPublishedContent Page
+		{
+			get
+			{
+				if (PageId <= 0)
+				{
+					return null;
+				}
+				if (_page != null)
+				{
+					return _page;
+				}
+				_page = UmbracoContext.Current.ContentCache.GetById(PageId);
+				return _page;
+			}
 		}
 	}
 }
