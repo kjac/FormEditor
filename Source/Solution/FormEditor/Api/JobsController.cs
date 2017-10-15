@@ -24,24 +24,17 @@ namespace FormEditor.Api
 
 			try
 			{
-				var contentTypes = ApplicationContext.Services.ContentTypeService.GetAllContentTypes();
-				contentTypes = contentTypes.Where(c => ContentHelper.GetFormModelProperty(c) != null).ToArray();
-
-				foreach (var contentType in contentTypes)
+				ContentHelper.ForEachFormModel(ApplicationContext.Services, (formModel, content) => 
 				{
-					var contentOfContentType = ApplicationContext.Services.ContentService.GetContentOfContentType(contentType.Id).ToArray();
-					foreach (var content in contentOfContentType)
+					if (formModel.DaysBeforeSubmissionExpiry.HasValue == false || formModel.DaysBeforeSubmissionExpiry.Value <= 0)
 					{
-						var formModel = ContentHelper.GetFormModel(content);
-						if (formModel == null || formModel.DaysBeforeSubmissionExpiry.HasValue == false || formModel.DaysBeforeSubmissionExpiry.Value <= 0)
-						{
-							continue;
-						}
-						var olderThan = DateTime.UtcNow.AddDays(-1 * formModel.DaysBeforeSubmissionExpiry.Value);
-						var index = IndexHelper.GetIndex(content.Id);
-						index.RemoveOlderThan(olderThan);
+						return;
 					}
-				}
+					var olderThan = DateTime.UtcNow.AddDays(-1 * formModel.DaysBeforeSubmissionExpiry.Value);
+					var index = IndexHelper.GetIndex(content.Id);
+					index.RemoveOlderThan(olderThan);
+				});
+
 				return Request.CreateResponse(HttpStatusCode.OK);
 			}
 			catch (Exception ex)
