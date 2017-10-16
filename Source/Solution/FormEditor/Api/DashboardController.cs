@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Web.Http;
 using FormEditor.Storage;
 using FormEditor.Umbraco;
-using Umbraco.Core.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 
@@ -12,8 +17,8 @@ namespace FormEditor.Api
 	[PluginController("FormEditorApi")]
 	public class DashboardController : UmbracoAuthorizedJsonController
 	{
-		// TODO: proper HttpResponseMessage return value + lots of error handling
-		public object SearchAll(string query)
+		[HttpGet]
+		public HttpResponseMessage SearchAll(string searchQuery)
 		{
 			var contentResults = new List<ContentResult>();
 			ContentHelper.ForEachFormModel(ApplicationContext.Services, (formModel, content) =>
@@ -24,7 +29,7 @@ namespace FormEditor.Api
 				}
 
 				var fields = formModel.AllValueFields().ToArray();
-				var result = index.Search(query, fields.Select(f => f.FormSafeName).ToArray(), null, false, 100, 0);
+				var result = index.Search(searchQuery, fields.Select(f => f.FormSafeName).ToArray(), null, false, 100, 0);
 				if(result == null || result.TotalRows == 0)
 				{
 					return;
@@ -41,7 +46,23 @@ namespace FormEditor.Api
 				});
 			});
 
-			return contentResults;
+			var formatter = new JsonMediaTypeFormatter
+			{
+				SerializerSettings =
+				{
+					ContractResolver = new CamelCasePropertyNamesContractResolver(),
+					TypeNameHandling = TypeNameHandling.None
+				}
+			};
+			return Request.CreateResponse(HttpStatusCode.OK, contentResults, formatter);
+		}
+
+		[HttpPost]
+		public HttpResponseMessage Delete(DeleteRequest request)
+		{
+			var index = IndexHelper.GetIndex(request.ContentId);
+			index.Remove(request.RowIds);
+			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
 		private class ContentResult
@@ -53,6 +74,13 @@ namespace FormEditor.Api
 			public string[] FieldNames { get; set; }
 
 			public Data.Row[] Rows { get; set; }
+		}
+
+		public class DeleteRequest
+		{
+			public int ContentId { get; set; }
+
+			public IEnumerable<Guid> RowIds { get; set; }
 		}
 	}
 }

@@ -49,6 +49,12 @@ module.exports = function (grunt) {
           { expand: true, cwd: "<%= umbracoPluginDir %>config/", src: ["**"], dest: "<%= targetPluginDir %>config/", filter: "isFile" }
         ],
       },
+      // - all dashboard views 
+      dashboardViews: {
+        files: [
+          { expand: true, cwd: "<%= umbracoPluginDir %>dashboard/", src: ["**"], dest: "<%= targetPluginDir %>dashboard/", filter: "isFile" }
+        ],
+      },
       // - project output dll
       bin: {
         files: [
@@ -141,6 +147,10 @@ module.exports = function (grunt) {
       configViews: {
         files: ["<%= copy.configViews.files[0].cwd %><%= copy.configViews.files[0].src %>"],
         tasks: ["copy:configViews"]
+      },
+      dashboardViews: {
+        files: ["<%= copy.dashboardViews.files[0].cwd %><%= copy.dashboardViews.files[0].src %>"],
+        tasks: ["copy:dashboardViews"]
       },
       bin: {
         files: ["<%= copy.bin.files[0].cwd %><%= copy.bin.files[0].src %>"],
