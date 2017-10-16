@@ -233,7 +233,8 @@ module.exports = function (grunt) {
           licenseUrl: "https://opensource.org/licenses/MIT",
           author: "Kenn Jacobsen",
           authorUrl: "http://our.umbraco.org/member/25455",
-          readme: "See https://github.com/kjac/FormEditor for documentation."
+          readme: "See https://github.com/kjac/FormEditor for documentation.",
+          manifest: "UmbracoPackageManifest.xml"
         }
       }
     },
