@@ -95,13 +95,12 @@ module.exports = function (grunt) {
         files: [
           { expand: true, cwd: "<%= targetDir %>", src: ["**/*", "!bin", "!bin/*"], dest: "temp/NuGet/content" },
           { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGet/lib/net40" },
-          { expand: true, src: ["package.nuspec"], dest: "temp/NuGet/" }
+          { expand: true, cwd: "Assets", src: ["*.xdt"], dest: "temp/NuGet/content/Config" }
         ]
       } : {},
       nugetBin: isPackage ? {
         files: [
-          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGetBin/lib/net40" },
-          { expand: false, src: ["package.nuspec"], dest: "temp/NuGetBin/" }
+          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGetBin/lib/net40" }
         ]
       } : {},
     },
@@ -234,7 +233,7 @@ module.exports = function (grunt) {
           author: "Kenn Jacobsen",
           authorUrl: "http://our.umbraco.org/member/25455",
           readme: "See https://github.com/kjac/FormEditor for documentation.",
-          manifest: "UmbracoPackageManifest.xml"
+          manifest: "Assets/UmbracoPackageManifest.xml"
         }
       }
     },
@@ -248,7 +247,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          "temp/NuGet/package.nuspec": ["package.nuspec"]
+          "temp/NuGet/package.nuspec": ["Assets/package.nuspec"]
         }
       },
       bin: {
@@ -260,7 +259,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          "temp/NuGetBin/package.nuspec": ["package.nuspec"]
+          "temp/NuGetBin/package.nuspec": ["Assets/package.nuspec"]
         }
       }
     },
