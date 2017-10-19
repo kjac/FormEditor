@@ -77,7 +77,7 @@ Since the Form Editor data type takes up a lot of space in the UI, you should co
 ## Other configuration options
 
 ### Automatic deletion of old submissions
-In the light of the [GDPR](GDPR.md) and its call for controlling "Data retention periods", it might be nice to let the editors specify a maximum submission lifetime. If you enable [scheduled jobs](jobs.md) in the Form Editor configuration file, this option is automatically added to the *Submissions* tab:
+In the light of the [GDPR](GDPR.md) and its call for controlling "Data retention periods", you can let the editors specify a maximum lifetime of the form submissions for each individual form. This option is automatically added to the *Submissions* tab, as soon as you have set up the [authentication of scheduled jobs](jobs.md) in the Form Editor configuration file:
 
 ![Maximum submissions entry](img/max-submissions-entry.png)
 
