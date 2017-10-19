@@ -4,9 +4,9 @@
     <areas>
       <area>developer</area>
     </areas>
-    <tab caption="Form Editor">
+    <tab caption="Form Editor global search">
       <control>
-        views/dashboard/developer/healthcheck.html
+        /App_Plugins/FormEditor/dashboard/dashboard.html
       </control>
     </tab>
   </section>

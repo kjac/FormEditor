@@ -32,7 +32,7 @@
         <areas>
           <area>developer</area>
         </areas>
-        <tab caption="Form Editor Management">
+        <tab caption="Form Editor global search">
           <control>
             /App_Plugins/FormEditor/dashboard/dashboard.html
           </control>
