@@ -25,12 +25,6 @@ namespace FormEditor.Storage
 		void Remove(IEnumerable<Guid> rowIds);
 
 		/// <summary>
-		/// Removes entries from the index older than a specified date
-		/// </summary>
-		/// <param name="date">The max age for entries to keep (inclusive)</param>
-		void RemoveOlderThan(DateTime date);
-
-		/// <summary>
 		/// Gets a specific entry from the index
 		/// </summary>
 		/// <param name="rowId">The ID of the entry to get</param>

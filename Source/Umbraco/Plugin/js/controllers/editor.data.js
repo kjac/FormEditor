@@ -122,6 +122,7 @@
         $scope.supportsSearch = data.supportsSearch;
         $scope.supportsStatistics = data.supportsStatistics;
         $scope.supportsApproval = data.supportsApproval;
+        $scope.supportsExpiry = data.supportsExpiry;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;

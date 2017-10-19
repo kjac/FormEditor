@@ -220,7 +220,8 @@ namespace FormEditor.Api
 				sortDescending = result.SortDescending,
 				supportsSearch = fullTextIndex != null,
 				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any(),
-				supportsApproval = approvalEnabled && index is IApprovalIndex
+				supportsApproval = approvalEnabled && index is IApprovalIndex,
+				supportsExpiry = index is IAutomationIndex && FormEditor.Configuration.Instance.Jobs != null
 			};
 		}
 

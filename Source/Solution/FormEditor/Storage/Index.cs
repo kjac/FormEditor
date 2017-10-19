@@ -19,7 +19,7 @@ using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex, IApprovalIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex, IApprovalIndex, IAutomationIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;

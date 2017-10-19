@@ -51,7 +51,8 @@ namespace FormEditor
 			}
 
 			var jobs = configXml.Root.Element("Jobs");
-			Jobs = new JobsConfiguration(jobs?.Attribute("authToken")?.Value);
+			var authToken = jobs?.Attribute("authToken")?.Value;
+			Jobs = string.IsNullOrEmpty(authToken) ? null : new JobsConfiguration(authToken);
 
 			var customFields = configXml.Root.Element("CustomFields");
 			if (customFields != null)

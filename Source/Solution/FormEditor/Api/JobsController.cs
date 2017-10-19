@@ -17,7 +17,7 @@ namespace FormEditor.Api
 		public HttpResponseMessage PurgeExpiredSubmissions(string authToken)
 		{
 			// validate authentication token
-			if (FormEditor.Configuration.Instance.Jobs.IsValidAuthToken(authToken) == false)
+			if (FormEditor.Configuration.Instance.Jobs == null || FormEditor.Configuration.Instance.Jobs.IsValidAuthToken(authToken) == false)
 			{
 				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid authentication token");
 			}
@@ -31,7 +31,11 @@ namespace FormEditor.Api
 						return;
 					}
 					var olderThan = DateTime.UtcNow.AddDays(-1 * formModel.DaysBeforeSubmissionExpiry.Value);
-					var index = IndexHelper.GetIndex(content.Id);
+					if (!(IndexHelper.GetIndex(content.Id) is IAutomationIndex index))
+					{
+						Log.Warning($"Unable to purge expired submissions - the configured storage index is not of type {nameof(IAutomationIndex)}");
+						return;
+					}
 					index.RemoveOlderThan(olderThan);
 				});
 
