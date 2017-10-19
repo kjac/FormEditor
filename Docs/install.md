@@ -37,7 +37,18 @@ Form Editor supports two different types of emails - notification emails (sent t
 
 You can choose separate email templates for notification and confirmation emails, or leave them blank if you don't want to support one or both types of emails. See [Email templates](emails.md) for more info.
 
-Form Editor uses the mail settings configured in the `<mailSettings>` section of web.config for sending emails.
+Form Editor uses the mail settings configured in the `<mailSettings>` section of web.config for sending emails. 
+
+*Tip:* If you don't have a mail server available for testing your email templates, you can write the emails to disk by using `specifiedPickupDirectory` as delivery method in the `<smtp>` configuration:
+
+```xml
+<mailSettings>
+  <smtp from="noreply@example.com" deliveryMethod="specifiedPickupDirectory">
+    <network host="127.0.0.1" userName="username" password="password" />
+    <specifiedPickupDirectory pickupDirectoryLocation="[absolute path to a folder under App_Data]" />
+  </smtp>
+</mailSettings>
+```
 
 ##### Tab order and availiability
 There are a lot of options with Form Editor, some of which you might not use or want your editors to be concerned with. These options are grouped in tabs within the property editor. You can decide the order of these tabs as well as disable the tabs you don't want available to your editors.
