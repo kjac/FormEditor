@@ -1,5 +1,5 @@
 # Form Editor scheduled jobs
-*Don't worry! Form Editor works right out of the box without any scheduled jobs running. At the time of writing, the only feature that requires a scheduled job to work is the [automatic deletion of expired submissions](install.md#automatic-deletion-of-old-submissions).*
+*Don't worry! Form Editor works right out of the box without any scheduled jobs running. At the time of writing, the only feature that requires a scheduled job to work is the [automatic deletion of expired submissions](install.md#automatic-deletion-of-expired-submissions).*
 
 ## Authenticating
 When running scheduled jobs with the scheduler that's built into Umbraco, you need publicly available endpoints to do the work. To add a layer of safety, Form Editor scheduled jobs require you to pass an authentication token in the querystring parameter `authToken`.
