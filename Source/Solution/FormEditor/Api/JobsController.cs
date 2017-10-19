@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -13,7 +12,7 @@ namespace FormEditor.Api
 	[PluginController("FormEditorApi")]
 	public class JobsController : UmbracoApiController
 	{
-		[HttpGet]
+		[HttpGet, HttpPost]
 		public HttpResponseMessage PurgeExpiredSubmissions(string authToken)
 		{
 			// validate authentication token
