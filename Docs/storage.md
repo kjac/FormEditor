@@ -14,6 +14,8 @@ If you want to change this behavior, add the application setting `FormEditor.Pre
   </appSettings>
 ```
 
+*Note that features like the global search and deletion of old submissions ([read more](install.md#other-configuration-options)) only work with forms that exist within the content tree.*
+
 ## Changing the storage index
 If you're hosting your site in a load balanced environment or in the cloud, the Lucene index might not be the best storage solution for you. Therefore the storage index is swappable in Form Editor. You can specify an alternative storage index in the `<Storage/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config): 
 

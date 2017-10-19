@@ -74,5 +74,28 @@ Since the Form Editor data type takes up a lot of space in the UI, you should co
 
 **Please also note:** Due to backwards compatibility issues, you *cannot* put the Form Editor property in a content type composition. At least not for the time being.
 
+## Other configuration options
+
+### Automatic deletion of old submissions
+In the light of the [GDPR](GDPR.md) and its call for controlling "Data retention periods", it might be nice to let the editors specify a maximum submission lifetime. If you enable [scheduled jobs](jobs.md) in the Form Editor configuration file, this option is automatically added to the *Submissions* tab:
+
+![Maximum submissions entry](img/max-submissions-entry.png)
+
+### Global search dashboard
+Designed specifically to help with [GDPR](GDPR.md) compliance, the "Global search" dashboard is installed into the developer section (both when installing with NuGet and with the Umbraco package). In case you loose this configuration, here's the XML you'll need to add to `dashboard.config` to bring it back again:
+
+```xml
+<section alias="FormEditorDashboardSection">
+  <areas>
+    <area>developer</area>
+  </areas>
+  <tab caption="Form Editor global search">
+    <control>
+      /App_Plugins/FormEditor/dashboard/dashboard.html
+    </control>
+  </tab>
+</section>
+```
+
 ## Next step
 Onwards to [Rendering the form](render.md).
