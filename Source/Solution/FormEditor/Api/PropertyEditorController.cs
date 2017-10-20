@@ -166,19 +166,27 @@ namespace FormEditor.Api
 
 		public object GetData(int id, int page, string sortField, bool sortDescending, string searchQuery = null)
 		{
-
 			// NOTE: this is fine for now, but eventually make it should probably be configurable
 			const int PerPage = 10;
+
+			// by default (e.g. for newly created forms that have no index yet) we'll assume the index will support expiry if the jobs configuration has been setup
+			var supportsExpiry = FormEditor.Configuration.Instance.Jobs != null;
 
 			var document = ContentHelper.GetById(id);
 			if (document == null)
 			{
-				return null;
+				return new
+				{
+					supportsExpiry = supportsExpiry
+				};
 			}
 			var model = ContentHelper.GetFormModel(document);
 			if (model == null)
 			{
-				return null;
+				return new
+				{
+					supportsExpiry = supportsExpiry
+				};
 			}
 
 			var preValues = ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
@@ -221,7 +229,8 @@ namespace FormEditor.Api
 				supportsSearch = fullTextIndex != null,
 				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any(),
 				supportsApproval = approvalEnabled && index is IApprovalIndex,
-				supportsExpiry = index is IAutomationIndex && FormEditor.Configuration.Instance.Jobs != null
+				// the form supports expiry only if the index is of type IAutomationIndex
+				supportsExpiry = supportsExpiry && index is IAutomationIndex
 			};
 		}
 
