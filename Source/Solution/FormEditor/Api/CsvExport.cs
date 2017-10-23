@@ -119,15 +119,16 @@ namespace FormEditor.Api
 			// The rows
 			foreach (Dictionary<string, object> row in _rows)
 			{
-				foreach (string field in _fields)
+			    var delimiter = Configuration.Instance.Delimiter;
+				foreach (var field in _fields)
 				{
 					if (row.ContainsKey(field))
 					{
-						sb.Append(MakeValueCsvFriendly(row[field])).Append(";");
+						sb.Append(MakeValueCsvFriendly(row[field])).Append(delimiter);
 					}
 					else
 					{
-						sb.Append(string.Empty).Append(";");
+						sb.Append(string.Empty).Append(delimiter);
 					}
 				}
 				sb.AppendLine();
