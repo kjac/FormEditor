@@ -116,10 +116,10 @@ namespace FormEditor.Api
 			}
 			sb.AppendLine();
 
-			// The rows
+            // The rows
+		    var delimiter = Configuration.Instance.Delimiter;
 			foreach (Dictionary<string, object> row in _rows)
 			{
-			    var delimiter = Configuration.Instance.Delimiter;
 				foreach (var field in _fields)
 				{
 					if (row.ContainsKey(field))
