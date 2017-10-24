@@ -14,7 +14,9 @@ To run a continuous build, run `grunt watch`. This will monitor changes made to 
 If you want to build to another destination folder than the default one (for example directly to your site), add the destination folder as the `target` parameter to Grunt: `grunt --target="C:\inetpub\site\"`. And of course you can mix this with the `watch` command to run a continuous build to your destination folder: `grunt watch --target="C:\inetpub\site\"`.
 
 ## Contributing
-Want to contribute to Form Editor? Great! Much obliged. Here are a few guidelines.
+Want to contribute to Form Editor? Great! Much obliged. 
+
+Here are a few guidelines.
 
 ### Simplicity over flexibility
 Form Editor aims to provide a simple and intuitive editorial experience. You should always prioritize simplicity over flexibility when implementing features that extend into the editor UI.
@@ -23,8 +25,3 @@ A good example of this is the fields implementation. It could have been done wit
 
 ### Code style
 Please (pretty please) observe and adapt the code style used throughout the codebase. This keeps the code easier to read and maintain and helps to prevent deterioration. 
-
-For those using Visual Studio, a VS settings file with the correct text editor settings can be found under */Source/Solution/*.
-
-### C# 6.0 
-The syntactic sugar in C# 6.0 is awesome. Unfortunately it also messes up things for VS2013. In the interest of keeping the Form Editor codebase open to as many contributers as possible, refrain from using C# 6.0 language features - at least for the time being.
