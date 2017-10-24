@@ -164,7 +164,7 @@ namespace FormEditor.ElasticIndex.Storage
 		{
 			// our FieldValues dictionary is serialized to JSON as an object with the dictionary keys mapped to object properties.
 			// therefore the index field name is fieldValues.[field name].
-			return string.Format("fieldValues.{0}", sortField);
+			return $"fieldValues.{sortField}";
 		}
 
 		public Stream GetFile(string filename, Guid rowId)
@@ -276,7 +276,7 @@ namespace FormEditor.ElasticIndex.Storage
 		// this is the name of the index for the current Umbraco content item
 		private string IndexName()
 		{
-			return string.Format("form-editor-{0}", _contentId);
+			return $"form-editor-{_contentId}";
 		}
 
 		private void LogEntryCreationError(string type, IResponse indexResponse)
@@ -291,7 +291,7 @@ namespace FormEditor.ElasticIndex.Storage
 
 		private static string FormatServerError(IResponse indexResponse)
 		{
-			return indexResponse.ServerError != null ? string.Format("Server error: {0}", indexResponse.ServerError.Error) : "No server error available.";
+			return indexResponse.ServerError != null ? $"Server error: {indexResponse.ServerError.Error}" : "No server error available.";
 		}
 	}
 }
