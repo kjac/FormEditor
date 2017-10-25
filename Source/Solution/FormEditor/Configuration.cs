@@ -109,8 +109,8 @@ namespace FormEditor
 				}
 			}
 
-			var delimiter = configXml.Root.Element("Delimiter");
-			Delimiter = delimiter != null ? delimiter.Value : ";";
+			var delimiter = configXml.Root.Element("CsvExport")?.Attribute("delimiter")?.Value ?? ";";
+			CsvExport = new CsvExportConfiguration(delimiter);
 		}
 
 		internal static Configuration Instance
@@ -139,7 +139,7 @@ namespace FormEditor
 
 		public Type MaxSubmissionsForCurrentUserHandlerType { get; private set; }
 
-		public string Delimiter { get; private set; }
+		public CsvExportConfiguration CsvExport { get; private set; }
 
 		private Type ParseType(XElement element, Type declaration, Func<Type, string> validateType)
 		{
@@ -184,6 +184,16 @@ namespace FormEditor
 		{
 			public string Type { get; set; }
 			public string Name { get; set; }
+		}
+
+		public class CsvExportConfiguration
+		{
+			public CsvExportConfiguration(string delimiter)
+			{
+				Delimiter = delimiter;
+			}
+
+			public string Delimiter { get; }
 		}
 	}
 }
