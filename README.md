@@ -21,6 +21,7 @@ Some highlights include:
 * Editors can add texts and images alongside the form fields.
 * [reCAPTCHA](https://www.google.com/recaptcha/) support (both "V2" and "invisible" reCAPTCHA).
 * Approval system for moderation of form submissions.
+* [Extensive support](Docs/GDPR.md) for GDPR compliance.
 * Fully localizable.
 
 ## Table of contents
@@ -72,6 +73,8 @@ Some highlights include:
     * Topics covered: Web service integration, Zapier
 * [Comments with moderation](Tutorials/Comments.md) - create a comment section for articles and use content templates to improve the workflow.
     * Topics covered: Approval system, form submission rendering, content templates.
+* [GDPR self service](Tutorials/SelfService.md) - tackle some of the GDPR challenges with a self service approach.
+    * Topics covered: GDPR, form submission rendering and manipulation, email templates.
 
 ## Articles
 * ["Can we add a poll?"](http://24days.in/umbraco-cms/2016/polls-in-umbraco/) - an entry in the 2016 version of 24 Days.
