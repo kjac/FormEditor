@@ -105,7 +105,7 @@ namespace FormEditor.Api
 		public string Export()
 		{
 			StringBuilder sb = new StringBuilder();
-			var delimiter = Configuration.Instance.Delimiter;
+			var delimiter = Configuration.Instance.CsvExport.Delimiter;
 
 			// The header
 			foreach (string field in _fields)
