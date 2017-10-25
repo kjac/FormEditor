@@ -12,12 +12,10 @@
     </div>
   }
 
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" value="true" required />
-      @Model.Label
-    </label>
+  <label class="checkbox">
+    <input type="checkbox" name="@Model.FormSafeName" ng-model="formData.@Model.FormSafeName" value="true" required />
+    @Model.Label
+  </label>
 
-    @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
-  </div>
+  @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
 </div>

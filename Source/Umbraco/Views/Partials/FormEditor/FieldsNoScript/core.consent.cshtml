@@ -12,12 +12,10 @@
     </div>
   }
 
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" name="@Model.FormSafeName" value="true" required oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange='setCustomValidity("")'/>
-      @Model.Label
-    </label>
+  <label class="checkbox">
+    <input type="checkbox" name="@Model.FormSafeName" value="true" required oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange='setCustomValidity("")'/>
+    @Model.Label
+  </label>
 
-    @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")    
-  </div>
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")    
 </div>
