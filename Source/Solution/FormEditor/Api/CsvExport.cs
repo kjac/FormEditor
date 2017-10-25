@@ -105,26 +105,27 @@ namespace FormEditor.Api
 		public string Export()
 		{
 			StringBuilder sb = new StringBuilder();
+			var delimiter = Configuration.Instance.Delimiter;
 
 			// The header
 			foreach (string field in _fields)
 			{
-				sb.Append(field).Append(";");
+				sb.Append(field).Append(delimiter);
 			}
 			sb.AppendLine();
 
 			// The rows
 			foreach (Dictionary<string, object> row in _rows)
 			{
-				foreach (string field in _fields)
+				foreach (var field in _fields)
 				{
 					if (row.ContainsKey(field))
 					{
-						sb.Append(MakeValueCsvFriendly(row[field])).Append(";");
+						sb.Append(MakeValueCsvFriendly(row[field])).Append(delimiter);
 					}
 					else
 					{
-						sb.Append(string.Empty).Append(";");
+						sb.Append(string.Empty).Append(delimiter);
 					}
 				}
 				sb.AppendLine();
