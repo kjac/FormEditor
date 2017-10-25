@@ -117,8 +117,8 @@ namespace FormEditor
 				}
 			}
 
-		    var delimiter = configXml.Root.Element("Delimiter");
-		    Delimiter = delimiter != null ? delimiter.Value : ";";
+			var delimiter = configXml.Root.Element("Delimiter");
+			Delimiter = delimiter != null ? delimiter.Value : ";";
 		}
 
 		internal static Configuration Instance
@@ -147,7 +147,7 @@ namespace FormEditor
 
 		public Type MaxSubmissionsForCurrentUserHandlerType { get; private set; }
 
-        public string Delimiter { get; private set; }
+		public string Delimiter { get; private set; }
 
 		private Type ParseType(XElement element, Type declaration, Func<Type, string> validateType)
 		{

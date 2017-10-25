@@ -33,7 +33,7 @@ namespace FormEditor
 			var writer = new StringWriter();
 			var context = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
-            		routeData.Values["controller"] = "FakeController";
+			routeData.Values["controller"] = "FakeController";
 			var controllerContext = new ControllerContext(new RequestContext(context, routeData), new FakeController());
 			var razor = new RazorView(controllerContext, viewPath, null, false, null);
 			var viewData = new ViewDataDictionary(model);

@@ -108,16 +108,16 @@ namespace FormEditor.Api
 		public string Export()
 		{
 			StringBuilder sb = new StringBuilder();
-		    var delimiter = Configuration.Instance.Delimiter;
+			var delimiter = Configuration.Instance.Delimiter;
 
-            // The header
-            foreach (string field in _fields)
+			// The header
+			foreach (string field in _fields)
 			{
 				sb.Append(field).Append(delimiter);
 			}
 			sb.AppendLine();
 
-            // The rows
+			// The rows
 			foreach (Dictionary<string, object> row in _rows)
 			{
 				foreach (var field in _fields)
