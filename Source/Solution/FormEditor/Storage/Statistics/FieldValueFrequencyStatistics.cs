@@ -17,11 +17,8 @@ namespace FormEditor.Storage.Statistics
 			_fieldValueFrequencies.Add(new FieldValueFrequencies<T>(field, fieldValueFrequencies));
 		}
 
-		public int TotalRows { get; private set; }
+		public int TotalRows { get; }
 
-		public IEnumerable<FieldValueFrequencies<T>> FieldValueFrequencies
-		{
-			get { return _fieldValueFrequencies; }
-		}
+		public IEnumerable<FieldValueFrequencies<T>> FieldValueFrequencies => _fieldValueFrequencies;
 	}
 }

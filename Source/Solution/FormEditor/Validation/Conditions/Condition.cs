@@ -8,16 +8,12 @@ namespace FormEditor.Validation.Conditions
 	public abstract class Condition
 	{
 		public abstract string Type { get; }
+
 		public abstract string PrettyName { get; }
+
 		public abstract bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content);
 
-		public virtual string Icon
-		{
-			get
-			{
-				return DefaultIcon(Type);
-			}
-		}
+		public virtual string Icon => DefaultIcon(Type);
 
 		public virtual ConditionData ForFrontEnd()
 		{
@@ -26,12 +22,9 @@ namespace FormEditor.Validation.Conditions
 
 		protected static string DefaultIcon(string type)
 		{
-			return string.Format("{0}.png", type.ToLowerInvariant());
+			return $"{type.ToLowerInvariant()}.png";
 		}
 
-		public virtual string View
-		{
-			get { return Type; }
-		}
+		public virtual string View => Type;
 	}
 }

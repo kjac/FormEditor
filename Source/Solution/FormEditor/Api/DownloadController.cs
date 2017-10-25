@@ -41,7 +41,7 @@ namespace FormEditor.Api
 
 			var response = new HttpResponseMessage(HttpStatusCode.OK);
 			response.Content = new StreamContent(stream);
-			response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+			response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 			response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
 			{
 				FileName = fileData.OriginalFilename
@@ -83,7 +83,7 @@ namespace FormEditor.Api
 			else
 			{
 				var result = index.Get("_created", false, 100000, 0);
-				if (result != null && result.Rows != null)
+				if (result?.Rows != null)
 				{
 					rows = result.Rows.ToList();
 				}
@@ -120,10 +120,10 @@ namespace FormEditor.Api
 			var response = new HttpResponseMessage(HttpStatusCode.OK);
 			var stream = new System.IO.MemoryStream(csv.ExportToBytes());
 			response.Content = new StreamContent(stream);
-			response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+			response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 			response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
 			{
-				FileName = string.Format(@"Form data {0}.csv", DateTime.Now.ToString("yyyy-MM-dd HH:mm"))
+				FileName = $@"Form data {DateTime.Now:yyyy-MM-dd HH:mm}.csv"
 			};
 			return response;
 		}

@@ -17,9 +17,12 @@ namespace FormEditor.Storage
 			return new Result(0, new Row[]{}, sortField, sortDescending);
 		}
 
-		public int TotalRows { get; private set; }
-		public IEnumerable<Row> Rows { get; private set; }
-		public string SortField { get; private set; }
-		public bool SortDescending { get; private set; }
+		public int TotalRows { get; }
+
+		public IEnumerable<Row> Rows { get; }
+
+		public string SortField { get; }
+
+		public bool SortDescending { get; }
 	}
 }

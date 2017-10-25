@@ -5,15 +5,9 @@ namespace FormEditor.Fields
 {
 	public class LinkField : Field
 	{
-		public override string Type
-		{
-			get { return "core.link"; }
-		}
+		public override string Type => "core.link";
 
-		public override string PrettyName
-		{
-			get { return "Link"; }
-		}
+		public override string PrettyName => "Link";
 
 		public string Text { get; set; }
 

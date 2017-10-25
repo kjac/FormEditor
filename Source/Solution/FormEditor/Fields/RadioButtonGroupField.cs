@@ -7,13 +7,8 @@
 			// default values
 			FieldValues = new[] { new FieldValue { Value = "Option 1", Selected = true }, new FieldValue { Value = "Option 2" } };
 		}
-		public override string PrettyName
-		{
-			get { return "Radio button group"; }
-		}
-		public override string Type
-		{
-			get { return "core.radiobuttongroup"; }
-		}
+		public override string PrettyName => "Radio button group";
+
+		public override string Type => "core.radiobuttongroup";
 	}
 }

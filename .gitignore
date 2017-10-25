@@ -20,4 +20,4 @@ Package/
 Site/
 Samples/**/packages
 *.db
-Source/Solution/.vs/
+.vs/

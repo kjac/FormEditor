@@ -25,9 +25,9 @@ namespace FormEditor.Api
 	public class PropertyEditorController : UmbracoAuthorizedJsonController
 	{
 		// cache the known field types in memory
-		private static List<Field> _fieldTypes = null;
+		private static List<Field> _fieldTypes;
 		// cache the known condition types in memory
-		private static List<Condition> _conditionTypes = null;
+		private static List<Condition> _conditionTypes;
 
 		public object GetAllFieldTypes()
 		{
@@ -250,13 +250,12 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var index = IndexHelper.GetIndex(id) as IStatisticsIndex;
-			if(index == null)
+			if(!(IndexHelper.GetIndex(id) is IStatisticsIndex statisticsIndex))
 			{
 				return null;
 			}
 
-			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
+			var fieldValueFrequencyStatistics = statisticsIndex.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
 
 			return new
 			{
@@ -284,8 +283,7 @@ namespace FormEditor.Api
 		[HttpPut]
 		public object SetApprovalState(int id, SetApprovalStateRequest request)
 		{
-			var index = IndexHelper.GetIndex(id) as IApprovalIndex;
-			if(index != null && index.SetApprovalState(request.ApprovalState, request.RowId))
+			if(IndexHelper.GetIndex(id) is IApprovalIndex approvalIndex && approvalIndex.SetApprovalState(request.ApprovalState, request.RowId))
 			{
 				return new
 				{

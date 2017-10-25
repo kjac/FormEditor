@@ -8,25 +8,13 @@ namespace FormEditor.Fields
 {
 	public class MailChimpSubscriptionField : NewsletterSubscriptionField
 	{
-		public override string Type
-		{
-			get { return "core.mailchimp"; }
-		}
+		public override string Type => "core.mailchimp";
 
-		protected override string ApiKeyAppSettingsKey
-		{
-			get { return "FormEditor.MailChimp.ApiKey"; }
-		}
+		protected override string ApiKeyAppSettingsKey => "FormEditor.MailChimp.ApiKey";
 
-		protected override string ListIdAppSettingsKey
-		{
-			get { return "FormEditor.MailChimp.ListId"; }
-		}
+		protected override string ListIdAppSettingsKey => "FormEditor.MailChimp.ListId";
 
-		protected override string ServiceName
-		{
-			get { return "MailChimp"; }
-		}
+		protected override string ServiceName => "MailChimp";
 
 		protected override void HandleSubscription(MailAddress mailAddress, IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{

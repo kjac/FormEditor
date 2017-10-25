@@ -10,21 +10,9 @@ namespace FormEditor.Validation.Conditions
 	{
 		public string ExpectedFieldValue { get; set; }
 
-		public override string PrettyName
-		{
-			get
-			{
-				return "Value is";
-			}
-		}
+		public override string PrettyName => "Value is";
 
-		public override string Type
-		{
-			get
-			{
-				return "core.fieldvalueis";
-			}
-		}
+		public override string Type => "core.fieldvalueis";
 
 		public override bool IsMetBy(FieldWithValue fieldValue, IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)
 		{
@@ -48,7 +36,7 @@ namespace FormEditor.Validation.Conditions
 				ExpectedFieldValue = condition.ExpectedFieldValue;
 			}
 
-			public string ExpectedFieldValue { get; private set; }
+			public string ExpectedFieldValue { get; }
 		}
 	}
 }

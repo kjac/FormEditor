@@ -11,16 +11,10 @@ namespace My.Fields
 		// IMPORTANT: the field must have a default constructor (or no constructor at all).
 
 		// this is the field identifier towards Form Editor. it must be unique.
-		public override string Type
-		{
-			get { return "my.range"; }
-		}
+		public override string Type => "my.range";
 
 		// this is the default field name used in the form layout (can be overridden by localization).
-		public override string PrettyName
-		{
-			get { return "Slider"; }
-		}
+		public override string PrettyName => "Slider";
 
 		// these are the custom properties for our field configuration. they must have public getters and setters.
 		public int Minimum { get; set; }
@@ -43,8 +37,7 @@ namespace My.Fields
 			}
 
 			// we expect the input to be an integer for our field.
-			int value;
-			if(int.TryParse(SubmittedValue, out value) == false)
+			if(int.TryParse(SubmittedValue, out var value) == false)
 			{
 				// for some reason a non integer value was submitted => validation fails.
 				return false;
