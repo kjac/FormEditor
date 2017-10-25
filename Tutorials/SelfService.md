@@ -1,6 +1,6 @@
 # Tutorial: GDPR self service
 
-GDPR (General Data Protection Regulation) presents a [few new challenges](../Docs/TODO.md) for forms that collect any kind of personal data. Form Editor lets you be GDPR compliant out of the box... but you can be compliant in many ways - some smarter than other.
+GDPR (General Data Protection Regulation) presents a [few new challenges](../Docs/GDPR.md) for forms that collect any kind of personal data. Form Editor lets you be GDPR compliant out of the box... but you can be compliant in many ways - some smarter than other.
 
 In this tutorial we'll apply a self service approach to the "Right of access" and "Right to erasure" in GDPR, by creating a page where the users can view and delete their own form submissions. 
 
@@ -218,4 +218,12 @@ If everything is set up right, you should get a receipt email with a link to the
 
 ![The Self Service page](img/SelfService/self-service-rendering.png)
 
-TODO: wrap-up
+## Wrapping up
+
+Hopefully this turorial has sparked some ideas on how to become GDPR compliant without necessarily involving a lot of manual processes. 
+
+The whole idea of letting people delete their own data at will probably seems completely bizarre at first. But when you think of it, this is what the GDPR is all about: Giving the users control of their personal data.
+
+Of course, if you prefer being a bit more in control, you can always substitute the Self Service page with the contact information for your Data Protection Officer (DPO), and utilize the [Form Editor global search](../Docs/GDPR.md#right-of-access-right-to-erasure) dashboard to manage the form submissions.
+
+As always - happy coding!
