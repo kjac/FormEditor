@@ -35,12 +35,12 @@ You can create your own storage index by implementing [`FormEditor.Storage.IInde
 There are two sample implementations of storage indexes in the samples section:
 
 ### SQL storage index
-The [SQL storage sample index](../Samples/SQL storage index/) stores form submissions in the Umbraco database. 
+The [SQL storage sample index](../Samples/SQL%20storage%20index/) stores form submissions in the Umbraco database. 
 
 The necessary tables for this index are automatically created if they do not exist when the site starts up.
 
 ### Elastic storage index
-The [Elastic storage sample index](../Samples/Elastic storage index/) stores form submissions in an Elastic index.
+The [Elastic storage sample index](../Samples/Elastic%20storage%20index/) stores form submissions in an Elastic index.
 
 You must supply the Elastic connection string as `FormEditor.ElasticIndex` in the `<connectionStrings>` section of your `web.config` file - like this:
 
@@ -63,4 +63,4 @@ The General Data Protection Regulation [introduces a few challenges](GDPR.md). T
 
 **Please note:** The `IAutomationIndex` interface will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
 
-The [SQL storage sample index](../Samples/SQL storage index/) implements both interfaces, as does of course the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
+The [SQL storage sample index](../Samples/SQL%20storage%20index/) implements both interfaces, as does of course the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
