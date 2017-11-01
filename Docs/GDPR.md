@@ -75,5 +75,6 @@ With Form Editor it's easy to create a page where the users can view and delete 
 
 ### Reporting data breaches
 
-TODO
+If you have a breach, the first thing you need to figure out (from a GDPR perspective) is who's data has potentially been compromised. Obviously this is not a small task, and spans well beyond just form submissions. That being said, form submissions is an obvious source to filter through in case of a breach. 
 
+By default, Form Editor stores submissions in Lucene indexes under */App_Data/FormEditor/*. You can access the submissions using a tool like [Luke](https://code.google.com/archive/p/luke/), if for one reason or another the site itself has been rendered useless by the breach. And remember - you can also [swap the storage index](storage.md) with your own implementation, if you prefer storing the submissions elsewhere.

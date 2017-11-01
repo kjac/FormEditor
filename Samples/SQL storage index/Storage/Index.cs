@@ -14,7 +14,7 @@ namespace FormEditor.SqlIndex.Storage
 	// custom Form Editor index that stores form entries to DB.
 	// this is a working sample of how a custom index could be created. you may want to tweak it to suit your needs.
 	// see IIndex for the interface documentation.
-	public class Index : IIndex, IFullTextIndex
+	public class Index : IIndex, IFullTextIndex, IAutomationIndex
 	{
 		private readonly int _contentId;
 
@@ -102,7 +102,7 @@ namespace FormEditor.SqlIndex.Storage
 			// the field values were serialized into one column when they were added to the index, so we
 			// can't sort on sortField. instead we'll sort on Id DESC so we always return the newest entries first.
 			// full text search is likewise kinda lo-fi with a LIKE match on the serialized field values.
-			return Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 AND (@1 = '' OR FieldValues LIKE @1) ORDER BY Id DESC", _contentId, string.IsNullOrEmpty(query) ? string.Empty : $"{query.Trim('%')}%");
+			return Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 AND (@1 = '' OR FieldValues LIKE @1) ORDER BY Id DESC", _contentId, string.IsNullOrEmpty(query) ? string.Empty : $"%{query.Trim('%')}%");
 		}
 
 		public Stream GetFile(string filename, Guid rowId)
@@ -149,6 +149,11 @@ namespace FormEditor.SqlIndex.Storage
 		{
 			var page = GetPage(1, 1);
 			return (int)page.TotalItems;
+		}
+
+		public void RemoveOlderThan(DateTime date)
+		{
+			Database.Delete<Entry>("WHERE ContentId=@0 AND CreatedDate<@1", _contentId, date);
 		}
 
 		private Database Database => UmbracoContext.Current.Application.DatabaseContext.Database;
