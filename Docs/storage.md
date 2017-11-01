@@ -63,4 +63,4 @@ The General Data Protection Regulation [introduces a few challenges](GDPR.md). T
 
 **Please note:** The `IAutomationIndex` interface will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
 
-The [SQL storage sample index](../Samples/SQL%20storage%20index/) implements both interfaces, as does of course the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
+The [SQL storage sample index](../Samples/SQL%20storage%20index/Storage/Index.cs) implements both interfaces, as does of course the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
