@@ -1,7 +1,7 @@
 # GDPR - the General Data Protection Regulation
 The GDPR comes into effect on 25 May 2018. If you're collecting personal data of any kind (names, emails etc.), you need to implement the GDPR on your site.
 
-##Disclaimer
+## Disclaimer
 This document isn't legal advice, nor does it strive to be. It does not cover the GDPR in its full extend. It is your own responsibility to seek out adequate information - for example [here](http://www.eugdpr.org/). 
 
 This document will be updated continuously as the implications of the GDPR are uncovered. If you have anything to add to the document, please [raise an issue](https://github.com/kjac/FormEditor/issues/new).
