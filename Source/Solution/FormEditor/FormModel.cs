@@ -39,10 +39,7 @@ namespace FormEditor
 				EnsurePagesForBackwardsCompatibility();
 				return _pages;
 			}
-			set
-			{
-				_pages = value;
-			}
+			set => _pages = value;
 		}
 
 		public IEnumerable<Row> Rows
@@ -52,7 +49,7 @@ namespace FormEditor
 				EnsureRowsForBackwardsCompatibility();
 				return _rows;
 			}
-			set { _rows = value; }
+			set => _rows = value;
 		}
 
 		public IEnumerable<Validation.Validation> Validations { get; set; }
@@ -128,8 +125,7 @@ namespace FormEditor
 			}
 			
 			// does the form contain an "_id" and if so, does it match the supplied content?
-			int id;
-			if(int.TryParse(HttpContext.Current.Request.Form["_id"], out id) && id != content.Id)
+			if(int.TryParse(HttpContext.Current.Request.Form["_id"], out var id) && id != content.Id)
 			{
 				return false;
 			}
@@ -342,22 +338,21 @@ namespace FormEditor
 			var fields = AllValueFields().StatisticsFields();
 			if(fieldNames != null)
 			{
-				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase);
+				fieldNames = fields.StatisticsFieldNames().Intersect(fieldNames, StringComparer.OrdinalIgnoreCase).ToArray();
 			}
 			else
 			{
-				fieldNames = fields.StatisticsFieldNames();
+				fieldNames = fields.StatisticsFieldNames().ToArray();
 			}
 			if(fieldNames.Any() == false)
 			{
 				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
 			}
-			var index = IndexHelper.GetIndex(content.Id) as IStatisticsIndex;
-			if(index == null)
+			if(!(IndexHelper.GetIndex(content.Id) is IStatisticsIndex statisticsIndex))
 			{
 				return new FieldValueFrequencyStatistics<IStatisticsField>(0);
 			}
-			var statistics = index.GetFieldValueFrequencyStatistics(fieldNames);
+			var statistics = statisticsIndex.GetFieldValueFrequencyStatistics(fieldNames);
 			// the statistics are indexed by field.FormSafeName - we need to reindex them by 
 			// the fields themselves to support the frontend rendering 
 			var result = new FieldValueFrequencyStatistics<IStatisticsField>(statistics.TotalRows);
@@ -378,32 +373,13 @@ namespace FormEditor
 			return Pages == null;
 		}
 
-		private HttpRequest Request
-		{
-			get { return HttpContext.Current.Request; }
-		}
+		private HttpRequest Request => HttpContext.Current.Request;
 
-		private HttpResponse Response
-		{
-			get { return HttpContext.Current.Response; }
-		}
+		private HttpResponse Response => HttpContext.Current.Response;
 
-		private UmbracoContext Context
-		{
-			get { return UmbracoContext.Current; }
-		}
+		private UmbracoContext Context => UmbracoContext.Current;
 
-		private IPublishedContent RequestedContent
-		{
-			get
-			{
-				if(Context == null || Context.PublishedContentRequest == null || Context.PublishedContentRequest.PublishedContent == null)
-				{
-					return null;
-				}
-				return Context.PublishedContentRequest.PublishedContent;
-			}
-		}
+		private IPublishedContent RequestedContent => Context?.PublishedContentRequest?.PublishedContent;
 
 		public IMaxSubmissionsForCurrentUserHandler MaxSubmissionsForCurrentUserHandler
 		{
@@ -415,7 +391,7 @@ namespace FormEditor
 				}
 				return _maxSubmissionsForCurrentUserHandler;
 			}
-			set { _maxSubmissionsForCurrentUserHandler = value; }
+			set => _maxSubmissionsForCurrentUserHandler = value;
 		}
 
 		#region Stuff for backwards compatibility with v0.10.0.2 (before introducing form pages) - should probably be removed at some point
@@ -634,8 +610,7 @@ namespace FormEditor
 			}
 			else
 			{
-				var emailField = recipientsField as IEmailField;
-				var recipientAddresses = emailField != null
+				var recipientAddresses = recipientsField is IEmailField emailField
 					? string.Join(",", emailField.EmailAddresses ?? new string[0])
 					: recipientsField.SubmittedValue;
 
@@ -809,7 +784,7 @@ namespace FormEditor
 			var collection = HttpUtility.ParseQueryString(string.Empty);
 			collection["sid"] = RowId.ToString();
 			collection["cid"] = content.Id.ToString();
-			return string.Format("{0}?{1}", receiptUrl, collection);
+			return $"{receiptUrl}?{collection}";
 		}
 
 		private class FileAttachment
@@ -838,7 +813,7 @@ namespace FormEditor
 			var valueFields = AllValueFields();
 			return Regex.Replace(template, @"\[.*?\]", match =>
 			{
-				var field = valueFields.FirstOrDefault(f => string.Format("[{0}]", f.Name).Equals(match.Value, StringComparison.InvariantCultureIgnoreCase));
+				var field = valueFields.FirstOrDefault(f => $"[{f.Name}]".Equals(match.Value, StringComparison.InvariantCultureIgnoreCase));
 				return field != null && field.HasSubmittedValue
 					? field.SubmittedValueForEmail()
 					: string.Empty;
@@ -869,11 +844,7 @@ namespace FormEditor
 		{
 			try
 			{
-				if(content == null)
-				{
-					return;
-				}
-				var property = content.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == PropertyEditorAlias);
+				var property = content?.ContentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == PropertyEditorAlias);
 				if(property == null)
 				{
 					return;
@@ -966,10 +937,10 @@ namespace FormEditor
 				: null;
 			return new Data.Field
 			{
-				Name = field.Name,
-				FormSafeName = field.FormSafeName,
-				Type = field.Type,
-				Value = valueFormatter != null ? valueFormatter(field, fieldValue, row) : null
+				Name = field?.Name,
+				FormSafeName = field?.FormSafeName,
+				Type = field?.Type,
+				Value = valueFormatter?.Invoke(field, fieldValue, row)
 			};
 		}
 

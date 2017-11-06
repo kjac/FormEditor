@@ -16,16 +16,10 @@ namespace My.Conditions
 		}
 
 		// this is the condition identifier towards Form Editor. it must be unique.
-		public override string Type
-		{
-			get { return "my.length"; }
-		}
+		public override string Type => "my.length";
 
 		// this is the default condition name used in the validation UI (can be overridden by localization).
-		public override string PrettyName
-		{
-			get { return "Text length is less than"; }
-		}
+		public override string PrettyName => "Text length is less than";
 
 		// these are the custom properties for our condition configuration. they must have public getters and setters.
 		public int LessThan { get; set; }
@@ -63,7 +57,7 @@ namespace My.Conditions
 			}
 
 			// these properties are passed to the frontend rendering
-			public int LessThan { get; private set; }
+			public int LessThan { get; }
 		}
 	}
 }

@@ -7,7 +7,9 @@ namespace FormEditor.ElasticIndex.Storage
 	public class Entry
 	{
 		public string Id { get; set; }
+
 		public Dictionary<string, string> FieldValues { get; set; }
+
 		public DateTime CreatedDate { get; set; }
 	}
 }

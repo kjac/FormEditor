@@ -21,7 +21,7 @@ namespace FormEditor.Limitations
 
 		public virtual void HandleSubmission(FormModel model, IPublishedContent content)
 		{
-			var cookieValue = (Request.Cookies.AllKeys.Contains(FormSubmittedCookieKey) ? Request.Cookies[FormSubmittedCookieKey].Value : null) ?? string.Empty;
+			var cookieValue = (Request.Cookies.AllKeys.Contains(FormSubmittedCookieKey) ? Request.Cookies[FormSubmittedCookieKey]?.Value : null) ?? string.Empty;
 			var containsCurrentContent = cookieValue.Contains(FormSubmittedCookieValue(content));
 
 			if(model.DisallowMultipleSubmissionsPerUser == false)
@@ -48,24 +48,18 @@ namespace FormEditor.Limitations
 			// add the content ID to the cookie value if it's not there already
 			if(containsCurrentContent == false)
 			{
-				cookieValue = string.Format("{0}{1}", cookieValue.TrimEnd(','), FormSubmittedCookieValue(content));
+				cookieValue = $"{cookieValue.TrimEnd(',')}{FormSubmittedCookieValue(content)}";
 			}
 			Response.Cookies.Add(new HttpCookie(FormSubmittedCookieKey, cookieValue) { Expires = DateTime.Today.AddDays(30) });
 		}
 
-		protected HttpRequest Request
-		{
-			get { return HttpContext.Current.Request; }
-		}
+		protected HttpRequest Request => HttpContext.Current.Request;
 
-		protected HttpResponse Response
-		{
-			get { return HttpContext.Current.Response; }
-		}
+		protected HttpResponse Response => HttpContext.Current.Response;
 
 		protected static string FormSubmittedCookieValue(IPublishedContent content)
 		{
-			return string.Format(",{0},", content.Id);
+			return $",{content.Id},";
 		}
 	}
 }

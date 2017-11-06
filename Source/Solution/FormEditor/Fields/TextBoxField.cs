@@ -5,14 +5,10 @@ namespace FormEditor.Fields
 {
 	public class TextBoxField : FieldWithPlaceholder
 	{
-		public override string PrettyName
-		{
-			get { return "Text box"; }
-		}
-		public override string Type
-		{
-			get { return "core.textbox"; }
-		}
+		public override string PrettyName => "Text box";
+
+		public override string Type => "core.textbox";
+
 		public int MaxLength { get; set; }
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)

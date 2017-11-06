@@ -12,9 +12,9 @@ namespace FormEditor.Events
 		}
 
 		// the ID of the persisted data in the storage index
-		public Guid RowId { get; private set; }
+		public Guid RowId { get; }
 
 		// the content that contains the form
-		public IPublishedContent Content { get; private set; }
+		public IPublishedContent Content { get; }
 	}
 }

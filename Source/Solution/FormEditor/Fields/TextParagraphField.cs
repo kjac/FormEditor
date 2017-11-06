@@ -2,15 +2,9 @@
 {
 	public class TextParagraphField : Field
 	{
-		public override string Type
-		{
-			get { return "core.textParagraph"; }
-		}
+		public override string Type => "core.textParagraph";
 
-		public override string PrettyName
-		{
-			get { return "Text paragraph"; }
-		}
+		public override string PrettyName => "Text paragraph";
 
 		public string Text { get; set; }
 	}

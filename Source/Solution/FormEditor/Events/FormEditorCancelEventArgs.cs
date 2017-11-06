@@ -14,6 +14,6 @@ namespace FormEditor.Events
 		public string ErrorMessage { get; set; }
 
 		// the content that contains the form
-		public IPublishedContent Content { get; private set; }
+		public IPublishedContent Content { get; }
 	}
 }

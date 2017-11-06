@@ -7,15 +7,9 @@ namespace FormEditor.Fields
 {
 	public class MemberInfoField : FieldWithValue, IEmailField
 	{
-		public override string Type
-		{
-			get { return "core.memberinfo"; }
-		}
+		public override string Type => "core.memberinfo";
 
-		public override string PrettyName
-		{
-			get { return "Member info"; }
-		}
+		public override string PrettyName => "Member info";
 
 		protected internal override void CollectSubmittedValue(Dictionary<string, string> allSubmittedValues, IPublishedContent content)
 		{
@@ -28,22 +22,18 @@ namespace FormEditor.Fields
 				return;
 			}
 			// gather member data for index
-			SubmittedValue = string.Format("{0}|{1}|{2}", member.Name, member.Email, member.Id);
+			SubmittedValue = $"{member.Name}|{member.Email}|{member.Id}";
 		}
 
 		private IMember CurrentMember()
 		{
-			var user = UmbracoContext.Current.HttpContext.User;
-			var identity = user != null ? user.Identity : null;
+			var identity = UmbracoContext.Current.HttpContext.User?.Identity;
 			return identity != null && string.IsNullOrWhiteSpace(identity.Name) == false
 				? UmbracoContext.Current.Application.Services.MemberService.GetByUsername(identity.Name)
 				: null;			
 		}
 
-		public bool IsMemberLoggedIn
-		{
-			get { return CurrentMember() != null; }
-		}
+		public bool IsMemberLoggedIn => CurrentMember() != null;
 
 		#region Format value for various display scenarios
 
@@ -76,7 +66,7 @@ namespace FormEditor.Fields
 			var parts = value.Split(new[] { '|' }, StringSplitOptions.None);
 			return parts.Length < 2
 				? null
-				: string.Format("{0} ({1})", parts[0], parts[1]);
+				: $"{parts[0]} ({parts[1]})";
 		}
 
 		#endregion

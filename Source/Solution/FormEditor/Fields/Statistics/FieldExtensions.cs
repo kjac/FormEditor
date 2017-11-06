@@ -7,16 +7,12 @@ namespace FormEditor.Fields.Statistics
 	{
 		public static IEnumerable<IStatisticsField> StatisticsFields(this IEnumerable<Field> fields)
 		{
-			return fields == null 
-				? new IStatisticsField[] {} 
-				: fields.OfType<IStatisticsField>().ToArray();
+			return fields?.OfType<IStatisticsField>().ToArray() ?? new IStatisticsField[] {};
 		}
 
 		public static IEnumerable<string> StatisticsFieldNames(this IEnumerable<IStatisticsField> fields)
 		{
-			return fields == null 
-				? new string[] {}
-				: fields.Select(f => f.FormSafeName).ToArray();
+			return fields?.Select(f => f.FormSafeName).ToArray() ?? new string[] {};
 		} 
 	}
 }

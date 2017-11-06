@@ -11,25 +11,13 @@ namespace FormEditor.Fields
 	{
 		public string NameField { get; set; }
 
-		public override string Type
-		{
-			get { return "core.campaignmonitor"; }
-		}
+		public override string Type => "core.campaignmonitor";
 
-		protected override string ApiKeyAppSettingsKey
-		{
-			get { return "FormEditor.CampaignMonitor.ApiKey"; }
-		}
+		protected override string ApiKeyAppSettingsKey => "FormEditor.CampaignMonitor.ApiKey";
 
-		protected override string ListIdAppSettingsKey
-		{
-			get { return "FormEditor.CampaignMonitor.ListId"; }
-		}
+		protected override string ListIdAppSettingsKey => "FormEditor.CampaignMonitor.ListId";
 
-		protected override string ServiceName
-		{
-			get { return "Campaign Monitor"; }
-		}
+		protected override string ServiceName => "Campaign Monitor";
 
 		protected override void HandleSubscription(MailAddress mailAddress, IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{
@@ -41,7 +29,7 @@ namespace FormEditor.Fields
 				.ToDictionary(f => f.Name, f => f.SubmittedValue);
 
 			var api = new CampaignMonitorApi();
-			api.Subscribe(ListId, mailAddress, nameField != null ? nameField.SubmittedValue : null, customFields, ApiKey);
+			api.Subscribe(ListId, mailAddress, nameField?.SubmittedValue, customFields, ApiKey);
 		}
 	}
 }

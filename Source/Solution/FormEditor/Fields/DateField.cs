@@ -7,14 +7,9 @@ namespace FormEditor.Fields
 {
 	public class DateField : FieldWithMandatoryValidation
 	{
-		public override string PrettyName
-		{
-			get { return "Date"; }
-		}
-		public override string Type
-		{
-			get { return "core.date"; }
-		}
+		public override string PrettyName => "Date";
+
+		public override string Type => "core.date";
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{
@@ -31,14 +26,8 @@ namespace FormEditor.Fields
 
 		public override string SubmittedValue
 		{
-			get
-			{
-				return base.SubmittedValue;
-			}
-			protected set
-			{
-				base.SubmittedValue = FormatDateValue(value);
-			}
+			get => base.SubmittedValue;
+			protected set => base.SubmittedValue = FormatDateValue(value);
 		}
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
@@ -62,8 +51,7 @@ namespace FormEditor.Fields
 			{
 				return null;
 			}
-			DateTime date;
-			return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out date)
+			return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var date)
 				? date.ToUniversalTime().ToString("yyyy-MM-dd")
 				: null;
 		}
@@ -82,8 +70,7 @@ namespace FormEditor.Fields
 				return value;
 			}
 
-			DateTime date;
-			if(DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out date) == false)
+			if(DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var date) == false)
 			{
 				return null;
 			}

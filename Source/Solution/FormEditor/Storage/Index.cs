@@ -295,7 +295,7 @@ namespace FormEditor.Storage
 			searcher.Close();
 			reader.Close();
 
-			return new Result(scoreDocs.Count(), rows, sortField, sortDescending);
+			return new Result(scoreDocs.Length, rows, sortField, sortDescending);
 		}
 
 		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
@@ -439,12 +439,12 @@ namespace FormEditor.Storage
 
 		private static string FieldNameForSorting(string fieldName)
 		{
-			return string.Format("{0}_sort", fieldName);
+			return $"{fieldName}_sort";
 		}
 
 		private static string FieldNameForStatistics(string fieldName)
 		{
-			return string.Format("{0}_stats", fieldName);
+			return $"{fieldName}_stats";
 		}
 
 		private static Analyzer GetAnalyzer()
@@ -464,7 +464,7 @@ namespace FormEditor.Storage
 
 		private DirectoryInfo PathToFormStorage()
 		{
-			return new DirectoryInfo(HostingEnvironment.MapPath(string.Format("/App_Data/FormEditor/{0}", _contentId)));
+			return new DirectoryInfo(HostingEnvironment.MapPath($"/App_Data/FormEditor/{_contentId}"));
 		}
 
 		private DirectoryInfo PathToIndex()
