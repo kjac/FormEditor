@@ -76,6 +76,16 @@ Since the Form Editor data type takes up a lot of space in the UI, you should co
 
 ## Other configuration options
 
+### CSV export format
+When exporting form submissions to CSV, Form Editor uses a semicolon as field delimiter by default - for some reason this sits better with MS Excel that commas do. If you'd rather use another delimiter, you can configure this in [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config):
+
+```xml
+<FormEditor>
+  <!-- this sets the column delimiter for CSV export to comma instead of semicolon -->
+  <CsvExport delimiter="," />
+</FormEditor>
+```
+
 ### Automatic deletion of expired submissions
 In the light of the [GDPR](GDPR.md) and its call for controlling "Data retention periods", you can let the editors specify a maximum lifetime of the form submissions for each individual form. This option is automatically added to the *Submissions* tab, as soon as you have set up the [authentication of scheduled jobs](jobs.md) in the Form Editor configuration file:
 
