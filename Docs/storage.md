@@ -14,6 +14,8 @@ If you want to change this behavior, add the application setting `FormEditor.Pre
   </appSettings>
 ```
 
+*Note that features like the global search and deletion of old submissions ([read more](install.md#other-configuration-options)) only work with forms that exist within the content tree.*
+
 ## Changing the storage index
 If you're hosting your site in a load balanced environment or in the cloud, the Lucene index might not be the best storage solution for you. Therefore the storage index is swappable in Form Editor. You can specify an alternative storage index in the `<Storage/>` section of [*/Config/FormEditor.config*](../Source/Umbraco/Config/FormEditor.config): 
 
@@ -33,12 +35,12 @@ You can create your own storage index by implementing [`FormEditor.Storage.IInde
 There are two sample implementations of storage indexes in the samples section:
 
 ### SQL storage index
-The [SQL storage index](../Samples/SQL storage index/) stores form submissions in the Umbraco database (with limited sorting options and no support for full text search). 
+The [SQL storage sample index](../Samples/SQL%20storage%20index/) stores form submissions in the Umbraco database. 
 
 The necessary tables for this index are automatically created if they do not exist when the site starts up.
 
 ### Elastic storage index
-The [Elastic storage index](../Samples/Elastic storage index/) stores form submissions in an Elastic index, and has support for full text search.
+The [Elastic storage sample index](../Samples/Elastic%20storage%20index/) stores form submissions in an Elastic index.
 
 You must supply the Elastic connection string as `FormEditor.ElasticIndex` in the `<connectionStrings>` section of your `web.config` file - like this:
 
@@ -55,3 +57,10 @@ To make your index work with the build-in statistics it must implement the [`ISt
 **Please note:** The `IStatisticsIndex` interface will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
 
 None of the sample indexes currently support statistics, but you can have a look at the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.
+
+## Supporting GDPR
+The General Data Protection Regulation [introduces a few challenges](GDPR.md). To this end you should consider facilitating full text search and automation by implementing the [`IFullTextIndex`](../Source/Solution/FormEditor/Storage/IFullTextIndex.cs) and [`IFullTextIndex`](../Source/Solution/FormEditor/Storage/IAutomationIndex.cs) interfaces.
+
+**Please note:** The `IAutomationIndex` interface will most likely change over time, which might cause breaking changes for you when you upgrade Form Editor.
+
+The [SQL storage sample index](../Samples/SQL%20storage%20index/Storage/Index.cs) implements both interfaces, as does of course the [`default index implementation`](../Source/Solution/FormEditor/Storage/Index.cs) for inspiration.

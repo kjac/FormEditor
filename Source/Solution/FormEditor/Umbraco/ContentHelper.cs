@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core.Models;
+using Umbraco.Core.Services;
 using Umbraco.Web;
 
 namespace FormEditor.Umbraco
@@ -76,6 +78,26 @@ namespace FormEditor.Umbraco
 				return false;
 			}
 			return preValues.ContainsKey(preValueKey) && preValues[preValueKey] != null && (preValues[preValueKey].Value == "1");
+		}
+
+		internal static void ForEachFormModel(ServiceContext services, Action<FormModel, IContent> action)
+		{
+			var contentTypes = services.ContentTypeService.GetAllContentTypes();
+			contentTypes = contentTypes.Where(c => GetFormModelProperty(c) != null).ToArray();
+
+			foreach (var contentType in contentTypes)
+			{
+				var contentOfContentType = services.ContentService.GetContentOfContentType(contentType.Id).ToArray();
+				foreach (var content in contentOfContentType)
+				{
+					var formModel = GetFormModel(content);
+					if(formModel == null)
+					{
+						continue;
+					}
+					action(formModel, content);
+				}
+			}
 		}
 	}
 }

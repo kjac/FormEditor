@@ -37,7 +37,18 @@ Form Editor supports two different types of emails - notification emails (sent t
 
 You can choose separate email templates for notification and confirmation emails, or leave them blank if you don't want to support one or both types of emails. See [Email templates](emails.md) for more info.
 
-Form Editor uses the mail settings configured in the `<mailSettings>` section of web.config for sending emails.
+Form Editor uses the mail settings configured in the `<mailSettings>` section of web.config for sending emails. 
+
+*Tip:* If you don't have a mail server available for testing your email templates, you can write the emails to disk by using `specifiedPickupDirectory` as delivery method in the `<smtp>` configuration:
+
+```xml
+<mailSettings>
+  <smtp from="noreply@example.com" deliveryMethod="specifiedPickupDirectory">
+    <network host="127.0.0.1" userName="username" password="password" />
+    <specifiedPickupDirectory pickupDirectoryLocation="[absolute path to a folder under App_Data]" />
+  </smtp>
+</mailSettings>
+```
 
 ##### Tab order and availiability
 There are a lot of options with Form Editor, some of which you might not use or want your editors to be concerned with. These options are grouped in tabs within the property editor. You can decide the order of these tabs as well as disable the tabs you don't want available to your editors.
@@ -62,6 +73,29 @@ Since the Form Editor data type takes up a lot of space in the UI, you should co
 **Please note:** You can only have *one* Form Editor property per content type.
 
 **Please also note:** Due to backwards compatibility issues, you *cannot* put the Form Editor property in a content type composition. At least not for the time being.
+
+## Other configuration options
+
+### Automatic deletion of expired submissions
+In the light of the [GDPR](GDPR.md) and its call for controlling "Data retention periods", you can let the editors specify a maximum lifetime of the form submissions for each individual form. This option is automatically added to the *Submissions* tab, as soon as you have set up the [authentication of scheduled jobs](jobs.md) in the Form Editor configuration file:
+
+![Maximum submissions entry](img/max-submissions-entry.png)
+
+### Global search dashboard
+Designed specifically to help with [GDPR](GDPR.md) compliance, the "Global search" dashboard is installed into the developer section (both when installing with NuGet and with the Umbraco package). In case you loose this configuration, here's the XML you'll need to add to `dashboard.config` to bring it back again:
+
+```xml
+<section alias="FormEditorDashboardSection">
+  <areas>
+    <area>developer</area>
+  </areas>
+  <tab caption="Form Editor global search">
+    <control>
+      /App_Plugins/FormEditor/dashboard/dashboard.html
+    </control>
+  </tab>
+</section>
+```
 
 ## Next step
 Onwards to [Rendering the form](render.md).

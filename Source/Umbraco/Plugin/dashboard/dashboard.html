@@ -1,0 +1,65 @@
+<div class="umb-editor umb-listview form-editor-dashboard" ng-controller="FormEditor.Dashboard.Controller" ng-switch="dataState">
+  <h3>Form Editor global search</h3>
+  <p>
+    Here you can search for form submissions across every form in your site (to help you comply with the GDPR among other things).
+  </p>
+  <p>
+    Depending on the size of your site and the number of forms, it could take a little while to perform the search. 
+  </p>
+
+  <div class="search">
+    <input type="text" class="umb-editor" id="searchQuery" placeholder="Search for..." ng-model="model.searchQuery" form-editor-on-enter="search()" ng-disabled="working" no-dirty-check/>
+    <i class="icon icon-search" ng-class="{'icon-hourglass': dataState === 'loading'}"></i>
+  </div>
+
+  <div class="row-fluid" ng-switch-when="loading">
+    <div class="no-data dimmed">
+      Searching...
+    </div>
+  </div>
+
+  <div class="row-fluid" ng-switch-when="no-data">
+    <div class="no-data">
+      No submissions found
+    </div>
+  </div>
+
+  <div class="row-fluid" ng-switch-when="data">
+    <div class="form-data" ng-repeat="result in model.results">
+      <h4><a ng-href="/umbraco/#/content/content/edit/{{result.contentId}}" target="_blank">{{result.contentName}}</a></h4>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <td class="select">
+            <input type="checkbox" ng-click="selectAll(result.contentId)" ng-checked="allSelected(result.contentId)">
+          </td>
+          <td>
+            Date
+          </td>
+          <td ng-repeat="fieldName in result.fieldNames">
+            {{fieldName}}
+          </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in result.rows track by $index" ng-class="{selected:row.selected, loading: working}">
+          <td>
+            <input type="checkbox" ng-model="row.selected" no-dirty-check ng-click="$event.stopPropagation();">
+          </td>
+          <td class="date">
+            {{row.createdDate}}
+          </td>
+          <td ng-repeat="field in row.fields track by $index" ng-bind-html-unsafe="field.value"></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="form-data-tools" ng-show="hasSelection(result.contentId)">
+        <div class="btn-group">
+          <a class="btn btn-danger" ng-disabled="working" ng-click="deleteSelected(result.contentId)">
+            Delete selected
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

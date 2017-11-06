@@ -82,6 +82,13 @@
       $scope.actionInProgress = true;
       formEditorPropertyEditorResource.getData(editorState.current.id, page, $scope.model.sortField, $scope.model.sortDescending, $scope.model.searchQuery).then(function (data) {
 
+        if (data != null) {
+          $scope.supportsSearch = data.supportsSearch;
+          $scope.supportsStatistics = data.supportsStatistics;
+          $scope.supportsApproval = data.supportsApproval;
+          $scope.supportsExpiry = data.supportsExpiry;          
+        }
+
         if (data == null || data.rows == null || data.rows.length == 0) {
           $scope.model.data = null;
           $scope.dataState = $scope.model.searchQuery ? $scope.dataState : "no-data";
@@ -119,9 +126,6 @@
           data.pages.push(i);
         }
 
-        $scope.supportsSearch = data.supportsSearch;
-        $scope.supportsStatistics = data.supportsStatistics;
-        $scope.supportsApproval = data.supportsApproval;
         $scope.actionInProgress = false;
         $scope.dataState = "data";
         $scope.model.data = data;

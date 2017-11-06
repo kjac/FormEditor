@@ -73,6 +73,7 @@ namespace FormEditor
 		public bool DisallowMultipleSubmissionsPerUser { get; set; }
 		public string MaxSubmissionsForCurrentUserExceededHeader { get; set; }
 		public string MaxSubmissionsForCurrentUserExceededText { get; set; }
+		public int? DaysBeforeSubmissionExpiry { get; set; }
 
 		#endregion
 
@@ -279,6 +280,25 @@ namespace FormEditor
 				// using ValidateSubmittedValue to load up select boxes
 				field.ValidateSubmittedValue(fields, content);
 			}
+		}
+
+		public void RemoveValues(Guid rowId)
+		{
+			if (RequestedContent == null)
+			{
+				return;
+			}
+			RemoveValues(RequestedContent, rowId);
+		}
+
+		public void RemoveValues(IPublishedContent content, Guid rowId)
+		{
+			if (rowId == Guid.Empty)
+			{
+				return;
+			}
+			var index = IndexHelper.GetIndex(content.Id);
+			index.Remove(new[] {rowId});
 		}
 
 		public IEnumerable<Field> AllFields()

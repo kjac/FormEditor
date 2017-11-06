@@ -5,6 +5,9 @@ namespace FormEditor.Fields
 {
 	public class LinkField : Field
 	{
+		// local cache for multiple in-request access to the Page propery
+		private IPublishedContent _page;
+
 		public override string Type => "core.link";
 
 		public override string PrettyName => "Link";
@@ -23,7 +26,12 @@ namespace FormEditor.Fields
 				{
 					return null;
 				}
-				return UmbracoContext.Current.ContentCache.GetById(PageId);
+				if (_page != null)
+				{
+					return _page;
+				}
+				_page = UmbracoContext.Current.ContentCache.GetById(PageId);
+				return _page;
 			}
 		}
 	}
