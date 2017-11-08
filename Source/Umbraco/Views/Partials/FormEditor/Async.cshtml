@@ -113,7 +113,7 @@
                 @Umbraco.Coalesce(form.ValidationsHeader, Umbraco.GetDictionaryValue("form.validationerrors.header"), "The form contains errors")
               </h4>
               <ul id="validationErrorsList">
-                <li ng-repeat="validation in invalidValidations">{{validation.errorMessage}}</li>
+                <li ng-repeat="validation in invalidValidations" ng-bind-html="trustAsHtml(validation.errorMessage)"></li>
               </ul>
             </div>
           </div>

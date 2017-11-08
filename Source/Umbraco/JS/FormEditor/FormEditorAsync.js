@@ -1,5 +1,5 @@
 ﻿angular.module("formEditor", [])
-  .controller("FormController", ["$scope", "$filter", "$http", "$window", "$timeout", "$q", function ($scope, $filter, $http, $window, $timeout, $q) {
+  .controller("FormController", ["$scope", "$filter", "$http", "$window", "$timeout", "$q", "$sce", function ($scope, $filter, $http, $window, $timeout, $q, $sce) {
     $scope.formData = {};
     $scope.fileData = {};
 
@@ -278,6 +278,10 @@
             break;
         }
       });
+    }
+
+    $scope.trustAsHtml = function (html) {
+        return $sce.trustAsHtml(html);
     }
 
     // form paging
