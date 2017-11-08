@@ -5,15 +5,9 @@ namespace FormEditor.Fields
 {
 	public class ImageField : Field
 	{
-		public override string Type
-		{
-			get { return "core.image"; }
-		}
+		public override string Type => "core.image";
 
-		public override string PrettyName
-		{
-			get { return "Image"; }
-		}
+		public override string PrettyName => "Image";
 
 		public string Text { get; set; }
 

@@ -25,9 +25,9 @@ namespace FormEditor.Api
 	public class PropertyEditorController : UmbracoAuthorizedJsonController
 	{
 		// cache the known field types in memory
-		private static List<Field> _fieldTypes = null;
+		private static List<Field> _fieldTypes;
 		// cache the known condition types in memory
-		private static List<Condition> _conditionTypes = null;
+		private static List<Condition> _conditionTypes;
 
 		public object GetAllFieldTypes()
 		{
@@ -166,19 +166,27 @@ namespace FormEditor.Api
 
 		public object GetData(int id, int page, string sortField, bool sortDescending, string searchQuery = null)
 		{
-
 			// NOTE: this is fine for now, but eventually make it should probably be configurable
 			const int PerPage = 10;
+
+			// by default (e.g. for newly created forms that have no index yet) we'll assume the index will support expiry if the jobs configuration has been setup
+			var supportsExpiry = FormEditor.Configuration.Instance.Jobs != null;
 
 			var document = ContentHelper.GetById(id);
 			if (document == null)
 			{
-				return null;
+				return new
+				{
+					supportsExpiry = supportsExpiry
+				};
 			}
 			var model = ContentHelper.GetFormModel(document);
 			if (model == null)
 			{
-				return null;
+				return new
+				{
+					supportsExpiry = supportsExpiry
+				};
 			}
 
 			var preValues = ContentHelper.GetPreValues(document, FormModel.PropertyEditorAlias);
@@ -220,7 +228,9 @@ namespace FormEditor.Api
 				sortDescending = result.SortDescending,
 				supportsSearch = fullTextIndex != null,
 				supportsStatistics = statisticsEnabled && index is IStatisticsIndex && allFields.StatisticsFields().Any(),
-				supportsApproval = approvalEnabled && index is IApprovalIndex
+				supportsApproval = approvalEnabled && index is IApprovalIndex,
+				// the form supports expiry only if the index is of type IAutomationIndex
+				supportsExpiry = supportsExpiry && index is IAutomationIndex
 			};
 		}
 
@@ -250,13 +260,12 @@ namespace FormEditor.Api
 				return null;
 			}
 
-			var index = IndexHelper.GetIndex(id) as IStatisticsIndex;
-			if(index == null)
+			if(!(IndexHelper.GetIndex(id) is IStatisticsIndex statisticsIndex))
 			{
 				return null;
 			}
 
-			var fieldValueFrequencyStatistics = index.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
+			var fieldValueFrequencyStatistics = statisticsIndex.GetFieldValueFrequencyStatistics(statisticsFields.StatisticsFieldNames());
 
 			return new
 			{
@@ -284,8 +293,7 @@ namespace FormEditor.Api
 		[HttpPut]
 		public object SetApprovalState(int id, SetApprovalStateRequest request)
 		{
-			var index = IndexHelper.GetIndex(id) as IApprovalIndex;
-			if(index != null && index.SetApprovalState(request.ApprovalState, request.RowId))
+			if(IndexHelper.GetIndex(id) is IApprovalIndex approvalIndex && approvalIndex.SetApprovalState(request.ApprovalState, request.RowId))
 			{
 				return new
 				{

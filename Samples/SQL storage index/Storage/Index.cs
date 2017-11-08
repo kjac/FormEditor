@@ -14,7 +14,7 @@ namespace FormEditor.SqlIndex.Storage
 	// custom Form Editor index that stores form entries to DB.
 	// this is a working sample of how a custom index could be created. you may want to tweak it to suit your needs.
 	// see IIndex for the interface documentation.
-	public class Index : IIndex
+	public class Index : IIndex, IFullTextIndex, IAutomationIndex
 	{
 		private readonly int _contentId;
 
@@ -77,21 +77,32 @@ namespace FormEditor.SqlIndex.Storage
 
 		public Result Get(string sortField, bool sortDescending, int count, int skip)
 		{
-			// the field values were serialized into one column when they were added to the index, so we
-			// can't sort on sortField. instead we'll sort on Id DESC so we always return the newest entries first.
-			var pageNumber = (skip / count) + 1;
-			var page = GetPage(pageNumber, count);
+			return GetResult(count, skip);
+		}
 
-			var rows = page != null & page.Items.Any()
+		public Result Search(string searchQuery, string[] searchFields, string sortField, bool sortDescending, int count, int skip)
+		{
+			return GetResult(count, skip, searchQuery);
+		}
+
+		private Result GetResult(int count, int skip, string query = null)
+		{
+			var pageNumber = (skip / count) + 1;
+			var page = GetPage(pageNumber, count, query);
+
+			var rows = page != null && page.Items.Any()
 				? page.Items.Select(ToFormRow).Where(r => r != null).ToList()
 				: new List<StorageRow>();
 
-			return new Result((int)page.TotalItems, rows, "Id", true);
+			return new Result(page != null ? (int)page.TotalItems : 0, rows, "Id", true);
 		}
 
-		private Page<Entry> GetPage(int pageNumber, int count)
+		private Page<Entry> GetPage(int pageNumber, int count, string query = null)
 		{
-			return Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 ORDER BY Id DESC", _contentId);
+			// the field values were serialized into one column when they were added to the index, so we
+			// can't sort on sortField. instead we'll sort on Id DESC so we always return the newest entries first.
+			// full text search is likewise kinda lo-fi with a LIKE match on the serialized field values.
+			return Database.Page<Entry>(pageNumber, count, "WHERE ContentId=@0 AND (@1 = '' OR FieldValues LIKE @1) ORDER BY Id DESC", _contentId, string.IsNullOrEmpty(query) ? string.Empty : $"%{query.Trim('%')}%");
 		}
 
 		public Stream GetFile(string filename, Guid rowId)
@@ -140,9 +151,11 @@ namespace FormEditor.SqlIndex.Storage
 			return (int)page.TotalItems;
 		}
 
-		private Database Database
+		public void RemoveOlderThan(DateTime date)
 		{
-			get { return UmbracoContext.Current.Application.DatabaseContext.Database; }
+			Database.Delete<Entry>("WHERE ContentId=@0 AND CreatedDate<@1", _contentId, date);
 		}
+
+		private Database Database => UmbracoContext.Current.Application.DatabaseContext.Database;
 	}
 }

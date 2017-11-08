@@ -20,16 +20,13 @@ namespace FormEditor.Fields
 
 		protected abstract void HandleSubscription(MailAddress mailAddress, IEnumerable<Field> allCollectedValues, IPublishedContent content);
 
-		public override string PrettyName
-		{
-			get { return "Newsletter subscription"; }
-		}
+		public override string PrettyName => "Newsletter subscription";
 
 		public bool Selected { get; set; }
 
 		protected internal override string FormatValueForDataView(string value, IContent content, Guid rowId)
 		{
-			return string.Format(@"<i class=""icon icon-checkbox{0}""></i>", value == "true" ? string.Empty : "-empty");
+			return $@"<i class=""icon icon-checkbox{(value == "true" ? string.Empty : "-empty")}""></i>";
 		}
 
 		public override string SubmittedValueForEmail()
@@ -57,7 +54,7 @@ namespace FormEditor.Fields
 			}
 
 			var emailField = allCollectedValues.OfType<EmailField>().FirstOrDefault();
-			var mailAddress = emailField != null ? emailField.GetSubmittedMailAddresses().FirstOrDefault() : null;
+			var mailAddress = emailField?.GetSubmittedMailAddresses().FirstOrDefault();
 			if(mailAddress == null)
 			{
 				return;
@@ -74,13 +71,7 @@ namespace FormEditor.Fields
 			}
 		}
 
-		public override bool CanBeAddedToForm
-		{
-			get
-			{
-				return HasValidConfiguration();
-			}
-		}
+		public override bool CanBeAddedToForm => HasValidConfiguration();
 
 		private bool HasValidConfiguration()
 		{
@@ -89,13 +80,7 @@ namespace FormEditor.Fields
 		}
 
 		[JsonIgnore]
-		public string ApiKey
-		{
-			get
-			{
-				return ConfigurationManager.AppSettings[ApiKeyAppSettingsKey];
-			}
-		}
+		public string ApiKey => ConfigurationManager.AppSettings[ApiKeyAppSettingsKey];
 
 		[JsonIgnore]
 		// we're using a backing property here to allow custom code to set a different list ID
@@ -109,10 +94,7 @@ namespace FormEditor.Fields
 				}
 				return _listId;
 			}
-			set
-			{
-				_listId = value;
-			}
+			set => _listId = value;
 		}
 	}
 }

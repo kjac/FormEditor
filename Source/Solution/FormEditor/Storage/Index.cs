@@ -19,7 +19,7 @@ using Version = Lucene.Net.Util.Version;
 
 namespace FormEditor.Storage
 {
-	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex, IApprovalIndex
+	public class Index : IIndex, IFullTextIndex, IStatisticsIndex, IUpdateIndex, IApprovalIndex, IAutomationIndex
 	{
 		private readonly int _contentId;
 		private LuceneDirectory _indexDirectory;
@@ -59,8 +59,8 @@ namespace FormEditor.Storage
 			var doc = new Document();
 
 			doc.Add(new LuceneField(IdField, rowId.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(CreatedField, created.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
-			doc.Add(new LuceneField(UpdatedField, updated.ToString(DateTimeFormat, CultureInfo.InvariantCulture), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(CreatedField, FormatDate(created), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
+			doc.Add(new LuceneField(UpdatedField, FormatDate(updated), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 			doc.Add(new LuceneField(ApprovalField, ApprovalState.Undecided.ToString(), LuceneField.Store.YES, LuceneField.Index.NOT_ANALYZED));
 
 			foreach (var field in fields)
@@ -129,6 +129,16 @@ namespace FormEditor.Storage
 				writer.DeleteDocuments(new Term(IdField, rowId.ToString()));
 				writer.Optimize();
 			}
+		}
+
+		public void RemoveOlderThan(DateTime date)
+		{
+			var writer = GetIndexWriter();
+			var query = new TermRangeQuery(UpdatedField, null, FormatDate(date), includeLower:false, includeUpper:false);
+
+			writer.DeleteDocuments(query);
+			writer.Optimize();
+			writer.Close();
 		}
 
 		public Row Get(Guid rowId)
@@ -295,7 +305,7 @@ namespace FormEditor.Storage
 			searcher.Close();
 			reader.Close();
 
-			return new Result(scoreDocs.Count(), rows, sortField, sortDescending);
+			return new Result(scoreDocs.Length, rows, sortField, sortDescending);
 		}
 
 		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
@@ -439,12 +449,12 @@ namespace FormEditor.Storage
 
 		private static string FieldNameForSorting(string fieldName)
 		{
-			return string.Format("{0}_sort", fieldName);
+			return $"{fieldName}_sort";
 		}
 
 		private static string FieldNameForStatistics(string fieldName)
 		{
-			return string.Format("{0}_stats", fieldName);
+			return $"{fieldName}_stats";
 		}
 
 		private static Analyzer GetAnalyzer()
@@ -464,7 +474,7 @@ namespace FormEditor.Storage
 
 		private DirectoryInfo PathToFormStorage()
 		{
-			return new DirectoryInfo(HostingEnvironment.MapPath(string.Format("/App_Data/FormEditor/{0}", _contentId)));
+			return new DirectoryInfo(HostingEnvironment.MapPath($"/App_Data/FormEditor/{_contentId}"));
 		}
 
 		private DirectoryInfo PathToIndex()
@@ -496,6 +506,11 @@ namespace FormEditor.Storage
 			{
 				Log.Error(ex, "Could not delete file upload directory: {0}", filesPath);
 			}
+		}
+
+		private string FormatDate(DateTime date)
+		{
+			return date.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
 		}
 	}
 }

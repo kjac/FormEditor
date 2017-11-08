@@ -34,16 +34,10 @@ namespace FormEditor.Fields
 			return true;
 		}
 
-		public virtual bool IsMultiSelectEnabled
-		{
-			get { return false; }
-		}
+		public virtual bool IsMultiSelectEnabled => false;
 
 		[JsonIgnore]
-		public IEnumerable<string> SubmittedValues
-		{
-			get { return ExtractSubmittedValues(); }
-		}
+		public IEnumerable<string> SubmittedValues => ExtractSubmittedValues();
 
 		private string[] ExtractSubmittedValues()
 		{
@@ -54,9 +48,6 @@ namespace FormEditor.Fields
 				: new string[] {};
 		}
 
-		public virtual bool MultipleValuesPerEntry
-		{
-			get { return IsMultiSelectEnabled; }
-		}
+		public virtual bool MultipleValuesPerEntry => IsMultiSelectEnabled;
 	}
 }

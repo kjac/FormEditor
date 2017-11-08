@@ -1,0 +1,53 @@
+<div class="umb-panel form-editor-edit-field" ng-controller="FormEditor.Editor.FieldController">
+  <div class="umb-panel-body no-header with-footer umb-scrollable">
+    <div class="umb-control-group">
+      <div class="tab-content form umb-el-wrap">
+        <form-editor-field-header></form-editor-field-header>
+
+        <!-- TODO: new texts and localization -->
+
+        <div class="umb-pane">
+          <form-editor-field-name></form-editor-field-name>
+          
+          <form-editor-field-label></form-editor-field-label>
+
+          <label class="control-label" for="consentText">
+            <form-editor-localize key="edit.consent.consentText">Consent text</form-editor-localize>
+            <small form-editor-localize key="edit.consent.consentText.helpText">Describe the form specific terms the users should consent to</small>
+          </label>
+          <textarea id="consentText" ng-model="dialogData.field.consentText" style="width:320px;height:250px;"></textarea>
+
+          <label class="control-label">
+            <form-editor-localize key="edit.consent.linkText">Privacy policy page link</form-editor-localize>
+            <small form-editor-localize key="edit.consent.linkPage.helpText">Choose the page that outlines your privacy poliy</small>
+          </label>
+
+          <div class="controls controls-row">
+            <ul class="unstyled list-icons page-selector">
+              <li ng-show="dialogData.page == null">
+                <i class="icon icon-add blue" />
+                <a href ng-click="pickPage()" form-editor-localize key="edit.link.select">Select...</a>
+              </li>
+              <li ng-show="dialogData.page != null">
+                <i class="{{dialogData.page.cssClass}}" />
+                <a href ng-click="pickPage()">
+                  {{dialogData.page.name}}
+                </a>
+                <i class="icon icon-delete dimmed" ng-click="removePage()" />
+              </li>
+            </ul>
+          </div>
+
+          <label class="control-label" for="linkText">
+            <small form-editor-localize key="edit.consent.linkText.helpText">Enter the text for the page link</small>
+          </label>
+          <input type="text" id="linkText" autofocus ng-model="dialogData.field.linkText" />
+
+          <form-editor-field-error-message></form-editor-field-error-message>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form-editor-field-footer></form-editor-field-footer>
+</div>

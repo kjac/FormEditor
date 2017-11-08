@@ -12,9 +12,9 @@ namespace FormEditor.Events
 		}
 
 		// the mail that's being sent
-		public MailMessage MailMessage { get; private set; }
+		public MailMessage MailMessage { get; }
 
 		// the type of mail - "confirmation" or "notification"
-		public string EmailType { get; private set; }
+		public string EmailType { get; }
 	}
 }

@@ -5,12 +5,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Umbraco.Core;
-using Umbraco.Core.Configuration;
 using Umbraco.Core.Models;
-using Umbraco.Web;
-using Umbraco.Web.Routing;
-using Umbraco.Web.Security;
 
 namespace FormEditor
 {
@@ -33,6 +28,7 @@ namespace FormEditor
 			var writer = new StringWriter();
 			var context = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
+			routeData.Values["controller"] = nameof(FakeController);
 			var controllerContext = new ControllerContext(new RequestContext(context, routeData), new FakeController());
 			var razor = new RazorView(controllerContext, viewPath, null, false, null);
 			var viewData = new ViewDataDictionary(model);

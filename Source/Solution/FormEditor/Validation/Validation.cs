@@ -12,6 +12,7 @@ namespace FormEditor.Validation
 		public virtual bool Invalid { get; set; }
 
 		public IEnumerable<Rule> Rules { get; set; }
+
 		public string ErrorMessage { get; set; }
 
 		public bool IsValidFor(IEnumerable<FieldWithValue> allCollectedFieldValues, IPublishedContent content)

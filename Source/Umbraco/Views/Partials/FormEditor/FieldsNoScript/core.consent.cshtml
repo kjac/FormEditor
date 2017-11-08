@@ -1,0 +1,21 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.ConsentField>
+<div class="form-group required @(Model.Invalid ? "has-error" : null) consent">
+  
+  <div class="text">
+    @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(Model.ConsentText))
+  </div>
+  
+  @if (string.IsNullOrWhiteSpace(Model.LinkText) == false && Model.Page != null)
+  {
+    <div class="link">
+      <a href="@Model.Page.Url" target="_blank">@Model.LinkText</a>      
+    </div>
+  }
+
+  <label class="checkbox">
+    <input type="checkbox" name="@Model.FormSafeName" value="true" required oninvalid='setCustomValidity("@HttpUtility.JavaScriptStringEncode(Model.ErrorMessage)");' onchange='setCustomValidity("")'/>
+    @Model.Label
+  </label>
+
+  @Html.Partial("FormEditor/FieldsNoScript/core.utils.validationerror")    
+</div>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <info>
+    <package>
+      <name><%= name %></name>
+      <version><%= version %></version>
+      <license url="<%= licenseUrl %>"><%= license %></license>
+      <url><%= url %></url>
+      <requirements>
+        <major>0</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name><%= author %></name>
+      <website><%= authorUrl %></website>
+    </author>
+    <readme><%= readme %></readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+  <control />
+  <Actions>
+    <Action runat="install" undo="true" alias="addDashboardSection" dashboardAlias="FormEditorDashboardSection">
+      <section>
+        <areas>
+          <area>developer</area>
+        </areas>
+        <tab caption="Form Editor global search">
+          <control>
+            /App_Plugins/FormEditor/dashboard/dashboard.html
+          </control>
+        </tab>
+      </section>
+    </Action>
+  </Actions>
+  <files><% files.forEach(function(file) { %>
+  	<file>
+      <guid><%= file.guid %></guid>
+      <orgPath><%= file.dir %></orgPath>
+      <orgName><%= file.name %></orgName>
+    </file><% }); %>
+  </files>
+</umbPackage>

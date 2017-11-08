@@ -15,7 +15,7 @@ namespace FormEditor
 
 		public static string FormSafeName(string name)
 		{
-			return string.Format("_{0}", FormSafeNameRegex.Replace(name ?? string.Empty, "_"));
+			return $"_{FormSafeNameRegex.Replace(name ?? string.Empty, "_")}";
 		}
 
 		[Obsolete("This method will be removed in an upcoming release")]

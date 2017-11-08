@@ -2,31 +2,19 @@
 {
 	public class CustomFieldFixedValues : FieldWithFieldValues
 	{
-		private readonly string _type;
-		private readonly string _prettyName;
-
 		public CustomFieldFixedValues(string type, string prettyName)
 		{
-			_type = type;
-			_prettyName = prettyName;
+			Type = type;
+			PrettyName = prettyName;
 
 			// default values
 			FieldValues = new FieldValue[] {};
 		}
 
-		public override string Type
-		{
-			get { return _type; }
-		}
+		public override string Type { get; }
 
-		public override string PrettyName
-		{
-			get { return _prettyName; }
-		}
+		public override string PrettyName { get; }
 
-		public override string View
-		{
-			get { return @"core.customfieldfixedoptions.html"; }
-		}
+		public override string View => @"core.customfieldfixedoptions.html";
 	}
 }

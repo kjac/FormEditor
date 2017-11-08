@@ -139,6 +139,9 @@
         if (value instanceof Date) {
           data.append(key, value.toISOString());
         }
+        else if (value instanceof Object) {
+          data.append(key, JSON.stringify(value));
+        }
         else {
           data.append(key, value);
         }

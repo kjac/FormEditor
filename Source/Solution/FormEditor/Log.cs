@@ -26,7 +26,7 @@ namespace FormEditor
 			var id = UmbracoContext.Current != null && UmbracoContext.Current.PublishedContentRequest != null
 				? UmbracoContext.Current.PublishedContentRequest.PublishedContent.Id.ToString()
 				: "n/a";
-			return string.Format("{0} (requested content ID: {1})", args == null || args.Length == 0 ? message : string.Format(message, args), id);
+			return $"{(args == null || args.Length == 0 ? message : string.Format(message, args))} (requested content ID: {id})";
 		}
 	}
 }

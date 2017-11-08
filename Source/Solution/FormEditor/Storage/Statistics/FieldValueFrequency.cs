@@ -8,8 +8,8 @@ namespace FormEditor.Storage.Statistics
 			Frequency = frequency;
 		}
 
-		public string Value { get; private set; }
+		public string Value { get; }
 
-		public int Frequency { get; private set; }
+		public int Frequency { get; }
 	}
 }

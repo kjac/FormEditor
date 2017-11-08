@@ -11,15 +11,12 @@ namespace FormEditor.Fields
 			Min = 0;
 			Max = 100;
 		}
-		public override string PrettyName
-		{
-			get { return "Number"; }
-		}
-		public override string Type
-		{
-			get { return "core.number"; }
-		}
+		public override string PrettyName => "Number";
+
+		public override string Type => "core.number";
+
 		public int Min { get; set; }
+
 		public int Max { get; set; }
 
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
@@ -32,12 +29,11 @@ namespace FormEditor.Fields
 			{
 				return true;
 			}
-			int temp;
-			if (int.TryParse(SubmittedValue, out temp) == false)
+			if (int.TryParse(SubmittedValue, out var toValidate) == false)
 			{
 				return false;
 			}
-			return temp >= Min && temp <= Max;
+			return toValidate >= Min && toValidate <= Max;
 		}
 	}
 }

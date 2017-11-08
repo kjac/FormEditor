@@ -49,6 +49,12 @@ module.exports = function (grunt) {
           { expand: true, cwd: "<%= umbracoPluginDir %>config/", src: ["**"], dest: "<%= targetPluginDir %>config/", filter: "isFile" }
         ],
       },
+      // - all dashboard views 
+      dashboardViews: {
+        files: [
+          { expand: true, cwd: "<%= umbracoPluginDir %>dashboard/", src: ["**"], dest: "<%= targetPluginDir %>dashboard/", filter: "isFile" }
+        ],
+      },
       // - project output dll
       bin: {
         files: [
@@ -89,13 +95,12 @@ module.exports = function (grunt) {
         files: [
           { expand: true, cwd: "<%= targetDir %>", src: ["**/*", "!bin", "!bin/*"], dest: "temp/NuGet/content" },
           { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGet/lib/net40" },
-          { expand: true, src: ["package.nuspec"], dest: "temp/NuGet/" }
+          { expand: true, cwd: "Assets", src: ["*.xdt"], dest: "temp/NuGet/content/Config" }
         ]
       } : {},
       nugetBin: isPackage ? {
         files: [
-          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGetBin/lib/net40" },
-          { expand: false, src: ["package.nuspec"], dest: "temp/NuGetBin/" }
+          { expand: true, cwd: "<%= targetDir %>/bin", src: ["*.dll"], dest: "temp/NuGetBin/lib/net40" }
         ]
       } : {},
     },
@@ -142,6 +147,10 @@ module.exports = function (grunt) {
         files: ["<%= copy.configViews.files[0].cwd %><%= copy.configViews.files[0].src %>"],
         tasks: ["copy:configViews"]
       },
+      dashboardViews: {
+        files: ["<%= copy.dashboardViews.files[0].cwd %><%= copy.dashboardViews.files[0].src %>"],
+        tasks: ["copy:dashboardViews"]
+      },
       bin: {
         files: ["<%= copy.bin.files[0].cwd %><%= copy.bin.files[0].src %>"],
         tasks: ["copy:bin"]
@@ -184,7 +193,7 @@ module.exports = function (grunt) {
         stdout: true,
         verbosity: "quiet",
         maxCpuCount: 4,
-        version: 4.0,
+        version: 15,
         buildParameters: {
           WarningLevel: 2,
           NoWarn: 1607
@@ -223,7 +232,8 @@ module.exports = function (grunt) {
           licenseUrl: "https://opensource.org/licenses/MIT",
           author: "Kenn Jacobsen",
           authorUrl: "http://our.umbraco.org/member/25455",
-          readme: "See https://github.com/kjac/FormEditor for documentation."
+          readme: "See https://github.com/kjac/FormEditor for documentation.",
+          manifest: "Assets/UmbracoPackageManifest.xml"
         }
       }
     },
@@ -237,7 +247,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          "temp/NuGet/package.nuspec": ["package.nuspec"]
+          "temp/NuGet/package.nuspec": ["Assets/package.nuspec"]
         }
       },
       bin: {
@@ -249,7 +259,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          "temp/NuGetBin/package.nuspec": ["package.nuspec"]
+          "temp/NuGetBin/package.nuspec": ["Assets/package.nuspec"]
         }
       }
     },

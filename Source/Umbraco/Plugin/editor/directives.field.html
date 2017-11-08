@@ -16,14 +16,18 @@
   </div>
 </script>
 
-<script type="text/ng-template" id="formEditor.fieldBasics.html">
-  <form-editor-field-name></form-editor-field-name>
-
+<script type="text/ng-template" id="formEditor.fieldLabel.html">
   <label class="control-label" for="label">
     <form-editor-localize key="edit.label">Label</form-editor-localize>
     <small form-editor-localize key="edit.label.helpText">The field label shown to the users</small>
   </label>
   <input type="text" id="label" ng-model="dialogData.field.label" />
+</script>
+
+<script type="text/ng-template" id="formEditor.fieldBasics.html">
+  <form-editor-field-name></form-editor-field-name>
+
+  <form-editor-field-label></form-editor-field-label>
 
   <label class="control-label" for="helpText">
     <form-editor-localize key="edit.helpText">Help text</form-editor-localize>

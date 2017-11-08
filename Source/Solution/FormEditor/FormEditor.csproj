@@ -256,7 +256,9 @@
   <ItemGroup>
     <Compile Include="AntiForgeryHelper.cs" />
     <Compile Include="Api\CsvExport.cs" />
+    <Compile Include="Api\DashboardController.cs" />
     <Compile Include="Api\DownloadController.cs" />
+    <Compile Include="Api\JobsController.cs" />
     <Compile Include="Api\PublicController.cs" />
     <Compile Include="ApprovalState.cs" />
     <Compile Include="Cell.cs" />
@@ -268,6 +270,7 @@
     <Compile Include="Events\FormEditorMailCancelEventArgs.cs" />
     <Compile Include="Events\FormEditorMailCancelEventHandler.cs" />
     <Compile Include="Fields\CampaignMonitorSubscriptionField.cs" />
+    <Compile Include="Fields\ConsentField.cs" />
     <Compile Include="Fields\IDefaultSelectableField.cs" />
     <Compile Include="Fields\InvisibleReCaptchaField.cs" />
     <Compile Include="Fields\MailChimpSubscriptionField.cs" />
@@ -334,6 +337,7 @@
     <Compile Include="Row.cs" />
     <Compile Include="SerializationHelper.cs" />
     <Compile Include="Storage\IApprovalIndex.cs" />
+    <Compile Include="Storage\IAutomationIndex.cs" />
     <Compile Include="Storage\IFullTextIndex.cs" />
     <Compile Include="Storage\IndexHelper.cs" />
     <Compile Include="Storage\IIndex.cs" />

@@ -5,15 +5,9 @@ namespace FormEditor
 {
 	public static class SerializationHelper
 	{
-		public static IContractResolver ContractResolver
-		{
-			get { return new CamelCasePropertyNamesContractResolver(); }
-		}
+		public static IContractResolver ContractResolver => new CamelCasePropertyNamesContractResolver();
 
-		public static TypeNameHandling TypeNameHandling
-		{
-			get { return TypeNameHandling.Auto; }
-		}
+		public static TypeNameHandling TypeNameHandling => TypeNameHandling.Auto;
 
 		public static FormModel DeserializeFormModel(string json)
 		{
@@ -30,17 +24,11 @@ namespace FormEditor
 				: FormatJson(JsonConvert.SerializeObject(formModel, SerializerSettings));
 		}
 
-		public static JsonSerializerSettings SerializerSettings
+		public static JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
 		{
-			get
-			{
-				return new JsonSerializerSettings
-				{
-					TypeNameHandling = TypeNameHandling,
-					ContractResolver = ContractResolver
-				};
-			}
-		}
+			TypeNameHandling = TypeNameHandling,
+			ContractResolver = ContractResolver
+		};
 
 		internal static string FormatJson(string json)
 		{

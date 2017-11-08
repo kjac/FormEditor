@@ -71,16 +71,12 @@ namespace FormEditor.Rendering
 
 		public static List<FieldData> ForFrontEnd(this IEnumerable<FieldWithValue> fields)
 		{
-			return fields != null 
-				? fields.Select(ToFieldData).ToList()
-				: new List<FieldData>();
+			return fields?.Select(ToFieldData).ToList() ?? new List<FieldData>();
 		}
 
 		public static List<FieldData> ForFrontEnd(this IEnumerable<Field> fields)
 		{
-			return fields != null
-				? fields.Select(ToFieldData).ToList()
-				: new List<FieldData>();
+			return fields?.Select(ToFieldData).ToList() ?? new List<FieldData>();
 		}
 
 		public static IHtmlString Render(this IEnumerable<FieldWithValue> fields)
@@ -100,14 +96,12 @@ namespace FormEditor.Rendering
 			{
 				return true;
 			}
-			var fieldWithFieldValues = field as FieldWithFieldValues;
-			return fieldWithFieldValues != null && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
+			return field is FieldWithFieldValues fieldWithFieldValues && fieldWithFieldValues.FieldValues.Any(f => f.Selected);
 		}
 
 		public static IHtmlString DefaultValue(this FieldWithValue field)
 		{
-			var defaultSelectableField = field as IDefaultSelectableField;
-			if(defaultSelectableField != null)
+			if(field is IDefaultSelectableField defaultSelectableField)
 			{
 				return new HtmlString(defaultSelectableField.Selected ? "true" : "undefined");
 			}
@@ -116,21 +110,21 @@ namespace FormEditor.Rendering
 			{
 				if(field is DateField)
 				{
-					return new HtmlString(string.Format("new Date(\"{0}\")", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
+					return new HtmlString($"new Date(\"{HttpUtility.JavaScriptStringEncode(field.SubmittedValue)}\")");
 				}
 				if(fieldWithFieldValues != null)
 				{
 					if (fieldWithFieldValues.IsMultiSelectEnabled)
 					{
-						return new HtmlString(string.Format("[{0}]", string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))));
+						return new HtmlString($"[{string.Join(",", fieldWithFieldValues.SubmittedValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v) + "\""))}]");
 					}
 					return new HtmlString(
 						fieldWithFieldValues.SubmittedValues.Any()
-							? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(fieldWithFieldValues.SubmittedValues.First()))
+							? $"\"{HttpUtility.JavaScriptStringEncode(fieldWithFieldValues.SubmittedValues.First())}\""
 							: "undefined"
 					);
 				}
-				return new HtmlString(string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(field.SubmittedValue)));
+				return new HtmlString($"\"{HttpUtility.JavaScriptStringEncode(field.SubmittedValue)}\"");
 			}
 			if (fieldWithFieldValues == null)
 			{
@@ -139,11 +133,11 @@ namespace FormEditor.Rendering
 			var defaultValues = fieldWithFieldValues.FieldValues.Where(f => f.Selected).ToArray();
 			if (fieldWithFieldValues.IsMultiSelectEnabled)
 			{
-				return new HtmlString(string.Format("[{0}]", string.Join(",", defaultValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v.Value) + "\""))));
+				return new HtmlString($"[{string.Join(",", defaultValues.Select(v => "\"" + HttpUtility.JavaScriptStringEncode(v.Value) + "\""))}]");
 			}
 			return new HtmlString(
 				defaultValues.Any()
-					? string.Format("\"{0}\"", HttpUtility.JavaScriptStringEncode(defaultValues.First().Value))
+					? $"\"{HttpUtility.JavaScriptStringEncode(defaultValues.First().Value)}\""
 					: "undefined"
 			);
 		}
@@ -168,13 +162,11 @@ namespace FormEditor.Rendering
 
 		private static FieldData ToFieldData(Field f)
 		{
-			var fieldWithValue = f as FieldWithValue;
-			if(fieldWithValue != null)
+			if(f is FieldWithValue fieldWithValue)
 			{
 				return ToFieldData(fieldWithValue);
 			}
-			var fieldWithValidation = f as IFieldWithValidation;
-			return fieldWithValidation != null
+			return f is IFieldWithValidation fieldWithValidation
 				? new FieldData
 				{
 					Name = fieldWithValidation.Name,
@@ -185,29 +177,21 @@ namespace FormEditor.Rendering
 				: new FieldData();
 		}
 
-		public static JsonSerializerSettings SerializerSettings
+		public static JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
 		{
-			get
-			{
-				return new JsonSerializerSettings
-				{
-					TypeNameHandling = TypeNameHandling.None,
-					ContractResolver = SerializationHelper.ContractResolver
-				};
-			}
-		}
+			TypeNameHandling = TypeNameHandling.None,
+			ContractResolver = SerializationHelper.ContractResolver
+		};
 
 		public static string LabelOrName(this FieldWithValue field)
 		{
-			var fieldWithLabel = field as FieldWithLabel;
-			return fieldWithLabel != null ? fieldWithLabel.Label : field.Name;			
+			return field is FieldWithLabel fieldWithLabel ? fieldWithLabel.Label : field.Name;			
 		}
 
 		public static string AntiForgeryToken(this FormModel model)
 		{
-			string cookieToken, formToken;
-			AntiForgery.GetTokens(null, out cookieToken, out formToken);
-			return string.Format("{0}:{1}", cookieToken, formToken);
+			AntiForgery.GetTokens(null, out var cookieToken, out var formToken);
+			return $"{cookieToken}:{formToken}";
 		}
 	}
 }

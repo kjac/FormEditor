@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dashBoard xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <section alias="FormEditorDashboardSection" xdt:Locator="Match(alias)" xdt:Transform="InsertIfMissing">
+    <areas>
+      <area>developer</area>
+    </areas>
+    <tab caption="Form Editor global search">
+      <control>
+        /App_Plugins/FormEditor/dashboard/dashboard.html
+      </control>
+    </tab>
+  </section>
+</dashBoard>
