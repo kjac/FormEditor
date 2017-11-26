@@ -175,11 +175,9 @@
           if (response.data) {
             if (response.data.invalidFields && response.data.invalidFields.length > 0) {
               angular.forEach(response.data.invalidFields, function (f) {
-                for (var i = 0; i < $scope.formState.totalPages; i++) {
-                  var field = $scope.getFormPage(i)[f.formSafeName];
-                  if (field != null) {
-                    field.$setValidity("required", false);
-                  }
+                var field = $scope.getFormField(f.formSafeName);
+                if (field != null) {
+                  field.$setValidity("required", false);
                 }
               });
             }
@@ -252,6 +250,11 @@
       } else {
         // currently no support for multiple files
         $scope.fileData[args.fieldName] = args.files[0];
+        var field = $scope.getFormField(args.fieldName);
+        if (field != null) {
+          // #163 - make sure we reset any validation errors set by server side validation
+          field.$setValidity("required", true);
+        }
       }
     });
 
@@ -278,6 +281,16 @@
             break;
         }
       });
+    }
+
+    $scope.getFormField = function (formSafeName) {
+      for (var i = 0; i < $scope.formState.totalPages; i++) {
+        var field = $scope.getFormPage(i)[formSafeName];
+        if (field != null) {
+          return field;
+        }
+      }
+      return null;
     }
 
     // form paging
@@ -327,10 +340,21 @@
         ctrl.$setValidity("requiredFile", el.val() != "");
         el.bind("change", function () {
           ctrl.$setValidity("requiredFile", el.val() != "");
-          scope.$apply(function () {
-            ctrl.$setViewValue(el.val());
-            ctrl.$render();
-          });
+        });
+      }
+    }
+  })
+  .directive("maxFileSize", function () {
+    return {
+      require: "ngModel",
+      link: function (scope, el, attrs, ctrl) {
+        ctrl.$setValidity("maxFileSize", true);
+        el.bind("change", function () {
+          var files = el[0].files;
+          var valid = files == null || files.length == 0
+            ? true
+            : files[0].size <= attrs.maxFileSize;
+          ctrl.$setValidity("maxFileSize", valid);
         });
       }
     }
@@ -343,7 +367,7 @@
         function ensureHttpPrefix(value) {
           // Need to add prefix if we don't have http:// prefix already AND we don't have part of it
           if (value && !/^(https?):\/\//i.test(value)
-             && "http://".indexOf(value) === -1) {
+            && "http://".indexOf(value) === -1) {
             controller.$setViewValue("http://" + value);
             controller.$render();
             return "http://" + value;

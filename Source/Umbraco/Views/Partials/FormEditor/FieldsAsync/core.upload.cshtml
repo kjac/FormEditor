@@ -1,7 +1,7 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.UploadField>
 <div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)" action-field="@Model.FormSafeName">
   <label for="@Model.FormSafeName">@Model.Label</label>
-  <input type="file" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required-file" : null) accept="@Model.GetValidExtensions()" file-upload ng-model="formData.@Model.FormSafeName" />
+  <input type="file" id="@Model.FormSafeName" name="@Model.FormSafeName" @(Model.Mandatory ? "required-file" : null) @(Model.MaxSize > 0 ? Html.Raw(string.Format(@"max-file-size=""{0}""", Model.MaxSize*1024)) : null) accept="@Model.GetValidExtensions()" file-upload ng-model="formData.@Model.FormSafeName" />
 
   @Html.Partial("FormEditor/FieldsAsync/core.utils.helptext")
   @Html.Partial("FormEditor/FieldsAsync/core.utils.validationerror")
