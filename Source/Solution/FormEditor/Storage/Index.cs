@@ -474,7 +474,7 @@ namespace FormEditor.Storage
 
 		private DirectoryInfo PathToFormStorage()
 		{
-			return new DirectoryInfo(HostingEnvironment.MapPath($"/App_Data/FormEditor/{_contentId}"));
+			return new DirectoryInfo(HostingEnvironment.MapPath($"~/App_Data/FormEditor/{_contentId}"));
 		}
 
 		private DirectoryInfo PathToIndex()
