@@ -27,7 +27,8 @@ namespace FormEditor
 		public static JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
 		{
 			TypeNameHandling = TypeNameHandling,
-			ContractResolver = ContractResolver
+			ContractResolver = ContractResolver,
+			NullValueHandling = NullValueHandling.Ignore
 		};
 
 		internal static string FormatJson(string json)

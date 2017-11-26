@@ -11,7 +11,7 @@
             <form-editor-localize key="edit.upload.maxSize">Max file size (KB)</form-editor-localize>
             <small form-editor-localize key="edit.upload.maxSize.helpText">0 = unlimited</small>
           </label>
-          <input type="number" id="maxSize" ng-model="dialogData.field.maxSize" />
+          <input type="number" min="0" id="maxSize" ng-model="dialogData.field.maxSize" />
 
           <label class="control-label" for="allowedFileTypes">
             <form-editor-localize key="edit.upload.allowedFileTypes">Allowed file types</form-editor-localize>
