@@ -19,7 +19,10 @@ namespace My.Events
 			if(sender.AllValueFields().Any(f => f.HasSubmittedValue && f.SubmittedValue.Equals("bad", StringComparison.InvariantCultureIgnoreCase)))
 			{
 				formEditorCancelEventArgs.Cancel = true;
-				formEditorCancelEventArgs.ErrorMessage = "Bad values are not accepted.";
+				// you can supply multiple error messages by using the FormEditorCancelEventArgs.ErrorMessages array,
+				// or if you only have one message message, you can simply use the FormEditorCancelEventArgs.ErrorMessage property
+				//formEditorCancelEventArgs.ErrorMessage ="Bad values are not accepted.";
+				formEditorCancelEventArgs.ErrorMessages = new[] {"Bad values are not accepted.", "Even worse ones aren't either."};
 			}
 		}
 

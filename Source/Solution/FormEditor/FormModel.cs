@@ -165,19 +165,18 @@ namespace FormEditor
 			}
 
 			// we're about to add data to the index - let's run the before add to index event handler
-			var beforeAddToIndexErrorMessage = RaiseBeforeAddToIndex(content);
-			if(beforeAddToIndexErrorMessage != null)
+			var beforeAddToIndexErrorMessages = RaiseBeforeAddToIndex(content);
+			if(beforeAddToIndexErrorMessages != null)
 			{
-				// the event was cancelled - use the validation system to pass the error message back to the user
-				Validations = new List<Validation.Validation>(Validations ?? new Validation.Validation[] { })
-				{
-					new Validation.Validation
+				// the event was cancelled - use the validation system to pass the error messages back to the user
+				Validations = (Validations ?? new Validation.Validation[] { }).Union(
+					beforeAddToIndexErrorMessages.Select(errorMessage => new Validation.Validation
 					{
-						ErrorMessage = beforeAddToIndexErrorMessage, 
-						Invalid = true, 
-						Rules = new Validation.Rule[] {}
-					}
-				};
+						ErrorMessage = errorMessage,
+						Invalid = true,
+						Rules = new Validation.Rule[] { }
+					})
+				).ToArray();
 				return false;
 			}
 
@@ -554,7 +553,7 @@ namespace FormEditor
 			return doc.DocumentNode.InnerText;
 		}
 
-		private string RaiseBeforeAddToIndex(IPublishedContent content)
+		private string[] RaiseBeforeAddToIndex(IPublishedContent content)
 		{
 			if(BeforeAddToIndex != null)
 			{
@@ -565,7 +564,7 @@ namespace FormEditor
 					if(cancelEventArgs.Cancel)
 					{
 						Log.Info("The form submission was valid, but it was not added to the index because an event handler for BeforeAddToIndex cancelled the submission.");
-						return cancelEventArgs.ErrorMessage ?? "The form submission was cancelled by the BeforeAddToIndex event handler.";
+						return cancelEventArgs.ErrorMessages ?? new[] {"The form submission was cancelled by the BeforeAddToIndex event handler."};
 					}
 				}
 				catch(Exception ex)
