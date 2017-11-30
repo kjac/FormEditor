@@ -1,5 +1,7 @@
 # Form Editor for Umbraco
 
+[![NuGet release](https://img.shields.io/nuget/v/FormEditor.svg)](https://www.nuget.org/packages/FormEditor) 
+
 Form Editor is a free and open source form builder plugin for [Umbraco](http://umbraco.com/) 7.3+. It lets your editors build forms and manage form submissions as just another part of the Umbraco content. It might also just be the easiest form builder you've ever had to integrate with your site.
 
 If you're new to Form Editor, you should probably start by checking out the [Quick start tutorial](Tutorials/QuickStart.md).
