@@ -15,7 +15,7 @@
   <div class="row-fluid" ng-switch-when="data">
     <div class="form-data">
       <table class="table table-striped">
-        <thead>
+        <thead ng-show="model.data.rows.length">
           <tr>
             <td class="select">
               <input type="checkbox" ng-click="selectAll()" ng-checked="allSelected()">
