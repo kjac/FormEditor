@@ -24,7 +24,7 @@ namespace FormEditor
 
 		private void Load()
 		{
-			var path = HostingEnvironment.MapPath(@"/config/formEditor.config");
+			var path = HostingEnvironment.MapPath(@"~/config/formEditor.config");
 			if (string.IsNullOrEmpty(path))
 			{
 				return;
