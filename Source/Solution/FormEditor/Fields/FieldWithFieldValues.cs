@@ -10,6 +10,20 @@ namespace FormEditor.Fields
 	{
 		public FieldValue[] FieldValues { get; set; }
 
+		protected internal override void CollectSubmittedValue(Dictionary<string, string> allSubmittedValues, IPublishedContent content)
+		{
+			base.CollectSubmittedValue(allSubmittedValues, content);
+			if(string.IsNullOrEmpty(SubmittedValue))
+			{
+				return;
+			}
+			if(SubmittedValue.StartsWith("[\"") && SubmittedValue.EndsWith("\"]"))
+			{
+				// #168: if the submitted value is a JSON string array, parse it to the expected CSV format 
+				SubmittedValue = string.Join(",", JsonConvert.DeserializeObject<string[]>(SubmittedValue));
+			}
+		}
+
 		protected internal override bool ValidateSubmittedValue(IEnumerable<Field> allCollectedValues, IPublishedContent content)
 		{
 			if(base.ValidateSubmittedValue(allCollectedValues, content) == false)
