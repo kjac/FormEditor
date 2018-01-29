@@ -213,8 +213,8 @@
                 <h5 form-editor-localize key="action.task.header">...perform this action:</h5>
                 <div class="form-action-task">
                   <select ng-model="action.task">
-                    <option value="core.showfield">Show</option>
-                    <option value="core.hidefield">Hide</option>
+                    <option value="core.showfield" form-editor-localize key="action.task.showField">Show</option>
+                    <option value="core.hidefield" form-editor-localize key="action.task.hideField">Hide</option>
                   </select>
                   <span form-editor-localize key="action.task.theField">the field</span>
                   <select ng-model="action.field" ng-options="field.name for field in allValueFields()">

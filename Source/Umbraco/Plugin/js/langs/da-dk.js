@@ -64,6 +64,8 @@
   "actions.text": "Her kan du oprette handlinger, der viser eller skjuler felter baseret på andre felters værdi - f.eks. \"vis kun felt A hvis felt B ikke er tomt\".",
   "action.task.header": "...skal denne handling udføres:",
   "action.task.theField": "",
+  "action.task.showField": "",
+  "action.task.hideField": "",
   "action.add": "Tilføj en handling",
   "action.text.noFields": "Du skal tilføje felter til formularen, før du kan oprette handlinger.",
 
