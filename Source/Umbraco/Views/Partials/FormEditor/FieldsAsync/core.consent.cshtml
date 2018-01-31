@@ -2,7 +2,7 @@
 <div class="form-group required @(Model.Invalid ? "has-error" : null) consent" action-field="@Model.FormSafeName">
   
   <div class="text">
-    @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(Model.ConsentText))
+    @Html.Raw(Umbraco.ReplaceLineBreaksForHtml(string.IsNullOrWhiteSpace(Model.ConsentText) ? string.Empty : Model.ConsentText))
   </div>
   
   @if (string.IsNullOrWhiteSpace(Model.LinkText) == false && Model.Page != null)
