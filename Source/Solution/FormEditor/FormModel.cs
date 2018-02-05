@@ -841,17 +841,19 @@ namespace FormEditor
 
 		private void SubmitToWebService(IPublishedContent content)
 		{
-			if(WebServiceConfiguration != null)
+			if(WebServiceConfiguration?.Url == null)
 			{
-				try
-				{
-					var webService = new WebService(WebServiceConfiguration);
-					webService.Submit(this, content);
-				}
-				catch(Exception ex)
-				{
-					Log.Error(ex, "Could not submit form data to the web service - see exception for details.");
-				}
+				return;
+			}
+
+			try
+			{
+				var webService = new WebService(WebServiceConfiguration);
+				webService.Submit(this, content);
+			}
+			catch(Exception ex)
+			{
+				Log.Error(ex, "Could not submit form data to the web service - see exception for details.");
 			}
 		}
 
