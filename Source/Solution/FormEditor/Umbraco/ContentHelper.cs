@@ -36,8 +36,10 @@ namespace FormEditor.Umbraco
 
 		public static PropertyType GetFormModelProperty(IContentType contentType)
 		{
-			var property = contentType.PropertyTypes.FirstOrDefault(p => p.PropertyEditorAlias == FormModel.PropertyEditorAlias);
-			return property;
+			bool IsFormModelPropertyEditor(PropertyType p) => p.PropertyEditorAlias == FormModel.PropertyEditorAlias;
+
+			return contentType.PropertyTypes.FirstOrDefault(IsFormModelPropertyEditor)
+			       ?? contentType.CompositionPropertyTypes.FirstOrDefault(IsFormModelPropertyEditor);
 		}
 
 		public static bool IpDisplayEnabled(IDictionary<string, PreValue> preValues)
