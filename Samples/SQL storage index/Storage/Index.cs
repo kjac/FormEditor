@@ -14,7 +14,7 @@ namespace FormEditor.SqlIndex.Storage
 	// custom Form Editor index that stores form entries to DB.
 	// this is a working sample of how a custom index could be created. you may want to tweak it to suit your needs.
 	// see IIndex for the interface documentation.
-	public class Index : IIndex, IFullTextIndex, IAutomationIndex
+	public class Index : IIndex, IFullTextIndex, IAutomationIndex, IUpdateIndex
 	{
 		private readonly int _contentId;
 
@@ -37,6 +37,12 @@ namespace FormEditor.SqlIndex.Storage
 			};
 			Database.Insert(row);
 			return row.EntryId;
+		}
+
+		public Guid Update(Dictionary<string, string> fields, Guid rowId)
+		{
+			Remove(new[] {rowId});
+			return Add(fields, rowId);
 		}
 
 		public void Remove(IEnumerable<Guid> rowIds)
