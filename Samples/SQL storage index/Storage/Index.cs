@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using FormEditor.Storage;
 using Newtonsoft.Json;
+using Umbraco.Core;
 using Umbraco.Core.Persistence;
 using Umbraco.Web;
 using StorageRow = FormEditor.Storage.Row;
@@ -49,7 +50,10 @@ namespace FormEditor.SqlIndex.Storage
 		{
 			foreach (var rowId in rowIds)
 			{
-				Database.Delete<File>("WHERE EntryId=@0", rowId);
+				if(IsMsDatabaseServer(DbContext))
+				{
+					Database.Delete<File>("WHERE EntryId=@0", rowId);
+				}
 				Database.Delete<Entry>("WHERE EntryId=@0", rowId);
 			}
 		}
@@ -113,12 +117,14 @@ namespace FormEditor.SqlIndex.Storage
 
 		public Stream GetFile(string filename, Guid rowId)
 		{
+			AssertFilesUnsupported();
 			var file = Database.SingleOrDefault<File>("WHERE Filename=@0", filename);
 			return file == null ? null : new MemoryStream(file.Bytes);
 		}
 
 		public bool SaveFile(HttpPostedFile file, string filename, Guid rowId)
 		{
+			AssertFilesUnsupported();
 			try
 			{
 				var bytes = new byte[file.ContentLength];
@@ -147,7 +153,10 @@ namespace FormEditor.SqlIndex.Storage
 
 		public void Delete()
 		{
-			Database.Delete<File>("WHERE ContentId=@0", _contentId);
+			if (IsMsDatabaseServer(DbContext))
+			{
+				Database.Delete<File>("WHERE ContentId=@0", _contentId);
+			}
 			Database.Delete<Entry>("WHERE ContentId=@0", _contentId);
 		}
 
@@ -162,6 +171,40 @@ namespace FormEditor.SqlIndex.Storage
 			Database.Delete<Entry>("WHERE ContentId=@0 AND CreatedDate<@1", _contentId, date);
 		}
 
-		private Database Database => UmbracoContext.Current.Application.DatabaseContext.Database;
+		internal static void EnsureDatabase(ApplicationContext applicationContext)
+		{
+			var dbContext = applicationContext.DatabaseContext;
+			var db = new DatabaseSchemaHelper(dbContext.Database, applicationContext.ProfilingLogger.Logger, dbContext.SqlSyntax);
+
+			if (db.TableExist("FormEditorEntries") == false)
+			{
+				db.CreateTable<Entry>(false);
+				// make SQL Server and Azure SQL use NVARCHAR(MAX) datatype for Entry.FieldValues
+				if (IsMsDatabaseServer(dbContext))
+				{
+					dbContext.Database.Execute("ALTER TABLE FormEditorEntries ALTER COLUMN FieldValues NVARCHAR(MAX)");
+				}
+			}
+			// for some reason PetaPoco fails when trying to create the File table on SQL CE - we simply won't create it then
+			if (IsMsDatabaseServer(dbContext) && db.TableExist("FormEditorFiles") == false)
+			{
+				db.CreateTable<File>(false);
+			}
+		}
+
+		private static bool IsMsDatabaseServer(DatabaseContext dbContext) => dbContext.DatabaseProvider == DatabaseProviders.SqlAzure || dbContext.DatabaseProvider == DatabaseProviders.SqlServer;
+
+		private void AssertFilesUnsupported()
+		{
+			if(IsMsDatabaseServer(DbContext))
+			{
+				return;
+			}
+			throw new ApplicationException("The SQL storage index does not support files in the current database version. Try changing to MS SQL Server or Azure SQL.");
+		}
+
+		private DatabaseContext DbContext => UmbracoContext.Current.Application.DatabaseContext;
+
+		private Database Database => DbContext.Database;
 	}
 }
