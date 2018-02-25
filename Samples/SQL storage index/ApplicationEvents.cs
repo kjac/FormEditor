@@ -11,10 +11,5 @@ namespace FormEditor.SqlIndex
 			// automatically create the tables for the index on app start
 			Index.EnsureDatabase(applicationContext);
 		}
-
-		private static bool SupportsMax(DatabaseContext dbContext)
-		{
-			return dbContext.DatabaseProvider == DatabaseProviders.SqlAzure || dbContext.DatabaseProvider == DatabaseProviders.SqlServer;
-		}
 	}
 }
