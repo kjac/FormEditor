@@ -82,7 +82,7 @@ namespace FormEditor.SqlIndex.Storage
 		private static StorageRow ToFormRow(Entry entry)
 		{
 			var fields = JsonConvert.DeserializeObject<Dictionary<string, string>>(entry.FieldValues);
-			return new StorageRow(entry.EntryId, entry.CreatedDate, fields);
+			return new StorageRow(entry.EntryId, entry.CreatedDate, fields, (ApprovalState)entry.Approval);
 		}
 
 		public Result Get(string sortField, bool sortDescending, int count, int skip)
@@ -118,11 +118,10 @@ namespace FormEditor.SqlIndex.Storage
 			// can't sort on sortField. instead we'll sort on Id DESC so we always return the newest entries first.
 			// full text search is likewise kinda lo-fi with a LIKE match on the serialized field values.
 			return Database.Page<Entry>(pageNumber, count, 
-				$"WHERE ContentId=@0 AND (@1 = '' OR FieldValues LIKE @1) AND (@2 = @3 OR Approval = @2) ORDER BY Id DESC", 
+				$"WHERE ContentId=@0 AND (@1 = '' OR FieldValues LIKE @1){(approvalState != ApprovalState.Any ? " AND Approval = @2" : "")} ORDER BY Id DESC", 
 				_contentId, 
 				string.IsNullOrEmpty(query) ? string.Empty : $"%{query.Trim('%')}%",
-				(int)approvalState,
-				(int)ApprovalState.Any
+				(int)approvalState
 			);
 		}
 
@@ -184,7 +183,7 @@ namespace FormEditor.SqlIndex.Storage
 
 		public bool SetApprovalState(ApprovalState approvalState, Guid rowId)
 		{
-			return Database.Execute("UPDATE FormEditorEntries SET Approval = @1 WHERE EntryId = @2", (int)approvalState, rowId) > 0;
+			return Database.Execute("UPDATE FormEditorEntries SET Approval = @0 WHERE EntryId = @1", (int)approvalState, rowId) > 0;
 		}
 
 		internal static void EnsureDatabase(ApplicationContext applicationContext)
