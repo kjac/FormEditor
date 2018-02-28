@@ -30,7 +30,12 @@ If you're hosting your site in a load balanced environment or in the cloud, the 
 
 **Note**: You may have to restart the site to make Form Editor pick up the new configuration.
 
-You can create your own storage index by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs). If you want your storage index to support full text search, you'll also need to implement [`FormEditor.Storage.IFullTextIndex`](../Source/Solution/FormEditor/Storage/IFullTextIndex.cs).
+You can create your own storage index by implementing [`FormEditor.Storage.IIndex`](../Source/Solution/FormEditor/Storage/IIndex.cs). Additionally you can implement the following interfaces to support various the features of Form Editor:
+
+- [`IApprovalIndex`](../Source/Solution/FormEditor/Storage/IApprovalIndex.cs) - adds support for [submission approval](install.md#use-submission-approval).
+- [`IAutomationIndex`](../Source/Solution/FormEditor/Storage/IAutomationIndex.cs) - adds support for [automatic deletion of expired submissions](install.md#automatic-deletion-of-expired-submissions).
+- [`IFullTextIndex`](../Source/Solution/FormEditor/Storage/IFullTextIndex.cs) - adds support for full text search.
+- [`IUpdateIndex`](../Source/Solution/FormEditor/Storage/IUpdateIndex.cs) - adds support for [editing existing submissions](submissions_edit.md).
 
 There are two sample implementations of storage indexes in the samples section:
 
@@ -38,6 +43,8 @@ There are two sample implementations of storage indexes in the samples section:
 The [SQL storage sample index](../Samples/SQL%20storage%20index/) stores form submissions in the Umbraco database. 
 
 The necessary tables for this index are automatically created if they do not exist when the site starts up.
+
+**Please note:** This index works best with MS SQL Server or Azure SQL Database. It sort of works with SQL CE, but only for smaller form submissions, and file uploads aren't supported.
 
 ### Elastic storage index
 The [Elastic storage sample index](../Samples/Elastic%20storage%20index/) stores form submissions in an Elastic index.
