@@ -20,5 +20,7 @@ namespace FormEditor.SqlIndex.Storage
 		public string FieldValues { get; set; }
 
 		public DateTime CreatedDate { get; set; }
+
+		public int Approval { get; set; }
 	}
 }
