@@ -83,6 +83,7 @@
   "emailNotification.header": "E-mailnotifikation",
   "emailNotification.text": "Hvis du vil have e-mailnotifikation, når brugerne udfylder formularen, skal du indtaste modtagernes e-mailadresser, e-mailens emnetekst og afsenderens e-mailadresse.",
   "emailNotification.recipients": "Modtager-adresser",
+  "emailNotification.recipients.helpText": "Du kan tilføje flere e-mailadresser, adskilt af komma",
   "emailNotification.subject": "Emnetekst",
   "emailNotification.sender": "Afsenderens e-mailadresse",
   
