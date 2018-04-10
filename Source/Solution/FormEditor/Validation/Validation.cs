@@ -32,8 +32,12 @@ namespace FormEditor.Validation
 				}
 			}
 
-			// the validation fails if all rules are fulfilled
-			Invalid = Rules.Where(r => r.IsApplicable).All(r => r.IsFulfilledBy(allCollectedFieldValues, content));
+			Invalid = Rules.Any(r => r.IsApplicable == false)
+				// it's impossible to validate the rule if we have frontend only conditions in play
+				? false
+				// the validation fails if all rules are fulfilled
+				: Rules.All(r => r.IsFulfilledBy(allCollectedFieldValues, content));
+
 			return Invalid == false;
 		}
 	}
