@@ -53,7 +53,7 @@
       }
       $scope.formData[fieldName] = values;
       if (required) {
-        $scope.getFormPage(pageNumber)[fieldName].$setValidity("required", values != undefined && values.length != 0);
+        $scope.setMultiSelectValidity(fieldName, pageNumber, values != undefined && values.length != 0);
       }
     };
 
@@ -61,6 +61,10 @@
       var values = $scope.formData[fieldName] || [];
       return values.indexOf(value) >= 0;
     };
+
+    $scope.setMultiSelectValidity = function (fieldName, pageNumber, valid) {
+      $scope.getFormPage(pageNumber)[fieldName].$setValidity("required", valid);
+    }
 
     // this exposes the form validation to a global scope
     $scope.globalValidateForm = function () {

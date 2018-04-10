@@ -1,3 +1,4 @@
+@using FormEditor.Rendering
 @inherits Umbraco.Web.Mvc.UmbracoViewPage<FormEditor.Fields.CheckboxGroupField>
 <div class="form-group @(Model.Mandatory ? "required" : null) @(Model.Invalid ? "has-error" : null)" name="@Model.FormSafeName" ng-model="@Model.FormSafeName" action-field="@Model.FormSafeName">
   <label>@Model.Label</label>
@@ -5,7 +6,7 @@
   {
     <div class="checkbox">
       <label>
-        <input type="checkbox" ng-checked="hasMultiSelectValue('@Model.FormSafeName', '@HttpUtility.JavaScriptStringEncode(fieldValue.Value)')" ng-click="toggleMultiSelectValue('@Model.FormSafeName', @ViewBag.FormEditorPageNumber, '@fieldValue.Value', @Model.Mandatory.ToString().ToLowerInvariant())" />
+        <input type="checkbox" ng-checked="hasMultiSelectValue('@Model.FormSafeName', '@HttpUtility.JavaScriptStringEncode(fieldValue.Value)')" ng-click="toggleMultiSelectValue('@Model.FormSafeName', @ViewBag.FormEditorPageNumber, '@fieldValue.Value', @Model.Mandatory.ToString().ToLowerInvariant())" ng-init="@(Model.Mandatory && fieldValue == Model.FieldValues.First() && Model.HasDefaultValue() == false ? string.Format("setMultiSelectValidity('{0}', {1}, false)", Model.FormSafeName, ViewBag.FormEditorPageNumber) : null)"/>
         @fieldValue.Value
       </label>
     </div>
